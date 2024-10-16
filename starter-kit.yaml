@@ -1,0 +1,33 @@
+export_paths:
+  - app/Console/Commands
+  - app/Http/Controllers/NewsletterController.php
+  - config/filesystems.php
+  - config/app.php
+  - config/services.php
+  - config/statamic/assets.php
+  - config/statamic/editions.php
+  - config/statamic/git.php
+  - content
+  - public/assets
+  - public/favicon
+  - public/social_images
+  - resources/blueprints
+  - resources/css
+  - resources/fieldsets
+  - resources/js
+  - resources/svg
+  - resources/views
+  - routes/web.php
+  - .env.example
+  - .gitignore
+  - package.json
+  - postcss.config.js
+  - prettier.config.js
+  - README.md
+  - tailwind.config.js
+  - tailwind.config.preset.js
+  - tailwind.config.site.js
+  - tailwind.config.typography.js
+  - vite.config.js
+dependencies:
+  php: ^8.3
