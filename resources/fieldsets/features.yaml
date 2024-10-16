@@ -1,0 +1,61 @@
+title: Features
+fields:
+  -
+    handle: block_type
+    field: common.select_single
+    config:
+      options:
+        2x2_grid: '2x2 grid'
+        3x2_grid: '3x2 grid'
+        4x2_grid: '4x2 grid'
+        split_with_image: 'Split with image'
+      display: 'Block type'
+      width: 50
+      validate:
+        - required
+  -
+    handle: title
+    field:
+      input_type: text
+      antlers: false
+      display: Title
+      type: text
+      icon: text
+      listable: hidden
+      instructions_position: above
+      visibility: visible
+  -
+    handle: text
+    field: common.text_plain
+  -
+    handle: columns
+    field:
+      fields:
+        -
+          handle: icon
+          field: common.icon
+        -
+          handle: title
+          field:
+            input_type: text
+            antlers: false
+            display: Title
+            type: text
+            icon: text
+            listable: hidden
+            instructions_position: above
+            visibility: visible
+        -
+          handle: text
+          field: common.text_plain
+      mode: stacked
+      add_row: 'Add Column'
+      reorderable: true
+      display: Columns
+      type: grid
+      icon: grid
+      listable: hidden
+      instructions_position: above
+      visibility: visible
+      if:
+        block_type: 'not split_with_image'

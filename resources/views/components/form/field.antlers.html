@@ -1,0 +1,28 @@
+{{ if type === 'section' }}
+    {{ partial src="components/form/fields/{type}" }}
+{{ else }}
+    <template x-if="{{ show_field }}">
+        <div class="mt-6">
+            {{ $fields_with_no_labels =
+                [
+                    'radio',
+                    'checkboxes',
+                    'toggle',
+                    'consent'
+                ]
+            }}
+            {{ unless $fields_with_no_labels | contains(type) || input_type === 'hidden' }}
+                {{ partial:components/form/label }}
+            {{ /unless }}
+
+            <div>
+                {{ partial src="components/form/fields/{type}" model="{form:handle}.{handle}" }}
+
+                {{# Display error label when there is a validation error with the name field. #}}
+                <template x-if="errors.{{ handle }}">
+                    <p class="text-red-600 text-sm mt-2" id="error-{{ handle }}" x-text="errors.{{ handle }}"></p>
+                </template>
+            </div>
+        </div>
+    </template>
+{{ /if }}

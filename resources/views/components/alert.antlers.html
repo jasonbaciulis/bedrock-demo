@@ -1,0 +1,39 @@
+<div class="alert
+    {{ switch(
+        (style === 'success') => 'alert--success',
+        (style === 'warning') => 'alert--warning',
+        (style === 'error') => 'alert--error'
+    )}}
+    {{ class }}
+    "
+    {{ if dismissible }} x-data="{ dismissed: false }" x-show="!dismissed" {{ /if }}
+>
+    <div class="flex">
+        <div class="alert__icon">
+            {{ if style === 'success' }}
+                {{ svg src="check-circle" }}
+            {{ elseif style === 'warning' }}
+                {{ svg src="exclamation" }}
+            {{ elseif style === 'error' }}
+                {{ svg src="x-circle" }}
+            {{ /if }}
+        </div>
+        <div class="ml-3 mt-0.5">
+            <p class="alert__text">{{ text }}</p>
+        </div>
+        {{ if dismissible }}
+            <div class="ml-auto pl-3">
+                <div class="-mx-1.5 -my-1.5">
+                    <button
+                        type="button"
+                        class="alert__dismiss-btn"
+                        @click="dismissed = !dismissed"
+                    >
+                        <span class="sr-only">Dismiss</span>
+                        {{ svg src="close" class="h-5 w-5" }}
+                    </button>
+                </div>
+            </div>
+        {{ /if }}
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<select
+    x-model="{{ model }}"
+    class="shadow-sm"
+    :class="{ 'ring-red-600 focus-visible:ring-red-600': errors.{{ handle }}, 'text-gray-500' : !{{ handle }} }"
+    id="{{ handle }}"
+    name="{{ handle }}{{ multiple ?= "[]" }}"
+    :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
+    aria-describedBy="error-{{ handle }}"
+    {{ multiple ?= "multiple" }}
+    @change="forgetError('{{ handle }}')"
+>
+    {{ unless multiple }}
+        <option value>
+           Select {{ handle | lcfirst }}…
+        </option>
+    {{ /unless }}
+    {{ foreach:options as="value|label" }}
+        <option value="{{ value }}">
+            {{ label }}
+        </option>
+    {{ /foreach:options }}
+</select>

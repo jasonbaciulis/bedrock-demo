@@ -1,0 +1,15 @@
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: related_posts
+        field:
+          input_type: text
+          antlers: false
+          display: 'Related posts'
+          type: text
+          icon: text
+          listable: hidden
+          instructions_position: above
+          visibility: visible

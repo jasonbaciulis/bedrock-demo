@@ -1,0 +1,111 @@
+{{ once }}
+    {{ push:scripts }}
+        <script src="/vendor/statamic/frontend/js/helpers.js" defer></script>
+        {{ vite src="resources/js/form.js" }}
+    {{ /push:scripts }}
+{{ /once }}
+
+{{# While Alpine is loading show skeleton form #}}
+{{ form:create :in="form:handle"
+    id="form-{form:handle}-skeleton"
+    csrf="false"
+    class="js-skeleton-form"
+}}
+    <div class="w-full grid md:grid-cols-12 gap-6 animate-pulse pointer-events-none select-none">
+        {{ fields }}
+            <div class="flex flex-col space-y-2
+                {{ width == '25' ?= 'md:col-span-3' }}
+                {{ width == '33' ?= 'md:col-span-4' }}
+                {{ width == '50' ?= 'md:col-span-6' }}
+                {{ width == '66' ?= 'md:col-span-8' }}
+                {{ width == '75' ?= 'md:col-span-9' }}
+                {{ width == '100' ?= 'md:col-span-12' }}"
+            >
+                {{ unless type === 'section' }}
+                    <div>
+                        <span class="h-6 rounded-lg bg-gray-200 text-gray-200">{{ display }}</span>
+                        {{ if instructions }}
+                            <p class="h-6 rounded bg-gray-200 mt-2">{{ instructions }}</p>
+                        {{ /if }}
+                    </div>
+                {{ /unless }}
+
+                {{ if type === 'textarea' }}
+                    <div class="h-32 rounded-lg bg-gray-200"></div>
+                {{ else }}
+                    <div class="h-14 rounded-lg bg-gray-200"></div>
+                {{ /if }}
+            </div>
+        {{ /fields }}
+
+        <div class="md:col-span-12">
+            <div class="btn btn--xl bg-gray-200 text-gray-200">Submit</div>
+        </div>
+    </div>
+{{ /form:create }}
+
+{{# Create the selected form and reference Alpine data in `sending()`. Prevent form from submitting with POST as we will submit with AJAX. #}}
+<div x-cloak x-data="sending">
+    {{ form:create :in="form:handle"
+        id="form-{form:handle}"
+        csrf="false"
+        x-ref="form"
+        @submit.prevent="sendForm()"
+        js="alpine:dynamic_form"
+    }}
+        <div class="w-full grid md:grid-cols-12 gap-6">
+            <input type="hidden" name="_token" value="{{ csrf_token }}">
+            {{# Honeypot spam protection. #}}
+            <div class="hidden">
+                <label for="{{ honeypot }}">{{ honeypot }}</label>
+                <input id="{{ honeypot }}" type="text" name="{{ honeypot }}" tabindex="-1" autocomplete="off"/>
+            </div>
+
+            {{# Render the default-styled fields. #}}
+            {{ fields }}
+                <template x-if="{{ show_field }}">
+                    <div class="flex flex-col space-y-2
+                        {{ width == '25' ?= 'md:col-span-3' }}
+                        {{ width == '33' ?= 'md:col-span-4' }}
+                        {{ width == '50' ?= 'md:col-span-6' }}
+                        {{ width == '66' ?= 'md:col-span-8' }}
+                        {{ width == '75' ?= 'md:col-span-9' }}
+                        {{ width == '100' ?= 'md:col-span-12' }}"
+                    >
+                        {{ unless type === 'section' }}
+                            <label class="block font-medium text-gray" for="{{ handle }}">
+                                {{ display }}
+                                {{ if instructions }}
+                                    <p class="font-normal text-base mt-2">{{ instructions }}</p>
+                                {{ /if }}
+                            </label>
+                        {{ /unless }}
+
+                        <div x-data="{ id: $id('error-label') }" class="flex flex-col space-y-2">
+                            {{ field }}
+
+                            {{# Display error label when there is a validation error with the name field. #}}
+                            <template x-if="errors.{{ handle }}">
+                                <span class="text-red-600 text-sm font-medium" :id="id" x-text="errors.{{ handle }}"></span>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            {{ /fields }}
+
+            {{# Pulse button and disable upon sending. #}}
+            <div class="md:col-span-12">
+                <button class="btn btn--primary btn--xl" type="submit" :disabled="sending">Submit</button>
+            </div>
+        </div>
+
+        <template x-if="success">
+            {{ partial:components/alert
+                style="success"
+                text="Thanks! We got your inquiry and will get back to you within 24 hours."
+            }}
+        </template>
+    {{ /form:create }}
+</div>
+
+{{ partial:partials/form-script }}

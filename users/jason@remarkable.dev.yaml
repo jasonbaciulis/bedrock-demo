@@ -1,0 +1,11 @@
+name: Jason
+super: true
+id: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
+password_hash: $2y$10$Z8imFeh6Dn6vCP68F6eTeuX1e.u1zX3x4XjSfgLjJs4wlWtYrjhI.
+preferences:
+  assets:
+    assets:
+      mode: grid
+  collections:
+    pages:
+      after_save: continue_editing

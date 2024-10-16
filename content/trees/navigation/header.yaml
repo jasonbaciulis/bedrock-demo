@@ -1,0 +1,34 @@
+tree:
+  -
+    id: 00889306-aa09-49b8-b91b-e9e7a72ed8a9
+    title: Product
+    data:
+      two_col_flyout: true
+    children:
+      -
+        id: 83e510bc-a25c-4bd4-9a11-87f4585ebf8c
+        entry: 6c1e2aab-5a96-4afb-a1b0-f3ab04b2bc24
+        data:
+          two_col_flyout: false
+      -
+        id: fa484f10-41e5-46b5-853c-1b514da0f565
+        entry: a6683748-aa6b-46ed-937b-4fe5bfb79ea5
+  -
+    id: dfe9c031-8abb-4da5-b383-86a4daecdc50
+    entry: a922b443-236d-4257-a456-76115c1fc75e
+  -
+    id: db467f1c-3d5e-4e0b-9a3f-695611b0c614
+    title: Company
+    children:
+      -
+        id: b0538183-16af-4de3-a6ed-6933a47bbf98
+        entry: 4f0b123a-3e5e-4129-bb07-6c1fed321438
+      -
+        id: a8f830ae-b597-492e-8ba9-1539301f02ab
+        entry: caccd3e6-bc78-451d-955e-0a4c8de34052
+      -
+        id: f837eb96-50bc-4acb-86fa-6cf0ce58a46c
+        entry: 506c8e50-bc23-4c16-b691-c8aca71c1258
+  -
+    id: c4a0c94b-8a74-4074-887c-b4a72b118f02
+    entry: 7e31df4b-f21e-4407-8398-f6ab26f08048

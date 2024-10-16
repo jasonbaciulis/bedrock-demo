@@ -1,0 +1,120 @@
+title: Blocks
+fields:
+  -
+    handle: blocks
+    field:
+      type: replicator
+      localizable: true
+      collapse: true
+      listable: false
+      display: Blocks
+      instructions: 'Build your page by using various predefined content models.'
+      sets:
+        article:
+          display: Article
+          instructions: 'Long form content, can be expaned with media like figures, video, quotes or tables.'
+          fields:
+            -
+              import: article
+        benefits:
+          display: Benefits
+          instructions: null
+          fields:
+            -
+              import: benefits
+        blog:
+          display: Blog
+          instructions: null
+          fields:
+            -
+              import: blog
+        contact:
+          display: Contact
+          instructions: null
+          fields:
+            -
+              import: contact
+        content:
+          display: Content
+          instructions: null
+          fields:
+            -
+              import: content
+        cta:
+          display: CTA
+          instructions: null
+          fields:
+            -
+              import: cta
+        faqs:
+          display: FAQs
+          instructions: null
+          fields:
+            -
+              import: faqs
+        features:
+          display: Features
+          instructions: null
+          fields:
+            -
+              import: features
+        hero_home:
+          display: 'Hero Home'
+          instructions: null
+          fields:
+            -
+              import: hero_home
+        logo_cloud:
+          display: 'Logo cloud'
+          instructions: null
+          fields:
+            -
+              import: logo_cloud
+        newsletter:
+          display: Newsletter
+          instructions: null
+          fields:
+            -
+              import: newsletter
+        pricing:
+          display: Pricing
+          instructions: null
+          fields:
+            -
+              import: pricing
+        search_results:
+          display: 'Search results'
+          instructions: null
+          fields:
+            -
+              import: search_results
+        stats:
+          display: Stats
+          instructions: null
+          fields:
+            -
+              import: stats
+        steps:
+          display: Steps
+          instructions: null
+          fields:
+            -
+              import: steps
+        styleguide:
+          display: Styleguide
+          instructions: 'This block reflects Figma design styleguide. You can remove it in production.'
+          fields:
+            -
+              import: styleguide
+        team:
+          display: Team
+          instructions: null
+          fields:
+            -
+              import: team
+        testimonials:
+          display: Testimonials
+          instructions: null
+          fields:
+            -
+              import: testimonials

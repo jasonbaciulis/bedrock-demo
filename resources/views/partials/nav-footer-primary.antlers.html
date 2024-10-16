@@ -1,0 +1,21 @@
+{{ nav handle="footer_primary" max_depth="2" select="title|url" }}
+    <div>
+        <p class="h5">{{ title }}</p>
+
+        {{ if children }}
+            <ul role="list" class="mt-5 space-y-5 xl:mt-10">
+                {{ children }}
+                    <li>
+                        <a
+                            href="{{ url }}"
+                            class="text-gray-600 hover:text-black"
+                            {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}
+                        >
+                            {{ title }}
+                        </a>
+                    </li>
+                {{ /children }}
+            </ul>
+        {{ /if }}
+    </div>
+{{ /nav }}

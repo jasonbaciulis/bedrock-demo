@@ -1,0 +1,15 @@
+title: 'Social media'
+data:
+  platforms:
+    -
+      handle: JasonBaciulis
+      prefix: 'https://www.twitter.com/'
+      type: twitter
+      enabled: true
+      url: JasonBaciulis
+    -
+      handle: in/jasonbaciulis/
+      prefix: 'https://www.linkedin.com/'
+      type: linkedin
+      enabled: true
+      url: company/remarkabledev/

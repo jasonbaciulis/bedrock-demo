@@ -1,0 +1,29 @@
+<figure class="my-0 not-prose">
+    <div class="relative aspect-video" x-data="{ playing: false }">
+        <iframe
+            x-ref="iframe"
+            class="absolute inset-0 w-full h-full"
+            data-src="{{ youtube_url | embed_url }}"
+            loading="lazy"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+        ></iframe>
+
+        <img src="https://img.youtube.com/vi/{{ youtube_id }}/maxresdefault.jpg" class="object-cover w-full h-full rounded-lg" loading="lazy" alt="YouTube thumbnail">
+
+        <button
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white hover:text-white/80 focus-visible:text-white/80 active:text-white/80"
+            :class="playing && 'hidden'"
+            @click="$refs.iframe.src = $refs.iframe.dataset.src + '?autoplay=1'; playing = true"
+        >
+            {{ svg src="play" class="w-12 h-12" }}
+        </button>
+    </div>
+
+    {{ if caption }}
+        <figcaption class="content-sm block mt-4">
+            {{ caption }}
+        </figcaption>
+    {{ /if }}
+</figure>

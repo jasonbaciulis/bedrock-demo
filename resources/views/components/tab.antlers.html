@@ -1,0 +1,15 @@
+{{ $tab = name ?? count }}
+{{ $alpineVariable = alpine_variable ?? 'activeTab' }}
+
+<button
+    id="tab-{{ $tab }}"
+    type="button"
+    role="tab"
+    :aria-selected="{{ $alpineVariable }} == '{{ $tab }}'"
+    aria-controls="tabpanel-{{ $tab }}"
+    :tabindex="{{ $alpineVariable }} == '{{ $tab }}' ? '0' : '-1'"
+    @click.prevent="{{ $alpineVariable }} = '{{ $tab }}'"
+    {{ slot:attributes }}
+>
+    {{ slot }}
+</button>

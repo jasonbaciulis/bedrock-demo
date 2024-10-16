@@ -1,0 +1,24 @@
+<a
+    href="{{ url }}"
+    class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
+    {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}
+>
+    {{ if icon }}
+        {{ svg :src="icon" class="h-6 w-6 mr-4 shrink-0 text-primary-600" }}
+    {{ /if }}
+    <div>
+        <p class="font-medium">
+            {{ title }}
+            {{ if badge }}
+                <span class="relative -top-1.5 ml-1.5 inline-flex items-center px-3 py-0.5 rounded-full text-xs font-medium leading-5 bg-primary-100 text-primary-800">
+                    {{ badge }}
+                </span>
+            {{ /if }}
+        </p>
+        {{ if description }}
+            <p class="hidden md:block mt-1 content-sm text-gray-600">
+                {{ description }}
+            </p>
+        {{ /if }}
+    </div>
+</a>

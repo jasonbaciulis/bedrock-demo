@@ -1,0 +1,72 @@
+{{ once }}
+    {{ push:scripts }}
+        {{ vite src="resources/js/newsletter.js" }}
+    {{ /push:scripts }}
+{{ /once }}
+
+<div
+    x-cloak
+    x-show="!subscribed"
+    class="section-p"
+    x-data="newsletter({ route: '{{ route:newsletter }}' })"
+    x-init="isSubscribed()"
+>
+    <div class="container max-w-none xl:max-w-screen-xl">
+        <div class="rounded-2xl bg-gray py-10 px-6 sm:py-16 sm:px-12 lg:p-20 relative">
+            <div class="md:text-center">
+                <h3 class="h2 text-white">{{ configuration:newsletter_title }}</h3>
+                {{ if configuration:newsletter_text }}
+                    <p class="mt-6 typo-lg mx-auto max-w-2xl">
+                        {{ configuration:newsletter_text }}
+                    </p>
+                {{ /if }}
+            </div>
+
+            <form x-ref="form" x-show="!success" @submit.prevent="sendForm()" class="mt-12 lg:mx-auto flex flex-col md:flex-row md:flex-wrap gap-y-4 gap-x-3 lg:max-w-xl">
+                <input type="text" name="honeypot" class="hidden" x-ref="honeypot" />
+                <input type="hidden" name="_token" value="{{ csrf_token }}">
+                <input type="hidden" name="form_id" value="{{ configuration:newsletter_form_id }}" />
+                <label for="{{ type }}-{{ count }}-email" class="sr-only">Email</label>
+                <input
+                    x-model="email"
+                    id="{{ type }}-{{ count }}-email"
+                    type="email"
+                    name="email"
+                    autocomplete="email"
+                    placeholder="Your email address"
+                    class="md:flex-1 px-6 text-xl"
+                    :class="{ 'animate-shake': shake }"
+                    :disabled="loading"
+                >
+
+                <button
+                    type="submit"
+                    class="btn btn--white btn--lg w-full md:w-auto shrink-0"
+                    :disabled="loading"
+                >
+                    Subscribe
+                    <span x-cloak x-show="loading" class="ml-3">
+                        {{ partial:elements/spinner }}
+                    </span>
+                </button>
+                <p x-cloak x-show="error && errorMessage" x-text="errorMessage" class="w-full text-red-500 text-sm"></p>
+            </form>
+
+
+            <p x-cloak x-show="success" class="h5 mt-12 text-center text-green-400">
+                {{ configuration:newsletter_success_message }}
+            </p>
+
+            {{ if configuration:newsletter_benefits }}
+                <ul class="shrink-0 w-full typo-sm flex flex-col md:flex-row justify-center gap-4 mt-6">
+                    {{ configuration:newsletter_benefits }}
+                        <li class="flex gap-2 items-center">
+                            {{ svg src="check-mini" class="text-primary w-5 h-5 flex-none" }}
+                            <p>{{ value }}</p>
+                        </li>
+                    {{ /configuration:newsletter_benefits }}
+                </ul>
+            {{ /if }}
+        </div>
+    </div>
+</div>

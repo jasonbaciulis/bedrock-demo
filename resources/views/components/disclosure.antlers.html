@@ -1,0 +1,32 @@
+<div class="pt-6" x-data="{ open: false }">
+    <dt class="content-lg">
+        <button
+            type="button"
+            class="text-left w-full flex justify-between items-start text-gray-400"
+            aria-controls="faq-{{ count }}"
+            :aria-expanded="open"
+            @click="open = !open"
+        >
+            <span class="font-medium text-black sm:content-lg">{{ title }}</span>
+            <span class="ml-6 h-7 flex items-center">
+                <span
+                    class="rotate-0 h-6 w-6 transform"
+                    :class="{ '-rotate-180' : open, 'rotate-0' : !open }"
+                >
+                    {{ svg src="chevron-down" }}
+                </span>
+            </span>
+        </button>
+    </dt>
+    <dd
+        id="faq-{{ count }}"
+        class="pr-12"
+        x-cloak
+        x-show="open"
+        x-collapse
+    >
+        <div class="text-gray-600 prose max-w-none mt-2">
+            {{ text }}
+        </div>
+    </dd>
+</div>

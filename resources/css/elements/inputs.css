@@ -1,0 +1,25 @@
+input {
+  @apply placeholder:text-white/50;
+}
+
+[type='text'],
+[type='url'],
+[type='search'],
+[type='email'],
+[type='password'],
+[type='tel'] {
+  @apply block w-full rounded-md border-0 px-4 py-2.5 text-base text-gray ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary;
+}
+
+select {
+  @apply w-full cursor-pointer truncate rounded-xl border-0 px-4 py-2.5 pr-10 text-base text-gray ring-1 ring-inset ring-gray-300 invalid:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary;
+}
+
+[type='checkbox'],
+[type='radio'] {
+  @apply text-primary focus:ring-primary;
+}
+
+textarea {
+  @apply border-0 ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-primary;
+}

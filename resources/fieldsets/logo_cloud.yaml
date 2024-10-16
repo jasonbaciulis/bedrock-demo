@@ -1,0 +1,28 @@
+title: 'Logo cloud'
+fields:
+  -
+    handle: title
+    field:
+      input_type: text
+      antlers: false
+      display: Title
+      type: text
+      icon: text
+      listable: hidden
+      instructions_position: above
+      visibility: visible
+  -
+    handle: logos
+    field:
+      mode: grid
+      container: assets
+      folder: logos
+      restrict: false
+      allow_uploads: true
+      show_filename: true
+      display: Logos
+      type: assets
+      icon: assets
+      listable: hidden
+      instructions_position: above
+      visibility: visible

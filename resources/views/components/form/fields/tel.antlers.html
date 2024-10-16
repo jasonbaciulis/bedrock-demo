@@ -1,0 +1,19 @@
+<div class="relative">
+    <div class="pointer-events-none absolute inset-y-0 left-5 flex gap-x-2 items-center">
+        {{ svg src="flag-uk" class="w-8 h-8" }}
+    </div>
+    <input
+        x-model="{{ model }}"
+        :class="{ 'ring-red-600 focus-visible:ring-red-600': errors.{{ handle }} }"
+        class="pl-16"
+        id="{{ handle }}"
+        name="{{ handle }}"
+        type="tel"
+        x-mask="+44 9999 999 999"
+        placeholder="{{ placeholder }}"
+        autocomplete="tel"
+        :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
+        aria-describedBy="error-{{ handle }}"
+        @change="forgetError('{{ handle }}')"
+    >
+</div>

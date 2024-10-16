@@ -1,0 +1,15 @@
+<section class="section-m">
+    <div class="container">
+        {{ if title }}
+            <h2 class="h2">{{ title }}</h2>
+        {{ /if }}
+
+        <div class="mx-auto max-w-3xl sm:bg-white sm:rounded-2xl sm:shadow-card-light sm:p-8 xl:p-12">
+            {{ if use_conditional_form }}
+                {{ partial:components/form-conditional }}
+            {{ else }}
+                {{ partial:components/form }}
+            {{ /if }}
+        </div>
+    </div>
+</section>

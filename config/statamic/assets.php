@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'image_manipulation' => [
 
         /*
@@ -82,7 +81,7 @@ return [
         */
 
         'defaults' => [
-            // 'quality' => 50,
+            'quality' => 85,
         ],
 
         /*
@@ -98,7 +97,8 @@ return [
         */
 
         'presets' => [
-            // 'small' => ['w' => 200, 'h' => 200, 'q' => 75, 'fit' => 'crop'],
+            'lg-webp' => ['w' => 1280, 'h' => 10000, 'fit' => 'contain', 'fm' => 'webp'],
+            'lg' => ['w' => 1280, 'h' => 10000, 'fit' => 'contain'],
         ],
 
         /*
@@ -222,5 +222,4 @@ return [
     */
 
     'svg_sanitization_on_upload' => true,
-
 ];

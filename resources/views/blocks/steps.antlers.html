@@ -1,0 +1,26 @@
+<section class="relative bg-white my-16 sm:my-24 lg:my-32">
+    <div class="container">
+        {{ partial:partials/section-header }}
+
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            {{ steps }}
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <span class="h1 text-white mb-4">
+                        {{ count }}
+                    </span>
+                    {{ partial:components/picture }}
+                    <h3 class="h5 mt-8">{{ title | widont }}</h3>
+                    <div class="content mt-4 sm:mt-6">{{ text }}</div>
+                </div>
+            {{ /steps }}
+        </div>
+
+        {{ if buttons }}
+            <div class="mt-12 sm:mt-20">
+                <div class="mx-auto max-w-md text-center">
+                    {{ partial:components/buttons }}
+                </div>
+            </div>
+        {{ /if }}
+    </div>
+</section>

@@ -1,0 +1,12 @@
+<section class="section-m">
+    <div class="container">
+        {{ if title }}
+            <h2 class="text-center text-lg font-semibold leading-8 text-gray">{{ title }}</h2>
+        {{ /if }}
+        <div class="mt-10 flex flex-wrap gap-10 justify-center">
+            {{ logos }}
+                <img src="{{ url }}" alt="{{ filename | title }} logo" loading="lazy" width="192" height="40" class="max-h-[40px] max-w-[192px]">
+            {{ /logos }}
+        </div>
+    </div>
+</section>

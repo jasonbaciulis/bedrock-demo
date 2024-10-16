@@ -1,16 +1,120 @@
 ---
-title: Home
 id: home
-template: home
 blueprint: pages
+title: Home
+template: default
+updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
+updated_at: 1664129311
+blocks:
+  -
+    type: hero
+    enabled: true
+    block_type: 2_cols_with_illustration
+    title: 'Accounting made simple for small businesses.'
+    text: 'Most bookkeeping software is accurate but hard to use. We make the opposite trade-off and hope you don’t get audited.'
+  -
+    block_type: 3x2_grid
+    type: features
+    enabled: true
+  -
+    type: cta
+    enabled: true
+    block_type: brand_panel
+  -
+    title: 'Trusted by bootstrapped businesses'
+    type: logo_cloud
+    enabled: true
+    logos:
+      - logos/logoipsum-logo-1.svg
+      - logos/logoipsum-logo-2.svg
+      - logos/logoipsum-logo-3.svg
+      - logos/logoipsum-logo-4.svg
+      - logos/logoipsum-logo-5.svg
+  -
+    block_type: collapsed_grouped
+    title: 'Frequently asked questions'
+    text: 'Perks so good you‘d be crazy to go anywhere else for development. Seriously.'
+    type: faqs
+    enabled: true
+    groups:
+      -
+        title: 'Group name'
+        items:
+          -
+            title: 'Test title'
+            text:
+              -
+                type: paragraph
+                content:
+                  -
+                    type: text
+                    text: 'Test text'
+            type: item
+            enabled: true
+          -
+            title: 'Test title'
+            text:
+              -
+                type: paragraph
+                content:
+                  -
+                    type: text
+                    text: 'Test text'
+            type: item
+            enabled: true
+        type: group
+        enabled: true
+      -
+        title: 'Group name'
+        items:
+          -
+            title: 'TEst title'
+            text:
+              -
+                type: paragraph
+                content:
+                  -
+                    type: text
+                    text: Text
+            type: item
+            enabled: true
+        type: group
+        enabled: true
+  -
+    block_type: collapsed
+    title: 'Frequently asked questions'
+    text: 'Perks so good you‘d be crazy to go anywhere else for development. Seriously.'
+    type: faqs
+    enabled: true
+    items:
+      -
+        title: 'Test title'
+        text:
+          -
+            type: paragraph
+            content:
+              -
+                type: text
+                text: 'TExt text'
+        type: item
+        enabled: true
+      -
+        title: 'Test title'
+        text:
+          -
+            type: paragraph
+            content:
+              -
+                type: text
+                text: 'TExt text'
+        type: item
+        enabled: true
+  -
+    type: styleguide
+    enabled: true
+seo_noindex: false
+seo_nofollow: false
+seo_canonical_type: entry
+sitemap_change_frequency: weekly
+sitemap_priority: 0.5
 ---
-## Welcome to your brand new Statamic site!
-
-Not sure where to do next? Here are a few ideas, but feel free to explore in your own way, in your own time.
-
-- [Jump into the Control Panel](/cp) and edit this page or begin setting up your own collections and blueprints.
-- [Head to the docs](https://statamic.dev) and learn how Statamic works.
-- [Watch some Statamic videos](https://youtube.com/statamic) on YouTube.
-- [Join our Discord chat](https://statamic.com/discord) and meet thousands of other Statamic developers.
-- [Start a discussion](https://github.com/statamic/cms/discussions) and get answers to your questions.
-- [Star Statamic on Github](https://github.com/statamic/cms) if you enjoy using it!

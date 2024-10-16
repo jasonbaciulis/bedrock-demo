@@ -1,0 +1,24 @@
+<section class="relative py-14 md:py-28 lg:py-36">
+    <div class="container">
+        <div class="text-center max-w-2xl mx-auto mb-10 lg:mb-12">
+             <h2 class="h2 mb-6">{{ title }}</h2>
+
+            {{ if text }}
+                <p class="content-lg">{{ text | widont }}</p>
+            {{ /if }}
+        </div>
+
+        <div class="max-w-2xl mx-auto space-y-10">
+            {{ groups }}
+                <div>
+                    <h3 class="h3 mb-2.5">{{ title }}</h3>
+                    <dl class="pb-6 space-y-6 divide-y divide-gray-200 border-b border-gray-200">
+                        {{ items }}
+                            {{ partial:components/disclosure }}
+                        {{ /items }}
+                    </dl>
+                </div>
+            {{ /groups }}
+        </div>
+    </div>
+</section>

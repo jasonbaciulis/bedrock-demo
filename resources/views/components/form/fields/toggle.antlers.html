@@ -1,0 +1,20 @@
+<label
+    class="inline-flex gap-x-3 text-gray text-base leading-normal"
+    :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
+    aria-describedBy="error-{{ handle }}"
+>
+    <input
+        x-model="{{ model }}"
+        class="w-5 h-5 rounded-md border-2 border-gray-300"
+        :class="{ 'border-red-600 focus-visible:border-red-600': errors.{{ handle }} }"
+        type="checkbox"
+        name="{{ handle }}"
+        value="1"
+        :checked="{{ model }}"
+    >
+    {{ if inline_label }}
+        <span class="-mt-0.5">
+            {{ inline_label }}
+        </span>
+    {{ /if }}
+</label>

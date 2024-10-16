@@ -1,0 +1,38 @@
+title: CTA
+fields:
+  -
+    handle: block_type
+    field: common.select_single
+    config:
+      options:
+        brand_panel: 'Brand panel'
+        panel_with_image: 'Panel with image'
+        simple_centered: 'Simple centered'
+        simple_center_branded: 'Simple center branded'
+        split_with_image: 'Split with image'
+      display: 'Block type'
+      width: 50
+      validate:
+        - required
+  -
+    handle: title
+    field:
+      input_type: text
+      antlers: false
+      display: Title
+      type: text
+      icon: text
+      listable: hidden
+      instructions_position: above
+      visibility: visible
+  -
+    handle: text
+    field: common.text_plain
+  -
+    handle: image
+    field: common.image
+    config:
+      if:
+        block_type: 'contains_any panel_with_image,split_with_image'
+  -
+    import: buttons

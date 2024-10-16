@@ -1,0 +1,38 @@
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: icon
+        field: common.icon
+        config:
+          width: 100
+          instructions: Optional
+      -
+        handle: description
+        field:
+          input_type: text
+          antlers: false
+          display: Description
+          type: text
+          icon: text
+          listable: hidden
+      -
+        handle: badge
+        field:
+          input_type: text
+          antlers: false
+          display: Badge
+          type: text
+          icon: text
+          instructions: 'Highlight menu item for example with a "New" badge'
+          listable: hidden
+      -
+        handle: two_col_flyout
+        field:
+          default: false
+          display: 'Two column flyout'
+          type: toggle
+          icon: toggle
+          listable: hidden
+          instructions: 'Used only in top level nav items that have children'

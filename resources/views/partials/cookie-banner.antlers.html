@@ -1,0 +1,123 @@
+{{#
+	@name Cookie banner
+	@desc The cookie banner component defined in `resources/views/partials/seo.antlers.html` and yielded in `resources/views/layout.antlers.html`.
+#}}
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('cookieBanner', {
+            consent: Alpine.$persist(null).as('cookieBannerConsent'),
+            set(value) {
+                this.consent = value
+            }
+        })
+    })
+</script>
+
+<div
+    {{# Persist null as untouched banner state. #}}
+    x-data="{
+        cookieConsentDate: $persist(null).as('cookieBannerConsentDate'),
+        analyticsStorage: $persist(false).as('cookieBannerAnalyticsStorage'),
+        adStorage: $persist(false).as('cookieBannerAdStorage'),
+        settings: false,
+    }"
+    {{# Update gtag on state change. #}}
+    x-effect="
+        $store.cookieBanner.consent
+            ? gtag('consent', 'update', {
+                'analytics_storage': (analyticsStorage ? 'granted' : 'denied'),
+                'ad_storage': (adStorage ? 'granted' : 'denied') })
+            : ''
+    "
+    {{# Hide when banner is interacted with, check date for optional consent revoke. If so set state back to initial state. #}}
+    x-init="
+        cookieConsentDate < '{{ seo:cookie_revoke_before format="Y-m-d" }}'
+            ? ($store.cookieBanner.set(null), cookieConsentDate = null)
+            : ''
+        "
+    x-show="$store.cookieBanner.consent === null"
+    x-transition
+    x-cloak
+    class="container max-w-4xl fixed z-50 inset-x-0 bottom-4 md:bottom-12"
+>
+    <div class="px-8 py-6 bg-stone rounded-lg shadow-xl ring-1 ring-gray-900/5">
+        <div class="prose prose-a:text-primary prose-p:my-0 max-w-none">
+            {{ seo:cookie_description }}
+        </div>
+
+        <div x-show="settings" class="mt-4 flex flex-col space-y-2">
+            {{# Functional cookies are always on. #}}
+            <label class="inline-flex gap-x-3">
+                <input class="w-5 h-5 rounded-md border-2 border-gray-300" type="checkbox" name="functional" checked disabled>
+                <span class="flex flex-col">
+                    <span class="font-bold text-sm">{{ seo:cookie_functional_label }}</span>
+                    <span class="text-xs">{{ seo:cookie_functional_description }}</span>
+                </span>
+            </label>
+
+            {{# x-model analyticsStorage checkbox. #}}
+            <label class="inline-flex gap-x-3">
+                <input class="w-5 h-5 rounded-md border-2 border-gray-300" type="checkbox" name="analytics_storage" x-model="analyticsStorage">
+                <span class="flex flex-col">
+                    <span class="font-bold text-sm">{{ seo:cookie_analytics_label }}</span>
+                    <span class="text-xs">{{ seo:cookie_analytics_description }}</span>
+                </span>
+            </label>
+
+            {{# x-model adStorage checkbox only when GTM is being used. #}}
+            {{ if seo:tracker_type == 'gtm' }}
+                <label class="inline-flex gap-x-3">
+                    <input class="w-5 h-5 rounded-md border-2 border-gray-300" type="checkbox" name="ad_storage" x-model="adStorage">
+                    <span class="flex flex-col">
+                        <span class="font-bold text-sm">{{ seo:cookie_ads_label }}</span>
+                        <span class="text-xs">{{ seo:cookie_ads_description }}</span>
+                    </span>
+                </label>
+            {{ /if }}
+        </div>
+
+        <div class="flex flex-wrap gap-4 mt-4">
+            {{# Accept all cookies and set current date. #}}
+            <button
+                x-show="!settings"
+                @click="analyticsStorage = true; adStorage = true; $store.cookieBanner.set(true), cookieConsentDate = '{{ now format="Y-m-d" }}'"
+                type="button"
+                class="btn btn--primary btn--sm flex-1 sm:flex-none"
+            >
+                {{ svg src="check" class="w-5 h-5 mr-2" }}
+                {{ seo:cookie_accept_all_label }}
+            </button>
+
+            {{# Accept user selected cookies and set current date. #}}
+            <button
+                x-show="settings"
+                @click="$store.cookieBanner.set(true), cookieConsentDate = '{{ now format="Y-m-d" }}'"
+                type="button"
+                class="btn btn--primary btn--sm flex-1 sm:flex-none"
+            >
+                {{ seo:cookie_accept_selected_label }}
+            </button>
+
+            {{# Manage cookie settings. #}}
+            <button
+                @click="settings = !settings"
+                type="button"
+                class="btn btn--secondary btn--sm flex-1 sm:flex-none"
+            >
+                {{ seo:cookie_manage_label }}
+            </button>
+        </div>
+    </div>
+</div>
+
+{{# Yield this section in `sets/cookie-consent-reset.antlers.html` so users can reset their consent. #}}
+{{ section:reset_cookie_consent }}
+    {{ if seo:use_cookie_banner }}
+        {{# Read out global store consent status and display a reset consent link by saving the initial state. #}}
+        <span x-data x-cloak x-show="$store.cookieBanner.consent !== null">
+            <button @click="$store.cookieBanner.set(null)" class="btn btn--secondary">
+                {{ seo:cookie_reset_consent_label }}
+            </button>
+        </span>
+    {{ /if }}
+{{ /section:reset_cookie_consent }}
