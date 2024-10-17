@@ -22,6 +22,7 @@ export default defineConfig(({ command, mode }) => {
           // 'resources/js/cp.js',
         ],
         refresh: true,
+        detectTls: false,
       }),
       // vue2(),
     ],
