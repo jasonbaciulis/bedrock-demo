@@ -7,9 +7,8 @@ updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
 updated_at: 1664129311
 blocks:
   -
-    type: hero
+    type: hero_home
     enabled: true
-    block_type: 2_cols_with_illustration
     title: 'Accounting made simple for small businesses.'
     text: 'Most bookkeeping software is accurate but hard to use. We make the opposite trade-off and hope you don’t get audited.'
   -
