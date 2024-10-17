@@ -1,21 +1,46 @@
 tree:
   -
     id: 00889306-aa09-49b8-b91b-e9e7a72ed8a9
-    title: Product
+    title: Features
     data:
       two_col_flyout: true
     children:
       -
-        id: 83e510bc-a25c-4bd4-9a11-87f4585ebf8c
-        entry: 6c1e2aab-5a96-4afb-a1b0-f3ab04b2bc24
+        id: 5e2933f5-10f3-4043-b585-903be44517d6
+        entry: b7d158e7-6de9-4bd7-a2af-6303f648ecc2
         data:
-          two_col_flyout: false
+          icon: square-3-stack-3d
+          description: 'Get the maximum flexibility when building pages'
       -
-        id: fa484f10-41e5-46b5-853c-1b514da0f565
-        entry: a6683748-aa6b-46ed-937b-4fe5bfb79ea5
-  -
-    id: dfe9c031-8abb-4da5-b383-86a4daecdc50
-    entry: a922b443-236d-4257-a456-76115c1fc75e
+        id: 2d0bb427-8acd-4dcb-870a-ab768b48a4ed
+        entry: 08b793e2-6d4e-4800-ac42-4a54c975e153
+        data:
+          icon: adjustments-horizontal
+          description: 'Full SEO settings without extra addons'
+      -
+        id: eb572299-0404-472d-8b5d-7f056b60ebc5
+        entry: b9425eda-c15e-4bd1-a51a-0b31fe3ade70
+        data:
+          icon: square-plus
+          description: 'Reusable Alpine.js components to speed up the dev'
+      -
+        id: 62075822-c793-4249-9b24-069076cea08b
+        entry: 1f31ccde-1686-482c-8a23-f4d878f2b5c4
+        data:
+          icon: cursor-arrow-rays
+          description: 'Prebuilt header and footer navigations'
+      -
+        id: 4eb50211-ba7c-4e4c-89ca-05d6c1bdbb22
+        entry: f2f8eb54-edd0-4a03-9b56-b1e67474b2f3
+        data:
+          icon: cog-6-tooth
+          description: 'Setup for commonly used global fields'
+      -
+        id: 7d075f6f-d08e-4412-98f7-17a4c02d1dd7
+        entry: 7087a827-c03c-4d01-8ca9-463516d96e55
+        data:
+          icon: swatch
+          description: 'Test your all UI components in one place'
   -
     id: db467f1c-3d5e-4e0b-9a3f-695611b0c614
     title: Company
