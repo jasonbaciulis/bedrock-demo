@@ -7,10 +7,6 @@
         {{ partial:partials/seo }}
         {{ partial:partials/browser-appearance }}
 
-        {{# <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"> #}}
-
         {{ vite src="resources/css/site.css" }}
         {{# Async load fonts #}}
         {{ vite src="resources/css/fonts.css" attr:style:media="print" attr:style:onload="this.media='all'" }}
