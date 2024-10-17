@@ -7,38 +7,44 @@ tree:
     children:
       -
         id: 5e2933f5-10f3-4043-b585-903be44517d6
-        entry: b7d158e7-6de9-4bd7-a2af-6303f648ecc2
+        title: Blocks
+        url: /
         data:
           icon: square-3-stack-3d
           description: 'Get the maximum flexibility when building pages'
           badge: null
       -
         id: 2d0bb427-8acd-4dcb-870a-ab768b48a4ed
-        entry: 08b793e2-6d4e-4800-ac42-4a54c975e153
+        title: SEO
+        url: /
         data:
           icon: adjustments-horizontal
           description: 'Full SEO settings without extra addons'
       -
         id: eb572299-0404-472d-8b5d-7f056b60ebc5
-        entry: b9425eda-c15e-4bd1-a51a-0b31fe3ade70
+        title: Components
+        url: /
         data:
           icon: square-plus
           description: 'Reusable Alpine.js components to speed up the dev'
       -
         id: 62075822-c793-4249-9b24-069076cea08b
-        entry: 1f31ccde-1686-482c-8a23-f4d878f2b5c4
+        title: Navigations
+        url: /
         data:
           icon: cursor-arrow-rays
           description: 'Prebuilt header and footer navigations'
       -
         id: 4eb50211-ba7c-4e4c-89ca-05d6c1bdbb22
-        entry: f2f8eb54-edd0-4a03-9b56-b1e67474b2f3
+        title: Globals
+        url: /
         data:
           icon: cog-6-tooth
           description: 'Setup for commonly used global fields'
       -
         id: 7d075f6f-d08e-4412-98f7-17a4c02d1dd7
-        entry: 7087a827-c03c-4d01-8ca9-463516d96e55
+        title: Styleguide
+        url: /
         data:
           icon: swatch
           description: 'Test your all UI components in one place'
