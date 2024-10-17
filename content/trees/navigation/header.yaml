@@ -11,6 +11,7 @@ tree:
         data:
           icon: square-3-stack-3d
           description: 'Get the maximum flexibility when building pages'
+          badge: null
       -
         id: 2d0bb427-8acd-4dcb-870a-ab768b48a4ed
         entry: 08b793e2-6d4e-4800-ac42-4a54c975e153
@@ -41,6 +42,7 @@ tree:
         data:
           icon: swatch
           description: 'Test your all UI components in one place'
+          badge: New
   -
     id: db467f1c-3d5e-4e0b-9a3f-695611b0c614
     title: Company

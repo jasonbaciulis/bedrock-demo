@@ -1,6 +1,6 @@
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-center text-sm font-semibold leading-5 transition focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-70;
+    @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-center text-sm font-semibold leading-5 text-gray transition focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-70;
   }
 
   .btn--primary {
@@ -39,10 +39,10 @@
   }
 
   .btn--lg {
-    @apply px-6 py-2.5 text-base sm:py-3 sm:px-8;
+    @apply px-6 py-2.5 text-base sm:px-8 sm:py-3;
   }
 
   .btn--xl {
-    @apply px-8 py-3 sm:py-3.5 sm:px-10 sm:text-lg;
+    @apply px-8 py-3 sm:px-10 sm:py-3.5 sm:text-lg;
   }
 }
