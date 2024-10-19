@@ -9,26 +9,19 @@ fields:
         -
           handle: label
           field:
-            input_type: text
             type: text
             localizable: true
             listable: false
             display: Label
             width: 66
             replicator_preview: false
-            instructions_position: above
-            antlers: false
-            visibility: visible
         -
           handle: show_controls
           field:
             mode: toggle
             display: 'Show controls'
             type: revealer
-            icon: revealer
             width: 33
-            listable: hidden
-            instructions_position: above
         -
           handle: link_type
           field:
@@ -47,8 +40,6 @@ fields:
             width: 66
             if:
               show_controls: 'equals true'
-            instructions_position: above
-            visibility: visible
             always_save: false
         -
           handle: target_blank
@@ -65,7 +56,6 @@ fields:
           handle: entry
           field:
             max_items: 1
-            mode: default
             type: entries
             localizable: true
             width: 50
@@ -137,20 +127,9 @@ fields:
         -
           handle: code
           field:
-            theme: material
-            mode: htmlmixed
             mode_selectable: false
-            indent_type: tabs
-            indent_size: 4
-            key_map: default
-            line_numbers: true
-            line_wrapping: true
             display: Code
             type: code
-            icon: code
-            listable: hidden
-            instructions_position: above
-            visibility: visible
             always_save: false
             if:
               link_type: code
@@ -159,8 +138,15 @@ fields:
           handle: button_type
           field:
             options:
-              primary: Primary
-              secondary: Secondary
+              -
+                key: primary
+                value: Primary
+              -
+                key: secondary
+                value: Secondary
+              -
+                key: text
+                value: Text
             type: button_group
             localizable: true
             default: primary
@@ -169,5 +155,3 @@ fields:
             replicator_preview: false
             if:
               show_controls: 'equals true'
-            instructions_position: above
-            visibility: visible

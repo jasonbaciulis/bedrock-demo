@@ -18,9 +18,11 @@
 
             {{ partial:partials/nav-header-desktop }}
 
-            <div class="hidden lg:flex items-center justify-end lg:flex-1 lg:w-0 gap-x-8">
+            <div class="hidden lg:flex items-center justify-end lg:flex-1 lg:w-0 gap-x-2">
                 {{ configuration:header_buttons }}
-                    {{ partial:components/button }}
+                    {{ button }}
+                        {{ partial:components/button class="btn--sm" }}
+                    {{ /button }}
                 {{ /configuration:header_buttons }}
             </div>
         </div>

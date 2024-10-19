@@ -1,4 +1,4 @@
-{{ if button_label }}
+{{ if label }}
     <{{ as or 'a' }} {{ slot:attributes }} class="btn
         {{ switch(
             (button_type == 'primary') => 'btn--primary',
@@ -19,6 +19,6 @@
             )}}
             {{ target_blank ?= 'rel="noopener" target="_blank"' }}
         {{ /unless }}>
-        {{ button_label }}
+        {{ label }}
     </{{ as or 'a' }}>
 {{ /if }}

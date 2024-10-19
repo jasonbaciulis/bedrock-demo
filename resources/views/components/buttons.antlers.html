@@ -1,7 +1,9 @@
 {{ if buttons }}
     <div class="flex flex-wrap gap-4 {{ container_class }}">
         {{ buttons }}
-            {{ partial:components/button }}
+            {{ button }}
+                {{ partial:components/button }}
+            {{ /button }}
         {{ /buttons }}
     </div>
 {{ /if }}

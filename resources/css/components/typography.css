@@ -1,11 +1,4 @@
 @layer components {
-  .title {
-    @apply text-6xl font-bold tracking-tighter sm:text-7xl lg:text-8xl;
-  }
-
-  .title--inverted {
-  }
-
   .tagline {
     @apply text-sm font-semibold uppercase tracking-wide sm:text-base;
   }

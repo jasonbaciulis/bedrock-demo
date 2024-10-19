@@ -1,1 +1,17 @@
-{{ partial:if_exists src="blocks/features/{block_type replace='_|-'}" }}
+<section class="my-20">
+    <div class="container">
+        {{ partial:partials/section-header }}
+
+        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {{ columns }}
+                <div class="rounded-lg bg-gray-50 px-6 pb-8">
+                    <div>
+                        {{ svg :src="icon" class="w-5 h-5" }}
+                    </div>
+                    <h3 class="h3 mt-8">{{ title }}</h3>
+                    <p class="content mt-5">{{ text }}</p>
+                </div>
+            {{ /columns }}
+        </div>
+    </div>
+</section>

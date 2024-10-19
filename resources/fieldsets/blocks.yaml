@@ -34,12 +34,6 @@ fields:
           fields:
             -
               import: contact
-        content:
-          display: Content
-          instructions: null
-          fields:
-            -
-              import: content
         cta:
           display: CTA
           instructions: null

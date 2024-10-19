@@ -1,75 +1,61 @@
-<div
-    x-cloak
-    x-show="mobileNavOpen"
-    class="absolute z-10 top-0 inset-x-0 p-2 transition transform origin-top-right lg:hidden"
-    x-transition:enter="duration-200 ease-out"
-    x-transition:enter-start="opacity-0 scale-95"
-    x-transition:enter-end="opacity-100 scale-100"
-    x-transition:leave="duration-100 ease-in"
-    x-transition:leave-start="opacity-100 scale-100"
-    x-transition:leave-end="opacity-0 scale-95"
->
-    {{ nav handle="header" max_depth="2" as="items" }}
-        <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
-            <div class="pt-5 pb-6 px-5">
+{{ nav handle="header" max_depth="2" as="items" }}
+    {{# Mobile menu, show/hide based on menu open state. #}}
+    <div x-cloak x-show="mobileNavOpen" class="lg:hidden" role="dialog" aria-modal="true" >
+        {{#  Background backdrop, show/hide based on slide-over state. #}}
+        <div x-cloak x-show="mobileNavOpen" class="fixed inset-0 z-10"></div>
+        <div class="fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+            <div class="p-6">
                 <div class="flex items-center justify-between">
-                    <div class="flex-1">
-                        {{ partial:components/logo class="h-8 w-auto" }}
+                    {{ partial:components/logo class="flex-1 h-8 w-auto" }}
+                    <button type="button" class="btn -m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileNavOpen = false">
+                        <span class="sr-only">Close menu</span>
+                        {{ svg src="close" class="size-6" }}
+                    </button>
+                </div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/10">
+                        <div class="space-y-2 py-6">
+                            {{ items }}
+                                {{ if children && two_col_flyout }}
+                                    {{ children }}
+                                        {{ partial:elements/nav-flyout-item }}
+                                    {{ /children }}
+                                {{ /if }}
+                            {{ /items }}
+                        </div>
+                        <div class="space-y-2 py-6">
+                            {{ items }}
+                                {{ if children && ! two_col_flyout }}
+                                    {{ children }}
+                                        <a
+                                            href="{{ url }}"
+                                            class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray hover:bg-gray-50"
+                                            {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}
+                                        >
+                                            {{ title }}
+                                        </a>
+                                    {{ /children }}
+                                {{ elseif ! children }}
+                                    <a
+                                        href="{{ url }}"
+                                        class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray hover:bg-gray-50"
+                                        {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}
+                                    >
+                                        {{ title }}
+                                    </a>
+                                {{ /if }}
+                            {{ /items }}
+                        </div>
+                        <div class="py-6 flex flex-col-reverse gap-y-6">
+                            {{ configuration:header_buttons }}
+                                {{ button }}
+                                    {{ partial:components/button class="w-full" }}
+                                {{ /button }}
+                            {{ /configuration:header_buttons }}
+                        </div>
                     </div>
-                    <div class="-mr-2">
-                        <button
-                            type="button"
-                            class="btn bg-white p-2 text-black hover:bg-gray-100"
-                            @click="mobileNavOpen = false"
-                        >
-                            <span class="sr-only">Close menu</span>
-                            {{ svg src="close" class="h-6 w-6" }}
-                        </button>
-                    </div>
-                </div>
-                <div class="mt-6">
-                    <nav class="grid grid-cols-1 md:grid-cols-2 gap-7">
-                        {{ items }}
-                            {{ if children && two_col_flyout }}
-                                {{ children }}
-                                    {{ partial:elements/nav-flyout-item }}
-                                {{ /children }}
-                            {{ /if }}
-                        {{ /items }}
-                    </nav>
-                </div>
-            </div>
-            <div class="py-6 px-5">
-                <div class="grid grid-cols-2 gap-4">
-                    {{ items }}
-                        {{ if children && ! two_col_flyout }}
-                            {{ children }}
-                                <a
-                                    href="{{ url }}"
-                                    class="text-base font-medium text-gray-900 hover:text-gray-700"
-                                    {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}
-                                >
-                                    {{ title }}
-                                </a>
-                            {{ /children }}
-                        {{ elseif ! children }}
-                            <a
-                                href="{{ url }}"
-                                class="text-base font-medium text-gray-900 hover:text-gray-700"
-                                {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}
-                            >
-                                {{ title }}
-                            </a>
-                        {{ /if }}
-                    {{ /items }}
-                </div>
-
-                <div class="mt-6 flex flex-col-reverse gap-y-6">
-                    {{ configuration:header_buttons }}
-                        {{ partial:components/button class="w-full" }}
-                    {{ /configuration:header_buttons }}
                 </div>
             </div>
         </div>
-    {{ /nav }}
-</div>
+    </div>
+{{ /nav }}
