@@ -2,29 +2,16 @@
     <h2 id="footer" class="sr-only">Footer</h2>
     <div class="container">
         <hr />
-        {{ if configuration:newsletter }}
-            <div class="py-12 lg:flex lg:items-center lg:justify-between">
-                <div>
-                    <p class="content-xl font-bold">
-                        {{ configuration:newsletter_title }}
-                    </p>
-                </div>
-                <div class="mt-4 sm:max-w-md sm:w-full lg:mt-0">
-                    {{ partial:partials/footer-newsletter }}
-                </div>
-            </div>
-            <hr />
-        {{ /if }}
-        <div class="py-20 xl:grid xl:grid-cols-4 xl:gap-8">
-            <div class="space-y-8 xl:col-span-1 xl:-mt-1">
-                {{ partial:components/logo class="h-10 block" }}
+        <div class="py-20 xl:site-grid">
+            <div class="space-y-6 xl:col-span-4 xl:-mt-1">
+                {{ partial:components/logo class="h-8 block" }}
 
-                <p class="text-gray-600 leading-loose">
+                <p class="text-gray-600 text-sm leading-6 max-w-prose xl:max-w-xs">
                     {{ configuration:about | widont }}
                 </p>
             </div>
-            <div class="mt-12 grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4 xl:pl-8 xl:mt-0 xl:col-span-3">
-                {{ partial:partials/nav-footer-primary }}
+            <div class="mt-12 grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4 xl:mt-0 xl:col-span-8">
+                {{ partial:partials/nav-footer }}
             </div>
         </div>
         <hr />
@@ -33,9 +20,8 @@
                 {{ partial:partials/nav-social }}
 
                 <div class="space-y-8 flex-row-reverse xl:space-y-0 xl:flex xl:gap-x-10">
-                    {{ partial:partials/nav-footer-secondary }}
-                    <p class="content-sm text-gray-600">
-                        Copyright &copy; {{ now | format('Y') }} {{ configuration:copyright_text }}
+                    <p class="text-xs text-gray-600">
+                        &copy; {{ now | format('Y') }} {{ configuration:copyright_text }}
                     </p>
                     {{# Let's users reset their cookie consent when you use the cookie banner. #}}
                     {{ yield:reset_cookie_consent }}

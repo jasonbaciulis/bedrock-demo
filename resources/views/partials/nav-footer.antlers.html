@@ -1,14 +1,13 @@
-{{ nav handle="footer_primary" max_depth="2" select="title|url" }}
+{{ nav handle="footer" max_depth="2" select="title|url" }}
     <div>
-        <p class="h5">{{ title }}</p>
-
+        <p class="text-sm font-semibold leading-6 text-gray">{{ title }}</p>
         {{ if children }}
-            <ul role="list" class="mt-5 space-y-5 xl:mt-10">
+            <ul role="list" class="space-y-4 mt-6">
                 {{ children }}
                     <li>
                         <a
                             href="{{ url }}"
-                            class="text-gray-600 hover:text-black"
+                            class="text-sm leading-6 text-gray-600 hover:text-gray"
                             {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}
                         >
                             {{ title }}
