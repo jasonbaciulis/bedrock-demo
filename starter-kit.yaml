@@ -9,6 +9,7 @@ export_paths:
   - config/statamic/assets.php
   - config/statamic/editions.php
   - config/statamic/git.php
+  - config/statamic/queue.php
   - content
   - public/assets
   - public/favicon
@@ -33,3 +34,4 @@ export_paths:
   - vite.config.js
 dependencies:
   php: ^8.3
+  jonassiewertsen/statamic-jobs: ^1.5
