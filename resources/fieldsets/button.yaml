@@ -28,8 +28,8 @@ fields:
             options:
               entry: Entry
               url: URL
-              email: E-mail
-              tel: Telephone
+              email: Email
+              phone: Phone
               asset: Asset
               code: Code
             type: button_group
@@ -99,20 +99,20 @@ fields:
               link_type: email
               show_controls: 'equals true'
         -
-          handle: tel
+          handle: phone
           field:
-            placeholder: '+0 (0)12 345678'
+            placeholder: '+44 1200 123456'
             input_type: tel
             type: text
             localizable: true
             listable: false
-            display: Telephone
+            display: 'Phone number'
             width: 50
             replicator_preview: false
             validate:
-              - 'required_if:{this}.link_type,tel'
+              - 'required_if:{this}.link_type,phone'
             if:
-              link_type: tel
+              link_type: phone
               show_controls: 'equals true'
         -
           handle: asset
