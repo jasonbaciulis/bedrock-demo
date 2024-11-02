@@ -14,3 +14,8 @@ fields:
   -
     handle: text
     field: common.text_plain
+    config:
+      display: Text
+  -
+    handle: image
+    field: common.image
