@@ -7,7 +7,7 @@
                 {{ partial:components/logo class="h-8 block" }}
 
                 <p class="text-gray-600 text-sm leading-6 max-w-prose xl:max-w-xs">
-                    {{ configuration:about | widont }}
+                    {{ theme:about | widont }}
                 </p>
             </div>
             <div class="mt-12 grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4 xl:mt-0 xl:col-span-8">
@@ -21,7 +21,7 @@
 
                 <div class="space-y-8 flex-row-reverse xl:space-y-0 xl:flex xl:gap-x-10">
                     <p class="text-xs text-gray-600">
-                        &copy; {{ now | format('Y') }} {{ configuration:copyright_text }}
+                        &copy; {{ now | format('Y') }} {{ theme:copyright_text }}
                     </p>
                     {{# Let's users reset their cookie consent when you use the cookie banner. #}}
                     {{ yield:reset_cookie_consent }}
