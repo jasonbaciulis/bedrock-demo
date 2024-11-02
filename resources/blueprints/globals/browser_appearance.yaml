@@ -11,28 +11,22 @@ tabs:
             field:
               display: 'Disable telephone detection'
               type: toggle
-              icon: toggle
               width: 33
               instructions: 'Disables phone number detection.'
-              listable: hidden
           -
             handle: disable_email_detection
             field:
-              display: 'Disable e-mail detection'
+              display: 'Disable email detection'
               type: toggle
-              icon: toggle
               width: 33
-              instructions: 'Disables e-mail address detection.'
-              listable: hidden
+              instructions: 'Disables email address detection.'
           -
             handle: disable_address_detection
             field:
               display: 'Disable address detection'
               type: toggle
-              icon: toggle
               width: 33
               instructions: 'Disables address detection.'
-              listable: hidden
       -
         display: Apple
         instructions: 'Configure Apple specific meta tags.'
@@ -42,10 +36,8 @@ tabs:
             field:
               display: 'Apple status bar black'
               type: toggle
-              icon: toggle
               width: 50
               instructions: 'Can only be used when `Apple mobile web app` is enabled and forces a black status bar.'
-              listable: hidden
               if:
                 apple_mobile_web_app: 'equals true'
           -
@@ -53,10 +45,8 @@ tabs:
             field:
               display: 'Apple mobile web app'
               type: toggle
-              icon: toggle
               width: 50
               instructions: "Opens websites saved to the iOS springboard fullscreen in it's own Safari instance."
-              listable: hidden
       -
         display: Android
         instructions: 'Configure Android specific meta tags.'
@@ -66,7 +56,5 @@ tabs:
             field:
               display: 'Android mobile web app'
               type: toggle
-              icon: toggle
               width: 50
               instructions: "Opens websites saved to Android's homescreen in it's own Chrome instance."
-              listable: hidden
