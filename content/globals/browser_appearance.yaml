@@ -1,6 +1,6 @@
 title: 'Browser appearance'
 data:
-  disable_telephone_detection: false
+  disable_phone_detection: false
   disable_email_detection: false
   disable_address_detection: false
   use_theme_color: false

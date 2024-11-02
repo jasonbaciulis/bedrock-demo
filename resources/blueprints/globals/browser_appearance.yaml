@@ -7,9 +7,9 @@ tabs:
         instructions: 'Configure universal meta tags.'
         fields:
           -
-            handle: disable_telephone_detection
+            handle: disable_phone_detection
             field:
-              display: 'Disable telephone detection'
+              display: 'Disable phone detection'
               type: toggle
               width: 33
               instructions: 'Disables phone number detection.'
