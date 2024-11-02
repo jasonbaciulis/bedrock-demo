@@ -2,7 +2,6 @@
 
 return [
     'image_manipulation' => [
-
         /*
         |--------------------------------------------------------------------------
         | Route Prefix
@@ -97,6 +96,7 @@ return [
         */
 
         'presets' => [
+            'lg-avif' => ['w' => 1280, 'h' => 10000, 'fit' => 'contain', 'fm' => 'avif'],
             'lg-webp' => ['w' => 1280, 'h' => 10000, 'fit' => 'contain', 'fm' => 'webp'],
             'lg' => ['w' => 1280, 'h' => 10000, 'fit' => 'contain'],
         ],
@@ -113,7 +113,6 @@ return [
         */
 
         'generate_presets_on_upload' => true,
-
     ],
 
     /*

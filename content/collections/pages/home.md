@@ -4,22 +4,27 @@ blueprint: pages
 title: Home
 template: default
 updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
-updated_at: 1664129311
+updated_at: 1730521949
 blocks:
   -
+    id: ZbruxJDq
     type: hero_home
     enabled: true
     title: 'Accounting made simple for small businesses.'
     text: 'Most bookkeeping software is accurate but hard to use. We make the opposite trade-off and hope you don’t get audited.'
+    image: landvault-project.jpg
   -
+    id: lSfhEMQq
     block_type: 3x2_grid
     type: features
     enabled: true
   -
+    id: 4egRZ9Yk
     type: cta
     enabled: true
     block_type: brand_panel
   -
+    id: 97upSY55
     title: 'Trusted by bootstrapped businesses'
     type: logo_cloud
     enabled: true
@@ -30,6 +35,7 @@ blocks:
       - logos/logoipsum-logo-4.svg
       - logos/logoipsum-logo-5.svg
   -
+    id: XPnrSDQd
     block_type: collapsed_grouped
     title: 'Frequently asked questions'
     text: 'Perks so good you‘d be crazy to go anywhere else for development. Seriously.'
@@ -37,9 +43,11 @@ blocks:
     enabled: true
     groups:
       -
+        id: DehQMz1C
         title: 'Group name'
         items:
           -
+            id: BrkTG4ZL
             title: 'Test title'
             text:
               -
@@ -51,6 +59,7 @@ blocks:
             type: item
             enabled: true
           -
+            id: R6ReMqOv
             title: 'Test title'
             text:
               -
@@ -64,9 +73,11 @@ blocks:
         type: group
         enabled: true
       -
+        id: cvOS7PWc
         title: 'Group name'
         items:
           -
+            id: PPqlzXwI
             title: 'TEst title'
             text:
               -
@@ -80,6 +91,7 @@ blocks:
         type: group
         enabled: true
   -
+    id: UXTueUcZ
     block_type: collapsed
     title: 'Frequently asked questions'
     text: 'Perks so good you‘d be crazy to go anywhere else for development. Seriously.'
@@ -87,6 +99,7 @@ blocks:
     enabled: true
     items:
       -
+        id: eGOG3jlZ
         title: 'Test title'
         text:
           -
@@ -98,6 +111,7 @@ blocks:
         type: item
         enabled: true
       -
+        id: 8fEzuNYK
         title: 'Test title'
         text:
           -
@@ -109,6 +123,7 @@ blocks:
         type: item
         enabled: true
   -
+    id: s343JCRf
     type: styleguide
     enabled: true
 seo_noindex: false

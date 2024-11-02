@@ -20,9 +20,11 @@
                 />
             {{ elseif w && h }}
                 <source srcset="
+                    {{ glide:url :width='w' :height='h' fit='crop_focal' format='avif' }} 1x,
+                    {{ glide:url :width='w' :height='h' fit='crop_focal' format='avif' dpr='2' }} 2x" type="image/avif">
+                <source srcset="
                     {{ glide:url :width='w' :height='h' fit='crop_focal' format='webp' }} 1x,
-                    {{ glide:url :width='w' :height='h' fit='crop_focal' format='webp' dpr='2' }} 2x"
-                    type="image/webp">
+                    {{ glide:url :width='w' :height='h' fit='crop_focal' format='webp' dpr='2' }} 2x" type="image/webp">
                 <source srcset="
                     {{ glide:url :width='w' :height='h' fit='crop_focal' }} 1x,
                     {{ glide:url :width='w' :height='h' fit='crop_focal' dpr='2' }} 2x" type="{{ image.mime_type }}">
@@ -44,6 +46,9 @@
                     decoding="async"
                 >
             {{ else }}
+                <source srcset="
+                        {{ glide:url preset='lg-avif' }} 1x,
+                        {{ glide:url preset='lg-avif' dpr='2' }} 2x" type="image/avif">
                 <source srcset="
                         {{ glide:url preset='lg-webp' }} 1x,
                         {{ glide:url preset='lg-webp' dpr='2' }} 2x" type="image/webp">
