@@ -182,5 +182,64 @@
                 </div>
             </div>
         </div>
+
+        <div>
+            <div class="border-b border-gray-300 mb-10">
+                <h3 class="h3 pb-6">Components</h3>
+            </div>
+            <div class="space-y-10">
+                <div class="flex items-center">
+                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Modal</dt>
+                    <dd>
+                        {{ partial:components/modal trigger_button_class="btn--primary btn--sm" size="md" }}
+                            {{ slot:trigger_button }}
+                                Open modal
+                            {{ /slot:trigger_button }}
+                            <p class="h4 mb-4">Modal title</p>
+                            <p>Modal content goes here</p>
+                        {{ /partial:components/modal }}
+                    </dd>
+                </div>
+                <div class="flex items-center">
+                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Dropdown</dt>
+                    <dd>
+                        {{ partial:components/dropdown toggle_button_class="btn--secondary btn--sm" }}
+                            {{ slot:toggle_button }}
+                                Open dropdown
+                            {{ /slot:toggle_button }}
+                            <ul class="space-y-4">
+                                {{ loop times="4" }}
+                                    <li>List item</li>
+                                {{ /loop }}
+                            </ul>
+                        {{ /partial:components/dropdown }}
+                    </dd>
+                </div>
+                <div class="flex items-center">
+                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Tabs</dt>
+                    <dd x-data="{ activeTab: 1 }">
+                        <div class="flex gap-8">
+                            {{ loop times="3" }}
+                                {{ partial:components/tab }}
+                                    {{ slot:attributes }}
+                                        class="font-semibold"
+                                        :class="{ 'text-primary': activeTab == {{ count }} }"
+                                    {{ /slot:attributes }}
+                                    Tab {{ count }}
+                                {{ /partial:components/tab }}
+                            {{ /loop }}
+                        </div>
+
+                        <div class="mt-6">
+                            {{ loop times="3" }}
+                                {{ partial:components/tab-panel class="pt-4" }}
+                                    Panel content {{ count }}
+                                {{ /partial:components/tab-panel }}
+                            {{ /loop }}
+                        </div>
+                    </dd>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
