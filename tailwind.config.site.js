@@ -26,7 +26,7 @@ module.exports = {
         },
         // Primary: primary brand color with a default fallback if you don't need shades. Always set a DEFAULT when you use shades.
         primary: {
-          DEFAULT: colors.sky['500'],
+          DEFAULT: colors.sky['400'],
           ...colors.sky,
         },
         secondary: {
