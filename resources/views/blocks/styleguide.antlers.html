@@ -221,22 +221,22 @@
                 <div class="flex items-center">
                     <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Tabs</dt>
                     <dd x-data="{ activeTab: 1 }">
-                        <div class="flex gap-8">
+                        <div class="flex gap-4">
                             {{ loop times="3" }}
                                 {{ partial:components/tab }}
                                     {{ slot:attributes }}
-                                        class="font-semibold"
-                                        :class="{ 'text-primary': activeTab == {{ count }} }"
+                                        class="btn btn--sm"
+                                        :class="{ 'bg-gray-100': activeTab == {{ count }} }"
                                     {{ /slot:attributes }}
                                     Tab {{ count }}
                                 {{ /partial:components/tab }}
                             {{ /loop }}
                         </div>
 
-                        <div class="mt-6">
+                        <div class="flex items-center justify-center w-full p-5 mt-2 text-gray-600 border rounded-md border-gray-200">
                             {{ loop times="3" }}
-                                {{ partial:components/tab-panel class="pt-4" }}
-                                    Panel content {{ count }}
+                                {{ partial:components/tab-panel }}
+                                    The content shown for Tab {{ count }}
                                 {{ /partial:components/tab-panel }}
                             {{ /loop }}
                         </div>
