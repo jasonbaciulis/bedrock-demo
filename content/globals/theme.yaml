@@ -17,7 +17,7 @@ data:
         entry: null
         url: /
         email: null
-        tel: null
+        phone: null
         asset: null
         code: null
         button_type: text
@@ -36,10 +36,9 @@ data:
         entry: null
         url: /
         email: null
-        tel: null
+        phone: null
         asset: null
         code: null
         button_type: primary
-  newsletter: false
   about: 'A one-person premium web development service with flat rate plans and a butter-smooth process.'
-  copyright_text: 'Remarkable.dev, LLC. All rights reserved.'
+  copyright_text: 'Leap. All rights reserved.'
