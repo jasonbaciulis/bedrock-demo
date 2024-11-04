@@ -203,15 +203,18 @@
                 <div class="flex items-center">
                     <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Dropdown</dt>
                     <dd>
-                        {{ partial:components/dropdown toggle_button_class="btn--secondary btn--sm" }}
+                        {{ partial:components/dropdown toggle_button_class="btn--secondary btn--sm gap-1" side="left" width="w-44" }}
                             {{ slot:toggle_button }}
                                 Open dropdown
+                                {{ svg src="heroicons-mini/chevron-down" class="size-5 -mr-1 text-gray-400" }}
                             {{ /slot:toggle_button }}
-                            <ul class="space-y-4">
+                            <div class="py-1.5">
                                 {{ loop times="4" }}
-                                    <li>List item</li>
+                                    <a href="#" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100">
+                                        List item {{ count }}
+                                    </a>
                                 {{ /loop }}
-                            </ul>
+                            </div>
                         {{ /partial:components/dropdown }}
                     </dd>
                 </div>

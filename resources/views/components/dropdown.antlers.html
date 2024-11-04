@@ -17,15 +17,15 @@
     }"
     @keydown.escape.prevent.stop="close($refs.button)"
     @focusin.window="! $refs.panel.contains($event.target) && close()"
-    x-id="['dropdown-button']"
+    x-id="['dropdown-menu']"
 >
     <button
         x-ref="button"
         class="btn {{ toggle_button_class }}"
         @click="toggle()"
         :aria-expanded="open"
-        :aria-controls="$id('dropdown-button')"
-        aria-label="Toggle dropdown"
+        :aria-controls="$id('dropdown-menu')"
+        x-id="['dropdown-button']"
     >
         {{ slot:toggle_button }}
     </button>
@@ -41,8 +41,16 @@
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
         @click.outside="close($refs.button)"
-        :id="$id('dropdown-button')"
-        class="absolute left-0 origin-top-left w-screen max-w-xs bg-black z-10"
+        :id="$id('dropdown-menu')"
+        class="absolute z-10 mt-2 rounded-md bg-white shadow-lg ring-1 ring-black/5
+            {{ width or 'w-56' }}
+            {{ switch(
+                (side == 'left') => 'left-0 origin-top-left',
+                (side == 'right') => 'right-0 origin-top-right',
+            )}}
+        "
+        :aria-labelledby="$id('dropdown-button')"
+        tabindex="-1"
     >
         {{ slot }}
     </div>
