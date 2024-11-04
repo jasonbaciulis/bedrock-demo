@@ -6,9 +6,9 @@
                 class="text-gray-400 hover:text-gray-500"
                 target="_blank"
                 rel="noopener"
-                aria-label="{{ config:app:name }} on {{ type | title }}"
+                aria-label="External source: {{ type | title }} (Opens in a new window)"
             >
-                {{ svg :src="type" class="h-5 w-5" }}
+                {{ svg src="social/{type}" class="size-5" }}
             </a>
         {{ /social_media:platforms }}
     </div>

@@ -1,15 +1,13 @@
-sections:
+tabs:
   main:
     display: Main
-    fields:
+    sections:
       -
-        handle: related_posts
-        field:
-          input_type: text
-          antlers: false
-          display: 'Related posts'
-          type: text
-          icon: text
-          listable: hidden
-          instructions_position: above
-          visibility: visible
+        display: Strings
+        instructions: 'Strings that still need to be updated in CP but make more sense to be set globally instead of inside a Block or every Entry'
+        fields:
+          -
+            handle: related_posts
+            field:
+              display: 'Related posts'
+              type: text
