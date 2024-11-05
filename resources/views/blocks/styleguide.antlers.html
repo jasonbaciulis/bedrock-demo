@@ -236,7 +236,8 @@
                         <div class="flex items-center justify-center w-full p-5 mt-2 text-gray-600 border rounded-md border-gray-200">
                             {{ loop times="3" }}
                                 {{ partial:components/tab-panel }}
-                                    The content shown for Tab {{ count }}
+                                    <p>The content shown for Tab {{ count }}</p>
+                                    <button class="btn btn--secondary btn--sm mt-4">Call to action</button>
                                 {{ /partial:components/tab-panel }}
                             {{ /loop }}
                         </div>
