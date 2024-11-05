@@ -7,7 +7,6 @@
     role="tab"
     :aria-selected="{{ $alpineVariable }} == '{{ $tab }}'"
     aria-controls="tabpanel-{{ $tab }}"
-    :tabindex="{{ $alpineVariable }} == '{{ $tab }}' ? '0' : '-1'"
     @click.prevent="{{ $alpineVariable }} = '{{ $tab }}'"
     {{ slot:attributes }}
 >
