@@ -94,12 +94,12 @@ fields:
           fields:
             -
               import: steps
-        styleguide:
-          display: Styleguide
-          instructions: 'This block reflects Figma design styleguide. You can remove it in production.'
+        style_guide:
+          display: 'Style guide'
+          instructions: 'This block reflects Figma design style guide. You can remove it in production.'
           fields:
             -
-              import: styleguide
+              import: style_guide
         team:
           display: Team
           instructions: null
