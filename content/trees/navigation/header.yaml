@@ -44,10 +44,10 @@ tree:
       -
         id: 7d075f6f-d08e-4412-98f7-17a4c02d1dd7
         title: Styleguide
-        url: /
+        url: '#style-guide'
         data:
           icon: swatch
-          description: 'Test your all UI components in one place'
+          description: 'Test all your UI components in one place'
           badge: New
   -
     id: db467f1c-3d5e-4e0b-9a3f-695611b0c614

@@ -4,15 +4,30 @@ blueprint: pages
 title: Home
 template: default
 updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
-updated_at: 1730521949
+updated_at: 1730807994
 blocks:
   -
     id: ZbruxJDq
     type: hero_home
     enabled: true
-    title: 'Accounting made simple for small businesses.'
-    text: 'Most bookkeeping software is accurate but hard to use. We make the opposite trade-off and hope you don’t get audited.'
+    title: 'Statamic starter kit for developers'
+    text: 'Leap provides everything you need to jump-start your Statamic project, then gets out of your way so you can build bespoke websites.'
     image: landvault-project.jpg
+    buttons:
+      -
+        id: m34d499g
+        button:
+          label: 'Get started'
+          show_controls: null
+          link_type: url
+          target_blank: false
+          entry: null
+          url: /
+          email: null
+          phone: null
+          asset: null
+          code: null
+          button_type: primary
   -
     id: lSfhEMQq
     block_type: 3x2_grid
@@ -124,7 +139,7 @@ blocks:
         enabled: true
   -
     id: s343JCRf
-    type: styleguide
+    type: style_guide
     enabled: true
 seo_noindex: false
 seo_nofollow: false

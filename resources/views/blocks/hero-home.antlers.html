@@ -1,8 +1,9 @@
 <section class="py-20">
   <div class="container grid-cols-12 gap-x-8 md:grid">
       <div class="col-span-6">
-          <h1 class="h1">{{ title }}</h1>
-          <p class="content-xl mt-4">{{ text }}</p>
+          <h1 class="h1 br-hidden sm:br-visible">{{ title | nl2br }}</h1>
+          <p class="content-lg mt-4">{{ text }}</p>
+          {{ partial:components/buttons container_class="mt-8" class="btn--lg" }}
       </div>
       <div class="col-span-6">
           {{ partial:components/picture w="592" h="auto" class="rounded-3xl" }}
