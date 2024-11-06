@@ -496,7 +496,7 @@ tabs:
             handle: use_cookie_banner
             field:
               type: toggle
-              instructions: 'Enable the cookie banner. Make sure you load all tracking scripts via GTM. Uses the consent API: https://developers.google.com/tag-manager/consent'
+              instructions: 'Enable the cookie banner. Make sure you load all tracking scripts via GTM. Uses the consent api: https://developers.google.com/tag-manager/consent'
               instructions_position: below
               listable: false
               display: 'Cookie banner'
@@ -513,7 +513,7 @@ tabs:
                 tracker_type: 'not none'
               fields:
                 -
-                  handle: revoke_before
+                  handle: consent_revoke_before
                   field:
                     time_required: false
                     earliest_date: '1900-01-01'
@@ -531,6 +531,13 @@ tabs:
                   handle: accept_label
                   field:
                     display: 'Accept label'
+                    type: text
+                    width: 50
+                    always_save: false
+                -
+                  handle: reject_label
+                  field:
+                    display: 'Reject label'
                     type: text
                     width: 50
                     always_save: false
@@ -553,47 +560,254 @@ tabs:
                   field:
                     display: 'Reset consent label'
                     type: text
-                    width: 50
+                    width: 66
                     always_save: false
                 -
-                  handle: functional_label
+                  handle: consent_types
                   field:
-                    display: 'Functional label'
-                    type: text
-                    width: 25
-                    always_save: false
-                -
-                  handle: functional_description
-                  field:
-                    display: 'Functional description'
-                    type: text
-                    width: 75
-                    always_save: false
-                -
-                  handle: analytics_label
-                  field:
-                    display: 'Analytics label'
-                    type: text
-                    width: 25
-                    always_save: false
-                -
-                  handle: analytics_description
-                  field:
-                    display: 'Analytics description'
-                    type: text
-                    width: 75
-                    always_save: false
-                -
-                  handle: ads_label
-                  field:
-                    display: 'Ads label'
-                    type: text
-                    width: 25
-                    always_save: false
-                -
-                  handle: ads_description
-                  field:
-                    display: 'Ads description'
-                    type: text
-                    width: 75
-                    always_save: false
+                    type: replicator
+                    display: 'Consent types'
+                    sets:
+                      new_set_group:
+                        display: 'New Set Group'
+                        sets:
+                          functional:
+                            display: Functional
+                            fields:
+                              -
+                                handle: label
+                                field:
+                                  type: text
+                                  display: Label
+                                  width: 25
+                                  default: Functional
+                              -
+                                handle: description
+                                field:
+                                  type: text
+                                  display: Description
+                                  width: 75
+                                  default: "First party cookies needed for the website to function. These can't be turned off."
+                              -
+                                handle: value
+                                field:
+                                  type: toggle
+                                  display: Value
+                                  default: true
+                                  width: 50
+                                  visibility: read_only
+                              -
+                                handle: consent_api
+                                field:
+                                  type: toggle
+                                  display: 'Consent API'
+                                  width: 50
+                                  visibility: read_only
+                              -
+                                handle: name
+                                field:
+                                  default: functionalCookies
+                                  type: text
+                                  display: Name
+                                  listable: false
+                                  visibility: read_only
+                                  width: 50
+                          analytics:
+                            display: Analytics
+                            fields:
+                              -
+                                handle: label
+                                field:
+                                  type: text
+                                  display: Label
+                                  width: 25
+                                  default: Analytics
+                              -
+                                handle: description
+                                field:
+                                  type: text
+                                  display: Description
+                                  width: 75
+                                  default: 'We use data collected by Google Analytics to make our site work better.'
+                              -
+                                handle: value
+                                field:
+                                  type: toggle
+                                  display: Value
+                                  width: 50
+                              -
+                                handle: consent_api
+                                field:
+                                  type: toggle
+                                  display: 'Consent API'
+                                  default: true
+                                  width: 50
+                                  visibility: read_only
+                              -
+                                handle: name
+                                field:
+                                  default: analyticsStorage
+                                  type: text
+                                  display: Name
+                                  listable: false
+                                  visibility: read_only
+                                  width: 50
+                              -
+                                handle: consent_api_handle
+                                field:
+                                  type: text
+                                  display: 'Consent API handle'
+                                  listable: false
+                                  visibility: read_only
+                                  default: analytics_storage
+                                  width: 50
+                          ad_storage:
+                            display: 'Ad storage'
+                            instructions: 'Only relevant if using GTM'
+                            fields:
+                              -
+                                handle: label
+                                field:
+                                  type: text
+                                  display: Label
+                                  width: 25
+                                  default: 'Ad storage'
+                              -
+                                handle: description
+                                field:
+                                  type: text
+                                  display: Description
+                                  width: 75
+                                  default: 'We use data collected by Google Analytics to make our site work better.'
+                              -
+                                handle: value
+                                field:
+                                  type: toggle
+                                  display: Value
+                                  width: 50
+                              -
+                                handle: consent_api
+                                field:
+                                  type: toggle
+                                  display: 'Consent API'
+                                  default: true
+                                  width: 50
+                                  visibility: read_only
+                              -
+                                handle: name
+                                field:
+                                  default: adStorage
+                                  type: text
+                                  display: Name
+                                  listable: false
+                                  visibility: read_only
+                                  width: 50
+                              -
+                                handle: consent_api_handle
+                                field:
+                                  type: text
+                                  display: 'Consent API handle'
+                                  listable: false
+                                  visibility: read_only
+                                  default: ad_storage
+                                  width: 50
+                          ad_user_data:
+                            display: 'Ad user data'
+                            instructions: 'Only relevant if using GTM'
+                            fields:
+                              -
+                                handle: label
+                                field:
+                                  type: text
+                                  display: Label
+                                  width: 25
+                                  default: 'Ad user data'
+                              -
+                                handle: description
+                                field:
+                                  type: text
+                                  display: Description
+                                  width: 75
+                                  default: 'We use data collected by Google Analytics to make our site work better.'
+                              -
+                                handle: value
+                                field:
+                                  type: toggle
+                                  display: Value
+                                  width: 50
+                              -
+                                handle: consent_api
+                                field:
+                                  type: toggle
+                                  display: 'Consent API'
+                                  default: true
+                                  width: 50
+                                  visibility: read_only
+                              -
+                                handle: name
+                                field:
+                                  default: adUserData
+                                  type: text
+                                  display: Name
+                                  listable: false
+                                  visibility: read_only
+                                  width: 50
+                              -
+                                handle: consent_api_handle
+                                field:
+                                  type: text
+                                  display: 'Consent API handle'
+                                  listable: false
+                                  visibility: read_only
+                                  default: ad_user_data
+                                  width: 50
+                          ad_personalization:
+                            display: 'Ad personalization'
+                            instructions: 'Only relevant if using GTM'
+                            fields:
+                              -
+                                handle: label
+                                field:
+                                  type: text
+                                  display: Label
+                                  width: 25
+                                  default: 'Ad personalization'
+                              -
+                                handle: description
+                                field:
+                                  type: text
+                                  display: Description
+                                  width: 75
+                                  default: 'We use data collected by Google Analytics to make our site work better.'
+                              -
+                                handle: value
+                                field:
+                                  type: toggle
+                                  display: Value
+                                  width: 50
+                              -
+                                handle: consent_api
+                                field:
+                                  type: toggle
+                                  display: 'Consent API'
+                                  default: true
+                                  width: 50
+                                  visibility: read_only
+                              -
+                                handle: name
+                                field:
+                                  default: adPersonalization
+                                  type: text
+                                  display: Name
+                                  listable: false
+                                  visibility: read_only
+                                  width: 50
+                              -
+                                handle: consent_api_handle
+                                field:
+                                  type: text
+                                  display: 'Consent API handle'
+                                  listable: false
+                                  visibility: read_only
+                                  default: ad_personalization
+                                  width: 50

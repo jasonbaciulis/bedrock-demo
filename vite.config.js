@@ -13,6 +13,7 @@ export default defineConfig(({ command, mode }) => {
           'resources/js/site.js',
           'resources/js/glide.js',
           'resources/js/form.js',
+          'resources/js/cookieBanner.js',
           'resources/js/newsletter.js',
           'resources/js/fetchEntries.js',
 
@@ -28,6 +29,9 @@ export default defineConfig(({ command, mode }) => {
     ],
     server: {
       open: env.APP_URL,
+    },
+    define: {
+      'process.env': env,
     },
   }
 })
