@@ -11,16 +11,16 @@
     @apply rounded-md bg-white px-6 py-3.5 text-gray ring-1 ring-inset ring-gray-300 hover:bg-gray-50 active:bg-gray-50;
   }
 
+  .btn--black {
+    @apply bg-gray px-6 py-3.5 text-white hover:bg-gray-700 focus-visible:outline-gray-900;
+  }
+
   .btn--round {
     @apply size-12 rounded-full bg-gray-100 text-gray;
   }
 
   .btn--text {
     @apply text-gray hover:text-primary-600 active:text-primary-600;
-  }
-
-  .btn--white {
-    @apply border-2 border-transparent bg-white text-primary-600 shadow-sm hover:bg-primary-100 active:bg-primary-100;
   }
 
   .btn--arrow {
