@@ -6,7 +6,6 @@ data:
   hreflang_auto: false
   json_ld_type: none
   breadcrumbs: false
-  use_social_image_generation: false
   sitemap_collections:
     - pages
   trackers_local: true
@@ -15,4 +14,25 @@ data:
   use_google_site_verification: false
   use_fathom: false
   use_cloudflare_web_analytics: false
-  tracker_type: none
+  tracker_type: gtm
+  google_tag_manager: sd
+  use_cookie_banner: true
+  cookie:
+    revoke_before: null
+    description:
+      -
+        type: paragraph
+        content:
+          -
+            type: text
+            text: Description
+    accept_label: 'Accept all'
+    accept_selected_label: 'Accept selected'
+    manage_label: Manage
+    reset_consent_label: 'Reset consent'
+    functional_label: Functional
+    functional_description: 'Functional description'
+    analytics_label: Analytics
+    analytics_description: 'Analytics description'
+    ads_label: Ads
+    ads_description: 'Ads description'

@@ -1,6 +1,5 @@
 {{#
-	@name Cookie banner
-	@desc The cookie banner component defined in `resources/views/partials/seo.antlers.html` and yielded in `resources/views/layout.antlers.html`.
+The cookie banner component that is in `resources/views/partials/seo.antlers.html` and yielded in `resources/views/layout.antlers.html`.
 #}}
 <script>
     document.addEventListener('alpine:init', () => {
@@ -31,7 +30,7 @@
     "
     {{# Hide when banner is interacted with, check date for optional consent revoke. If so set state back to initial state. #}}
     x-init="
-        cookieConsentDate < '{{ seo:cookie_revoke_before format="Y-m-d" }}'
+        cookieConsentDate < '{{ seo:cookie:revoke_before format="Y-m-d" }}'
             ? ($store.cookieBanner.set(null), cookieConsentDate = null)
             : ''
         "
@@ -40,37 +39,37 @@
     x-cloak
     class="container max-w-4xl fixed z-50 inset-x-0 bottom-4 md:bottom-12"
 >
-    <div class="px-8 py-6 bg-stone rounded-lg shadow-xl ring-1 ring-gray-900/5">
+    <div class="px-8 py-6 bg-white rounded-lg shadow-xl ring-1 ring-gray/5">
         <div class="prose prose-a:text-primary prose-p:my-0 max-w-none">
-            {{ seo:cookie_description }}
+            {{ seo:cookie:description }}
         </div>
 
         <div x-show="settings" class="mt-4 flex flex-col space-y-2">
             {{# Functional cookies are always on. #}}
             <label class="inline-flex gap-x-3">
-                <input class="w-5 h-5 rounded-md border-2 border-gray-300" type="checkbox" name="functional" checked disabled>
+                <input class="size-5 rounded-md border-2 border-gray-300" type="checkbox" name="functional" checked disabled>
                 <span class="flex flex-col">
-                    <span class="font-bold text-sm">{{ seo:cookie_functional_label }}</span>
-                    <span class="text-xs">{{ seo:cookie_functional_description }}</span>
+                    <span class="font-bold text-sm">{{ seo:cookie:functional_label }}</span>
+                    <span class="text-xs">{{ seo:cookie:functional_description }}</span>
                 </span>
             </label>
 
             {{# x-model analyticsStorage checkbox. #}}
             <label class="inline-flex gap-x-3">
-                <input class="w-5 h-5 rounded-md border-2 border-gray-300" type="checkbox" name="analytics_storage" x-model="analyticsStorage">
+                <input class="size-5 rounded-md border-2 border-gray-300" type="checkbox" name="analytics_storage" x-model="analyticsStorage">
                 <span class="flex flex-col">
-                    <span class="font-bold text-sm">{{ seo:cookie_analytics_label }}</span>
-                    <span class="text-xs">{{ seo:cookie_analytics_description }}</span>
+                    <span class="font-bold text-sm">{{ seo:cookie:analytics_label }}</span>
+                    <span class="text-xs">{{ seo:cookie:analytics_description }}</span>
                 </span>
             </label>
 
             {{# x-model adStorage checkbox only when GTM is being used. #}}
             {{ if seo:tracker_type == 'gtm' }}
                 <label class="inline-flex gap-x-3">
-                    <input class="w-5 h-5 rounded-md border-2 border-gray-300" type="checkbox" name="ad_storage" x-model="adStorage">
+                    <input class="size-5 rounded-md border-2 border-gray-300" type="checkbox" name="ad_storage" x-model="adStorage">
                     <span class="flex flex-col">
-                        <span class="font-bold text-sm">{{ seo:cookie_ads_label }}</span>
-                        <span class="text-xs">{{ seo:cookie_ads_description }}</span>
+                        <span class="font-bold text-sm">{{ seo:cookie:ads_label }}</span>
+                        <span class="text-xs">{{ seo:cookie:ads_description }}</span>
                     </span>
                 </label>
             {{ /if }}
@@ -84,8 +83,8 @@
                 type="button"
                 class="btn btn--primary btn--sm flex-1 sm:flex-none"
             >
-                {{ svg src="check" class="w-5 h-5 mr-2" }}
-                {{ seo:cookie_accept_all_label }}
+                {{ svg src="check" class="size-5 mr-2" }}
+                {{ seo:cookie:accept_label }}
             </button>
 
             {{# Accept user selected cookies and set current date. #}}
@@ -95,7 +94,7 @@
                 type="button"
                 class="btn btn--primary btn--sm flex-1 sm:flex-none"
             >
-                {{ seo:cookie_accept_selected_label }}
+                {{ seo:cookie:accept_selected_label }}
             </button>
 
             {{# Manage cookie settings. #}}
@@ -104,19 +103,19 @@
                 type="button"
                 class="btn btn--secondary btn--sm flex-1 sm:flex-none"
             >
-                {{ seo:cookie_manage_label }}
+                {{ seo:cookie:manage_label }}
             </button>
         </div>
     </div>
 </div>
 
-{{# Yield this section in `sets/cookie-consent-reset.antlers.html` so users can reset their consent. #}}
+{{# Yield this section in `partials/footer.antlers.html` so users can reset their consent. #}}
 {{ section:reset_cookie_consent }}
     {{ if seo:use_cookie_banner }}
         {{# Read out global store consent status and display a reset consent link by saving the initial state. #}}
         <span x-data x-cloak x-show="$store.cookieBanner.consent !== null">
-            <button @click="$store.cookieBanner.set(null)" class="btn btn--secondary">
-                {{ seo:cookie_reset_consent_label }}
+            <button @click="$store.cookieBanner.set(null)" class="btn">
+                {{ seo:cookie:reset_consent_label }}
             </button>
         </span>
     {{ /if }}

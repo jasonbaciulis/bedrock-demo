@@ -441,6 +441,10 @@ tabs:
                 - 'required_if:use_cloudflare_web_analytics,true'
               if:
                 use_cloudflare_web_analytics: 'equals true'
+      -
+        display: 'Cookie banner'
+        instructions: 'Configure Google trackers and scripts and optionally inject them after consent.'
+        fields:
           -
             handle: tracker_type
             field:
@@ -492,7 +496,7 @@ tabs:
             handle: use_cookie_banner
             field:
               type: toggle
-              instructions: 'Enable the cookie banner. Make sure you load all tracking scripts via GTM. Uses the consent api: https://developers.google.com/tag-manager/consent'
+              instructions: 'Enable the cookie banner. Make sure you load all tracking scripts via GTM. Uses the consent API: https://developers.google.com/tag-manager/consent'
               instructions_position: below
               listable: false
               display: 'Cookie banner'
@@ -500,123 +504,96 @@ tabs:
               if:
                 tracker_type: 'not none'
           -
-            handle: cookie_revoke_before
+            handle: cookie
             field:
-              time_required: false
-              earliest_date: '1900-01-01'
-              display: 'Revoke consent before'
-              instructions: 'Revoke all users consent before this date. Use this when you added new trackers to GTM and your privacy policy changed. The cookie bar will reappear.'
-              instructions_position: below
-              type: date
-              width: 75
+              type: group
+              display: 'Cookie banner'
               if:
+                use_cookie_banner: 'equals true'
                 tracker_type: 'not none'
-                use_cookie_banner: 'equals true'
-          -
-            handle: cookie_description
-            field: common.text_basic
-            config:
-              display: 'Cookie description'
-              if:
-                tracker_type: 'not none'
-                use_cookie_banner: 'equals true'
-          -
-            handle: cookie_accept_all_label
-            field:
-              display: 'Cookie accept label'
-              type: text
-              width: 50
-              always_save: false
-              if:
-                tracker_type: 'not none'
-                use_cookie_banner: 'equals true'
-          -
-            handle: cookie_accept_selected_label
-            field:
-              display: 'Cookie accept selected label'
-              type: text
-              width: 50
-              always_save: false
-              if:
-                tracker_type: 'not none'
-                use_cookie_banner: 'equals true'
-          -
-            handle: cookie_manage_label
-            field:
-              display: 'Cookie manage label'
-              type: text
-              width: 50
-              always_save: false
-              if:
-                tracker_type: 'not none'
-                use_cookie_banner: 'equals true'
-          -
-            handle: cookie_reset_consent_label
-            field:
-              display: 'Cookie reset consent label'
-              type: text
-              width: 50
-              always_save: false
-              if:
-                tracker_type: 'not none'
-                use_cookie_banner: 'equals true'
-          -
-            handle: cookie_functional_label
-            field:
-              display: 'Cookie functional label'
-              type: text
-              width: 25
-              always_save: false
-              if:
-                tracker_type: 'not none'
-                use_cookie_banner: 'equals true'
-          -
-            handle: cookie_functional_description
-            field:
-              display: 'Cookie functional description'
-              type: text
-              width: 75
-              always_save: false
-              if:
-                tracker_type: 'not none'
-                use_cookie_banner: 'equals true'
-          -
-            handle: cookie_analytics_label
-            field:
-              display: 'Cookie analytics label'
-              type: text
-              width: 25
-              always_save: false
-              if:
-                tracker_type: 'not none'
-                use_cookie_banner: 'equals true'
-          -
-            handle: cookie_analytics_description
-            field:
-              display: 'Cookie analytics description'
-              type: text
-              width: 75
-              always_save: false
-              if:
-                tracker_type: 'not none'
-                use_cookie_banner: 'equals true'
-          -
-            handle: cookie_ads_label
-            field:
-              display: 'Cookie ads label'
-              type: text
-              width: 25
-              always_save: false
-              if:
-                tracker_type: 'equals gtm'
-                use_cookie_banner: 'equals true'
-          -
-            handle: cookie_ads_description
-            field:
-              display: 'Cookie ads description'
-              type: text
-              width: 75
-              always_save: false
-              if:
-                tracker_type: 'equals gtm'
-                use_cookie_banner: 'equals true'
+              fields:
+                -
+                  handle: revoke_before
+                  field:
+                    time_required: false
+                    earliest_date: '1900-01-01'
+                    display: 'Revoke consent before'
+                    instructions: 'Revoke all users consent before this date. Use this when you added new trackers to GTM and your privacy policy changed. The cookie bar will reappear.'
+                    instructions_position: below
+                    type: date
+                    width: 75
+                -
+                  handle: description
+                  field: common.text_basic
+                  config:
+                    display: Description
+                -
+                  handle: accept_label
+                  field:
+                    display: 'Accept label'
+                    type: text
+                    width: 50
+                    always_save: false
+                -
+                  handle: accept_selected_label
+                  field:
+                    display: 'Accept selected label'
+                    type: text
+                    width: 50
+                    always_save: false
+                -
+                  handle: manage_label
+                  field:
+                    display: 'Manage label'
+                    type: text
+                    width: 50
+                    always_save: false
+                -
+                  handle: reset_consent_label
+                  field:
+                    display: 'Reset consent label'
+                    type: text
+                    width: 50
+                    always_save: false
+                -
+                  handle: functional_label
+                  field:
+                    display: 'Functional label'
+                    type: text
+                    width: 25
+                    always_save: false
+                -
+                  handle: functional_description
+                  field:
+                    display: 'Functional description'
+                    type: text
+                    width: 75
+                    always_save: false
+                -
+                  handle: analytics_label
+                  field:
+                    display: 'Analytics label'
+                    type: text
+                    width: 25
+                    always_save: false
+                -
+                  handle: analytics_description
+                  field:
+                    display: 'Analytics description'
+                    type: text
+                    width: 75
+                    always_save: false
+                -
+                  handle: ads_label
+                  field:
+                    display: 'Ads label'
+                    type: text
+                    width: 25
+                    always_save: false
+                -
+                  handle: ads_description
+                  field:
+                    display: 'Ads description'
+                    type: text
+                    width: 75
+                    always_save: false
