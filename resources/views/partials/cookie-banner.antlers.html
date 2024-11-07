@@ -18,12 +18,17 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     x-data="cookieBanner({
-        consentRevokeBefore: {{ seo:cookie:consent_revoke_before format="U" | to_js }},
+        consentRevokeBefore: {{ seo:cookie:consent_revoke_before format='U' | to_js }},
         consentData: {
             consent: false,
             date: null,
             consent_api: {{ (seo:tracker_type == 'gtag' || seo:tracker_type == 'gtm') | bool_string }},
-            types: {{ seo:cookie:consent_types | to_js }},
+            {{ if seo:tracker_type == 'gtag' }}
+                {{# Keep only relevant types #}}
+                types: {{ seo:cookie:consent_types | where_in('name', ['functionalCookies', 'analyticsStorage']) | to_js }},
+            {{ else if seo:tracker_type == 'gtm' }}
+                types: {{ seo:cookie:consent_types | to_js }},
+            {{ /if }}
         }
     })"
     class="container max-w-xl fixed inset-x-0 bottom-0 pb-6 z-50"
@@ -33,17 +38,29 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
             {{ seo:cookie:description }}
         </div>
 
-        {{# TODO: make sure that if gtm is not selected we remove not needed types #}}
         <div x-cloak x-show="settingsOpen">
             <template x-for="type in $store.cookieBanner.getConsentTypes()">
                 <div class="relative flex gap-x-3 items-start mt-4">
                     <div class="flex h-6 items-center">
                         <template x-if="!type.consent_api">
                             {{# Functional cookies are always on. #}}
-                            <input :name="type.name" :id="type.name" :aria-describedby="`${type.name}-description`" type="checkbox" checked disabled>
+                            <input
+                                :name="type.name"
+                                :id="type.name"
+                                :aria-describedby="`${type.name}-description`"
+                                type="checkbox"
+                                checked
+                                disabled
+                            >
                         </template>
                         <template x-if="type.consent_api">
-                            <input x-model="type.value" :id="type.name" :aria-describedby="`${type.name}-description`" :name="type.name" type="checkbox">
+                            <input
+                                x-model="type.value"
+                                :id="type.name"
+                                :aria-describedby="`${type.name}-description`"
+                                :name="type.name"
+                                type="checkbox"
+                            >
                         </template>
                     </div>
                     <div class="text-sm/6">
@@ -75,6 +92,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
                 {{ seo:cookie:accept_selected_label }}
             </button>
 
+            {{# Reject all cookies #}}
             <button
                 @click="$store.cookieBanner.rejectAll()"
                 type="button"
@@ -83,7 +101,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
                 {{ seo:cookie:reject_label }}
             </button>
 
-            {{# Manage cookie settings. #}}
+            {{# Customize which cookies to accept. #}}
             <button
                 @click="settingsOpen = !settingsOpen"
                 type="button"
@@ -98,7 +116,6 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
 {{# Yield this section in `partials/nav-bottom-footer.antlers.html` so users can reset their consent. #}}
 {{ section:reset_cookie_consent }}
     {{ if seo:use_cookie_banner }}
-        {{# Read out global store consent status and display a reset consent link by saving the initial state. #}}
         <a
             x-cloak
             x-show="$store.cookieBanner.getConsent()"
