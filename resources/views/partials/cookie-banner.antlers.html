@@ -18,7 +18,11 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     x-data="cookieBanner({
-        consentRevokeBefore: {{ seo:cookie:consent_revoke_before format='U' | to_js }},
+        {{ if seo:cookie:consent_revoke_before }}
+            consentRevokeBefore: {{ seo:cookie:consent_revoke_before format='U' }},
+        {{ else }}
+            consentRevokeBefore: null,
+        {{ /if }}
         consentData: {
             consent: false,
             date: null,

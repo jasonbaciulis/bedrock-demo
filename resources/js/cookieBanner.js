@@ -52,6 +52,7 @@ document.addEventListener('alpine:init', () => {
 
     saveConsent() {
       this.data.consent = true
+      // Save the current timestamp in seconds
       this.data.date = Math.floor(Date.now() / 1000)
     },
 
@@ -62,24 +63,28 @@ document.addEventListener('alpine:init', () => {
 
   Alpine.data('cookieBanner', settings => {
     return {
-      ...settings,
-      data: null,
+      consentData: settings.consentData,
+      consentRevokeBefore: settings.consentRevokeBefore,
+      data: Alpine.store('cookieBanner').data,
       settingsOpen: false,
 
       init() {
-        console.log(settings.consentData)
-        Alpine.store('cookieBanner').setData(settings.consentData)
-        this.data = Alpine.store('cookieBanner').data
-
-        if (Alpine.store('cookieBanner').getConsentDate() < settings.consentRevokeBefore) {
-          Alpine.store('cookieBanner').invalidate(settings.consentData)
+        if (this.data === null) {
+          Alpine.store('cookieBanner').setData(this.consentData)
+          this.data = Alpine.store('cookieBanner').data
         }
+
+        if (Alpine.store('cookieBanner').getConsentDate() < this.consentRevokeBefore) {
+          Alpine.store('cookieBanner').invalidate(this.consentData)
+        }
+
         if (
           Alpine.store('cookieBanner').useConsentAPI() &&
           Alpine.store('cookieBanner').getConsent()
         ) {
           gtag('consent', 'update', Alpine.store('cookieBanner').getConsentAPIValues())
         }
+
         if (Alpine.store('cookieBanner').useConsentAPI()) {
           this.$watch(
             'data.consent',
