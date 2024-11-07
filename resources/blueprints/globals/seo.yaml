@@ -549,9 +549,9 @@ tabs:
                     width: 50
                     always_save: false
                 -
-                  handle: manage_label
+                  handle: settings_label
                   field:
-                    display: 'Manage label'
+                    display: 'Settings label'
                     type: text
                     width: 50
                     always_save: false

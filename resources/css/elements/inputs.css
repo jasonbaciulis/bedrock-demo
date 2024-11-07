@@ -17,7 +17,7 @@ select {
 
 [type='checkbox'],
 [type='radio'] {
-  @apply size-5 rounded-md border-gray-300 text-gray focus:ring-gray;
+  @apply size-4 rounded border-gray-300 text-gray focus:ring-gray;
 }
 
 textarea {

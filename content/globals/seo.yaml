@@ -15,7 +15,7 @@ data:
   use_fathom: false
   use_cloudflare_web_analytics: false
   tracker_type: gtm
-  google_tag_manager: sd
+  google_tag_manager: sds
   use_cookie_banner: true
   cookie:
     consent_revoke_before: null
@@ -43,7 +43,7 @@ data:
     accept_label: 'Accept all'
     reject_label: 'Reject all'
     accept_selected_label: 'Accept selected'
-    manage_label: 'Manage settings'
+    settings_label: Customize
     reset_consent_label: 'Reset consent'
     consent_types:
       -

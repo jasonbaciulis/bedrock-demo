@@ -33,9 +33,10 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
             {{ seo:cookie:description }}
         </div>
 
-        <div x-show="settingsOpen" class="mt-4 flex flex-col space-y-2">
+        {{# TODO: make sure that if gtm is not selected we remove not needed types #}}
+        <div x-cloak x-show="settingsOpen">
             <template x-for="type in $store.cookieBanner.getConsentTypes()">
-                <div class="relative flex gap-x-3 items-start">
+                <div class="relative flex gap-x-3 items-start mt-4">
                     <div class="flex h-6 items-center">
                         <template x-if="!type.consent_api">
                             {{# Functional cookies are always on. #}}
@@ -47,7 +48,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
                     </div>
                     <div class="text-sm/6">
                         <label :for="type.name" class="font-semibold text-gray" x-text="type.label"></label>
-                        <p :id="`${type.name}-description`" class="text-gray-500" x-text="type.description"></p>
+                        <p :id="`${type.name}-description`" class="text-gray-500 text-pretty" x-text="type.description"></p>
                     </div>
                 </div>
             </template>
@@ -88,7 +89,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
                 type="button"
                 class="btn btn--secondary btn--sm flex-1 sm:flex-none"
             >
-                {{ seo:cookie:manage_label }}
+                {{ seo:cookie:settings_label }}
             </button>
         </div>
     </div>
