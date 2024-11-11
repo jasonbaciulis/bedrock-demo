@@ -4,12 +4,12 @@
     x-data="{ search: '{{ get:q | sanitize }}' }"
 >
     <div class="relative flex-1">
-        <input x-model="search" class="w-full" placeholder="Search article…" type="search" name="q" value="{{ get:q | sanitize }}">
+        <input x-model="search" class="w-full" placeholder="Search…" type="search" name="q">
         <button class="btn absolute top-0 left-0 py-4 pl-6 pr-2" type="submit">
-            {{ svg src="search" class="w-5 h-5" }}
+            {{ svg src="heroicons-mini/magnifying-glass" class="size-5" }}
         </button>
         <button x-cloak x-show="search" class="btn absolute top-0 right-0 py-4 pr-6 pl-2" type="reset">
-            {{ svg src="heroicons-outline/x-mark" class="w-5 h-5" }}
+            {{ svg src="heroicons-mini/x-mark" class="size-5" }}
         </button>
     </div>
     {{ if get:q }}
