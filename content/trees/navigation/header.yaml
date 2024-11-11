@@ -8,7 +8,7 @@ tree:
       -
         id: 5e2933f5-10f3-4043-b585-903be44517d6
         title: Blocks
-        url: /
+        url: '#faqs'
         data:
           icon: square-3-stack-3d
           description: 'Get the maximum flexibility when building pages'
@@ -23,14 +23,14 @@ tree:
       -
         id: eb572299-0404-472d-8b5d-7f056b60ebc5
         title: Components
-        url: /
+        url: '#components'
         data:
           icon: square-plus
           description: 'Reusable Alpine.js components to speed up the dev'
       -
         id: 62075822-c793-4249-9b24-069076cea08b
         title: Navigations
-        url: /
+        url: '#footer'
         data:
           icon: cursor-arrow-rays
           description: 'Prebuilt header and footer navigations'

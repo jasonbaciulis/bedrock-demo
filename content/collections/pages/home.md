@@ -4,7 +4,7 @@ blueprint: pages
 title: Home
 template: default
 updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
-updated_at: 1731317476
+updated_at: 1731319521
 blocks:
   -
     id: ZbruxJDq
