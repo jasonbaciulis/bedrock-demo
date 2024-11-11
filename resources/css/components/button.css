@@ -20,7 +20,7 @@
   }
 
   .btn--text {
-    @apply text-gray hover:text-primary-600 active:text-primary-600;
+    @apply text-gray hover:text-primary-500 active:text-primary-600;
   }
 
   .btn--arrow {

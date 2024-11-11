@@ -1,12 +1,12 @@
 <section class="py-20">
-  <div class="container grid-cols-12 gap-x-8 md:grid">
-      <div class="col-span-6">
-          <h1 class="h1 br-hidden sm:br-visible">{{ title | nl2br }}</h1>
-          <p class="content-lg mt-4">{{ text }}</p>
-          {{ partial:components/buttons container_class="mt-8" class="btn--lg" }}
-      </div>
-      <div class="col-span-6">
-          {{ partial:components/picture w="592" h="auto" class="rounded-3xl" }}
-      </div>
-  </div>
+    <div class="container site-grid items-center">
+        <div class="md:col-span-6 max-w-lg">
+            <h1 class="h1 br-hidden sm:br-visible">{{ title | nl2br }}</h1>
+            <p class="content-lg mt-8 text-pretty text-gray-600">{{ text }}</p>
+            {{ partial:components/buttons container_class="mt-10" class="btn--lg" }}
+        </div>
+        <div class="md:col-span-6 bg-gray-100 rounded-3xl aspect-square">
+            {{ partial:components/picture w="592" h="592" class="rounded-3xl" cover="true" }}
+        </div>
+    </div>
 </section>

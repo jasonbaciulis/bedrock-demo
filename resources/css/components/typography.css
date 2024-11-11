@@ -8,7 +8,7 @@
   }
 
   .content-lg {
-    @apply text-lg sm:text-xl;
+    @apply text-lg sm:text-xl/8;
   }
 
   .content {

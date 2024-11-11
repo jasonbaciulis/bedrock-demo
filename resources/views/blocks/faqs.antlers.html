@@ -1,14 +1,14 @@
 <section id="{{ type | slugify }}" class="m-section">
-    <div class="container site-grid">
-        <div class="col-span-full lg:col-start-3 lg:col-span-8 text-center mb-10">
-            <h2 class="h2">{{ title }}</h2>
+    <div class="container">
+        <div class="max-w-4xl mx-auto text-center mb-20">
+            <h2 class="h2 max-w-xl mx-auto">{{ title }}</h2>
 
             {{ if text }}
                 <p class="mt-6 text-lg text-pretty">{{ text }}</p>
             {{ /if }}
         </div>
 
-        <dl class="col-span-full lg:col-start-3 lg:col-span-8 divide-y divide-gray-200 border-y border-gray-200">
+        <dl class="max-w-4xl mx-auto divide-y divide-gray-300 border-b border-gray-300">
             {{ items }}
                 {{ partial:components/disclosure }}
             {{ /items }}

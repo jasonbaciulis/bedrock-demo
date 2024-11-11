@@ -7,7 +7,7 @@
             :aria-expanded="open"
             @click="open = !open"
         >
-            <span class="content-lg text-gray font-medium">{{ title }}</span>
+            <span class="content-lg text-gray font-semibold">{{ title }}</span>
             <span class="absolute inset-0"></span>
             <span class="flex-none size-6 text-gray">
                 {{ svg src="heroicons-outline/plus" x-show="!open" }}
@@ -26,5 +26,5 @@
             {{ text }}
         </div>
     </dd>
-    <hr class="border border-gray-600 absolute bottom-0 inset-x-0 origin-bottom transition-transform scale-y-0 duration-300 group-hover:scale-y-100">
+    <hr class="border border-gray-300 absolute bottom-0 inset-x-0 origin-bottom transition-transform scale-y-0 duration-300 group-hover:scale-y-100">
 </div>
