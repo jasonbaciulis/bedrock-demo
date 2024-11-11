@@ -11,11 +11,11 @@
     <li>
         <a
             href="#"
-            @click.prevent="popupWindow('https://twitter.com/intent/tweet?url={{ current_url }}&text={{ title | urlencode }}&via={{ seo:twitter_site }}', 'Twitter', window, 611, 435)"
-            aria-label="Twitter"
-            class="block"
+            @click.prevent="popupWindow('https://x.com/intent/tweet?url={{ current_url }}&text={{ title | urlencode }}&via={{ seo:twitter_site }}', 'X', window, 611, 435)"
+            aria-label="X"
+            class="block hover:opacity-80"
         >
-            {{ svg src="twitter" class="w-5 h-5 hover:opacity-80 transition-opacity" }}
+            {{ svg src="social/x" class="size-5" }}
         </a>
     </li>
     <li>
@@ -23,9 +23,9 @@
             href="#"
             @click.prevent="popupWindow('https://www.facebook.com/sharer.php?u={{ current_url }}', 'Facebook', window, 611, 435)"
             aria-label="Facebook"
-            class="block"
+            class="block hover:opacity-80"
         >
-            {{ svg src="facebook" class="w-5 h-5 hover:opacity-80 transition-opacity" }}
+            {{ svg src="social/facebook" class="size-5" }}
         </a>
     </li>
     <li>
@@ -33,9 +33,9 @@
             href="#"
             @click.prevent="popupWindow('https://www.linkedin.com/sharing/share-offsite/?url={{ current_url }}', 'Linkedin', window, 611, 435)"
             aria-label="Linkedin"
-            class="block"
+            class="block hover:opacity-80"
         >
-            {{ svg src="linkedin" class="w-5 h-5 hover:opacity-80 transition-opacity" }}
+            {{ svg src="social/linkedin" class="size-5" }}
         </a>
     </li>
 </ul>
