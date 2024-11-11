@@ -1,8 +1,8 @@
-<section class="py-20">
+<section class="m-section">
     <div class="container">
         <h2 class="h2">{{ title }}</h2>
 
-        <div class="grid md:grid-cols-2 gap-8">
+        <div class="site-grid">
             {{ if query === 'custom' }}
                 {{ $entries = entries }}
             {{ elseif query === 'latest' }}
@@ -12,17 +12,17 @@
             {{ /if }}
 
             {{ $entries }}
-                <div class="p-8 md:flex md:flex-col md:px-12 bg-gray-700">
-                    <blockquote class="md:flex-grow md:flex md:flex-col">
-                        <p class="content-lg text-white md:flex-grow">
+                <div class="md:col-span-6">
+                    <blockquote>
+                        <p class="content-lg">
                             “{{ quote }}”
                         </p>
                         <footer class="mt-8">
-                            <div class="flex items-start">
+                            <div class="flex items-start gap-x-4">
                                 {{ partial:elements/avatar :image="avatar" w="48" h="48" class="size-12" }}
-                                <div class="ml-4">
-                                    <p class="content-sm text-white">{{ author }}</p>
-                                    <p class="content-sm text-gray-200">{{ author_title }}</p>
+                                <div class="content-sm">
+                                    <p>{{ author }}</p>
+                                    <p class="text-gray-500">{{ author_title }}</p>
                                 </div>
                             </div>
                         </footer>

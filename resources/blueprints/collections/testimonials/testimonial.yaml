@@ -1,69 +1,57 @@
-sections:
+title: Testimonials
+tabs:
   main:
     display: Main
-    fields:
+    sections:
       -
-        handle: title
-        field:
-          type: text
-          required: true
-          validate:
-            - required
-      -
-        handle: quote
-        field: common.text_plain
-        config:
-          display: Quote
-      -
-        handle: avatar
-        field: common.image
-        config:
-          mode: list
-          display: Avatar
-          width: 33
-      -
-        handle: author
-        field:
-          input_type: text
-          antlers: false
-          display: Author
-          type: text
-          icon: text
-          width: 33
-          listable: hidden
-          instructions_position: above
-          visibility: visible
-          always_save: false
-      -
-        handle: author_title
-        field:
-          input_type: text
-          antlers: false
-          display: 'Author title'
-          type: text
-          icon: text
-          width: 33
-          listable: hidden
-          instructions_position: above
-          visibility: visible
+        fields:
+          -
+            handle: title
+            field:
+              type: text
+              required: true
+              validate:
+                - required
+          -
+            handle: quote
+            field: common.text_plain
+            config:
+              display: Quote
+          -
+            handle: avatar
+            field: common.image
+            config:
+              mode: list
+              display: Avatar
+              width: 33
+          -
+            handle: author
+            field:
+              display: Author
+              type: text
+              width: 33
+              always_save: false
+          -
+            handle: author_title
+            field:
+              display: 'Author title'
+              type: text
+              width: 33
   sidebar:
     display: Sidebar
-    fields:
+    sections:
       -
-        handle: slug
-        field:
-          type: slug
-          localizable: true
-      -
-        handle: featured
-        field:
-          default: false
-          display: Featured
-          type: toggle
-          icon: toggle
-          listable: hidden
-          instructions: 'Used inside the Testimonials block to create a query with only featured entries'
-          instructions_position: above
-          visibility: visible
-          always_save: false
-title: Testimonials
+        fields:
+          -
+            handle: slug
+            field:
+              type: slug
+              localizable: true
+              validate: 'max:200'
+          -
+            handle: featured
+            field:
+              display: Featured
+              type: toggle
+              instructions: 'Used inside the Testimonials block to create a query with only featured entries'
+              always_save: false
