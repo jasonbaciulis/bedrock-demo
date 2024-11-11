@@ -29,27 +29,6 @@ blocks:
           code: null
           button_type: primary
   -
-    id: lSfhEMQq
-    block_type: 3x2_grid
-    type: features
-    enabled: true
-  -
-    id: 4egRZ9Yk
-    type: cta
-    enabled: true
-    block_type: brand_panel
-  -
-    id: 97upSY55
-    title: 'Trusted by bootstrapped businesses'
-    type: logo_cloud
-    enabled: true
-    logos:
-      - logos/logoipsum-logo-1.svg
-      - logos/logoipsum-logo-2.svg
-      - logos/logoipsum-logo-3.svg
-      - logos/logoipsum-logo-4.svg
-      - logos/logoipsum-logo-5.svg
-  -
     id: XPnrSDQd
     block_type: collapsed_grouped
     title: 'Frequently asked questions'
