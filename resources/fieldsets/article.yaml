@@ -20,48 +20,43 @@ fields:
         - strikethrough
         - code
         - codeblock
-      save_html: false
       toolbar_mode: floating
-      link_noopener: false
-      link_noreferrer: false
-      target_blank: false
       reading_time: true
-      fullscreen: true
-      allow_source: true
       type: bard
       localizable: true
-      listable: hidden
       display: Article
       replicator_preview: false
       always_show_set_button: true
       validate:
         - required
       container: assets
-      enable_input_rules: true
-      enable_paste_rules: true
-      instructions_position: above
-      visibility: visible
-      previews: true
-      antlers: false
       remove_empty_nodes: true
+      smart_typography: true
       sets:
-        picture:
-          display: Picture
-          fields:
-            -
-              import: picture
-        pull_quote:
-          display: 'Pull quote'
-          fields:
-            -
-              import: pull_quote
-        table:
-          display: Table
-          fields:
-            -
-              import: table
-        video:
-          display: Video
-          fields:
-            -
-              import: video
+        main:
+          display: Main
+          sets:
+            picture:
+              display: Picture
+              icon: media-image-picture-orientation
+              fields:
+                -
+                  import: picture
+            pull_quote:
+              display: 'Pull quote'
+              icon: text-formatting-quotation
+              fields:
+                -
+                  import: pull_quote
+            table:
+              display: Table
+              icon: layout-table-column-insert
+              fields:
+                -
+                  import: table
+            video:
+              display: Video
+              icon: social-youtube
+              fields:
+                -
+                  import: video
