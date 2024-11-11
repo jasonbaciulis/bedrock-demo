@@ -54,7 +54,7 @@ fields:
               import: search_results
         style_guide:
           display: 'Style guide'
-          instructions: 'This block reflects Figma design style guide. You can remove it in production.'
+          instructions: 'Styles and components in one place.'
           fields:
             -
               import: style_guide

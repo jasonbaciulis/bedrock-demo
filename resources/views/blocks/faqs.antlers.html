@@ -1,1 +1,38 @@
-{{ partial:if_exists src="blocks/faqs/{block_type replace='_|-'}" }}
+<section id="{{ type | slugify }}" class="m-section">
+    <div class="container site-grid">
+        <div class="col-span-full lg:col-start-3 lg:col-span-8 text-center mb-10">
+            <h2 class="h2">{{ title }}</h2>
+
+            {{ if text }}
+                <p class="mt-6 text-lg text-pretty">{{ text }}</p>
+            {{ /if }}
+        </div>
+
+        <dl class="col-span-full lg:col-start-3 lg:col-span-8 divide-y divide-gray-200 border-y border-gray-200">
+            {{ items }}
+                {{ partial:components/disclosure }}
+            {{ /items }}
+        </dl>
+    </div>
+</section>
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {{ if items }}
+                {{ items }}
+                    {
+                        "@type": "Question",
+                        "name": "{{ title }}",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "{{ text | add_slashes }}"
+                        }
+                    }{{ unless last }},{{ /unless }}
+                {{ /items }}
+            {{ /if }}
+        ]
+    }
+</script>

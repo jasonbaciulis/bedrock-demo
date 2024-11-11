@@ -4,7 +4,7 @@ blueprint: pages
 title: Home
 template: default
 updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
-updated_at: 1730807994
+updated_at: 1731303117
 blocks:
   -
     id: ZbruxJDq
@@ -28,62 +28,6 @@ blocks:
           asset: null
           code: null
           button_type: primary
-  -
-    id: XPnrSDQd
-    block_type: collapsed_grouped
-    title: 'Frequently asked questions'
-    text: 'Perks so good you‘d be crazy to go anywhere else for development. Seriously.'
-    type: faqs
-    enabled: true
-    groups:
-      -
-        id: DehQMz1C
-        title: 'Group name'
-        items:
-          -
-            id: BrkTG4ZL
-            title: 'Test title'
-            text:
-              -
-                type: paragraph
-                content:
-                  -
-                    type: text
-                    text: 'Test text'
-            type: item
-            enabled: true
-          -
-            id: R6ReMqOv
-            title: 'Test title'
-            text:
-              -
-                type: paragraph
-                content:
-                  -
-                    type: text
-                    text: 'Test text'
-            type: item
-            enabled: true
-        type: group
-        enabled: true
-      -
-        id: cvOS7PWc
-        title: 'Group name'
-        items:
-          -
-            id: PPqlzXwI
-            title: 'TEst title'
-            text:
-              -
-                type: paragraph
-                content:
-                  -
-                    type: text
-                    text: Text
-            type: item
-            enabled: true
-        type: group
-        enabled: true
   -
     id: UXTueUcZ
     block_type: collapsed
