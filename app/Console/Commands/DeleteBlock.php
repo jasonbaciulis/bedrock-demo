@@ -110,7 +110,8 @@ class DeleteBlock extends Command
     }
 
     /**
-     * Update blocks.yaml.
+     * Updates the blocks.yaml file by removing the
+     * specified fieldset and saving the changes.
      *
      * @return bool|null
      */
