@@ -52,13 +52,13 @@ fields:
                 -
                   import: newsletter
             search_results:
-              display: 'Search results'
+              display: 'Search Results'
               icon: search-magnifying-glass
               fields:
                 -
                   import: search_results
             style_guide:
-              display: 'Style guide'
+              display: 'Style Guide'
               instructions: 'Styles and components in one place.'
               icon: edit-paint-palette
               fields:

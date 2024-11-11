@@ -4,7 +4,7 @@ blueprint: pages
 title: Home
 template: default
 updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
-updated_at: 1731315673
+updated_at: 1731317476
 blocks:
   -
     id: ZbruxJDq
@@ -73,6 +73,18 @@ blocks:
               -
                 type: text
                 text: '—whichever you find first.'
+        type: item
+        enabled: true
+      -
+        id: m3ctoy43
+        title: 'Is this starter kit suitable for production?'
+        text:
+          -
+            type: paragraph
+            content:
+              -
+                type: text
+                text: 'Absolutely! If by "production" you mean your local environment where you''re the only user. Otherwise, proceed with the usual developer optimism.'
         type: item
         enabled: true
       -
