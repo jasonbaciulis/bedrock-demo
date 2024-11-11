@@ -1,6 +1,6 @@
 <section id="{{ type | slugify }}" class="m-section">
-    <div class="container">
-        <div class="max-w-4xl mx-auto text-center mb-20">
+    <div class="container max-w-4xl">
+        <div class="text-center mb-20">
             <h2 class="h2 max-w-xl mx-auto">{{ title }}</h2>
 
             {{ if text }}
@@ -8,7 +8,7 @@
             {{ /if }}
         </div>
 
-        <dl class="max-w-4xl mx-auto divide-y divide-gray-300 border-b border-gray-300">
+        <dl class="divide-y divide-gray-300 border-b border-gray-300">
             {{ items }}
                 {{ partial:components/disclosure }}
             {{ /items }}
