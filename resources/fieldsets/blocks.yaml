@@ -16,12 +16,6 @@ fields:
           fields:
             -
               import: article
-        benefits:
-          display: Benefits
-          instructions: null
-          fields:
-            -
-              import: benefits
         blog:
           display: Blog
           instructions: null
@@ -34,66 +28,30 @@ fields:
           fields:
             -
               import: contact
-        cta:
-          display: CTA
-          instructions: null
-          fields:
-            -
-              import: cta
         faqs:
           display: FAQs
           instructions: null
           fields:
             -
               import: faqs
-        features:
-          display: Features
-          instructions: null
-          fields:
-            -
-              import: features
         hero_home:
           display: 'Hero Home'
           instructions: null
           fields:
             -
               import: hero_home
-        logo_cloud:
-          display: 'Logo cloud'
-          instructions: null
-          fields:
-            -
-              import: logo_cloud
         newsletter:
           display: Newsletter
           instructions: null
           fields:
             -
               import: newsletter
-        pricing:
-          display: Pricing
-          instructions: null
-          fields:
-            -
-              import: pricing
         search_results:
           display: 'Search results'
           instructions: null
           fields:
             -
               import: search_results
-        stats:
-          display: Stats
-          instructions: null
-          fields:
-            -
-              import: stats
-        steps:
-          display: Steps
-          instructions: null
-          fields:
-            -
-              import: steps
         style_guide:
           display: 'Style guide'
           instructions: 'This block reflects Figma design style guide. You can remove it in production.'
