@@ -64,7 +64,7 @@ class DeleteBlock extends Command
             $this->checkExistence('Fieldset', "resources/fieldsets/{$this->fieldset_name}.yaml");
             $this->checkExistence(
                 'Partial',
-                "resources/views/blocks/{$this->view_name}.antlers.html"
+                "resources/views/blocks/{$this->view_name}.antlers.html",
             );
 
             $this->deleteFieldset();
@@ -121,17 +121,11 @@ class DeleteBlock extends Command
 
         $existingGroups = Arr::get($fieldset, 'fields.0.field.sets', []);
 
-        $updatedGroups = array_map(function ($groupSets) {
-            $existingSets = Arr::get($groupSets, 'sets', []);
+        if (Arr::exists($existingGroups, $this->fieldset_name)) {
+            Arr::forget($existingGroups, $this->fieldset_name);
+        }
 
-            if (Arr::exists($existingSets, $this->fieldset_name)) {
-                Arr::forget($groupSets, "sets.{$this->fieldset_name}");
-            }
-
-            return $groupSets;
-        }, $existingGroups);
-
-        Arr::set($fieldset, 'fields.0.field.sets', $updatedGroups);
+        Arr::set($fieldset, 'fields.0.field.sets', $existingGroups);
 
         File::put($fieldsetPath, Yaml::dump($fieldset, 99, 2));
     }
