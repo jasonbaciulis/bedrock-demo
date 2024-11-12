@@ -28,6 +28,6 @@
   }
 
   .h6 {
-    @apply text-lg font-bold text-gray sm:text-xl;
+    @apply text-lg font-semibold text-gray sm:text-xl;
   }
 }

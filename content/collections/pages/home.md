@@ -4,15 +4,24 @@ blueprint: pages
 title: Home
 template: default
 updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
-updated_at: 1731319521
+updated_at: 1731411311
 blocks:
+  -
+    id: m3e8vdlz
+    title: 'Project inquiry'
+    text: 'Demo contact form with sections and conditional fields.'
+    form: contact
+    type: contact
+    enabled: true
+    success_message: 'Thanks! We got your inquiry and will get back to you within 24 hours.'
+    button_label: 'Submit the inquiry'
   -
     id: ZbruxJDq
     type: hero_home
     enabled: true
     title: 'Statamic starter kit for developers'
     text: 'Leap provides everything you need to jump-start your Statamic project, then gets out of your way so you can build bespoke websites.'
-    image: landvault-project.jpg
+    image: images/mohammad-rahmani-8qeb0fte9vw-unsplash.jpg
     buttons:
       -
         id: m34d499g
@@ -49,6 +58,18 @@ blocks:
     type: faqs
     enabled: true
     items:
+      -
+        id: m3e8xdmv
+        title: 'What is this Statamic starter kit anyway?'
+        text:
+          -
+            type: paragraph
+            content:
+              -
+                type: text
+                text: 'Think of it as the "Hello World" of Statamic, but with more bells, whistles, and hidden Easter eggs you''ll probably never find.'
+        type: item
+        enabled: true
       -
         id: 8fEzuNYK
         title: 'Is there documentation available?'

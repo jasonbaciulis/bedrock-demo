@@ -1,23 +1,26 @@
-<div
-    class="flex flex-wrap gap-2 md:grid md:gap-y-6"
+<fieldset
     :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
-    aria-describedBy="error-{{ handle }}"
+    aria-describedby="error-{{ handle }}"
 >
-    {{ foreach:options as="value|label" }}
-        <label
-            class="relative inline-flex md:gap-x-3 items-center text-gray text-sm md:text-lg p-3 md:h-16 md:px-5 border border-gray-300 rounded-lg md:rounded-xl bg-white"
-            :class="{ 'border-red-600 focus-visible:border-red-600': errors.{{ handle }} }"
-        >
-            <input
-                x-model="{{ model }}"
-                class="w-0 h-0 border-0 focus:ring-0 md:w-7 md:h-7 md:focus:ring-2 md:rounded-lg md:border-2 border-gray-300 peer"
-                type="checkbox"
-                name="{{ handle }}[]"
-                value="{{ value }}"
-                @change="forgetError('{{ handle }}')"
-            >
-            {{ partial:elements/backdrop-card-checked }}
-            {{ label }}
-        </label>
-    {{ /foreach:options }}
-</div>
+    <legend class="block text-sm/6 font-semibold text-gray">{{ display }}</legend>
+
+    <div class="mt-4 space-y-4 text-sm/6 text-gray-600">
+        {{ foreach:options as="value|label" }}
+            <div class="flex gap-x-2.5">
+                <input
+                    x-model="{{ model }}"
+                    id="{{ value }}"
+                    type="checkbox"
+                    name="{{ handle }}[]"
+                    value="{{ value }}"
+                    class="mt-1"
+                    :class="{ 'border-red-600 focus-visible:border-red-600': errors.{{ handle }} }"
+                    @change="forgetError('{{ handle }}')"
+                >
+                <label for="{{ value }}">
+                    {{ label }}
+                </label>
+            </div>
+        {{ /foreach:options }}
+    </div>
+</fieldset>

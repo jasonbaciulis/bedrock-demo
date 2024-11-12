@@ -1,23 +1,26 @@
 <fieldset
-    class="flex flex-col gap-y-6"
     :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
-    aria-describedBy="error-{{ handle }}"
+    aria-describedby="error-{{ handle }}"
 >
-    {{ foreach:options as="value|label" }}
-        <label
-            class="relative inline-flex gap-x-3 items-center text-gray text-lg h-16 border border-gray-300 rounded-xl px-5 bg-white"
-            :class="{ 'border-red-600 focus-visible:border-red-600': errors.{{ handle }} }"
-        >
-            <input
-                x-model="{{ model }}"
-                class="w-7 h-7 rounded-full border-2 border-gray-300 peer"
-                type="radio"
-                name="{{ handle }}"
-                value="{{ value }}"
-                @change="forgetError('{{ handle }}')"
-            >
-            {{ partial:elements/backdrop-card-checked rounding="rounded-xl" }}
-            {{ label }}
-        </label>
-    {{ /foreach:options }}
+    <legend class="block text-sm/6 font-semibold text-gray">{{ display }}</legend>
+
+    <div class="mt-4 space-y-4 text-sm/6 text-gray-600">
+        {{ foreach:options as="value|label" }}
+            <div class="flex gap-x-2.5">
+                <input
+                    x-model="{{ model }}"
+                    id="{{ value }}"
+                    type="radio"
+                    name="{{ handle }}"
+                    value="{{ value }}"
+                    class="mt-1"
+                    :class="{ 'border-red-600 focus-visible:border-red-600': errors.{{ handle }} }"
+                    @change="forgetError('{{ handle }}')"
+                >
+                <label for="{{ value }}">
+                    {{ label }}
+                </label>
+            </div>
+        {{ /foreach:options }}
+    </div>
 </fieldset>

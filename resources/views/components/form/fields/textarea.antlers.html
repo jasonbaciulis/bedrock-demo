@@ -6,6 +6,6 @@
     rows="5"
     placeholder="{{ placeholder }}"
     :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
-    aria-describedBy="error-{{ handle }}"
+    aria-describedby="error-{{ handle }}"
     @change="forgetError('{{ handle }}')"
 >{{ old }}</textarea>

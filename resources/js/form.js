@@ -1,10 +1,4 @@
 document.addEventListener('alpine:init', () => {
-  const skeletonForm = document.querySelector('.js-skeleton-form')
-
-  if (skeletonForm) {
-    skeletonForm.remove()
-  }
-
   Alpine.data('form', () => {
     return {
       error: false,

@@ -1,11 +1,6 @@
-<div class="mb-2">
-    <label
-        class="block font-semibold {{ color or 'text-gray' }}"
-        for="{{ handle }}"
-    >
-        {{ display }}
-    </label>
-    {{ if instructions }}
-        <p class="font-normal text-sm text-gray-500 mt-1">{{ instructions }}</p>
-    {{ /if }}
-</div>
+<label
+    class="block mb-2 text-sm/6 font-semibold {{ color or 'text-gray' }}"
+    for="{{ handle }}"
+>
+    {{ display }}
+</label>

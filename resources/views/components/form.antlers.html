@@ -1,68 +1,69 @@
 {{ once }}
     {{ push:scripts }}
+        <script src="/vendor/statamic/frontend/js/helpers.js" defer></script>
         {{ vite src="resources/js/form.js" }}
     {{ /push:scripts }}
 {{ /once }}
 
-{{# Create the selected form and reference Alpine data in `sending()`. Prevent form from submitting with POST as we will submit with AJAX. #}}
-<div x-cloak x-data="sending">
-    {{ form:create :in="form:handle"
+{{#
+    Create the selected form and reference Alpine data in `form()`.
+    Prevent submitting with POST as we will submit with AJAX.
+#}}
+<div x-cloak x-data="form()">
+    {{ form:create
+        :in="form:handle"
         id="form-{form:handle}"
         csrf="false"
         x-ref="form"
         @submit.prevent="sendForm()"
+        js="alpine:{form:handle}"
     }}
-        <div class="w-full grid md:grid-cols-12 gap-6">
+        <div class="w-full">
             <input type="hidden" name="_token" value="{{ csrf_token }}">
+
             {{# Honeypot spam protection. #}}
             <div class="hidden">
-                <label for="{{ honeypot }}">{{ honeypot }}</label>
+                <label for="{{ honeypot }}">{{ honeypot | deslugify | title }}</label>
                 <input id="{{ honeypot }}" type="text" name="{{ honeypot }}" tabindex="-1" autocomplete="off"/>
             </div>
 
-            {{# Render the default-styled fields. #}}
-            {{ fields }}
-                <div class="flex flex-col space-y-2
-                    {{ width == '25' ?= 'md:col-span-3' }}
-                    {{ width == '33' ?= 'md:col-span-4' }}
-                    {{ width == '50' ?= 'md:col-span-6' }}
-                    {{ width == '66' ?= 'md:col-span-8' }}
-                    {{ width == '75' ?= 'md:col-span-9' }}
-                    {{ width == '100' ?= 'md:col-span-12' }}"
-                >
-                    {{ unless type === 'section' }}
-                        <label class="block font-medium text-gray" for="{{ handle }}">
-                            {{ display }}
-                            {{ if instructions }}
-                                <p class="font-normal text-base mt-2">{{ instructions }}</p>
-                            {{ /if }}
-                        </label>
-                    {{ /unless }}
+            <div class="space-y-12 divide-y divide-gray-300">
+                {{ sections }}
+                    <div class="{{ !first ?= 'pt-12' }}">
+                        {{ if display }}
+                            <h3 class="h6 mb-8">{{ display }}</h3>
+                        {{ /if }}
 
-                    <div x-data="{ id: $id('error-label') }" class="flex flex-col space-y-2">
-                        {{ field }}
+                        <div class="site-grid gap-y-6">
+                            {{ fields }}
+                                {{ $field_container_class = switch(
+                                    (width == '25') => 'md:col-span-3',
+                                    (width == '33') => 'md:col-span-4',
+                                    (width == '50') => 'md:col-span-6',
+                                    (width == '66') => 'md:col-span-8',
+                                    (width == '75') => 'md:col-span-9',
+                                    () => 'md:col-span-full'
+                                )}}
 
-                        {{# Display error label when there is a validation error with the name field. #}}
-                        <template x-if="errors.{{ handle }}">
-                            <span class="text-red-600 text-sm font-medium" :id="id" x-text="errors.{{ handle }}"></span>
-                        </template>
+                                {{ partial:components/form/field :container_class="$field_container_class" }}
+                            {{ /fields }}
+                        </div>
                     </div>
-                </div>
-            {{ /fields }}
+                {{ /sections }}
+            </div>
 
             {{# Pulse button and disable upon sending. #}}
-            <div class="md:col-span-12">
-                <button class="btn btn--primary btn--xl" type="submit" :disabled="sending">Submit</button>
+            {{# TODO: add button with a loading spinner #}}
+            <div class="pt-8">
+                <button class="btn btn--primary w-full" type="submit" :disabled="sending">
+                    {{ button_label }}
+                </button>
             </div>
+
         </div>
 
         <template x-if="success">
-            {{ partial:components/alert
-                style="success"
-                text="Thanks! We got your inquiry and will get back to you within 24 hours."
-            }}
+            {{ partial:components/alert style="success" :text="success_message" }}
         </template>
     {{ /form:create }}
 </div>
-
-{{ partial:partials/form-script }}
