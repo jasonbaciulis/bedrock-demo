@@ -1,20 +1,36 @@
-<label
-    class="inline-flex gap-x-3 text-gray text-base leading-normal"
-    :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
-    aria-describedBy="error-{{ handle }}"
->
+<div class="flex gap-x-4 sm:col-span-2" x-data="{ on: false }">
     <input
         x-model="{{ model }}"
-        class="size-5 rounded-md border-2 border-gray-300"
-        :class="{ 'border-red-600 focus-visible:border-red-600': errors.{{ handle }} }"
         type="checkbox"
         name="{{ handle }}"
         value="1"
         :checked="{{ model }}"
+        class="hidden"
     >
-    {{ if inline_label }}
-        <span class="-mt-0.5">
-            {{ inline_label }}
-        </span>
-    {{ /if }}
-</label>
+    <div class="flex h-6 items-center">
+        <button
+            x-ref="switch"
+            type="button"
+            class="flex w-10 flex-none rounded-full p-px ring-1 ring-inset ring-gray-900/5 duration-200 ease-in-out bg-gray-200"
+            :class="{ 'bg-primary': on, 'bg-gray-200': !on }"
+            role="switch"
+            aria-labelledby="{{ handle }}"
+            :aria-checked="on.toString()"
+            @click="on = !on"
+        >
+            <span class="sr-only">Toggle {{ handle | deslugify }}</span>
+            <span
+                aria-hidden="true"
+                class="size-5 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out translate-x-0"
+                :class="{ 'translate-x-[1.125rem]': on, 'translate-x-0': !on }"
+            ></span>
+        </button>
+    </div>
+    <label
+        class="text-sm/6 text-gray-600 prose"
+        id="{{ handle }}"
+        @click="on = !on; $refs.switch.focus()"
+    >
+        {{ inline_label }}
+    </label>
+</div>

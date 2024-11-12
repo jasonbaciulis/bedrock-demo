@@ -81,6 +81,7 @@ tabs:
                   value: 'Laravel development'
               type: checkboxes
               display: Services
+              width: 50
               validate:
                 - required
           -
@@ -97,14 +98,12 @@ tabs:
                   key: 25k-50k
                   value: '$25K – $50K'
                 -
-                  key: 50k-100k
-                  value: '$50K – $100K'
-                -
-                  key: over_100k
-                  value: $100k+
+                  key: over_50k
+                  value: $50K+
               default: 10k-25k
               type: radio
               display: 'Your budget'
+              width: 50
               validate:
                 - required
                 - string
@@ -173,7 +172,7 @@ tabs:
           -
             handle: consent
             field:
-              inline_label: 'By selecting this, you agree to our privacy policy.'
+              inline_label: 'By selecting this, you agree to our <a href="/privacy" target="_blank">privacy policy</a>.'
               type: toggle
               display: Consent
               validate:
