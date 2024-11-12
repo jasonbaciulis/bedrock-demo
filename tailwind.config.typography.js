@@ -25,7 +25,7 @@ module.exports = {
             '--tw-prose-links': theme('colors.primary.500'),
 
             'h1, h2, h3, h4': {
-              color: `${theme('colors.primary.DEFAULT')}`,
+              color: `${theme('colors.gray.DEFAULT')}`,
             },
             'ul > li p, ol > li p': {
               marginTop: '0 !important',
