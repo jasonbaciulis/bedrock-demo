@@ -22,7 +22,7 @@ module.exports = {
             '--tw-prose-quotes': theme('colors.gray.DEFAULT'),
             '--tw-prose-quote-borders': theme('colors.primary.DEFAULT'),
             '--tw-prose-bold': theme('colors.gray.DEFAULT'),
-            '--tw-prose-links': theme('colors.primary.DEFAULT'),
+            '--tw-prose-links': theme('colors.primary.500'),
 
             'h1, h2, h3, h4': {
               color: `${theme('colors.primary.DEFAULT')}`,
@@ -30,6 +30,13 @@ module.exports = {
             'ul > li p, ol > li p': {
               marginTop: '0 !important',
               marginBottom: '0 !important',
+            },
+            a: {
+              fontWeight: '600',
+              textDecoration: 'none',
+            },
+            'a:hover': {
+              color: `${theme('colors.primary.600')}`,
             },
           },
         },
