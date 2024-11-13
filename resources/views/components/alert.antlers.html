@@ -8,19 +8,18 @@
     "
     {{ if dismissible }} x-data="{ dismissed: false }" x-show="!dismissed" {{ /if }}
 >
-    <div class="flex">
+    <div class="flex gap-x-3">
         <div class="alert__icon">
             {{ if style === 'success' }}
-                {{ svg src="check-circle" }}
+                {{ svg src="heroicons-mini/check-circle" }}
             {{ elseif style === 'warning' }}
-                {{ svg src="exclamation" }}
+                {{ svg src="heroicons-mini/exclamation-triangle" }}
             {{ elseif style === 'error' }}
-                {{ svg src="x-circle" }}
+                {{ svg src="heroicons-mini/x-circle" }}
             {{ /if }}
         </div>
-        <div class="ml-3 mt-0.5">
-            <p class="alert__text">{{ text }}</p>
-        </div>
+        <p class="alert__text">{{ text }}</p>
+
         {{ if dismissible }}
             <div class="ml-auto pl-3">
                 <div class="-mx-1.5 -my-1.5">
