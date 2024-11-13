@@ -156,6 +156,8 @@ tabs:
               type: select
               display: 'How did you hear about us?'
               width: 50
+              max_items: 1
+              searchable: false
           -
             handle: referrer
             field:
