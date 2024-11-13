@@ -34,6 +34,7 @@
             @keydown.enter.stop.prevent="selectOption()"
             @keydown.arrow-up.prevent="navigate('previous')"
             @keydown.arrow-down.prevent="navigate('next')"
+            @blur="forgetError('{{ handle }}')"
         >
         <button
             type="button"
