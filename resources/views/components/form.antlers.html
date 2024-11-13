@@ -47,12 +47,8 @@
                 {{ /sections }}
             </div>
 
-            {{# Pulse button and disable upon sending. #}}
-            {{# TODO: add button with a loading spinner #}}
             <div class="pt-8">
-                <button class="btn btn--primary w-full" type="submit" :disabled="sending">
-                    {{ button_label }}
-                </button>
+                {{ partial:components/form/fields/submit :label="button_label" }}
             </div>
         </div>
 
