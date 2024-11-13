@@ -13,7 +13,6 @@
         type="{{ input_type ?? 'text' }}"
         {{ placeholder | attribute:placeholder }}
         :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
-        aria-describedby="error-{{ handle }}"
         {{ instructions ?= 'aria-describedby="{handle}-instructions"' }}
         {{ character_limit | attribute:maxlength }}
         {{ old | attribute:value }}
