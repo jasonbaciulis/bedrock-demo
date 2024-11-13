@@ -65,7 +65,7 @@ document.addEventListener('alpine:init', () => {
         ? this.items
         : this.items.filter(item => item.value.toLowerCase().includes(searchTerm))
       this.itemActive = this.itemsFiltered[0] || null
-      this.$dispatch('combobox-input', this.itemActive)
+      this.listboxOpen = !this.searchIsEmpty()
     },
 
     toggleListbox() {
