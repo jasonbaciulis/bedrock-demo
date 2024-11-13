@@ -44,7 +44,7 @@
             :aria-labelledby="`${id}-label`"
             :aria-controls="`${id}-items`"
             class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
-            @click="toggleListbox()"
+            @click.stop="toggleListbox()"
         >
             <span class="sr-only">Toggle {{ handle | deslugify }}</span>
             {{ svg src="heroicons-mini/chevron-up-down" class="size-5 text-gray-500" }}
@@ -73,8 +73,8 @@
                 class="relative py-2.5 pl-3 text-gray cursor-default select-none pr-10"
                 :class="{ 'bg-primary': itemIsActive(item) }"
                 tabindex="-1"
-                @click="selectOption()"
-                @mousemove="itemActive = item"
+                @click.stop="selectOption()"
+                @mousemove="setActiveItem(item)"
             >
                 <span
                     x-text="item.value"
@@ -84,7 +84,7 @@
 
                 <span
                     x-show="itemIsSelected(item)"
-                    :class="{ 'text-gray-900': itemIsActive(item), 'text-primary': !itemIsActive(item) }"
+                    :class="{ 'text-gray': itemIsActive(item), 'text-primary-500': !itemIsActive(item) }"
                     class="absolute inset-y-0 right-0 flex items-center pr-4"
                 >
                     {{ svg src="heroicons-mini/check" class="size-5" }}
@@ -95,7 +95,7 @@
         <li
             x-show="!itemsFiltered.length"
             x-text="emptyOptionsMessage"
-            class="p-3 text-gray-900 cursor-default select-none"
+            class="p-3 text-gray cursor-default select-none"
         ></li>
     </ul>
 </div>

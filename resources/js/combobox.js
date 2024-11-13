@@ -41,6 +41,10 @@ document.addEventListener('alpine:init', () => {
       return this.itemSelected?.key === item.key
     },
 
+    setActiveItem(item) {
+      this.itemActive = item
+    },
+
     navigate(direction) {
       const index = this.itemsFiltered.indexOf(this.itemActive)
       const newIndex = direction === 'next' ? index + 1 : index - 1
@@ -82,7 +86,7 @@ document.addEventListener('alpine:init', () => {
       if (this.itemActive) {
         this.itemSelected = this.itemActive
         this.comboboxSearch = this.itemSelected.value
-        this.listboxOpen = false
+        this.closeListbox()
       }
     },
 
