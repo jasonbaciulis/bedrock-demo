@@ -1,14 +1,14 @@
 document.addEventListener('alpine:init', () => {
   Alpine.data('combobox', config => {
     return {
+      id: config.id || 'combobox',
+      emptyOptionsMessage: config.emptyOptionsMessage || 'No results match your search.',
       items: config.items,
       itemsFiltered: [],
       itemActive: null,
       itemSelected: null,
-      id: config.id || 'combobox',
       comboboxSearch: '',
       listboxOpen: false,
-      emptyOptionsMessage: config.emptyOptionsMessage || 'No results match your search.',
 
       init() {
         if (typeof this.items === 'object' && this.items !== null && !Array.isArray(this.items)) {

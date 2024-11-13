@@ -172,6 +172,19 @@ tabs:
                 referral_source: 'equals referral'
               placeholder: "We'd love to know who was so kind"
           -
+            handle: timezone
+            field:
+              dictionary: timezones
+              placeholder: 'Select your timezone'
+              max_items: 1
+              type: dictionary
+              display: Timezone
+              width: 66
+              validate:
+                - sometimes
+                - string
+                - 'max:255'
+          -
             handle: consent
             field:
               inline_label: 'By selecting this, you agree to our <a href="/privacy" target="_blank">privacy policy</a>.'
