@@ -10,6 +10,10 @@
     Prevent submitting with POST as we will submit with AJAX.
 #}}
 <div x-cloak x-data="form({ handle: {{ form:handle | to_js }} })">
+    <template x-if="success">
+        {{ partial:components/alert style="success" :text="success_message" class="mb-8" }}
+    </template>
+
     {{ form:create
         :in="form:handle"
         id="form-{form:handle}"
@@ -51,9 +55,5 @@
                 {{ partial:components/form/fields/submit :label="button_label" }}
             </div>
         </div>
-
-        <template x-if="success">
-            {{ partial:components/alert style="success" :text="success_message" }}
-        </template>
     {{ /form:create }}
 </div>
