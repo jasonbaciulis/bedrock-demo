@@ -1,108 +1,93 @@
 document.addEventListener('alpine:init', () => {
-  Alpine.data('combobox', config => {
-    return {
-      id: config.id || 'combobox',
-      emptyOptionsMessage: config.emptyOptionsMessage || 'No results match your search.',
-      items: config.items,
-      itemsFiltered: [],
-      itemActive: null,
-      itemSelected: null,
-      comboboxSearch: '',
-      listboxOpen: false,
+  Alpine.data('combobox', config => ({
+    id: config.id || 'combobox',
+    emptyOptionsMessage: config.emptyOptionsMessage || 'No results match your search.',
+    items: config.items,
+    itemsFiltered: [],
+    itemActive: null,
+    itemSelected: null,
+    comboboxSearch: '',
+    listboxOpen: false,
 
-      init() {
-        if (typeof this.items === 'object' && this.items !== null && !Array.isArray(this.items)) {
-          this.convertItemsToArray()
-        }
+    init() {
+      this.initializeItems()
+      this.searchItems()
+      this.$watch('comboboxSearch', this.searchItems)
+    },
 
-        this.searchItems()
-        this.$watch('comboboxSearch', value => this.searchItems())
-      },
+    initializeItems() {
+      if (this.isObject(this.items)) {
+        this.convertItemsToArray()
+      }
+    },
 
-      convertItemsToArray() {
-        this.items = Object.entries(this.items).map(([key, value]) => ({ key, value }))
-      },
+    isObject(obj) {
+      return typeof obj === 'object' && obj !== null && !Array.isArray(obj)
+    },
 
-      searchIsEmpty() {
-        return this.comboboxSearch.length == 0
-      },
+    convertItemsToArray() {
+      this.items = Object.entries(this.items).map(([key, value]) => ({ key, value }))
+    },
 
-      itemIsActive(item) {
-        return this.itemActive && this.itemActive.key == item.key
-      },
+    searchIsEmpty() {
+      return this.comboboxSearch.length === 0
+    },
 
-      itemIsSelected(item) {
-        return this.itemSelected && this.itemSelected.key == item.key
-      },
+    itemIsActive(item) {
+      return this.itemActive?.key === item.key
+    },
 
-      itemActiveNext() {
-        let index = this.itemsFiltered.indexOf(this.itemActive)
-        if (index < this.itemsFiltered.length - 1) {
-          this.itemActive = this.itemsFiltered[index + 1]
-          this.scrollToActiveItem()
-        }
-      },
+    itemIsSelected(item) {
+      return this.itemSelected?.key === item.key
+    },
 
-      itemActivePrevious() {
-        let index = this.itemsFiltered.indexOf(this.itemActive)
-        if (index > 0) {
-          this.itemActive = this.itemsFiltered[index - 1]
-          this.scrollToActiveItem()
-        }
-      },
+    navigate(direction) {
+      const index = this.itemsFiltered.indexOf(this.itemActive)
+      const newIndex = direction === 'next' ? index + 1 : index - 1
+      if (newIndex >= 0 && newIndex < this.itemsFiltered.length) {
+        this.itemActive = this.itemsFiltered[newIndex]
+        this.scrollToActiveItem()
+      }
+    },
 
-      scrollToActiveItem() {
-        let activeElement
-        let newScrollPos
-        if (this.itemActive) {
-          activeElement = document.getElementById(this.itemActive.key + '-' + this.id)
-          if (!activeElement) return
+    scrollToActiveItem() {
+      const activeElement = document.getElementById(`${this.itemActive.key}-${this.id}`)
+      if (activeElement) {
+        const listbox = this.$refs.listbox
+        const offset = activeElement.offsetTop + activeElement.offsetHeight - listbox.offsetHeight
+        listbox.scrollTop = offset > 0 ? offset : 0
+      }
+    },
 
-          newScrollPos =
-            activeElement.offsetTop + activeElement.offsetHeight - this.$refs.listbox.offsetHeight
-          if (newScrollPos > 0) {
-            this.$refs.listbox.scrollTop = newScrollPos
-          } else {
-            this.$refs.listbox.scrollTop = 0
-          }
-        }
-      },
+    searchItems() {
+      const searchTerm = this.comboboxSearch.replace(/\*/g, '').toLowerCase()
+      this.itemsFiltered = this.searchIsEmpty()
+        ? this.items
+        : this.items.filter(item => item.value.toLowerCase().includes(searchTerm))
+      this.itemActive = this.itemsFiltered[0] || null
+      this.$dispatch('combobox-input', this.itemActive)
+    },
 
-      searchItems() {
-        if (!this.searchIsEmpty()) {
-          const searchTerm = this.comboboxSearch.replace(/\*/g, '').toLowerCase()
-          this.itemsFiltered = this.items.filter(item =>
-            item.value.toLowerCase().includes(searchTerm)
-          )
-
-          this.scrollToActiveItem()
-        } else {
-          this.itemsFiltered = this.items
-        }
-        this.itemActive = this.itemsFiltered[0]
-        this.$dispatch('combobox-input', this.itemActive)
-      },
-
-      closeListbox() {
-        this.itemSelected = this.itemActive
-        this.comboboxSearch = this.itemSelected.value
-        this.listboxOpen = false
-      },
-
-      openListbox() {
-        this.listboxOpen = true
-
+    toggleListbox() {
+      this.listboxOpen = !this.listboxOpen
+      if (this.listboxOpen) {
         this.$nextTick(() => {
           this.$refs.comboboxInput.focus()
           this.scrollToActiveItem()
         })
-      },
+      }
+    },
 
-      selectOption() {
-        if (this.itemActive) {
-          this.closeListbox()
-        }
-      },
-    }
-  })
+    selectOption() {
+      if (this.itemActive) {
+        this.itemSelected = this.itemActive
+        this.comboboxSearch = this.itemSelected.value
+        this.listboxOpen = false
+      }
+    },
+
+    closeListbox() {
+      this.listboxOpen = false
+    },
+  }))
 })
