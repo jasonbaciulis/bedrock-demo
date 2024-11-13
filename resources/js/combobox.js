@@ -71,7 +71,10 @@ document.addEventListener('alpine:init', () => {
     toggleListbox() {
       this.listboxOpen = !this.listboxOpen
       if (this.listboxOpen) {
-        this.openListbox()
+        this.$nextTick(() => {
+          this.$refs.comboboxInput.focus()
+          this.scrollToActiveItem()
+        })
       }
     },
 
@@ -81,13 +84,6 @@ document.addEventListener('alpine:init', () => {
         this.comboboxSearch = this.itemSelected.value
         this.listboxOpen = false
       }
-    },
-
-    openListbox() {
-      this.$nextTick(() => {
-        this.$refs.comboboxInput.focus()
-        this.scrollToActiveItem()
-      })
     },
 
     closeListbox() {
