@@ -1,22 +1,26 @@
-<select
-    x-model="{{ model }}"
-    :class="{ 'has-error': hasError('{{ handle }}') }"
-    id="{{ handle }}"
-    name="{{ handle }}{{ multiple ?= "[]" }}"
-    :aria-invalid="hasError('{{ handle }}')"
-    {{ instructions ?= 'aria-describedby="{handle}-instructions"' }}
-    {{ multiple | attribute:multiple }}
-    @change="forgetError('{{ handle }}')"
-    x-init="{{ model }} = 'placeholder'"
->
-    {{ unless multiple }}
-        <option value="placeholder" disabled selected>
-           Select {{ handle | deslugify }}…
-        </option>
-    {{ /unless }}
-    {{ foreach:options as="value|label" }}
-        <option value="{{ value }}">
-            {{ label }}
-        </option>
-    {{ /foreach:options }}
-</select>
+{{ if searchable }}
+    {{ partial:components/form/fields/combobox }}
+{{ else }}
+    <select
+        x-model="{{ model }}"
+        :class="{ 'has-error': hasError('{{ handle }}') }"
+        id="{{ handle }}"
+        name="{{ handle }}{{ multiple ?= "[]" }}"
+        :aria-invalid="hasError('{{ handle }}')"
+        {{ instructions ?= 'aria-describedby="{handle}-instructions"' }}
+        {{ multiple | attribute:multiple }}
+        @change="forgetError('{{ handle }}')"
+        x-init="{{ model }} = 'placeholder'"
+    >
+        {{ unless multiple }}
+            <option value="placeholder" disabled selected>
+            Select {{ handle | deslugify }}…
+            </option>
+        {{ /unless }}
+        {{ foreach:options as="value|label" }}
+            <option value="{{ value }}">
+                {{ label }}
+            </option>
+        {{ /foreach:options }}
+    </select>
+{{ /if }}

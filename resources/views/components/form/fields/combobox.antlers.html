@@ -6,21 +6,14 @@
 
 <div
     x-data="combobox({
-        id: $id('combobox'),
-        items: {{ $items | to_js }},
+        id: {{ handle | to_js }},
+        items: {{ options | to_js }},
     })"
     @click.away="closeListbox()"
     @keydown.escape="closeListbox()"
     class="relative"
     {{ attributes }}
 >
-    <label
-        class="block font-bold mb-2 {{ color or 'text-gray' }} {{ ['sr-only' => hidden_label] | classes }}"
-        :id="id + '-label'"
-        for="{{ handle }}"
-    >
-        {{ label }}
-    </label>
     <div class="relative">
         <input
             x-ref="comboboxInput"
@@ -28,14 +21,15 @@
             :id="id"
             type="text"
             class="pr-12"
+            :class="{ 'has-error': hasError('{{ handle }}') }"
             role="combobox"
-            :aria-controls="id + 'items'"
-            :aria-labelledby="id + '-label'"
+            :aria-controls="id + '-items'"
             :aria-expanded="listboxOpen"
+            :aria-labelledby="id + '-label'"
             autocomplete="off"
             autocorrect="off"
             spellcheck="false"
-            placeholder="{{ placeholder }}"
+            {{ placeholder | attribute:placeholder }}
             @input.debounce.100ms="openListbox()"
             @keydown.enter.stop.prevent="selectOption()"
             @keydown.arrow-up.prevent="itemActivePrevious()"
@@ -47,11 +41,12 @@
             aria-haspopup="listbox"
             :aria-expanded="listboxOpen"
             :aria-labelledby="id + '-label'"
-            :aria-controls="id + 'items'"
+            :aria-controls="id + '-items'"
             class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
             @click="openListbox()"
         >
-            {{ svg src="chevron-up-down" class="w-5 h-5 text-gray-400" }}
+            <span class="sr-only">Toggle {{ handle | deslugify }}</span>
+            {{ svg src="chevron-up-down" class="size-5 text-gray-400" }}
         </button>
     </div>
 
@@ -62,8 +57,8 @@
         x-transition:leave="transition ease-in duration-100"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
-        :id="id + 'items'"
-        class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+        :id="id + '-items'"
+        class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none text-sm"
         role="listbox"
         @keydown.enter.stop.prevent="selectOption()"
         @keydown.arrow-up.prevent="itemActivePrevious()"
@@ -74,14 +69,14 @@
                 :id="item.key + '-' + id"
                 role="option"
                 :aria-selected="itemIsActive(item)"
-                class="relative py-2.5 pl-3 text-gray-900 cursor-default select-none pr-10"
+                class="relative py-2.5 pl-3 text-gray cursor-default select-none pr-10"
                 :class="{ 'bg-primary': itemIsActive(item) }"
                 tabindex="-1"
                 @click="selectOption()"
                 @mousemove="itemActive = item"
             >
                 <span
-                    x-text="item.title"
+                    x-text="item.value"
                     :class="{ 'font-semibold': itemIsSelected(item) }"
                     class="block truncate"
                 ></span>
@@ -91,7 +86,7 @@
                     :class="{ 'text-gray-900': itemIsActive(item), 'text-primary': !itemIsActive(item) }"
                     class="absolute inset-y-0 right-0 flex items-center pr-4"
                 >
-                    {{ svg src="check-mini" class="w-5 h-5" }}
+                    {{ svg src="heroicons-mini/check" class="size-5" }}
                 </span>
             </li>
         </template>

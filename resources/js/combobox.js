@@ -2,7 +2,6 @@ document.addEventListener('alpine:init', () => {
   Alpine.data('combobox', config => {
     return {
       items: config.items,
-      handle: config.handle,
       itemsFiltered: [],
       itemActive: null,
       itemSelected: null,
@@ -18,11 +17,6 @@ document.addEventListener('alpine:init', () => {
 
         this.searchItems()
         this.$watch('comboboxSearch', value => this.searchItems())
-
-        // Set the initial value.
-        const initValue = this[this.handle]
-        this.itemActive = this.items.find(item => item.title === initValue)
-        this.selectOption()
       },
 
       convertItemsToArray() {
@@ -78,7 +72,7 @@ document.addEventListener('alpine:init', () => {
         if (!this.searchIsEmpty()) {
           const searchTerm = this.comboboxSearch.replace(/\*/g, '').toLowerCase()
           this.itemsFiltered = this.items.filter(item =>
-            item.title.toLowerCase().includes(searchTerm)
+            item.value.toLowerCase().includes(searchTerm)
           )
 
           this.scrollToActiveItem()
@@ -91,7 +85,7 @@ document.addEventListener('alpine:init', () => {
 
       closeListbox() {
         this.itemSelected = this.itemActive
-        this.comboboxSearch = this.itemSelected.title
+        this.comboboxSearch = this.itemSelected.value
         this.listboxOpen = false
       },
 
