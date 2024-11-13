@@ -9,23 +9,18 @@
     Create the selected form and reference Alpine data in `form()`.
     Prevent submitting with POST as we will submit with AJAX.
 #}}
-<div x-cloak x-data="form()">
+<div x-cloak x-data="form({ handle: {{ form:handle | to_js }} })">
     {{ form:create
         :in="form:handle"
         id="form-{form:handle}"
         csrf="false"
         x-ref="form"
-        @submit.prevent="sendForm()"
+        @submit.prevent="submit"
         js="alpine:{form:handle}"
     }}
         <div class="w-full">
             <input type="hidden" name="_token" value="{{ csrf_token }}">
-
-            {{# Honeypot spam protection. #}}
-            <div class="hidden">
-                <label for="{{ honeypot }}">{{ honeypot | deslugify | title }}</label>
-                <input id="{{ honeypot }}" type="text" name="{{ honeypot }}" tabindex="-1" autocomplete="off"/>
-            </div>
+            {{ partial:components/form/fields/honeypot model="{form:handle}.{honeypot}" }}
 
             <div class="space-y-12 divide-y divide-gray-300">
                 {{ sections }}
@@ -59,7 +54,6 @@
                     {{ button_label }}
                 </button>
             </div>
-
         </div>
 
         <template x-if="success">

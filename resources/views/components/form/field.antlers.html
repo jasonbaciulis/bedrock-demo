@@ -20,9 +20,9 @@
                 </p>
             {{ /if }}
 
-            {{# Display error label when there is a validation error with the name field. #}}
+            {{# Display error when there is a validation error with the name field. #}}
             <template x-if="errors.{{ handle }}">
-                <p class="text-red-600 text-sm mt-2" id="error-{{ handle }}" x-text="errors.{{ handle }}"></p>
+                <p class="text-red-600 text-sm mt-2" x-text="errors.{{ handle }}"></p>
             </template>
         </div>
     </div>
