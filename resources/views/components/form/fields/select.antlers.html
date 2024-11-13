@@ -1,15 +1,16 @@
 <select
     x-model="{{ model }}"
-    :class="{ 'ring-red-600 focus-visible:ring-red-600': errors.{{ handle }}, 'text-gray-500' : !{{ handle }} }"
+    :class="{ 'has-error': hasError('{{ handle }}') }"
     id="{{ handle }}"
     name="{{ handle }}{{ multiple ?= "[]" }}"
     :aria-invalid="hasError('{{ handle }}')"
     {{ instructions ?= 'aria-describedby="{handle}-instructions"' }}
     {{ multiple | attribute:multiple }}
     @change="forgetError('{{ handle }}')"
+    x-init="{{ model }} = 'placeholder'"
 >
     {{ unless multiple }}
-        <option value disabled>
+        <option value="placeholder" disabled selected>
            Select {{ handle | deslugify }}…
         </option>
     {{ /unless }}

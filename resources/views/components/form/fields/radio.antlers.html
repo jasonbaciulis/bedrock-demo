@@ -20,7 +20,7 @@
                     name="{{ handle }}"
                     value="{{ value }}"
                     class="mt-1"
-                    :class="{ 'border-red-600 focus-visible:border-red-600': errors.{{ handle }} }"
+                    :class="{ 'has-error': hasError('{{ handle }}') }"
                     @change="forgetError('{{ handle }}')"
                 >
                 <label for="{{ value }}">

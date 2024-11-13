@@ -41,3 +41,4 @@ CSS folder structure is based on ITCSS:
 @import 'tailwindcss/utilities';
 @import 'utilities/br-hidden';
 @import 'utilities/fill-current-nested';
+@import 'utilities/has-error';

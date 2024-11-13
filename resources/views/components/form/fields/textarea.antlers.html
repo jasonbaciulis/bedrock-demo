@@ -1,6 +1,6 @@
 <textarea
     x-model="{{ model }}"
-    :class="{ 'ring-red-600 focus-visible:ring-red-600': errors.{{ handle }} }"
+    :class="{ 'has-error': hasError('{{ handle }}') }"
     id="{{ handle }}"
     name="{{ handle }}"
     rows="5"
