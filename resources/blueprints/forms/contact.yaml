@@ -161,7 +161,6 @@ tabs:
             field:
               type: text
               display: Referrer
-              instructions: "If you're okay to share, we'd love to know who was so kind to refer us to you."
               width: 50
               validate:
                 - sometimes
@@ -169,6 +168,7 @@ tabs:
                 - 'max:255'
               if:
                 referral_source: 'equals referral'
+              placeholder: "We'd love to know who was so kind"
           -
             handle: consent
             field:
