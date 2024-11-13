@@ -56,17 +56,6 @@
             <p x-cloak x-show="success" class="h5 mt-12 text-center text-green-400">
                 {{ configuration:newsletter_success_message }}
             </p>
-
-            {{ if configuration:newsletter_benefits }}
-                <ul class="shrink-0 w-full typo-sm flex flex-col md:flex-row justify-center gap-4 mt-6">
-                    {{ configuration:newsletter_benefits }}
-                        <li class="flex gap-2 items-center">
-                            {{ svg src="check-mini" class="text-primary w-5 h-5 flex-none" }}
-                            <p>{{ value }}</p>
-                        </li>
-                    {{ /configuration:newsletter_benefits }}
-                </ul>
-            {{ /if }}
         </div>
     </div>
 </div>
