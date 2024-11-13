@@ -35,14 +35,12 @@ document.addEventListener('alpine:init', () => {
             this.errors = []
             this.success = true
             this.error = false
-            this.sending = false
             this.$refs.form.reset()
 
             successHandler(json, this)
           }
 
           if (json['error']) {
-            this.sending = false
             this.error = true
             this.success = false
             this.errors = json['error']
