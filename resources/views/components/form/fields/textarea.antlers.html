@@ -4,7 +4,8 @@
     id="{{ handle }}"
     name="{{ handle }}"
     rows="5"
-    placeholder="{{ placeholder }}"
+    {{ placeholder | attribute:placeholder }}
+    {{ character_limit | attribute:maxlength }}
     :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
     aria-describedby="error-{{ handle }}"
     @change="forgetError('{{ handle }}')"
