@@ -49,6 +49,7 @@ document.addEventListener('alpine:init', () => {
           console.error(err)
         } finally {
           this.sending = false
+          this.$refs.form.scrollIntoView()
         }
       },
 
