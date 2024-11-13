@@ -3,7 +3,7 @@
     :class="{ 'ring-red-600 focus-visible:ring-red-600': errors.{{ handle }}, 'text-gray-500' : !{{ handle }} }"
     id="{{ handle }}"
     name="{{ handle }}{{ multiple ?= "[]" }}"
-    :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
+    :aria-invalid="hasError('{{ handle }}')"
     {{ instructions ?= 'aria-describedby="{handle}-instructions"' }}
     {{ multiple | attribute:multiple }}
     @change="forgetError('{{ handle }}')"

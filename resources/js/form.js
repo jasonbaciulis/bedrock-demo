@@ -54,6 +54,10 @@ document.addEventListener('alpine:init', () => {
         }
       },
 
+      hasError(name) {
+        return this.errors.hasOwnProperty(name)
+      },
+
       forgetError(name) {
         const newErrors = { ...this.errors }
         delete newErrors[name]

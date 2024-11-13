@@ -1,5 +1,5 @@
 <fieldset
-    :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
+    :aria-invalid="hasError('{{ handle }}')"
     {{ instructions ?= 'aria-describedby="{handle}-instructions"' }}
 >
     <legend class="block text-sm/6 font-semibold text-gray">{{ display }}</legend>
