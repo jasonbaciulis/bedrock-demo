@@ -1,12 +1,15 @@
-<div class="flex gap-x-4 sm:col-span-2" x-data="{ on: false }">
-    <input
-        x-model="{{ model }}"
-        type="checkbox"
-        name="{{ handle }}"
-        value="1"
-        :checked="{{ model }}"
-        class="hidden"
-    >
+<div
+    class="flex gap-x-4 sm:col-span-2"
+    x-data="{
+        on: false,
+        toggle() {
+            this.on = !this.on;
+            this.$refs.switch.focus();
+            this.{{ model }} = this.on;
+            this.forgetError('{{ handle }}');
+        }
+    }"
+>
     <div class="flex h-6 items-center">
         <button
             x-ref="switch"
@@ -16,7 +19,7 @@
             role="switch"
             aria-labelledby="{{ handle }}"
             :aria-checked="on.toString()"
-            @click="on = !on"
+            @click="toggle()"
         >
             <span class="sr-only">Toggle {{ handle | deslugify }}</span>
             <span
@@ -29,7 +32,7 @@
     <label
         class="text-sm/6 text-gray-600 prose"
         id="{{ handle }}"
-        @click="on = !on; $refs.switch.focus()"
+        @click="toggle()"
     >
         {{ inline_label }}
     </label>
