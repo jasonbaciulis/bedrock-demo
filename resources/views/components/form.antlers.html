@@ -35,7 +35,7 @@
                         {{ /if }}
 
                         <div class="site-grid gap-y-6">
-                            {{ fields }}
+                            {{ fields scope="field" }}
                                 {{ $field_container_class = switch(
                                     (width == '25') => 'md:col-span-3',
                                     (width == '33') => 'md:col-span-4',

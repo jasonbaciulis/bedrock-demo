@@ -7,6 +7,6 @@
     {{ placeholder | attribute:placeholder }}
     {{ character_limit | attribute:maxlength }}
     :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
-    aria-describedby="error-{{ handle }}"
+    {{ instructions ?= 'aria-describedby="{handle}-instructions"' }}
     @change="forgetError('{{ handle }}')"
 >{{ old }}</textarea>

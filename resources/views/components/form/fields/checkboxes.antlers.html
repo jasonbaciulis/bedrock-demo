@@ -1,8 +1,14 @@
 <fieldset
     :aria-invalid="errors.hasOwnProperty('{{ handle }}')"
-    aria-describedby="error-{{ handle }}"
+    {{ instructions ?= 'aria-describedby="{handle}-instructions"' }}
 >
     <legend class="block text-sm/6 font-semibold text-gray">{{ display }}</legend>
+
+    {{ if field:instructions }}
+        <p id="{{ field:handle }}-instructions" class="mt-1 text-sm/6 text-gray-600">
+            {{ field:instructions }}
+        </p>
+    {{ /if }}
 
     <div class="mt-4 space-y-4 text-sm/6 text-gray-600">
         {{ foreach:options as="value|label" }}

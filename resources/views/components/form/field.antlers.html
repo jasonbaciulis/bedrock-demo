@@ -1,5 +1,5 @@
 <template x-if="{{ show_field }}">
-    <div {{ container_class | attribute:class }}>
+    <div class="{{ container_class }} {{ input_type === 'hidden' ?= 'hidden' }}">
         {{ $fields_with_no_labels =
             [
                 'toggle',
@@ -14,8 +14,10 @@
         <div>
             {{ partial src="components/form/fields/{type}" model="{form:handle}.{handle}" }}
 
-            {{ if instructions }}
-                <p class="mt-3 text-sm text-gray-500">{{ instructions }}</p>
+            {{ if field:instructions && !($fields_with_no_labels | contains(type)) }}
+                <p id="{{ field:handle }}-instructions" class="mt-3 text-sm/6 text-gray-500">
+                    {{ field:instructions }}
+                </p>
             {{ /if }}
 
             {{# Display error label when there is a validation error with the name field. #}}
