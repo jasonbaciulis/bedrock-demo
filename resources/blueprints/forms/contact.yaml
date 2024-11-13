@@ -177,4 +177,4 @@ tabs:
               display: Consent
               validate:
                 - required
-                - confirmed
+                - accepted
