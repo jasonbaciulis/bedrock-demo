@@ -4,17 +4,8 @@ blueprint: pages
 title: Home
 template: default
 updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
-updated_at: 1731411311
+updated_at: 1731496567
 blocks:
-  -
-    id: m3e8vdlz
-    title: 'Project inquiry'
-    text: 'Demo contact form with sections and conditional fields.'
-    form: contact
-    type: contact
-    enabled: true
-    success_message: 'Thanks! We got your inquiry and will get back to you within 24 hours.'
-    button_label: 'Submit the inquiry'
   -
     id: ZbruxJDq
     type: hero_home
@@ -192,6 +183,15 @@ blocks:
                 text: 'We operate on a quantum schedule—updates both have and have not been made until you check the commit history.'
         type: item
         enabled: true
+  -
+    id: m3e8vdlz
+    title: 'Project inquiry'
+    text: 'Demo contact form with sections and conditional fields.'
+    form: contact
+    type: contact
+    enabled: true
+    success_message: 'Thanks! We got your inquiry and will get back to you within 24 hours.'
+    button_label: 'Submit the inquiry'
   -
     id: s343JCRf
     type: style_guide

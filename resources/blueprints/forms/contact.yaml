@@ -124,6 +124,19 @@ tabs:
         display: 'Additional details'
         fields:
           -
+            handle: timezone
+            field:
+              dictionary: timezones
+              placeholder: 'Select your timezone'
+              max_items: 1
+              type: dictionary
+              display: Timezone
+              width: 66
+              validate:
+                - sometimes
+                - string
+                - 'max:255'
+          -
             handle: current_website
             field:
               input_type: url
@@ -171,19 +184,6 @@ tabs:
               if:
                 referral_source: 'equals referral'
               placeholder: "We'd love to know who was so kind"
-          -
-            handle: timezone
-            field:
-              dictionary: timezones
-              placeholder: 'Select your timezone'
-              max_items: 1
-              type: dictionary
-              display: Timezone
-              width: 66
-              validate:
-                - sometimes
-                - string
-                - 'max:255'
           -
             handle: consent
             field:
