@@ -1,47 +1,57 @@
 document.addEventListener('alpine:init', () => {
-  Alpine.data('form', () => {
+  Alpine.data('form', ({ handle }) => {
     return {
       error: false,
       errors: [],
       sending: false,
       success: false,
 
-      async sendForm() {
+      submit() {
+        this.runFetch(this.$refs.form.action, this[handle], this.onSuccessfulSubmission)
+      },
+
+      onSuccessfulSubmission(jsonResponse, _this) {
+        // Do something with the response
+        // _this.someFunction(jsonResponse)
+      },
+
+      async runFetch(route, data, successHandler) {
         this.sending = true
 
-        // Post the form.
-        fetch(this.$refs.form.action, {
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-          },
-          method: 'POST',
-          body: new FormData(this.$refs.form),
-        })
-          .then(res => res.json())
-          .then(json => {
-            if (json['success']) {
-              this.errors = []
-              this.success = true
-              this.error = false
-              this.sending = false
-              this.$refs.form.reset()
+        try {
+          const response = await fetch(route, {
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': this.$refs.form._token.value,
+            },
+            method: 'POST',
+            body: JSON.stringify(data),
+          })
 
-              setTimeout(function () {
-                this.success = false
-              }, 4500)
-            }
-            if (json['error']) {
-              this.sending = false
-              this.error = true
-              this.success = false
-              this.errors = json['error']
-            }
-          })
-          .catch(err => {
-            err.text().then(errorMessage => {
-              this.sending = false
-            })
-          })
+          const json = await response.json()
+
+          if (json['success']) {
+            this.errors = []
+            this.success = true
+            this.error = false
+            this.sending = false
+            this.$refs.form.reset()
+
+            successHandler(json, this)
+          }
+
+          if (json['error']) {
+            this.sending = false
+            this.error = true
+            this.success = false
+            this.errors = json['error']
+          }
+        } catch (err) {
+          console.error(err)
+        } finally {
+          this.sending = false
+        }
       },
 
       forgetError(name) {
