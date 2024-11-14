@@ -1,9 +1,9 @@
 document.addEventListener('alpine:init', () => {
-  Alpine.data('newsletter', ({ route }) => {
+  Alpine.data('newsletter', ({ route, siteName }) => {
     return {
       error: false,
-      errorMessage: null,
-      loading: false,
+      errors: [],
+      sending: false,
       success: false,
       subscribed: false,
       email: '',
@@ -18,14 +18,14 @@ document.addEventListener('alpine:init', () => {
       },
 
       isSubscribed() {
-        const subscribed = localStorage.getItem('newsletter_subscribed')
+        const subscribed = localStorage.getItem(`${siteName}_newsletter_subscribed`)
         this.subscribed = !!subscribed
       },
 
       async sendForm() {
         // If hidden field is filled by bots show "successful" submission.
         if (this.$refs.honeypot.value) {
-          this.errorMessage = null
+          this.errors = []
           this.success = true
           this.error = false
           this.$el.reset()
@@ -33,13 +33,7 @@ document.addEventListener('alpine:init', () => {
           return
         }
 
-        if (!this.email) {
-          this.error = true
-          this.runShake()
-          return
-        }
-
-        this.loading = true
+        this.sending = true
 
         fetch(route, {
           headers: {
@@ -50,25 +44,25 @@ document.addEventListener('alpine:init', () => {
         })
           .then(res => res.json())
           .then(json => {
-            this.loading = false
+            this.sending = false
 
-            if (json['result'] === 'success') {
-              this.errorMessage = null
+            if (json['success']) {
+              this.errors = []
               this.success = true
               this.error = false
 
-              localStorage.setItem('newsletter_subscribed', true)
+              localStorage.setItem(`${siteName}_newsletter_subscribed`, true)
 
-              this.$el.reset()
+              this.$refs.form.reset()
             } else {
               this.error = true
               this.success = false
-              this.errorMessage = json['message']
+              this.errors = json['error']
               this.runShake()
             }
           })
           .catch(error => {
-            this.loading = false
+            this.sending = false
             this.runShake()
           })
       },
