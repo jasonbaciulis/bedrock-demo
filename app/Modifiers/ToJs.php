@@ -10,12 +10,10 @@ class ToJs extends Modifier
     /**
      * Modify a value.
      *
-     * @param mixed  $value    The value to be modified
-     * @param array  $params   Any parameters used in the modifier
-     * @param array  $context  Contextual values
+     * @param mixed  $value The value to be modified
      * @return mixed
      */
-    public function index($value, $params, $context)
+    public function index($value)
     {
         return Js::from($value)->toHtml();
     }
