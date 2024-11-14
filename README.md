@@ -130,33 +130,9 @@ DEBUGBAR_ENABLED=false
 ```
 
 ## NGINX config
-When using full caching strategy you will need to [configure server rewrite rules](https://statamic.dev/static-caching#nginx):
+When using full static caching strategy you will need to [configure server rewrite rules](https://statamic.dev/static-caching#nginx).
 
-```
-set $try_location @static;
-
-if ($request_method != GET) {
-    set $try_location @not_static;
-}
-
-if ($args ~* "live-preview=(.*)") {
-    set $try_location @not_static;
-}
-
-location / {
-    try_files $uri $try_location;
-}
-
-location @static {
-    try_files /static${uri}_$args.html $uri $uri/ /index.php?$args;
-}
-
-location @not_static {
-    try_files $uri /index.php?$args;
-}
-```
-
-To enable static resource caching add the following to your NGINX config __inside the server block__:
+To enable resource caching add the following to your NGINX config __inside the server block__:
 ```
 expires $expires;
 ```
