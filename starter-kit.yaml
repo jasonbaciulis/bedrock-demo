@@ -5,7 +5,6 @@ export_paths:
   - app/Tags
   - config/filesystems.php
   - config/app.php
-  - config/services.php
   - config/statamic/assets.php
   - config/statamic/editions.php
   - config/statamic/git.php
