@@ -10,40 +10,19 @@ document.addEventListener('alpine:init', () => {
         this.runFetch(this.$refs.form.action, this[handle], this.onSuccessfulSubmission)
       },
 
-      onSuccessfulSubmission(jsonResponse, _this) {
-        // Do something with the response
-        // _this.someFunction(jsonResponse)
-      },
-
       async runFetch(route, data, successHandler) {
         this.sending = true
 
         try {
-          const response = await fetch(route, {
-            headers: {
-              'X-Requested-With': 'XMLHttpRequest',
-              'Content-Type': 'application/json',
-              'X-CSRF-TOKEN': this.$refs.form._token.value,
-            },
-            method: 'POST',
-            body: JSON.stringify(data),
-          })
-
+          const response = await this.fetchData(route, data)
           const json = await response.json()
 
           if (json['success']) {
-            this.errors = []
-            this.success = true
-            this.error = false
-            this.$refs.form.reset()
-
-            successHandler(json, this)
+            this.handleSuccess(json, successHandler)
           }
 
           if (json['error']) {
-            this.error = true
-            this.success = false
-            this.errors = json['error']
+            this.handleError(json)
           }
         } catch (err) {
           console.error(err)
@@ -51,6 +30,33 @@ document.addEventListener('alpine:init', () => {
           this.sending = false
           this.$refs.form.scrollIntoView()
         }
+      },
+
+      async fetchData(route, data) {
+        return await fetch(route, {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': this.$refs.form._token.value,
+          },
+          method: 'POST',
+          body: JSON.stringify(data),
+        })
+      },
+
+      handleSuccess(json, successHandler) {
+        this.errors = []
+        this.success = true
+        this.error = false
+        this.$refs.form.reset()
+
+        successHandler(json, this)
+      },
+
+      handleError(json) {
+        this.error = true
+        this.success = false
+        this.errors = json['error']
       },
 
       hasError(name) {
