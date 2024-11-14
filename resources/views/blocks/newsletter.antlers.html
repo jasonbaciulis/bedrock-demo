@@ -7,7 +7,10 @@
 <div
     x-cloak
     x-show="!subscribed"
-    x-data="newsletter({ route: '{{ route:newsletter }}', siteName: '{{ site:name }}' })"
+    x-data="newsletter({
+        route: '{{ route:newsletter }}',
+        siteName: '{{ site:name | underscored }}'
+    })"
     x-init="isSubscribed()"
     class="m-section"
 >
@@ -47,7 +50,7 @@
         </form>
 
         <template x-if="success">
-            {{ partial:components/alert style="success" :text="newsletter:success_message" class="mt-10" }}
+            {{ partial:components/alert style="success" :text="newsletter:success_message" class="mx-auto max-w-md mt-10" }}
         </template>
     </div>
 </div>
