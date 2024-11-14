@@ -139,14 +139,13 @@ tabs:
           -
             handle: current_website
             field:
-              input_type: url
               placeholder: 'If you already have a website'
               autocomplete: url
               type: text
               display: 'Current website'
               validate:
                 - sometimes
-                - url
+                - active_url
           -
             handle: referral_source
             field:
