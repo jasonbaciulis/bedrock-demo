@@ -7,9 +7,10 @@ document.addEventListener('alpine:init', () => {
       success: false,
       subscribed: false,
       email: '',
+      storageKey: `${siteName}_newsletter_subscribed`,
 
       isSubscribed() {
-        const subscribed = localStorage.getItem(`${siteName}_newsletter_subscribed`)
+        const subscribed = localStorage.getItem(this.storageKey)
         this.subscribed = !!subscribed
       },
 
@@ -21,7 +22,7 @@ document.addEventListener('alpine:init', () => {
 
       handleSuccess() {
         this.setFormState({ success: true, error: false })
-        localStorage.setItem(`${siteName}_newsletter_subscribed`, true)
+        localStorage.setItem(this.storageKey, true)
         this.$refs.form.reset()
       },
 
