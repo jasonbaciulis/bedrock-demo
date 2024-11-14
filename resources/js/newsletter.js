@@ -13,13 +13,23 @@ document.addEventListener('alpine:init', () => {
         this.subscribed = !!subscribed
       },
 
+      setFormState({ success, error, errors = [] }) {
+        this.success = success
+        this.error = error
+        this.errors = errors
+      },
+
+      handleSuccess() {
+        this.setFormState({ success: true, error: false })
+        localStorage.setItem(`${siteName}_newsletter_subscribed`, true)
+        this.$refs.form.reset()
+      },
+
       async submit() {
         try {
-          // If hidden field is filled by bots show "successful" submission.
+          // If honeypot field is filled by bots show "successful" submission.
           if (this.$refs.honeypot.value) {
-            this.errors = []
-            this.success = true
-            this.error = false
+            this.setFormState({ success: true, error: false })
             this.$refs.form.reset()
 
             return
@@ -37,20 +47,12 @@ document.addEventListener('alpine:init', () => {
           const json = await response.json()
 
           if (json['success']) {
-            this.errors = []
-            this.success = true
-            this.error = false
-
-            localStorage.setItem(`${siteName}_newsletter_subscribed`, true)
-
-            this.$refs.form.reset()
+            this.handleSuccess()
           } else {
-            this.error = true
-            this.success = false
-            this.errors = json['errors']
+            this.setFormState({ success: false, error: true, errors: json['errors'] })
           }
         } catch (error) {
-          console.error(err)
+          console.error(error)
         } finally {
           this.sending = false
         }
