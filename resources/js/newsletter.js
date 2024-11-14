@@ -22,7 +22,7 @@ document.addEventListener('alpine:init', () => {
         this.subscribed = !!subscribed
       },
 
-      async sendForm() {
+      async submit() {
         // If hidden field is filled by bots show "successful" submission.
         if (this.$refs.honeypot.value) {
           this.errors = []

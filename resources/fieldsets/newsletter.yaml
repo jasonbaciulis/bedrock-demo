@@ -1,73 +1,9 @@
 title: Newsletter
 fields:
   -
-    handle: title
+    handle: form
     field:
-      input_type: text
-      antlers: false
-      display: Title
-      type: text
-      icon: text
-      listable: hidden
-      instructions_position: above
-      visibility: visible
-  -
-    handle: text
-    field: common.text_plain
-  -
-    handle: button_label
-    field:
-      input_type: text
-      antlers: false
-      display: 'Button label'
-      type: text
-      icon: text
-      width: 50
-      listable: hidden
-      instructions_position: above
-      visibility: visible
-  -
-    handle: email_placeholder
-    field:
-      input_type: text
-      antlers: false
-      display: 'Email placeholder'
-      type: text
-      icon: text
-      width: 50
-      listable: hidden
-      instructions_position: above
-      visibility: visible
-  -
-    handle: consent
-    field:
-      input_type: text
-      antlers: false
-      display: Consent
-      type: text
-      icon: text
-      listable: hidden
-      instructions_position: above
-      visibility: visible
-  -
-    handle: success_title
-    field:
-      input_type: text
-      antlers: false
-      display: 'Success title'
-      type: text
-      icon: text
-      listable: hidden
-      instructions_position: above
-      visibility: visible
-  -
-    handle: success_text
-    field:
-      input_type: text
-      antlers: false
-      display: 'Success text'
-      type: text
-      icon: text
-      listable: hidden
-      instructions_position: above
-      visibility: visible
+      type: section
+      display: Form
+      instructions: 'Form content is configured inside [Globals](/cp/globals/newsletter).'
+      hide_display: true
