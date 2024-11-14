@@ -6,12 +6,11 @@
 
 <div
     x-cloak
-    x-show="!subscribed"
+    x-show="!isSubscribed()"
     x-data="newsletter({
         route: '{{ route:newsletter }}',
         siteName: '{{ site:name | underscored }}'
     })"
-    x-init="isSubscribed()"
     class="m-section"
 >
     <div class="container">

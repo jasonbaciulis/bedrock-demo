@@ -5,13 +5,31 @@ document.addEventListener('alpine:init', () => {
       errors: [],
       sending: false,
       success: false,
-      subscribed: false,
       email: '',
       storageKey: `${siteName}_newsletter_subscribed`,
 
+      getSubscriptionStatus() {
+        return !!localStorage.getItem(this.storageKey)
+      },
+
+      setSubscriptionStatus(status) {
+        localStorage.setItem(this.storageKey, status)
+      },
+
       isSubscribed() {
-        const subscribed = localStorage.getItem(this.storageKey)
-        this.subscribed = !!subscribed
+        return this.getSubscriptionStatus()
+      },
+
+      resetForm() {
+        this.$refs.form.reset()
+      },
+
+      async fetchData(url, options) {
+        const response = await fetch(url, options)
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        return response.json()
       },
 
       setFormState({ success, error, errors = [] }) {
@@ -22,8 +40,8 @@ document.addEventListener('alpine:init', () => {
 
       handleSuccess() {
         this.setFormState({ success: true, error: false })
-        localStorage.setItem(this.storageKey, true)
-        this.$refs.form.reset()
+        this.setSubscriptionStatus(true)
+        this.resetForm()
       },
 
       async submit() {
@@ -31,21 +49,20 @@ document.addEventListener('alpine:init', () => {
           // If honeypot field is filled by bots show "successful" submission.
           if (this.$refs.honeypot.value) {
             this.setFormState({ success: true, error: false })
-            this.$refs.form.reset()
+            this.resetForm()
 
             return
           }
 
           this.sending = true
 
-          const response = await fetch(route, {
+          const json = await this.fetchData(route, {
             headers: {
               'X-Requested-With': 'XMLHttpRequest',
             },
             method: 'POST',
             body: new FormData(this.$refs.form),
           })
-          const json = await response.json()
 
           if (json['success']) {
             this.handleSuccess()
