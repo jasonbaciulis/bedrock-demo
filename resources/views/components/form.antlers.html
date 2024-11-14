@@ -32,7 +32,7 @@
                         <h3 class="h6 mb-8">{{ display }}</h3>
                     {{ /if }}
 
-                    <div class="site-grid gap-y-6">
+                    <div class="grid md:grid-cols-12 gap-y-6 gap-x-8">
                         {{ fields scope="field" }}
                             {{ $field_container_class = switch(
                                 (width == '25') => 'md:col-span-3',
