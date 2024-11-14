@@ -38,7 +38,6 @@
                     autocomplete="email"
                     placeholder="{{ newsletter:input_placeholder }}"
                     class="sm:flex-1"
-                    :class="{ 'animate-shake': shake }"
                     :disabled="sending"
                 >
                 {{ partial:components/form/fields/submit class="sm:w-auto shrink-0" :label="newsletter:button_label" }}
