@@ -7,10 +7,10 @@ document.addEventListener('alpine:init', () => {
       success: false,
 
       submit() {
-        this.runFetch(this.$refs.form.action, this[handle], this.onSuccessfulSubmission)
+        this.runFetch(this.$refs.form.action, this[handle])
       },
 
-      async runFetch(route, data, successHandler) {
+      async runFetch(route, data, callback = () => {}) {
         this.sending = true
 
         try {
@@ -18,7 +18,7 @@ document.addEventListener('alpine:init', () => {
           const json = await response.json()
 
           if (json['success']) {
-            this.handleSuccess(json, successHandler)
+            this.handleSuccess(json, callback)
           }
 
           if (json['error']) {
@@ -44,13 +44,13 @@ document.addEventListener('alpine:init', () => {
         })
       },
 
-      handleSuccess(json, successHandler) {
+      handleSuccess(json, callback) {
         this.errors = []
         this.success = true
         this.error = false
         this.$refs.form.reset()
 
-        successHandler(json, this)
+        callback(json, this)
       },
 
       handleError(json) {
