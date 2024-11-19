@@ -15,7 +15,6 @@
                 (link_type == 'tel') => 'href="tel:{{ tel }}"',
                 (link_type == 'asset') => 'href="{{ asset }}" download',
                 (link_type == 'code') => 'href="" x-data @click.prevent="{{ code }}"',
-                () => void
             )}}
             {{ target_blank ?= 'rel="noopener" target="_blank"' }}
         {{ /unless }}>
