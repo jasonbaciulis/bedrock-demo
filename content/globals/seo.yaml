@@ -58,7 +58,7 @@ data:
       -
         id: m35sg53r
         label: Analytics
-        description: 'We use data collected by Google Analytics to make our site work better.'
+        description: 'We use data collected by Google Analytics to make our site works better.'
         value: false
         consent_api: true
         name: analyticsStorage
