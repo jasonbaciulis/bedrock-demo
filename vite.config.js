@@ -10,6 +10,7 @@ export default defineConfig(({ command, mode }) => {
         input: [
           'resources/css/site.css',
           'resources/css/glide.css',
+          'resources/css/fonts.css',
           'resources/js/site.js',
           'resources/js/glide.js',
           'resources/js/form.js',
