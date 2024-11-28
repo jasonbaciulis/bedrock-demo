@@ -4,7 +4,7 @@ blueprint: pages
 title: Home
 template: default
 updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
-updated_at: 1731571623
+updated_at: 1732793366
 blocks:
   -
     id: ZbruxJDq
@@ -15,33 +15,19 @@ blocks:
     image: images/mohammad-rahmani-8qeb0fte9vw-unsplash.jpg
     buttons:
       -
-        id: m34d499g
-        button:
-          label: 'Get started'
-          show_controls: null
-          link_type: url
-          target_blank: false
-          entry: null
-          url: /
-          email: null
-          phone: null
-          asset: null
-          code: null
-          button_type: primary
+        id: KdAsb0Ad
+        label: 'Get started'
+        link_type: url
+        target_blank: false
+        url: /
+        button_type: primary
       -
-        id: m3cpiyew
-        button:
-          label: 'Learn more'
-          show_controls: null
-          link_type: url
-          target_blank: false
-          entry: null
-          url: '#faqs'
-          email: null
-          phone: null
-          asset: null
-          code: null
-          button_type: secondary
+        id: ALbCABEq
+        label: 'Learn more'
+        link_type: url
+        target_blank: false
+        url: '#faqs'
+        button_type: secondary
   -
     id: UXTueUcZ
     block_type: collapsed
