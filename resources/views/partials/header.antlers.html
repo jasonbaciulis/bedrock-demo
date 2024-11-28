@@ -1,8 +1,8 @@
 <div class="relative bg-white" x-data="{ mobileNavOpen: false }">
     <div class="container">
         <div class="flex justify-between items-center py-6 md:justify-start md:gap-x-10">
-            <div class="flex-1 lg:w-0">
-                {{ partial:components/logo class="w-44 block" }}
+            <div class="flex-1 flex">
+                {{ partial:components/logo class="w-40 h-8 inline-flex" }}
             </div>
             <div class="-mr-2 -my-2 lg:hidden">
                 <button
@@ -20,9 +20,7 @@
 
             <div class="hidden lg:flex items-center justify-end lg:flex-1 lg:w-0 gap-x-2">
                 {{ theme:header_buttons }}
-                    {{ button }}
-                        {{ partial:components/button class="btn--sm" }}
-                    {{ /button }}
+                    {{ partial:components/button class="btn--sm" }}
                 {{ /theme:header_buttons }}
             </div>
         </div>
