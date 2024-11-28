@@ -21,12 +21,13 @@ data:
         asset: null
         code: null
         button_type: text
+      label: 'Sign in'
     -
       id: k0sBnlT1
       button_label: 'Get started'
       link_type: url
       target_blank: false
-      url: '#'
+      url: '#faqs'
       button_type: primary
       button:
         label: 'Get started'
@@ -40,5 +41,6 @@ data:
         asset: null
         code: null
         button_type: primary
-  about: 'A one-person premium web development service with flat rate plans and a butter-smooth process.'
+      label: 'Get started'
+  about: 'Leap provides everything you need to jump-start your Statamic project, then gets out of your way so you can build bespoke websites.'
   copyright_text: 'Leap. All rights reserved.'
