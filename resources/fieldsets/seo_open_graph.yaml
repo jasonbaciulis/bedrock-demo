@@ -36,6 +36,6 @@ fields:
       mode: grid
       listable: false
       display: 'Twitter image'
-      instructions: 'This entries Twitter image. Defaults to global site Twitter image. Images should have an aspect ratio of 2:1 with minimum dimensions of 300x157. This image will be focal cropped to this dimension.'
+      instructions: 'This entries Twitter Summary with large image. Defaults to global site Twitter image. Images should have an aspect ratio of 2:1 with minimum dimensions of 1200 x 600px. This image will be focal cropped to this dimension.'
       instructions_position: below
       width: 50

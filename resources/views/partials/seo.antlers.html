@@ -148,7 +148,7 @@
         <meta name="twitter:description" content="{{ partial:partials/fallback-description }}">
     {{ /if }}
     {{ if twitter_image }}
-        <meta name="twitter:image" content="{{ glide:twitter_image width='1200' height='675' fit='crop_focal' absolute='true' }}">
+        <meta name="twitter:image" content="{{ glide:twitter_image width='1200' height='600' fit='crop_focal' absolute='true' }}">
         {{ asset :url="twitter_image" }}
             {{ if alt }}
                 <meta name="twitter:image:alt" content="{{ alt }}">
