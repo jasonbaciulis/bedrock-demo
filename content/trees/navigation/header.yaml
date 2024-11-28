@@ -16,7 +16,7 @@ tree:
       -
         id: 2d0bb427-8acd-4dcb-870a-ab768b48a4ed
         title: SEO
-        url: /
+        url: '#'
         data:
           icon: adjustments-horizontal
           description: 'Full SEO settings without extra addons'
@@ -37,7 +37,7 @@ tree:
       -
         id: 4eb50211-ba7c-4e4c-89ca-05d6c1bdbb22
         title: Globals
-        url: /
+        url: '#'
         data:
           icon: cog-6-tooth
           description: 'Setup for commonly used global fields'
@@ -54,14 +54,30 @@ tree:
     title: Company
     children:
       -
-        id: b0538183-16af-4de3-a6ed-6933a47bbf98
-        entry: 4f0b123a-3e5e-4129-bb07-6c1fed321438
-      -
-        id: a8f830ae-b597-492e-8ba9-1539301f02ab
-        entry: caccd3e6-bc78-451d-955e-0a4c8de34052
+        id: c36169bf-64ea-4419-8bbb-cb3f873d5975
+        title: About
+        url: '#'
       -
         id: f837eb96-50bc-4acb-86fa-6cf0ce58a46c
         entry: 506c8e50-bc23-4c16-b691-c8aca71c1258
+      -
+        id: 44d93252-4658-469c-a90d-143c1b7dd5f7
+        title: Careers
+        url: '#'
   -
-    id: c4a0c94b-8a74-4074-887c-b4a72b118f02
-    entry: 7e31df4b-f21e-4407-8398-f6ab26f08048
+    id: 59d402c8-e333-4357-9102-b2dc4861985f
+    title: Resources
+    url: /
+    children:
+      -
+        id: 70158ade-6909-4a46-bd7c-746a05f5757b
+        title: 'Help Center'
+        url: '#'
+      -
+        id: 84447889-54da-4ed9-9fe2-1de5aa5af3ba
+        title: Documentation
+        url: '#'
+  -
+    id: e839907d-05c4-4bde-9f27-174c7f610904
+    title: Pricing
+    url: '#'

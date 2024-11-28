@@ -4,41 +4,44 @@ tree:
     title: Product
     children:
       -
-        id: 6367fb0e-3016-497d-8673-b4244f00b52f
-        entry: 6c1e2aab-5a96-4afb-a1b0-f3ab04b2bc24
+        id: beb0ec14-bc6e-44d3-99a8-91a6ddc72372
+        title: Blocks
+        url: '#faqs'
       -
-        id: 39c0ca99-b391-46a8-91d2-25f05ff5a124
-        entry: a6683748-aa6b-46ed-937b-4fe5bfb79ea5
+        id: d2af953f-3b02-4a34-af90-5d3c96218a6c
+        title: Components
+        url: '#components'
+      -
+        id: 519f57d4-f444-4d30-9f1b-413daa367b64
+        title: Styleguide
+        url: '#style-guide'
   -
     id: 522da2da-89bb-407f-a491-b12c03714125
     title: Company
     children:
       -
-        id: a9dc6fb9-ba3b-48b8-8126-57a872e618ea
-        entry: 4f0b123a-3e5e-4129-bb07-6c1fed321438
+        id: de58fcc1-fe3f-4b89-855b-b96423b87c64
+        title: Terms
+        url: '#'
       -
-        id: 9aefdf79-7d83-4bcb-81ef-54e0db4ffc31
-        entry: caccd3e6-bc78-451d-955e-0a4c8de34052
-      -
-        id: b4065f61-cc4d-49ab-8dc2-6a2b11bdf516
-        entry: 5f35744d-b895-4dbe-89b7-1962b4924406
-      -
-        id: db9091a5-6cb6-4556-a94b-85ae66bd33bd
-        entry: 7754840b-b1cf-4eb6-9e7f-7a2388dec84f
-      -
-        id: 0d45cae9-e4a9-4f97-b168-4d90202359a6
-        entry: 7e31df4b-f21e-4407-8398-f6ab26f08048
+        id: 95168561-8954-407f-b2c2-691d56231500
+        title: Privacy
+        url: '#'
   -
     id: 4a3e3ee2-331b-4fad-8293-af6ef3089cd9
     title: Resources
     children:
       -
+        id: 59596fc1-dbbf-40bf-874c-289334b67bd4
+        title: About
+        url: '#'
+      -
+        id: 32bc32da-5c3d-43ea-82a7-f8ef2ce8f44d
+        title: Careers
+        url: '#'
+      -
         id: 71c00076-7635-45a0-a880-c1efccc55d08
         entry: 506c8e50-bc23-4c16-b691-c8aca71c1258
-      -
-        id: 4d91b176-30bc-486a-aca8-cba709e8a74d
-        entry: a922b443-236d-4257-a456-76115c1fc75e
-        title: 'Customer stories'
   -
     id: 6168f495-da0a-4563-9a1e-2e4630054508
     title: Support
@@ -46,8 +49,8 @@ tree:
       -
         id: 20c48043-51f3-47ef-965a-b58ee8fc97f3
         title: Documentation
-        url: /link-to-docs
+        url: '#'
       -
         id: a41aa20a-e854-4d35-98ad-0c8de510ba02
         title: 'Help Center'
-        url: /external-link
+        url: '#'
