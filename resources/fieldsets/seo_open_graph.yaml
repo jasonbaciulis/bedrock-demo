@@ -8,14 +8,16 @@ fields:
       localizable: true
       listable: false
       display: 'Social title'
-      instructions: 'This entries OG title, defaults to custom SEO title and title.'
+      instructions: 'This entries OG title, defaults to custom SEO title and title. Recommended max 70 chars.'
+      character_limit: 70
   -
     handle: og_description
     field: common.text_plain
     config:
       listable: false
       display: 'Social description'
-      instructions: 'This entries OG description, defaults to meta description.'
+      instructions: 'This entries OG description, defaults to meta description. Recommended max 200 chars.'
+      character_limit: 200
       width: 100
   -
     handle: og_image
