@@ -134,7 +134,7 @@
 {{# Twitter #}}
 {{ if twitter_image or seo:twitter_image }}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="{{ seo:twitter_handle }}">
+    <meta name="twitter:site" content="{{ seo:twitter_handle | ensure_left('@') }}">
     {{ if og_title }}
         <meta name="twitter:title" content="{{ og_title }}">
     {{ else }}
@@ -155,7 +155,7 @@
             {{ /if }}
         {{ /asset }}
     {{ elseif seo:twitter_image }}
-        <meta name="twitter:image" content="{{ glide:seo:twitter_image width='1200' height='675' fit='crop_focal' absolute='true' }}">
+        <meta name="twitter:image" content="{{ glide:seo:twitter_image width='1200' height='600' fit='crop_focal' absolute='true' }}">
         {{ asset :url="seo:twitter_image" }}
             {{ if alt }}
                 <meta name="twitter:image:alt" content="{{ alt }}">
