@@ -5,10 +5,10 @@ export_paths:
   - app/Tags
   - config/filesystems.php
   - config/app.php
+  - config/queue.php
   - config/statamic/assets.php
   - config/statamic/editions.php
   - config/statamic/git.php
-  - config/statamic/queue.php
   - content
   - public/assets
   - public/favicon
@@ -32,5 +32,4 @@ export_paths:
   - tailwind.config.typography.js
   - vite.config.js
 dependencies:
-  php: ^8.3
   jonassiewertsen/statamic-jobs: ^1.5
