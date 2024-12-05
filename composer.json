@@ -10,6 +10,7 @@
     ],
     "require": {
         "php": "^8.2",
+        "jonassiewertsen/statamic-jobs": "^1.5",
         "laravel/framework": "^11",
         "laravel/tinker": "^2.9",
         "statamic/cms": "^5.0"
