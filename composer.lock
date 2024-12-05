@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c59636e5eacf082b292dd8cac59d3dee",
+    "content-hash": "ce260fea46822eed30dde74a14746164",
     "packages": [
         {
             "name": "ajthinking/archetype",
@@ -4627,6 +4627,55 @@
                 }
             ],
             "time": "2024-11-27T17:41:48+00:00"
+        },
+        {
+            "name": "statamic/ssg",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/statamic/ssg.git",
+                "reference": "4ecf35560a2e608abaa3ec5c0a329d11c40a1f87"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/statamic/ssg/zipball/4ecf35560a2e608abaa3ec5c0a329d11c40a1f87",
+                "reference": "4ecf35560a2e608abaa3ec5c0a329d11c40a1f87",
+                "shasum": ""
+            },
+            "require": {
+                "statamic/cms": "^5.41"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.28 || ^9.6.1",
+                "phpunit/phpunit": "^10.5.35"
+            },
+            "suggest": {
+                "spatie/fork": "Required to generate pages concurrently (^0.0.4)."
+            },
+            "type": "statamic-addon",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Statamic\\StaticSite\\ServiceProvider"
+                    ]
+                },
+                "statamic": {
+                    "name": "Static Site Generator",
+                    "description": "Generate static sites with Statamic."
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Statamic\\StaticSite\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Generate static sites with Statamic.",
+            "support": {
+                "issues": "https://github.com/statamic/ssg/issues",
+                "source": "https://github.com/statamic/ssg/tree/3.1.0"
+            },
+            "time": "2024-11-29T14:55:24+00:00"
         },
         {
             "name": "statamic/stringy",
