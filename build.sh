@@ -1,16 +1,11 @@
 #!/bin/sh
 
-# Update package list and install prerequisites
-yum update -y
-yum install -y epel-release
-yum install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
-
-# Enable PHP 8.2 module
-yum module reset php -y
-yum module enable php:remi-8.2 -y
-
-# Install PHP 8.2 and required extensions
-yum install -y wget gnupg php php-common php-curl php-mbstring php-gd php-gettext php-bcmath php-json php-xml php-fpm php-intl php-zip php-imap
+# Install PHP & WGET
+yum install -y amazon-linux-extras
+amazon-linux-extras enable php8.2
+yum clean metadata
+yum install php php-{common,curl,mbstring,gd,gettext,bcmath,json,xml,fpm,intl,zip,imap}
+yum install wget
 
 # INSTALL COMPOSER
 EXPECTED_CHECKSUM="$(wget -q -O - https://composer.github.io/installer.sig)"
