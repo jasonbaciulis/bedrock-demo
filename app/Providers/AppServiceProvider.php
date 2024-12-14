@@ -25,12 +25,5 @@ class AppServiceProvider extends ServiceProvider
         //     'resources/js/cp.js',
         //     'resources/css/cp.css',
         // ]);
-
-        SSG::after(function () {
-            $from = public_path('img');
-            $to = config('statamic.ssg.destination') . '/img';
-
-            app('files')->copyDirectory($from, $to);
-        });
     }
 }
