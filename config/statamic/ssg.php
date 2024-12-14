@@ -43,6 +43,7 @@ return [
         public_path('social_images') => 'social_images',
         public_path('favicon') => 'favicon',
         public_path('robots.txt') => 'robots.txt',
+        base_path('vendor/statamic/frontend/js/helpers.js') => 'helpers.js',
     ],
 
     'symlinks' => [
