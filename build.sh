@@ -32,3 +32,6 @@ php composer.phar install
 
 # GENERATE APP KEY
 php artisan key:generate
+
+# BUILD STATIC SITE
+php please ssg:generate
