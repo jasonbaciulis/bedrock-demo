@@ -8,8 +8,8 @@
 // Default: https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/config.full.js
 //
 
-const defaultTheme = require('tailwindcss/defaultTheme')
-const colors = require('tailwindcss/colors')
+import defaultTheme from 'tailwindcss/defaultTheme'
+import colors from 'tailwindcss/colors'
 
 export default {
   presets: [],
