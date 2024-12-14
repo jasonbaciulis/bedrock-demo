@@ -1,13 +1,21 @@
 #!/bin/sh
 
 # Update package list and install prerequisites
-apk update
-apk add --no-cache wget gnupg php8 php8-common php8-curl php8-mbstring php8-gd php8-gettext php8-bcmath php8-json php8-xml php8-fpm php8-intl php8-zip php8-imap
+yum update -y
+yum install -y epel-release
+yum install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+
+# Enable PHP 8.2 module
+yum module reset php -y
+yum module enable php:remi-8.2 -y
+
+# Install PHP 8.2 and required extensions
+yum install -y wget gnupg php php-common php-curl php-mbstring php-gd php-gettext php-bcmath php-json php-xml php-fpm php-intl php-zip php-imap
 
 # INSTALL COMPOSER
 EXPECTED_CHECKSUM="$(wget -q -O - https://composer.github.io/installer.sig)"
-php8 -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-ACTUAL_CHECKSUM="$(php8 -r "echo hash_file('sha384', 'composer-setup.php');")"
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
 
 if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]
 then
@@ -16,11 +24,11 @@ then
     exit 1
 fi
 
-php8 composer-setup.php --quiet
+php composer-setup.php --quiet
 rm composer-setup.php
 
 # INSTALL COMPOSER DEPENDENCIES
-php8 composer.phar install
+php composer.phar install
 
 # GENERATE APP KEY
-php8 artisan key:generate
+php artisan key:generate
