@@ -3,10 +3,9 @@
 //--------------------------------------------------------------------------
 //
 
-const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
 
-module.exports = {
+export default {
   theme: {
     extend: {
       colors: {
