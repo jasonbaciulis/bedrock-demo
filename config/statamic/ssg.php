@@ -116,5 +116,5 @@ return [
     |
     */
 
-    'failures' => false, // 'errors' or 'warnings'
+    'failures' => 'errors', // 'errors' or 'warnings'
 ];
