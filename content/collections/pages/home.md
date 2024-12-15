@@ -19,7 +19,7 @@ blocks:
         label: 'Get started'
         link_type: url
         target_blank: false
-        url: /
+        url: https://statamic.com/starter-kits/jasonbaciulis/leap
         button_type: primary
       -
         id: ALbCABEq
