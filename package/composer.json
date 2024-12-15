@@ -1,0 +1,9 @@
+{
+    "name": "jasonbaciulis/leap",
+    "extra": {
+        "statamic": {
+            "name": "Leap",
+            "description": "Statamic starter kit for developers"
+        }
+    }
+}
