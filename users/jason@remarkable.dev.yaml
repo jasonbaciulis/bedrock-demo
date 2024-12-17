@@ -9,3 +9,10 @@ preferences:
   collections:
     pages:
       after_save: continue_editing
+    posts:
+      columns:
+        - title
+        - slug
+        - categories
+        - date
+        - status
