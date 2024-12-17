@@ -15,6 +15,9 @@ tabs:
           -
             handle: image
             field: common.image
+            config:
+              validate:
+                - required
           -
             handle: excerpt
             field: common.text_plain
