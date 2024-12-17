@@ -28,9 +28,6 @@ tabs:
               width: 50
           -
             import: article
-          -
-            handle: text_basic
-            field: common.text_basic
   seo:
     display: SEO
     sections:
