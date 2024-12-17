@@ -16,3 +16,4 @@ preferences:
         - categories
         - date
         - status
+      after_save: continue_editing
