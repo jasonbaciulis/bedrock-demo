@@ -4,7 +4,7 @@
             {{ if extension === 'svg' || extension === 'gif' }}
                 <img
                     {{ if cover }}
-                        class="object-cover w-full h-full {{ class }}"
+                        class="object-cover size-full {{ class }}"
                         style="object-position: {{ focus | background_position }}"
                     {{ else }}
                         class="{{ class }}"
@@ -26,7 +26,7 @@
                     {{ glide:url :width='w' :height='h' fit='crop_focal' }} 1x,
                     {{ glide:url :width='w' :height='h' fit='crop_focal' dpr='2' }} 2x" type="{{ image.mime_type }}">
                 <img {{ if cover }}
-                        class="object-cover w-full h-full {{ class }}"
+                        class="object-cover size-full {{ class }}"
                         style="object-position: {{ focus | background_position }}"
                     {{ else }}
                         class="{{ class }}"
@@ -53,7 +53,7 @@
                         {{ glide:url preset='lg' }} 1x,
                         {{ glide:url preset='lg' dpr='2' }} 2x" type="{{ image.mime_type }}">
                 <img {{ if cover }}
-                        class="object-cover w-full h-full {{ class }}"
+                        class="object-cover size-full {{ class }}"
                         style="object-position: {{ focus | background_position }}"
                     {{ else }}
                         class="{{ class }}"
