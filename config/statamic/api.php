@@ -14,12 +14,10 @@ return [
     |
     */
 
-    'enabled' => env('STATAMIC_API_ENABLED', true),
+    'enabled' => env('STATAMIC_API_ENABLED', false),
 
     'resources' => [
-        'collections' => [
-            'testimonials' => true,
-        ],
+        'collections' => false,
         'navs' => false,
         'taxonomies' => false,
         'assets' => false,
