@@ -17,3 +17,8 @@ preferences:
         - date
         - status
       after_save: continue_editing
+    testimonials:
+      columns:
+        - title
+        - avatar
+        - status
