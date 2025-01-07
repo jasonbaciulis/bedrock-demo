@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | API
@@ -15,10 +14,12 @@ return [
     |
     */
 
-    'enabled' => env('STATAMIC_API_ENABLED', false),
+    'enabled' => env('STATAMIC_API_ENABLED', true),
 
     'resources' => [
-        'collections' => false,
+        'collections' => [
+            'testimonials' => true,
+        ],
         'navs' => false,
         'taxonomies' => false,
         'assets' => false,
@@ -83,5 +84,4 @@ return [
     'excluded_keys' => [
         //
     ],
-
 ];
