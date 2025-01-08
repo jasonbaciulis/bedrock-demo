@@ -40,7 +40,6 @@ return [
     'copy' => [
         public_path('build') => 'build',
         public_path('assets') => 'assets',
-        public_path('social_images') => 'social_images',
         public_path('favicon') => 'favicon',
         public_path('robots.txt') => 'robots.txt',
         public_path('vendor/statamic/frontend') => 'vendor/statamic/frontend',
