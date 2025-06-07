@@ -17,6 +17,7 @@ CSS folder structure is based on ITCSS:
 
 @config "../../tailwind.config.js";
 @import 'tailwindcss';
+@source "../views";
 
 /* Elements */
 @import './elements/images.css';
