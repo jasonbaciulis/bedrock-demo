@@ -12,7 +12,6 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 import colors from 'tailwindcss/colors'
 
 export default {
-  presets: [],
   theme: {
     extend: {
       colors: {
