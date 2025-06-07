@@ -15,8 +15,10 @@ CSS folder structure is based on ITCSS:
 @see https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/
 */
 
-/* Elements */
+@config "../../tailwind.config.js";
 @import 'tailwindcss';
+
+/* Elements */
 @import './elements/images.css';
 @import './elements/inputs.css';
 @import './elements/links.css';
