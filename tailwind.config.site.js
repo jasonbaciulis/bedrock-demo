@@ -9,7 +9,7 @@
 //
 
 import defaultTheme from 'tailwindcss/defaultTheme'
-import colors from 'tailwindcss/colors'
+// import colors from 'tailwindcss/colors'
 
 export default {
   theme: {
