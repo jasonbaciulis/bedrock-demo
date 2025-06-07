@@ -1,7 +1,9 @@
-q {
-  quotes: '“ ”';
-}
+@layer base {
+  q {
+    quotes: '“ ”';
+  }
 
-strong {
-  @apply font-bold;
+  strong {
+    @apply font-bold;
+  }
 }
