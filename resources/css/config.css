@@ -69,7 +69,7 @@
   --color-transparent: transparent;
 
   /* Font families */
-  --font-family-sans: 'Mona Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Mona Sans', ui-sans-serif, system-ui, sans-serif;
 
   /* Font sizes */
   --text-xs: 0.75rem;
