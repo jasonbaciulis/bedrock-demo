@@ -1,8 +1,6 @@
 <a href="{{ url }}" class="group relative flex items-center lg:items-start gap-x-6 rounded-lg -mx-3 lg:m-0 p-3 lg:p-4 transition-colors hover:bg-gray-50" {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}>
     {{ if icon }}
-        <div class="lg:mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 transition-colors group-hover:bg-white">
-            {{ svg :src="icon" class="size-6 text-gray-600 transition-colors group-hover:text-primary" }}
-        </div>
+        {{ svg :src="icon" class="lg:mt-1 size-6 text-gray-600 transition-colors group-hover:text-primary" }}
     {{ /if }}
     <div>
         <span class="font-semibold text-gray" >
