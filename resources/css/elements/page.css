@@ -2,4 +2,8 @@
   html {
     @apply scroll-smooth;
   }
+
+  hr {
+    @apply border-gray-200;
+  }
 }
