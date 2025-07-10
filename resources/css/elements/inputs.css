@@ -15,19 +15,19 @@
   [type='email'],
   [type='password'],
   [type='tel'] {
-    @apply text-gray focus:ring-primary block w-full rounded-lg border-0 px-4 py-2.5 text-sm/6 shadow-sm ring-1 ring-gray-300 ring-inset focus:ring-2 focus:ring-inset;
+    @apply text-gray focus:ring-primary block w-full rounded-lg border-0 px-4 py-2.5 text-sm/6 shadow-xs ring-1 ring-gray-300 ring-inset focus:ring-2 focus:ring-inset;
   }
 
   select {
-    @apply text-gray focus:ring-primary w-full cursor-pointer truncate rounded-lg border-0 px-4 py-2.5 pr-10 text-sm/6 shadow-sm ring-1 ring-gray-300 ring-inset invalid:text-gray-500 focus:ring-2 focus:ring-inset;
+    @apply text-gray focus:ring-primary w-full cursor-pointer truncate rounded-lg border-0 px-4 py-2.5 pr-10 text-sm/6 shadow-xs ring-1 ring-gray-300 ring-inset invalid:text-gray-500 focus:ring-2 focus:ring-inset;
   }
 
   [type='checkbox'],
   [type='radio'] {
-    @apply text-primary focus-visible:ring-primary size-4 cursor-pointer rounded border border-gray-300 shadow-sm focus:ring-0 focus:ring-offset-0 focus-visible:ring-2 focus-visible:ring-offset-2;
+    @apply text-gray focus-visible:ring-gray size-4 cursor-pointer rounded border border-gray-300 shadow-xs focus:ring-0 focus:ring-offset-0 focus-visible:ring-2 focus-visible:ring-offset-2;
 
     &:checked {
-      @apply border-primary;
+      @apply border-gray;
     }
 
     &:disabled {
