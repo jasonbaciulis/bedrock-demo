@@ -5,6 +5,6 @@
 >
     <span :class="{ 'invisible' : sending }">{{ label }}</span>
     <span x-cloak x-show="sending" class="absolute inset-0 flex justify-center items-center">
-        {{ partial:elements/spinner }}
+        {{ partial:components/spinner }}
     </span>
 </button>
