@@ -227,13 +227,13 @@
                     <dd x-data="{ activeTab: 1 }">
                         <div class="flex gap-4">
                             {{ loop times="3" }}
-                                {{ partial:components/tab }}
+                                {{ partial:components/tab-trigger }}
                                     {{ slot:attributes }}
                                         class="btn btn--sm"
                                         :class="{ 'bg-gray-100': activeTab == {{ count }} }"
                                     {{ /slot:attributes }}
                                     Tab {{ count }}
-                                {{ /partial:components/tab }}
+                                {{ /partial:components/tab-trigger }}
                             {{ /loop }}
                         </div>
 
