@@ -35,7 +35,7 @@ export default defineConfig(({ command, mode }) => {
       open: env.APP_URL,
     },
     define: {
-      'process.env': env,
+      appName: JSON.stringify(env.APP_NAME),
     },
   }
 })
