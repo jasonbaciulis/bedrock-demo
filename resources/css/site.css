@@ -4,9 +4,6 @@ for highly reusable UI elements we create BEM CSS components.
 We think this approach is faster and more maintainable and eliminates the
 need to create/import a bunch of Antlers partials with a single HTML tag.
 
-Also, we don't use tailwind.config.js to create components because
-we prefer to write CSS in CSS because that speeds up our workflow.
-
 Introduction to BEM:
 @see http://getbem.com/introduction/
 @see https://cssguidelin.es/#bem-like-naming
@@ -15,9 +12,10 @@ CSS folder structure is based on ITCSS:
 @see https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/
 */
 
-@config "../../tailwind.config.js";
+/* Configs */
 @import 'tailwindcss';
-@source "../views";
+@import './config.css';
+@import './typography.css';
 
 /* Elements */
 @import './elements/images.css';
