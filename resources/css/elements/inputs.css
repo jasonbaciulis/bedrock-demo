@@ -1,4 +1,8 @@
 @layer components {
+  label {
+    @apply cursor-pointer select-none;
+  }
+
   input,
   textarea {
     @apply placeholder:text-gray-400;
@@ -20,7 +24,7 @@
 
   [type='checkbox'],
   [type='radio'] {
-    @apply text-primary focus-visible:ring-primary size-4 rounded border border-gray-300 shadow-sm focus:ring-0 focus:ring-offset-0 focus-visible:ring-2 focus-visible:ring-offset-2;
+    @apply text-primary focus-visible:ring-primary size-4 cursor-pointer rounded border border-gray-300 shadow-sm focus:ring-0 focus:ring-offset-0 focus-visible:ring-2 focus-visible:ring-offset-2;
 
     &:checked {
       @apply border-primary;
