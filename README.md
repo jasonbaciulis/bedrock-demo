@@ -8,10 +8,9 @@ Before running Statamic, you should ensure that your local machine has PHP and [
 ## Installation instructions
 
 1. Install composer dependencies: `composer install`
-2. Install NPM dependencies: `yarn`
-3. Run assets bundler with HMR: `yarn dev`
-4. Create a Statamic user: `php please make:user`
-5. Start Laravel's local development server: `php artisan serve`
+2. Install NPM dependencies: `npm install`
+3. Create a Statamic user: `php please make:user`
+4. Start Laravel's local dev server, npm run dev, start queue: `composer run dev`
 
 Once you have started the Artisan development server, the website will be accessible in your web browser at [http://localhost:8000](http://localhost:8000). Head to [http://localhost:8000/cp](http://localhost:8000/cp) and use your email address and password to sign into the Statamic control panel.
 
@@ -24,11 +23,8 @@ Once you have started the Artisan development server, the website will be access
 - [Collaboration](https://statamic.com/addons/statamic/collaboration) - Statamic Addon for realtime collaboration and multi-user authoring.
 
 ## Tailwind CSS config
-`tailwind.config.js` imports multiple Tailwind CSS config files each responsible for various parts of the website.
-
-- `tailwind.config.preset.js` - our default config.
-- `tailwind.config.site.js` - site's config. This file would typically include all custom styles and config for the project.
-- `tailwind.config.typography.js` - the Tailwind CSS typography config for customizing the prose class.
+- `config.css` - site's config. This file would typically include custom config for the project.
+- `typography.css` - the Tailwind CSS typography config for customizing the prose class.
 
 ## CLI commands
 There is a nice list of custom scripts available in the command line to make a developer's job easier and more enjoyable.
