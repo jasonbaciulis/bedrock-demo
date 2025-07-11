@@ -1,7 +1,6 @@
 document.addEventListener('alpine:init', () => {
   Alpine.data('combobox', config => ({
     id: config.id || 'combobox',
-    emptyOptionsMessage: config.emptyOptionsMessage || 'No results match your search.',
     items: config.items,
     value: config.value || null,
     placeholder: config.placeholder || 'Select an option…',

@@ -92,11 +92,9 @@
                     Loading more…
                 </li>
 
-                <li
-                    x-show="!itemsFiltered.length && comboboxSearch.length > 0"
-                    x-text="emptyOptionsMessage"
-                    class="py-6 text-center text-sm"
-                ></li>
+                <li x-show="!itemsFiltered.length && comboboxSearch.length > 0" class="py-6 text-center text-sm">
+                    No results match your search.
+                </li>
             </ul>
         </div>
     </div>
