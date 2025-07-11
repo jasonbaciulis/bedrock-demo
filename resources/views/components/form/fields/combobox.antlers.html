@@ -67,7 +67,7 @@
             class="max-h-60 overflow-auto py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
             role="listbox"
         >
-            <template x-for="(item, index) in itemsFiltered" :key="`item-${index}`">
+            <template x-for="(item, index) in itemsShown" :key="`item-${index}`">
                 <li
                     :id="`${id}-option-${item.key}`"
                     role="option"
@@ -87,6 +87,8 @@
                     </span>
                 </li>
             </template>
+
+            <li x-show="itemsFiltered.length > itemsLoaded" x-intersect="loadMoreItems()" class="p-2 text-center text-xs text-gray-400">Loading more...</li>
 
             <li
                 x-show="!itemsFiltered.length"

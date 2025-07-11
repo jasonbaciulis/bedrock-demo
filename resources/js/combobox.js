@@ -7,6 +7,9 @@ document.addEventListener('alpine:init', () => {
     placeholder: config.placeholder || 'Select an option...',
 
     itemsFiltered: [],
+    itemsShown: [],
+    itemsLoaded: 10,
+
     itemActive: null,
     itemSelected: null,
     comboboxSearch: '',
@@ -62,6 +65,11 @@ document.addEventListener('alpine:init', () => {
       this.items = Object.entries(this.items).map(([key, value]) => ({ key, value }))
     },
 
+    loadMoreItems() {
+      this.itemsLoaded += 25
+      this.itemsShown = this.itemsFiltered.slice(0, this.itemsLoaded)
+    },
+
     searchIsEmpty() {
       return this.comboboxSearch.length === 0
     },
@@ -112,6 +120,8 @@ document.addEventListener('alpine:init', () => {
         : this.items.filter(item =>
             item.value.toLowerCase().includes(this.comboboxSearch.toLowerCase())
           )
+
+      this.itemsShown = this.itemsFiltered.slice(0, this.itemsLoaded)
 
       this.itemActive = this.itemsFiltered.includes(this.itemSelected)
         ? this.itemSelected
