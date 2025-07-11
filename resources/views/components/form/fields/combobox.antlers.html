@@ -44,11 +44,11 @@
     >
         <div class="flex h-full w-full flex-col overflow-hidden rounded-md">
             <div class="flex items-center border-b px-3">
-                {{ svg src="heroicons-outline/magnifying-glass" class="mr-2 h-4 w-4 shrink-0 opacity-50" }}
+                {{ svg src="heroicons-outline/magnifying-glass" class="mr-2 size-4 shrink-0 opacity-50" }}
                 <input
                     x-ref="comboboxInput"
                     x-model="comboboxSearch"
-                    placeholder="Search..."
+                    placeholder="Search…"
                     class="flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
                     role="combobox"
                     :aria-controls="`${id}-items`"
@@ -71,21 +71,19 @@
                         :id="`${id}-option-${item.key}`"
                         role="option"
                         :aria-selected="itemIsSelected(item)"
-                        class="relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none"
+                        class="relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none"
                         :class="{ 'bg-accent text-accent-foreground': itemIsActive(item) }"
                         @click="selectOption(item)"
                         @mousemove="setActiveItem(item)"
                     >
-                        <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-                            <span :class="{ 'opacity-100': itemIsSelected(item), 'opacity-0': !itemIsSelected(item) }">
-                                {{ svg src="heroicons-mini/check" class="h-4 w-4" }}
-                            </span>
-                        </span>
-                        <span class="block truncate" x-text="item.value"></span>
+                        <span x-text="item.value"></span>
+                        {{ svg src="heroicons-mini/check" class="ml-auto size-4 pointer-events-none shrink-0 text-muted-foreground" x-show="itemIsSelected(item)" }}
                     </li>
                 </template>
 
-                <li x-show="itemsFiltered.length > itemsLoaded" x-intersect.once="loadMoreItems()" class="p-2 text-center text-xs text-muted-foreground">Loading more…</li>
+                <li x-show="itemsFiltered.length > itemsLoaded" x-intersect="loadMoreItems()" class="px-2 py-1.5 text-xs text-muted-foreground">
+                    Loading more…
+                </li>
 
                 <li
                     x-show="!itemsFiltered.length && comboboxSearch.length > 0"
