@@ -33,6 +33,7 @@
         x-ref="popover"
         x-show="listboxOpen"
         x-cloak
+        x-trap="listboxOpen"
         @click.away="closeListbox()"
         x-transition:enter="transition ease-out duration-100"
         x-transition:enter-start="opacity-0 scale-95"
@@ -43,17 +44,21 @@
         class="absolute z-50 mt-1 w-full bg-popover text-popover-foreground shadow-md rounded-md border origin-top p-0 outline-none"
     >
         <div class="flex h-full w-full flex-col overflow-hidden rounded-md">
-            <div class="flex items-center border-b px-3">
-                {{ svg src="heroicons-outline/magnifying-glass" class="mr-2 size-4 shrink-0 opacity-50" }}
+            <div class="flex h-9 items-center gap-2 border-b px-3">
+                {{ svg src="heroicons-outline/magnifying-glass" class="size-4 shrink-0 opacity-50" }}
                 <input
+                    :id="`${id}-search`"
                     x-ref="comboboxInput"
                     x-model="comboboxSearch"
                     placeholder="Search…"
-                    class="flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                    class="placeholder:text-muted-foreground flex w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50 h-9 border-none ring-0"
                     role="combobox"
                     :aria-controls="`${id}-items`"
                     :aria-expanded="listboxOpen"
                     autocomplete="off"
+                    autocorrect="off"
+                    spellcheck="false"
+                    aria-autocomplete="list"
                     @keydown.enter.stop.prevent="selectOption()"
                     @keydown.arrow-up.prevent="navigate('previous')"
                     @keydown.arrow-down.prevent="navigate('next')"
@@ -64,6 +69,7 @@
                 x-ref="listbox"
                 :id="`${id}-items`"
                 class="max-h-[300px] overflow-y-auto overflow-x-hidden p-1"
+                tabindex="-1"
                 role="listbox"
             >
                 <template x-for="(item, index) in itemsShown" :key="`item-${index}`">
