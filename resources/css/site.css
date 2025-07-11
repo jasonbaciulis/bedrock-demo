@@ -18,6 +18,7 @@ CSS folder structure is based on ITCSS:
 @import './typography.css';
 
 /* Elements */
+@import './elements/borders.css';
 @import './elements/images.css';
 @import './elements/inputs.css';
 @import './elements/links.css';
