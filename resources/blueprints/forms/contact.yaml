@@ -131,7 +131,7 @@ tabs:
               max_items: 1
               type: dictionary
               display: Timezone
-              width: 66
+              width: 50
               validate:
                 - sometimes
                 - string
