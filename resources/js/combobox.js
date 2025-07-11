@@ -4,7 +4,7 @@ document.addEventListener('alpine:init', () => {
     emptyOptionsMessage: config.emptyOptionsMessage || 'No results match your search.',
     items: config.items,
     value: config.value || null,
-    placeholder: config.placeholder || 'Select an option...',
+    placeholder: config.placeholder || 'Select an option…',
 
     itemsFiltered: [],
     itemsShown: [],

@@ -9,7 +9,7 @@
         id: '{{ handle }}',
         items: {{ options | to_js }},
         value: '{{ old_value ?? value }}',
-        placeholder: '{{ placeholder ?? 'Select a value...' }}'
+        placeholder: '{{ placeholder ?? 'Select a value…' }}'
     })"
     @keydown.escape.stop.prevent="closeListbox()"
     class="relative"
@@ -20,17 +20,17 @@
     <button
         @click="toggleListbox()"
         type="button"
-        class="relative w-full cursor-default rounded-md bg-white py-2 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-600 sm:text-sm sm:leading-6"
+        role="combobox"
         :aria-expanded="listboxOpen"
         aria-haspopup="listbox"
+        class="inline-flex items-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 justify-between"
     >
         <span class="block truncate" x-text="buttonLabel"></span>
-        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-            {{ svg src="heroicons-mini/chevron-up-down" class="size-5 text-gray-400" }}
-        </span>
+        {{ svg src="heroicons-mini/chevron-up-down" class="size-4 shrink-0 opacity-50 pointer-events-none" }}
     </button>
 
     <div
+        x-ref="popover"
         x-show="listboxOpen"
         x-cloak
         @click.away="closeListbox()"
@@ -40,61 +40,59 @@
         x-transition:leave="transition ease-in duration-75"
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
-        class="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md ring-1 ring-black ring-opacity-5 origin-top"
+        class="absolute z-50 mt-1 w-full bg-popover text-popover-foreground shadow-md rounded-md border origin-top p-0 outline-none"
     >
-        <div class="p-1">
-            <input
-                x-ref="comboboxInput"
-                x-model.debounce.100ms="comboboxSearch"
-                type="text"
-                placeholder="Search..."
-                class="w-full rounded-md border-0 bg-white px-2 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm"
-                role="combobox"
-                :aria-controls="`${id}-items`"
-                :aria-expanded="listboxOpen"
-                autocomplete="off"
-                autocorrect="off"
-                spellcheck="false"
-                @keydown.enter.stop.prevent="selectOption()"
-                @keydown.arrow-up.prevent="navigate('previous')"
-                @keydown.arrow-down.prevent="navigate('next')"
+        <div class="flex h-full w-full flex-col overflow-hidden rounded-md">
+            <div class="flex items-center border-b px-3">
+                {{ svg src="heroicons-outline/magnifying-glass" class="mr-2 h-4 w-4 shrink-0 opacity-50" }}
+                <input
+                    x-ref="comboboxInput"
+                    x-model="comboboxSearch"
+                    placeholder="Search..."
+                    class="flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                    role="combobox"
+                    :aria-controls="`${id}-items`"
+                    :aria-expanded="listboxOpen"
+                    autocomplete="off"
+                    @keydown.enter.stop.prevent="selectOption()"
+                    @keydown.arrow-up.prevent="navigate('previous')"
+                    @keydown.arrow-down.prevent="navigate('next')"
+                />
+            </div>
+
+            <ul
+                x-ref="listbox"
+                :id="`${id}-items`"
+                class="max-h-[300px] overflow-y-auto overflow-x-hidden p-1"
+                role="listbox"
             >
-        </div>
-
-        <ul
-            x-ref="listbox"
-            :id="`${id}-items`"
-            class="max-h-60 overflow-auto py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-            role="listbox"
-        >
-            <template x-for="(item, index) in itemsShown" :key="`item-${index}`">
-                <li
-                    :id="`${id}-option-${item.key}`"
-                    role="option"
-                    :aria-selected="itemIsSelected(item)"
-                    class="relative cursor-default select-none py-2 pl-3 pr-9"
-                    :class="{ 'bg-primary-600 text-white': itemIsActive(item), 'text-gray-900': !itemIsActive(item) }"
-                    @click="selectOption(item)"
-                    @mousemove="setActiveItem(item)"
-                >
-                    <span class="block truncate" :class="{ 'font-semibold': itemIsSelected(item) }" x-text="item.value"></span>
-                    <span
-                        x-show="itemIsSelected(item)"
-                        class="absolute inset-y-0 right-0 flex items-center pr-4"
-                        :class="{ 'text-white': itemIsActive(item), 'text-primary-600': !itemIsActive(item) }"
+                <template x-for="(item, index) in itemsShown" :key="`item-${index}`">
+                    <li
+                        :id="`${id}-option-${item.key}`"
+                        role="option"
+                        :aria-selected="itemIsSelected(item)"
+                        class="relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none"
+                        :class="{ 'bg-accent text-accent-foreground': itemIsActive(item) }"
+                        @click="selectOption(item)"
+                        @mousemove="setActiveItem(item)"
                     >
-                        {{ svg src="heroicons-mini/check" class="h-5 w-5" }}
-                    </span>
-                </li>
-            </template>
+                        <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+                            <span :class="{ 'opacity-100': itemIsSelected(item), 'opacity-0': !itemIsSelected(item) }">
+                                {{ svg src="heroicons-mini/check" class="h-4 w-4" }}
+                            </span>
+                        </span>
+                        <span class="block truncate" x-text="item.value"></span>
+                    </li>
+                </template>
 
-            <li x-show="itemsFiltered.length > itemsLoaded" x-intersect="loadMoreItems()" class="p-2 text-center text-xs text-gray-400">Loading more...</li>
+                <li x-show="itemsFiltered.length > itemsLoaded" x-intersect.once="loadMoreItems()" class="p-2 text-center text-xs text-muted-foreground">Loading more…</li>
 
-            <li
-                x-show="!itemsFiltered.length"
-                x-text="emptyOptionsMessage"
-                class="relative cursor-default select-none py-2 px-3 text-gray-700"
-            ></li>
-        </ul>
+                <li
+                    x-show="!itemsFiltered.length && comboboxSearch.length > 0"
+                    x-text="emptyOptionsMessage"
+                    class="py-6 text-center text-sm"
+                ></li>
+            </ul>
+        </div>
     </div>
 </div>

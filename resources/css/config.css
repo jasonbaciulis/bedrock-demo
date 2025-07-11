@@ -59,6 +59,25 @@
 
   /* Red */
   --color-red: var(--color-red-600);
+
+  /* Shadcn/ui colors */
+  --color-border: var(--color-gray-200);
+  --color-input: var(--color-gray-200);
+  --color-ring: var(--color-gray-400);
+  --color-background: var(--color-white);
+  --color-foreground: var(--color-gray-900);
+  --color-primary-foreground: var(--color-gray-50);
+  --color-secondary-foreground: var(--color-gray-900);
+  --color-muted: var(--color-gray-100);
+  --color-muted-foreground: var(--color-gray-500);
+  --color-accent: var(--color-gray-100);
+  --color-accent-foreground: var(--color-gray-900);
+  --color-destructive: var(--color-red-500);
+  --color-destructive-foreground: var(--color-gray-50);
+  --color-popover: var(--color-white);
+  --color-popover-foreground: var(--color-gray-900);
+  --color-card: var(--color-white);
+  --color-card-foreground: var(--color-gray-900);
 }
 
 @theme {
