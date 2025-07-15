@@ -25,3 +25,6 @@ export_paths:
   - prettier.config.js
   - README.md
   - vite.config.js
+dependencies:
+  - blade-ui-kit/blade-icons
+  - mallardduck/blade-lucide-icons
