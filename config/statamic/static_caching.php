@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Active Static Caching Strategy
@@ -27,7 +26,6 @@ return [
     */
 
     'strategies' => [
-
         'half' => [
             'driver' => 'application',
             'expiry' => null,
@@ -42,7 +40,6 @@ return [
                 'file' => 0644,
             ],
         ],
-
     ],
 
     /*
@@ -57,13 +54,9 @@ return [
     */
 
     'exclude' => [
-
         'class' => null,
 
-        'urls' => [
-            //
-        ],
-
+        'urls' => ['/sitemap.xml'],
     ],
 
     /*
@@ -80,13 +73,11 @@ return [
     */
 
     'invalidation' => [
-
         'class' => null,
 
         'rules' => [
             //
         ],
-
     ],
 
     /*
@@ -170,5 +161,4 @@ return [
     */
 
     'share_errors' => false,
-
 ];
