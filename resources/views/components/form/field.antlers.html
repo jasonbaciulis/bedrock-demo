@@ -10,7 +10,7 @@
             {{ partial src="components/form/fields/{type}" model="{form:handle}.{handle}" }}
 
             {{ if field:instructions && !($fields_without_labels | contains(type)) }}
-                <p id="{{ field:handle }}-instructions" class="mt-3 text-sm/6 text-gray-500">
+                <p id="{{ field:handle }}-instructions" class="mt-2 text-sm text-muted-foreground">
                     {{ field:instructions }}
                 </p>
             {{ /if }}

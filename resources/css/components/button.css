@@ -1,10 +1,10 @@
 @layer components {
   .btn {
-    @apply text-gray focus-visible:outline-primary inline-flex items-center justify-center rounded-md text-center text-sm leading-5 font-semibold whitespace-nowrap transition focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed;
+    @apply text-gray focus-visible:outline-primary inline-flex items-center justify-center rounded-md text-center text-sm leading-5 font-semibold whitespace-nowrap transition focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed;
   }
 
   .btn--primary {
-    @apply bg-primary text-primary-950 hover:bg-primary-500 active:bg-primary-500 disabled:bg-primary-200 px-6 py-3.5;
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/90 disabled:bg-primary/50 px-6 py-3.5;
   }
 
   .btn--secondary {
@@ -24,7 +24,7 @@
   }
 
   .btn--text {
-    @apply text-gray hover:text-primary-500 active:text-primary-600;
+    @apply text-primary hover:text-primary/90 active:text-primary/90;
   }
 
   .btn--arrow {
