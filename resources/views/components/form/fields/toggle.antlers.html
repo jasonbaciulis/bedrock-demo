@@ -1,5 +1,5 @@
 <div
-    class="flex gap-x-4 sm:col-span-2"
+    class="flex items-center gap-3"
     x-data="{
         on: false,
         toggle() {
@@ -10,27 +10,26 @@
         }
     }"
 >
-    <div class="flex h-6 items-center">
-        <button
-            x-ref="switch"
-            type="button"
-            class="flex w-10 flex-none rounded-full p-px ring-1 ring-inset ring-gray-900/5 duration-200 ease-in-out bg-gray-200"
-            :class="{ 'bg-primary': on, 'bg-gray-200': !on }"
-            role="switch"
-            aria-labelledby="{{ handle }}"
-            :aria-checked="on.toString()"
-            @click="toggle()"
-        >
-            <span class="sr-only">Toggle {{ handle | deslugify }}</span>
-            <span
-                aria-hidden="true"
-                class="size-5 transform rounded-full bg-white shadow-xs ring-1 ring-gray-900/5 transition duration-200 ease-in-out translate-x-0"
-                :class="{ 'translate-x-4.5': on, 'translate-x-0': !on }"
-            ></span>
-        </button>
-    </div>
+    <button
+        x-ref="switch"
+        type="button"
+        class="peer focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50"
+        :class="{ 'bg-primary': on, 'bg-input dark:bg-input/80': !on }"
+        role="switch"
+        aria-labelledby="{{ handle }}"
+        :aria-checked="on.toString()"
+        @click="toggle()"
+    >
+        <span
+            aria-hidden="true"
+            class="bg-background pointer-events-none block size-4 rounded-full ring-0 transition-transform"
+            :class="{ 'translate-x-[calc(100%-2px)] dark:bg-primary-foreground': on, 'translate-x-0 dark:bg-foreground': !on }"
+        ></span>
+        <span class="sr-only">Toggle {{ handle | deslugify }}</span>
+    </button>
+
     <label
-        class="text-sm/6 text-gray-600 prose"
+        class="text-sm/none prose"
         id="{{ handle }}"
         @click="toggle()"
     >
