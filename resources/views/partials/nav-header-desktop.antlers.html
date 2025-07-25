@@ -4,14 +4,17 @@
             <div class="relative" x-data="{ subnavOpen: false }">
                 <button
                     type="button"
-                    class="btn gap-x-0.5"
+                    class="btn text-neutral-900 gap-x-1"
                     :class="{ 'opacity-75': subnavOpen }"
                     :aria-expanded="subnavOpen"
                     @click.prevent="subnavOpen = !subnavOpen"
                 >
                     <span>{{ title }}</span>
-                    <span class="size-5 -mt-0.5 transition-transform duration-500" :class="{ 'translate-y-0.5': subnavOpen }">
-                        {{ svg src="heroicons-mini/chevron-down" class="text-gray-400" }}
+                    <span
+                        class="transition-transform duration-500 mt-0.5"
+                        :class="{'translate-y-0.5': subnavOpen }"
+                    >
+                        {{ icon:lucide-chevron-down class="size-4 opacity-50" }}
                     </span>
                 </button>
 
