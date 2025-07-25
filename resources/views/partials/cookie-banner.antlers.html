@@ -81,7 +81,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
                 x-show="!settingsOpen"
                 @click="$store.cookieBanner.acceptAll()"
                 type="button"
-                class="btn btn--black btn--sm flex-1 sm:flex-none"
+                class="btn flex-1 sm:flex-none"
             >
                 {{ seo:cookie:accept_label }}
             </button>
@@ -91,7 +91,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
                 x-show="settingsOpen"
                 @click="$store.cookieBanner.saveConsent()"
                 type="button"
-                class="btn btn--black btn--sm flex-1 sm:flex-none"
+                class="btnflex-1 sm:flex-none"
             >
                 {{ seo:cookie:accept_selected_label }}
             </button>
@@ -100,7 +100,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
             <button
                 @click="$store.cookieBanner.rejectAll()"
                 type="button"
-                class="btn btn--secondary btn--sm flex-1 sm:flex-none"
+                class="btn btn--secondary flex-1 sm:flex-none"
             >
                 {{ seo:cookie:reject_label }}
             </button>
@@ -109,7 +109,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
             <button
                 @click="settingsOpen = !settingsOpen"
                 type="button"
-                class="btn btn--secondary btn--sm flex-1 sm:flex-none"
+                class="btn btn--secondary flex-1 sm:flex-none"
             >
                 {{ seo:cookie:settings_label }}
             </button>

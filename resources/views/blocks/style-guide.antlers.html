@@ -106,6 +106,7 @@
                         {{ partial:components/button button_type="primary" label="Get started" link_type="url" url="/" class="btn--sm" }}
                         {{ partial:components/button button_type="primary" label="Get started" link_type="url" url="/" }}
                         {{ partial:components/button button_type="primary" label="Get started" link_type="url" url="/" class="btn--lg" }}
+                        {{ partial:components/button button_type="primary" label="Get started" link_type="url" url="/" class="btn--xl" }}
                     </dd>
                 </div>
                 <div class="flex items-center">
@@ -114,6 +115,40 @@
                         {{ partial:components/button button_type="secondary" label="Get started" link_type="url" url="/" class="btn--sm" }}
                         {{ partial:components/button button_type="secondary" label="Get started" link_type="url" url="/" }}
                         {{ partial:components/button button_type="secondary" label="Get started" link_type="url" url="/" class="btn--lg" }}
+                        {{ partial:components/button button_type="secondary" label="Get started" link_type="url" url="/" class="btn--xl" }}
+                    </dd>
+                </div>
+                <div class="flex items-center">
+                    <dt class="w-44 shrink-0 content-sm text-gray-600 font-mono leading-6">btn--outline</dt>
+                    <dd class="flex flex-col gap-6 items-center justify-start sm:flex-row sm:items-end">
+                        {{ partial:components/button button_type="outline" label="Get started" link_type="url" url="/" class="btn--sm" }}
+                        {{ partial:components/button button_type="outline" label="Get started" link_type="url" url="/" }}
+                        {{ partial:components/button button_type="outline" label="Get started" link_type="url" url="/" class="btn--lg" }}
+                        {{ partial:components/button button_type="outline" label="Get started" link_type="url" url="/" class="btn--xl" }}
+                    </dd>
+                </div>
+                <div class="flex items-center">
+                    <dt class="w-44 shrink-0 content-sm text-gray-600 font-mono leading-6">btn--destructive</dt>
+                    <dd class="flex flex-col gap-6 items-center justify-start sm:flex-row sm:items-end">
+                        {{ partial:components/button button_type="destructive" label="Get started" link_type="url" url="/" class="btn--sm" }}
+                        {{ partial:components/button button_type="destructive" label="Get started" link_type="url" url="/" }}
+                        {{ partial:components/button button_type="destructive" label="Get started" link_type="url" url="/" class="btn--lg" }}
+                        {{ partial:components/button button_type="destructive" label="Get started" link_type="url" url="/" class="btn--xl" }}
+                    </dd>
+                </div>
+                <div class="flex items-center">
+                    <dt class="w-44 shrink-0 content-sm text-gray-600 font-mono leading-6">btn--ghost</dt>
+                    <dd class="flex flex-col gap-6 items-center justify-start sm:flex-row sm:items-end">
+                        {{ partial:components/button button_type="ghost" label="Get started" link_type="url" url="/" class="btn--sm" }}
+                        {{ partial:components/button button_type="ghost" label="Get started" link_type="url" url="/" }}
+                        {{ partial:components/button button_type="ghost" label="Get started" link_type="url" url="/" class="btn--lg" }}
+                        {{ partial:components/button button_type="ghost" label="Get started" link_type="url" url="/" class="btn--xl" }}
+                    </dd>
+                </div>
+                <div class="flex items-center">
+                    <dt class="w-44 shrink-0 content-sm text-gray-600 font-mono leading-6">btn--link</dt>
+                    <dd class="flex flex-col gap-6 items-center justify-start sm:flex-row sm:items-end">
+                        {{ partial:components/button button_type="link" label="Get started" link_type="url" url="/" }}
                     </dd>
                 </div>
             </div>
@@ -195,7 +230,7 @@
                 <div class="flex items-center">
                     <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Modal</dt>
                     <dd>
-                        {{ partial:components/modal trigger_button_class="btn--secondary btn--sm" }}
+                        {{ partial:components/modal trigger_button_class="btn--secondary" }}
                             {{ slot:trigger_button }}
                                 Open modal
                             {{ /slot:trigger_button }}
@@ -207,7 +242,7 @@
                 <div class="flex items-center">
                     <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Dropdown</dt>
                     <dd>
-                        {{ partial:components/dropdown toggle_button_class="btn--secondary btn--sm gap-1" alignment="left" width="w-44" }}
+                        {{ partial:components/dropdown toggle_button_class="btn--secondary gap-1" alignment="left" width="w-44" }}
                             {{ slot:toggle_button }}
                                 Open dropdown
                                 {{ svg src="heroicons-mini/chevron-down" class="size-5 -mr-1 text-gray-400" }}
@@ -229,8 +264,8 @@
                             {{ loop times="3" }}
                                 {{ partial:components/tab-trigger }}
                                     {{ slot:attributes }}
-                                        class="btn btn--sm"
-                                        :class="{ 'bg-gray-100': activeTab == {{ count }} }"
+                                        class="btn btn--ghost"
+                                        :class="{ 'bg-accent': activeTab == {{ count }} }"
                                     {{ /slot:attributes }}
                                     Tab {{ count }}
                                 {{ /partial:components/tab-trigger }}
@@ -241,7 +276,7 @@
                             {{ loop times="3" }}
                                 {{ partial:components/tab-panel }}
                                     <p>The content shown for Tab {{ count }}</p>
-                                    <a href="#" class="btn btn--secondary btn--sm mt-4">Call to action</a>
+                                    <a href="#" class="btn btn--secondary mt-4">Call to action</a>
                                 {{ /partial:components/tab-panel }}
                             {{ /loop }}
                         </div>

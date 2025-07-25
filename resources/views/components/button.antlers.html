@@ -21,7 +21,10 @@
         {{ switch(
             (button_type == 'primary') => 'btn--primary',
             (button_type == 'secondary') => 'btn--secondary',
-            (button_type == 'text') => 'btn--text',
+            (button_type == 'link') => 'btn--link',
+            (button_type == 'ghost') => 'btn--ghost',
+            (button_type == 'outline') => 'btn--outline',
+            (button_type == 'destructive') => 'btn--destructive',
         )}}
         {{ class }}
     "
