@@ -7,7 +7,6 @@
     <input
         x-model="{{ model }}"
         class="{{ ['pl-10' => prepend, 'pr-10' => append] | classes }}"
-        :class="{ 'has-error': hasError('{{ handle }}') }"
         id="{{ handle }}"
         name="{{ handle }}"
         type="{{ input_type ?? 'text' }}"

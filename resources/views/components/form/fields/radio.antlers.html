@@ -19,7 +19,6 @@
                     type="radio"
                     name="{{ handle }}"
                     value="{{ value }}"
-                    :class="{ 'has-error': hasError('{{ handle }}') }"
                     @change="forgetError('{{ handle }}')"
                 >
                 <label for="{{ value }}">
