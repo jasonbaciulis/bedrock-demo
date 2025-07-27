@@ -32,8 +32,8 @@
                     x-transition:leave-end="opacity-0 translate-y-1"
                     @click.outside="subnavOpen = false"
                 >
-                    <div class="flex-auto overflow-hidden rounded-xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5 lg:max-w-3xl">
-                        <div class="relative grid grid-cols-1 gap-x-6 gap-y-1 p-4 {{ two_col_flyout ?= 'lg:grid-cols-2' }}">
+                    <div class="flex-auto overflow-hidden rounded-lg bg-white text-sm/6 shadow border lg:max-w-3xl">
+                        <div class="relative grid grid-cols-1 gap-x-5 gap-y-1 p-3 {{ two_col_flyout ?= 'lg:grid-cols-2' }}">
                             {{ children }}
                                 {{ partial:partials/nav-flyout-item }}
                             {{ /children }}
