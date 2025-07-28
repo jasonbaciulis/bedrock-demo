@@ -96,9 +96,7 @@ return [
         */
 
         'presets' => [
-            'lg-avif' => ['w' => 1280, 'h' => 10000, 'fit' => 'contain', 'fm' => 'avif'],
-            'lg-webp' => ['w' => 1280, 'h' => 10000, 'fit' => 'contain', 'fm' => 'webp'],
-            'lg' => ['w' => 1280, 'h' => 10000, 'fit' => 'contain'],
+            //
         ],
 
         /*

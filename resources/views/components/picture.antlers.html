@@ -21,7 +21,7 @@
                 <img
                     {{ if cover }}
                         class="object-cover size-full {{ class }}"
-                        style="object-position: {{ focus_css }}"
+                        style="object-position: {{ focus | background_position }}"
                     {{ else }}
                         {{ class | attribute:class }}
                     {{ /if }}
@@ -43,38 +43,11 @@
                     {{ glide:url :width='w' :height='h' fit='crop_focal' dpr='2' }} 2x" type="{{ image.mime_type }}">
                 <img {{ if cover }}
                         class="object-cover size-full {{ class }}"
-                        style="object-position: {{ focus_css }}"
+                        style="object-position: {{ focus | background_position }}"
                     {{ else }}
                         {{ class | attribute:class }}
                     {{ /if }}
                     {{ glide :src="url" :width='w' :height='h' fit='crop_focal' }}
-                        src="{{ url }}"
-                        alt="{{ alt }}"
-                        width="{{ width }}"
-                        height="{{ height }}"
-                    {{ /glide }}
-                    {{ unless not_lazy }}
-                        loading="lazy"
-                    {{ /unless }}
-                    decoding="async"
-                >
-            {{ else }}
-                <source srcset="
-                        {{ glide:url preset='lg-avif' }} 1x,
-                        {{ glide:url preset='lg-avif' dpr='2' }} 2x" type="image/avif">
-                <source srcset="
-                        {{ glide:url preset='lg-webp' }} 1x,
-                        {{ glide:url preset='lg-webp' dpr='2' }} 2x" type="image/webp">
-                <source srcset="
-                        {{ glide:url preset='lg' }} 1x,
-                        {{ glide:url preset='lg' dpr='2' }} 2x" type="{{ image.mime_type }}">
-                <img {{ if cover }}
-                        class="object-cover size-full {{ class }}"
-                        style="object-position: {{ focus_css }}"
-                    {{ else }}
-                        {{ class | attribute:class }}
-                    {{ /if }}
-                    {{ glide :src="url" preset="lg" }}
                         src="{{ url }}"
                         alt="{{ alt }}"
                         width="{{ width }}"

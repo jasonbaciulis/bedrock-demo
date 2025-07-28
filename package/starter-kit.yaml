@@ -4,7 +4,6 @@ export_paths:
   - app/Modifiers
   - app/Tags
   - config/app.php
-  - config/statamic/assets.php
   - config/statamic/editions.php
   - config/statamic/git.php
   - config/statamic/search.php
