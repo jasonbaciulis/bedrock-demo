@@ -15,10 +15,10 @@
             :aria-expanded="open"
             @click="open = !open"
         >
-            <span class="content-lg text-gray font-semibold">{{ title }}</span>
-            <span class="flex-none size-6 text-gray">
-                {{ svg src="heroicons-outline/plus" x-show="!open" }}
-                {{ svg src="heroicons-outline/minus" x-cloak x-show="open" }}
+            <span class="content-lg text-neutral-900 font-medium">{{ title }}</span>
+            <span class="flex-none size-6 text-neutral-800/70">
+                {{ icon:lucide-plus x-show="!open" }}
+                {{ icon:lucide-minus x-show="open" }}
             </span>
         </button>
     </dt>
@@ -29,9 +29,9 @@
         id="faq-{{ count }}"
         class="relative -top-2 pr-12"
     >
-        <div class="content-sm pb-4 prose text-gray-600 text-pretty max-w-none">
+        <div class="content-sm pb-4 prose text-muted-foreground text-pretty max-w-none">
             {{ text }}
         </div>
     </dd>
-    <hr class="border border-gray-300 absolute bottom-0 inset-x-0 origin-bottom transition-transform scale-y-0 duration-300 group-hover:scale-y-100">
+    <hr class="border border-neutral-300 absolute bottom-0 inset-x-0 origin-bottom transition-transform scale-y-0 duration-300 group-hover:scale-y-100">
 </div>
