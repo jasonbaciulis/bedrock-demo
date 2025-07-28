@@ -312,6 +312,24 @@
                         {{ /slot:tabpanels }}
                     {{ /partial:components/tabs }}
                 </div>
+                <div class="flex items-center">
+                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Carousel</dt>
+                    <dd class="w-full">
+                        {{ partial:components/carousel }}
+                            {{ slot:config_properties }}
+                                perView: 1,
+                            {{ /slot:config_properties }}
+
+                            {{ loop times="3" }}
+                                {{ partial:components/carousel-slide }}
+                                    <div class="bg-card text-card-foreground rounded-xl border p-6 shadow-sm flex items-center justify-center">
+                                        <span class="text-4xl font-semibold">{{ count }}</span>
+                                    </div>
+                                {{ /partial:components/carousel-slide }}
+                            {{ /loop }}
+                        {{ /partial:components/carousel }}
+                    </dd>
+                </div>
             </div>
         </div>
     </div>

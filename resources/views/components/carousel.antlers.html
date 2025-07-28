@@ -11,33 +11,36 @@
 
 {{ once }}
     {{ push:scripts }}
-        {{ vite src="resources/css/glide.css" }}
-        {{ vite src="resources/js/glide.js" }}
+        {{# {{ vite src="resources/css/embla.css" }} #}}
+        {{ vite src="resources/js/embla.js" }}
     {{ /push:scripts }}
 {{ /once }}
 
-<div
-    class="glide relative"
-    x-data
-    x-init="
-    new window.Glide($el, {
-        animationTimingFunc: 'cubic-bezier(0.4, 0, 0.2, 1)',
-        {{ slot:config_properties }}
-    }).mount()
-    "
->
-    <div class="glide__track relative" data-glide-el="track">
-        <ul class="glide__slides">
+<div>
+    <div
+        class="overflow-hidden"
+        x-data="{
+            emblaApi: null,
+            slideSpacing: 16,
+            init() {
+                this.emblaApi = window.EmblaCarousel(this.$el, {
+                    {{ slot:config_properties }}
+                })
+            }
+        }"
+        x-init="init()"
+    >
+        <div class="flex ml-[calc(var(--slide-spacing) * -1)]" :style="{ '--slide-spacing': `${slideSpacing}px` }">
             {{ slot }}
-        </ul>
+        </div>
     </div>
 
-    <div class="glide__arrows absolute flex justify-between items-center inset-x-0 pointer-events-none {{ controls_class }}" data-glide-el="controls">
-        <button class="btn btn--arrow pointer-events-auto {{ left_btn_class }}" data-glide-dir="<" aria-label="Previous">
-            {{ svg src="heroicons-outline/chevron-left" class="size-5" }}
+    <div class="embla__controls {{ controls_class }}">
+        <button class="btn btn--arrow {{ left_btn_class }}" aria-label="Previous">
+            {{ icon:lucide-chevron-left }}
         </button>
-        <button class="btn btn--arrow pointer-events-auto {{ right_btn_class }}" data-glide-dir=">" aria-label="Next">
-            {{ svg src="heroicons-outline/chevron-right" class="size-5" }}
+        <button class="btn btn--arrow {{ right_btn_class }}" aria-label="Next">
+            {{ icon:lucide-chevron-right }}
         </button>
     </div>
 </div>
