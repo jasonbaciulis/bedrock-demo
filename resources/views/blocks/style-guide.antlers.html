@@ -246,7 +246,7 @@
                 <div class="flex items-center">
                     <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Dialog</dt>
                     <dd>
-                        {{ partial:components/dialog trigger_button_class="btn--outline" }}
+                        {{ partial:components/dialog trigger_button_class="btn--outline" size="sm" }}
                             {{ slot:trigger_button }}
                                 Open dialog
                             {{ /slot:trigger_button }}
@@ -260,7 +260,7 @@
                                     <input type="text" id="link" class="input" readonly value="https://leap.remarkable.dev" />
                                 </div>
                                 <div>
-                                    <button class="btn btn--secondary" @click="close">Close</button>
+                                    <button class="btn btn--secondary" @click="close()">Close</button>
                                 </div>
                             </div>
                         {{ /partial:components/dialog }}

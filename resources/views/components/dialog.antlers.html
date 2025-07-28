@@ -19,16 +19,23 @@
             if (this.open) {
                 return this.close();
             }
-            const trigger = this.$refs.button;
-            if (trigger) {
-                trigger.focus();
-            }
             this.open = true;
         },
         close(focusAfter) {
             if (! this.open) return;
             this.open = false;
-            focusAfter && focusAfter.focus();
+
+            if (!focusAfter) {
+                this.focusTrigger();
+            } else {
+                focusAfter.focus();
+            }
+        },
+        focusTrigger() {
+            const trigger = this.$refs.button;
+            if (trigger) {
+                trigger.focus();
+            }
         },
     }"
     @keydown.escape.prevent.stop="close($refs.button)"
@@ -90,8 +97,9 @@
                         x-transition:leave="ease-in duration-200"
                         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full
+                        class="relative transform overflow-hidden rounded-[0.625rem] bg-background text-left border shadow-lg transition-all sm:my-8 sm:w-full
                         {{ switch(
+                          ($size === 'sm') => 'px-4 pt-5 pb-4 sm:p-6 sm:max-w-md',
                           ($size === 'md') => 'px-4 pt-5 pb-4 sm:p-6 sm:max-w-xl',
                           ($size === 'xl') => 'px-4 pt-5 pb-4 sm:p-6 sm:max-w-(--breakpoint-xl) md:p-12 xl:px-16 xl:py-20',
                         )}}"
@@ -100,7 +108,7 @@
                     >
                         {{ slot }}
 
-                        <button @click="close($refs.button)" class="btn absolute top-4 right-4 size-6 text-muted-foreground rounded-xs hover:text-foreground">
+                        <button @click="close($refs.button)" class="btn absolute top-4 right-4 size-6 text-neutral-800/70 rounded-xs hover:text-foreground">
                             <span class="sr-only">Close</span>
                             {{ icon:lucide-x class="size-4" }}
                         </button>
