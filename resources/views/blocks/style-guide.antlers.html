@@ -244,15 +244,15 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Modal</dt>
+                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Dialog</dt>
                     <dd>
-                        {{ partial:components/modal trigger_button_class="btn--secondary" }}
+                        {{ partial:components/dialog trigger_button_class="btn--secondary" }}
                             {{ slot:trigger_button }}
-                                Open modal
+                                Open dialog
                             {{ /slot:trigger_button }}
-                            <p class="h5 mb-4">Modal title</p>
-                            <p>Modal content goes here</p>
-                        {{ /partial:components/modal }}
+                            <p class="h5 mb-4">Dialog title</p>
+                            <p>Dialog content goes here</p>
+                        {{ /partial:components/dialog }}
                     </dd>
                 </div>
                 <div class="flex items-center">

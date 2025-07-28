@@ -1,11 +1,11 @@
 {{#
-    Modal component contains two slots. Named slot `slot:trigger_button` for the trigger button content and
-    the default slot for the modal content. More about slots in Antlers docs: https://statamic.dev/antlers#slots
+    Dialog component contains two slots. Named slot `slot:trigger_button` for the trigger button content and
+    the default slot for the dialog content. More about slots in Antlers docs: https://statamic.dev/antlers#slots
 
     Params:
-    - name: Defaults to `modal`.
-    - size: The size of the modal. Options: `md`, `xl`. Defaults to `md`.
-    - container_class: Additional classes for the modal container.
+    - name: Defaults to `dialog`.
+    - size: The size of the dialog. Options: `md`, `xl`. Defaults to `md`.
+    - container_class: Additional classes for the dialog container.
     - trigger_button_class: Additional classes for the trigger button.
  #}}
 
@@ -13,7 +13,7 @@
 
 <div
     x-data="{
-        id: $id('{{ name or 'modal' }}'),
+        id: $id('{{ name or 'dialog' }}'),
         open: false,
         toggle() {
             if (this.open) {
@@ -42,15 +42,15 @@
             @click="toggle()"
             :aria-expanded="open"
             :aria-controls="id"
-            aria-label="Open modal"
+            aria-label="Open dialog"
         >
             {{ slot:trigger_button }}
         </button>
     {{ /if }}
 
     {{#
-        Uses the AlpineJS teleport directive, which will teleport the Modal
-        element to be a child of the body element. This allows the modal
+        Uses the AlpineJS teleport directive, which will teleport the Dialog
+        element to be a child of the body element. This allows the dialog
         to be full-screen and prevents any display issues with its parent elements.
     #}}
     <template x-teleport="body">
@@ -58,7 +58,7 @@
             x-cloak
             x-show="open"
             class="relative z-10"
-            aria-label="Modal"
+            aria-label="Dialog"
             role="dialog"
             :aria-modal="open"
             @focusin.window="! $refs.panel.contains($event.target) && close()"
@@ -76,7 +76,7 @@
                 class="fixed inset-0 bg-gray-600/75 transition-opacity"
             ></div>
 
-            {{# Modal panel #}}
+            {{# Dialog panel #}}
             <div class="fixed inset-0 z-10 overflow-y-auto">
                 <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                     <div
