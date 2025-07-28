@@ -283,29 +283,34 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Tabs</dt>
-                    <dd x-data="{ activeTab: 1 }">
-                        <div class="flex gap-4">
-                            {{ loop times="3" }}
-                                {{ partial:components/tab-trigger }}
-                                    {{ slot:attributes }}
-                                        class="btn btn--ghost"
-                                        :class="{ 'bg-accent': activeTab == {{ count }} }"
-                                    {{ /slot:attributes }}
-                                    Tab {{ count }}
-                                {{ /partial:components/tab-trigger }}
-                            {{ /loop }}
-                        </div>
+                    <div class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Tabs</div>
 
-                        <div class="flex items-center justify-center w-full p-5 mt-2 text-gray-600 border rounded-md border-gray-200">
+                    {{ partial:components/tabs }}
+                        {{ slot:tablist }}
+                            {{ partial:components/tab-list }}
+                                {{ loop times="3" }}
+                                    {{ partial:components/tab-trigger }}
+                                        {{ slot:attributes }}
+                                            class="btn text-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 border border-transparent px-2 py-1"
+                                            :class="{ 'bg-background shadow-sm': activeTab == {{ count }} }"
+                                        {{ /slot:attributes }}
+                                        Tab {{ count }}
+                                    {{ /partial:components/tab-trigger }}
+                                {{ /loop }}
+                            {{ /partial:components/tab-list }}
+                        {{ /slot:tablist }}
+
+                        {{ slot:tabpanels }}
                             {{ loop times="3" }}
-                                {{ partial:components/tab-panel }}
-                                    <p>The content shown for Tab {{ count }}</p>
-                                    <a href="#" class="btn btn--secondary mt-4">Call to action</a>
+                                {{ partial:components/tab-panel class="flex-1 outline-none" }}
+                                    <div class="bg-card text-card-foreground rounded-xl border p-6 shadow-sm">
+                                        <p>The content shown for Tab {{ count }}</p>
+                                        <a href="#" class="btn btn--outline mt-6">Call to action</a>
+                                    </div>
                                 {{ /partial:components/tab-panel }}
                             {{ /loop }}
-                        </div>
-                    </dd>
+                        {{ /slot:tabpanels }}
+                    {{ /partial:components/tabs }}
                 </div>
             </div>
         </div>
