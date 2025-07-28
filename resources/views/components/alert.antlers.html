@@ -1,7 +1,8 @@
 {{#
     Params:
     - style: The style of the alert. Options: `success`, `warning`, `error`.
-    - text: The text to display in the alert.
+    - title: The title to display in the alert.
+    - description: The description to display in the alert.
     - dismissible: Boolean. Whether the alert can be dismissed.
     - class: Additional classes to apply to the alert.
  #}}
@@ -16,31 +17,34 @@
     "
     {{ if dismissible }} x-data="{ dismissed: false }" x-show="!dismissed" {{ /if }}
 >
-    <div class="flex gap-x-3">
-        <div class="alert__icon">
-            {{ if style === 'success' }}
-                {{ svg src="heroicons-mini/check-circle" }}
-            {{ elseif style === 'warning' }}
-                {{ svg src="heroicons-mini/exclamation-triangle" }}
-            {{ elseif style === 'error' }}
-                {{ svg src="heroicons-mini/x-circle" }}
-            {{ /if }}
-        </div>
-        <p class="alert__text">{{ text }}</p>
-
-        {{ if dismissible }}
-            <div class="ml-auto pl-3">
-                <div class="-mx-1.5 -my-1.5">
-                    <button
-                        type="button"
-                        class="alert__dismiss-btn"
-                        @click="dismissed = !dismissed"
-                    >
-                        <span class="sr-only">Dismiss</span>
-                        {{ svg src="heroicons-outline/x-mark" class="size-5" }}
-                    </button>
-                </div>
-            </div>
+    <div class="alert__icon">
+        {{ if style === 'success' }}
+            {{ icon:lucide-circle-check }}
+        {{ elseif style === 'warning' }}
+            {{ icon:lucide-triangle-alert }}
+        {{ elseif style === 'error' }}
+            {{ icon:lucide-circle-x }}
         {{ /if }}
     </div>
+    <div class="alert__content">
+        <p class="line-clamp-1 font-medium tracking-tight">{{ title }}</p>
+        {{ if description }}
+            <p class="text-muted-foreground text-sm">{{ description }}</p>
+        {{ /if }}
+    </div>
+
+    {{ if dismissible }}
+        <div class="ml-auto pl-3">
+            <div class="-mx-1.5 -my-1.5">
+                <button
+                    type="button"
+                    class="inline-flex translate-y-0.5 rounded-md p-1.5 text-muted-foreground hover:bg-accent"
+                    @click="dismissed = !dismissed"
+                >
+                    <span class="sr-only">Dismiss</span>
+                    {{ icon:lucide-x class="size-4" }}
+                </button>
+            </div>
+        </div>
+    {{ /if }}
 </div>

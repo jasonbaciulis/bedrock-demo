@@ -236,6 +236,14 @@
             </div>
             <div class="space-y-10">
                 <div class="flex items-center">
+                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Alert</dt>
+                    <dd class="space-y-4">
+                        {{ partial:components/alert style="success" title="Success! Your changes have been saved." description="This is an alert with icon, title and description." dismissible="true" }}
+                        {{ partial:components/alert style="warning" title="This is a warning message." }}
+                        {{ partial:components/alert style="error" title="Unable to process your payment." }}
+                    </dd>
+                </div>
+                <div class="flex items-center">
                     <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Modal</dt>
                     <dd>
                         {{ partial:components/modal trigger_button_class="btn--secondary" }}
