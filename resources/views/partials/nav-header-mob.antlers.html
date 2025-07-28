@@ -29,7 +29,7 @@
                                     {{ children }}
                                         <a
                                             href="{{ url }}"
-                                            class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray hover:bg-gray-50"
+                                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-neutral-900 hover:bg-accent"
                                             {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}
                                         >
                                             {{ title }}
@@ -38,7 +38,7 @@
                                 {{ elseif ! children }}
                                     <a
                                         href="{{ url }}"
-                                        class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray hover:bg-gray-50"
+                                        class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-neutral-900 hover:bg-accent"
                                         {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}
                                     >
                                         {{ title }}

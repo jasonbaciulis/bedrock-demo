@@ -27,12 +27,8 @@
     @apply bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 h-9 px-4 py-2 text-white shadow-xs;
   }
 
-  .btn--arrow {
-    @apply text-gray size-10 rounded-full bg-gray-100 hover:bg-white active:bg-white;
-  }
-
   .btn--round {
-    @apply size-12 rounded-full p-0 text-lg font-medium;
+    @apply w-9 rounded-full p-0;
   }
 
   .btn--square {

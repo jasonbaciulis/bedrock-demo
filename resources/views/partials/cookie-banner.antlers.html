@@ -126,7 +126,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
             x-data
             href="#"
             @click.prevent="$store.cookieBanner.revokeConsent()"
-            class="text-xs text-gray-600 hover:text-gray"
+            class="text-xs text-muted-foreground hover:text-foreground"
         >
             {{ seo:cookie:reset_consent_label }}
         </a>

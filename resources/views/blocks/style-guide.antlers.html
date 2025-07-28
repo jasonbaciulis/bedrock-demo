@@ -24,12 +24,12 @@
                     <div class="relative bg-pink-50 h-40">
                         {{ unless last }}
                             <span
-                                class="hidden sm:block absolute -translate-y-1/2 top-1/2 left-full border-b border-dashed border-gray-400 text-[10px] font-mono text-gray-600 text-center"
+                                class="hidden sm:block absolute -translate-y-1/2 top-1/2 left-full border-b border-dashed border-gray-400 text-[10px] font-mono text-muted-foreground text-center"
                                 :style="`width:${columnGap}px`" x-text="`${columnGap}px`">
 
                             </span>
                         {{ /unless }}
-                        <span class="absolute top-full left-1/2 mt-2 -translate-x-1/2 text-[10px] font-mono text-gray-600" x-text="`${columnWidth.toFixed(1)}px`"></span>
+                        <span class="absolute top-full left-1/2 mt-2 -translate-x-1/2 text-[10px] font-mono text-muted-foreground" x-text="`${columnWidth.toFixed(1)}px`"></span>
                     </div>
                 {{ /loop }}
             </div>
@@ -60,7 +60,7 @@
                             <div class="flex items-center gap-x-3 w-full sm:block sm:space-y-1.5">
                                 <div class="h-24 w-24 rounded sm:w-full {{ value }}"></div>
                                 <div class="px-0.5">
-                                    <div class="text-xs font-mono w-full text-gray-600">{{ value | replace('bg-', '') }}</div>
+                                    <div class="text-xs font-mono w-full text-muted-foreground">{{ value | replace('bg-', '') }}</div>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                             <div class="flex items-center gap-x-3 w-full sm:block sm:space-y-1.5">
                                 <div class="h-24 w-24 rounded sm:w-full {{ value }}"></div>
                                 <div class="px-0.5">
-                                    <div class="text-xs font-mono w-full text-gray-600">{{ value | replace('bg-', '') }}</div>
+                                    <div class="text-xs font-mono w-full text-muted-foreground">{{ value | replace('bg-', '') }}</div>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
             </div>
             <div class="space-y-10">
                 <div class="flex items-center">
-                    <dt class="w-44 shrink-0 content-sm text-gray-600 font-mono leading-6">btn--primary</dt>
+                    <dt class="w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--primary</dt>
                     <dd class="flex flex-col gap-6 items-center justify-start sm:flex-row sm:items-end">
                         {{ partial:components/button button_type="primary" label="Get started" link_type="url" url="/" class="btn--sm" }}
                         {{ partial:components/button button_type="primary" label="Get started" link_type="url" url="/" }}
@@ -110,7 +110,7 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-44 shrink-0 content-sm text-gray-600 font-mono leading-6">btn--secondary</dt>
+                    <dt class="w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--secondary</dt>
                     <dd class="flex flex-col gap-6 items-center justify-start sm:flex-row sm:items-end">
                         {{ partial:components/button button_type="secondary" label="Get started" link_type="url" url="/" class="btn--sm" }}
                         {{ partial:components/button button_type="secondary" label="Get started" link_type="url" url="/" }}
@@ -119,7 +119,7 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-44 shrink-0 content-sm text-gray-600 font-mono leading-6">btn--outline</dt>
+                    <dt class="w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--outline</dt>
                     <dd class="flex flex-col gap-6 items-center justify-start sm:flex-row sm:items-end">
                         {{ partial:components/button button_type="outline" label="Get started" link_type="url" url="/" class="btn--sm" }}
                         {{ partial:components/button button_type="outline" label="Get started" link_type="url" url="/" }}
@@ -128,7 +128,7 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-44 shrink-0 content-sm text-gray-600 font-mono leading-6">btn--destructive</dt>
+                    <dt class="w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--destructive</dt>
                     <dd class="flex flex-col gap-6 items-center justify-start sm:flex-row sm:items-end">
                         {{ partial:components/button button_type="destructive" label="Get started" link_type="url" url="/" class="btn--sm" }}
                         {{ partial:components/button button_type="destructive" label="Get started" link_type="url" url="/" }}
@@ -137,7 +137,7 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-44 shrink-0 content-sm text-gray-600 font-mono leading-6">btn--ghost</dt>
+                    <dt class="w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--ghost</dt>
                     <dd class="flex flex-col gap-6 items-center justify-start sm:flex-row sm:items-end">
                         {{ partial:components/button button_type="ghost" label="Get started" link_type="url" url="/" class="btn--sm" }}
                         {{ partial:components/button button_type="ghost" label="Get started" link_type="url" url="/" }}
@@ -146,7 +146,7 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-44 shrink-0 content-sm text-gray-600 font-mono leading-6">btn--link</dt>
+                    <dt class="w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--link</dt>
                     <dd class="flex flex-col gap-6 items-center justify-start sm:flex-row sm:items-end">
                         {{ partial:components/button button_type="link" label="Get started" link_type="url" url="/" }}
                     </dd>
@@ -160,27 +160,27 @@
             </div>
             <div class="space-y-10">
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-gray-600 font-mono leading-6">h1</dt>
+                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h1</dt>
                     <dd class="h1 leading-tight truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-gray-600 font-mono leading-6">h2</dt>
+                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h2</dt>
                     <dd class="h2 leading-tight truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-gray-600 font-mono leading-6">h3</dt>
+                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h3</dt>
                     <dd class="h3 truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-gray-600 font-mono leading-6">h4</dt>
+                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h4</dt>
                     <dd class="h4 truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-gray-600 font-mono leading-6">h5</dt>
+                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h5</dt>
                     <dd class="h5 truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-gray-600 font-mono leading-6">h6</dt>
+                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h6</dt>
                     <dd class="h6 truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
             </div>
@@ -192,7 +192,7 @@
             </div>
             <div class="space-y-10">
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">badge</dt>
+                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">badge</dt>
                     <dd class="flex gap-3">
                         <span class="badge">Brown</span>
                         <span class="badge badge--secondary">Brown</span>
@@ -200,27 +200,27 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">tagline</dt>
+                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">tagline</dt>
                     <dd class="tagline text-primary truncate">The quick brown fox</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">content-xl</dt>
+                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">content-xl</dt>
                     <dd class="content-xl truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">content-lg</dt>
+                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">content-lg</dt>
                     <dd class="content-lg truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">content</dt>
+                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">content</dt>
                     <dd class="content truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">content-sm</dt>
+                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">content-sm</dt>
                     <dd class="content-sm truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">content-xs</dt>
+                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">content-xs</dt>
                     <dd class="content-xs truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
             </div>
@@ -232,7 +232,7 @@
             </div>
             <div class="space-y-10">
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Alert</dt>
+                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">Alert</dt>
                     <dd class="space-y-4">
                         {{ partial:components/alert style="success" title="Success! Your changes have been saved." description="This is an alert with icon, title and description." dismissible="true" }}
                         {{ partial:components/alert style="warning" title="This is a warning message." }}
@@ -240,7 +240,7 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Dialog</dt>
+                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">Dialog</dt>
                     <dd>
                         {{ partial:components/dialog trigger_button_class="btn--outline" size="sm" }}
                             {{ slot:trigger_button }}
@@ -263,7 +263,7 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Dropdown</dt>
+                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">Dropdown</dt>
                     <dd>
                         {{ partial:components/dropdown toggle_button_class="btn--outline" alignment="left" width="w-44" }}
                             {{ slot:toggle_button }}
@@ -282,7 +282,7 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <div class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Tabs</div>
+                    <div class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">Tabs</div>
 
                     {{ partial:components/tabs }}
                         {{ slot:tablist }}
@@ -312,7 +312,7 @@
                     {{ /partial:components/tabs }}
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Carousel</dt>
+                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">Carousel</dt>
                     <dd class="w-full">
                         {{ partial:components/carousel }}
                             {{ slot:config_properties }}
