@@ -48,15 +48,15 @@
         x-ref="panel"
         x-show="open"
         x-trap="open"
-        x-transition:enter="transition ease-out duration-100"
+        x-transition:enter="transition ease duration-100"
         x-transition:enter-start="opacity-0 scale-95"
         x-transition:enter-end="opacity-100 scale-100"
-        x-transition:leave="transition ease-in duration-75"
+        x-transition:leave="transition ease duration-75"
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
         @click.outside="close($refs.button)"
         :id="$id('dropdown-menu')"
-        class="absolute z-10 mt-2 rounded-md bg-white shadow-lg ring-1 ring-black/5 {{ $width }}
+        class="absolute z-10 mt-1 rounded-lg bg-popover text-popover-foreground overflow-x-hidden overflow-y-auto shadow-md border p-1 max-h-80 {{ $width }}
             {{ switch(
                 ($alignment === 'left') => 'left-0 origin-top-left',
                 ($alignment === 'right') => 'right-0 origin-top-right',
