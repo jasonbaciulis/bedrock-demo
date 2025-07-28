@@ -36,7 +36,7 @@
   }
 
   .btn--square {
-    @apply size-10 rounded-md p-0 font-medium;
+    @apply w-9 p-0;
   }
 
   .btn--sm {
