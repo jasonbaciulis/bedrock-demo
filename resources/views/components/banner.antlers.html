@@ -23,7 +23,7 @@
       },
     }"
     x-init="initBannerDisplay()"
-    class="flex items-center gap-x-6 bg-gray px-6 py-2.5 sm:px-3.5 sm:before:flex-1"
+    class="flex items-center gap-x-6 bg-foreground px-6 py-2.5 sm:px-3.5 sm:before:flex-1"
 >
     <div class="text-sm/6 text-white">
         <a href="{{ banner:link_url }}">
@@ -31,9 +31,9 @@
         </a>
     </div>
     <div class="flex flex-1 justify-end">
-        <button type="button" class="btn -m-3 p-3 hover:opacity-80" @click="dismiss()">
+        <button type="button" class="btn -m-2 p-2 hover:opacity-80" @click="dismiss()">
             <span class="sr-only">Dismiss</span>
-            {{ svg src="heroicons-outline/x-mark" class="size-5 text-white" }}
+            {{ icon:lucide-x class="size-4 text-white" }}
         </button>
     </div>
 </div>
