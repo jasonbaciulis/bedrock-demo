@@ -30,17 +30,16 @@
             if (! this.open) return;
             this.open = false;
 
-            // Wait for the close transition to complete before restoring scroll
+            // Wait for the close transition to complete before restoring scroll and setting focus
             // The leave transition is 200ms (duration-200)
             setTimeout(() => {
                 this.restoreBodyScroll();
+                if (!focusAfter) {
+                    this.focusTrigger();
+                } else {
+                    focusAfter.focus();
+                }
             }, 200);
-
-            if (!focusAfter) {
-                this.focusTrigger();
-            } else {
-                focusAfter.focus();
-            }
         },
         focusTrigger() {
             const trigger = this.$refs.button;
