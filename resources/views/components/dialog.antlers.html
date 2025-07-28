@@ -73,7 +73,7 @@
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
-                class="fixed inset-0 bg-gray-600/75 transition-opacity"
+                class="fixed inset-0 bg-black/50 transition-opacity"
             ></div>
 
             {{# Dialog panel #}}
@@ -100,9 +100,9 @@
                     >
                         {{ slot }}
 
-                        <button @click="close($refs.button)" class="btn absolute top-0 right-0 size-8 mt-5 mr-5 text-gray-400 rounded-md hover:text-gray-500">
+                        <button @click="close($refs.button)" class="btn absolute top-4 right-4 size-6 text-muted-foreground rounded-xs hover:text-foreground">
                             <span class="sr-only">Close</span>
-                            {{ svg src="heroicons-outline/x-mark" class="size-6" }}
+                            {{ icon:lucide-x class="size-4" }}
                         </button>
                     </div>
                 </div>

@@ -246,12 +246,23 @@
                 <div class="flex items-center">
                     <dt class="w-32 shrink-0 content-sm text-gray-600 font-mono leading-6">Dialog</dt>
                     <dd>
-                        {{ partial:components/dialog trigger_button_class="btn--secondary" }}
+                        {{ partial:components/dialog trigger_button_class="btn--outline" }}
                             {{ slot:trigger_button }}
                                 Open dialog
                             {{ /slot:trigger_button }}
-                            <p class="h5 mb-4">Dialog title</p>
-                            <p>Dialog content goes here</p>
+                            <div class="flex flex-col gap-4">
+                                <div class="flex flex-col gap-2 text-center sm:text-left">
+                                    <p class="text-lg leading-none font-semibold text-neutral-800">Share link</p>
+                                    <p class="text-muted-foreground text-sm">Anyone who has this link will be able to view this.</p>
+                                </div>
+                                <div>
+                                    <label for="link" class="sr-only">Link</label>
+                                    <input type="text" id="link" class="input" readonly value="https://leap.remarkable.dev" />
+                                </div>
+                                <div>
+                                    <button class="btn btn--secondary" @click="close">Close</button>
+                                </div>
+                            </div>
                         {{ /partial:components/dialog }}
                     </dd>
                 </div>
