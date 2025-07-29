@@ -1,3 +1,19 @@
-<div class="min-w-0 flex-[0_0_100%] transform-[translate3d(0,0,0)] pl-[var(--slide-spacing)]">
+{{#
+    CarouselItem component - individual carousel slide
+
+    Params:
+    - class: Additional CSS classes
+    - slot: Slide content
+#}}
+
+<div
+    role="group"
+    aria-roledescription="slide"
+    class="min-w-0 shrink-0 grow-0 basis-full {{ class }}"
+    :class="{
+        'pl-4': orientation === 'horizontal',
+        'pt-4': orientation === 'vertical'
+    }"
+>
     {{ slot }}
 </div>

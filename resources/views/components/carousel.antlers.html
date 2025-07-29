@@ -1,46 +1,61 @@
 {{#
-    Glide carousel docs: https://glidejs.com/docs/options/
+    Carousel component similar to shadcn/ui carousel
+    Uses Embla Carousel with Alpine.js state management
 
     Params:
-    - controls_class: Additional classes for the controls container.
-    - left_btn_class: Additional classes for the left button.
-    - right_btn_class: Additional classes for the right button.
-    - slot:config_properties: Slot for additional properties for the Glide config object.
-    - slot: Slot for the carousel slides.
- #}}
+    - orientation: "horizontal" | "vertical" (default: "horizontal")
+    - opts: Embla carousel options object
+    - class: Additional CSS classes
+    - slot: Carousel content (should contain carousel-content component)
+#}}
 
 {{ once }}
     {{ push:scripts }}
-        {{# {{ vite src="resources/css/embla.css" }} #}}
         {{ vite src="resources/js/embla.js" }}
     {{ /push:scripts }}
 {{ /once }}
 
-<div>
-    <div
-        class="overflow-hidden"
-        x-data="{
-            emblaApi: null,
-            slideSpacing: 16,
-            init() {
-                this.emblaApi = window.EmblaCarousel(this.$el, {
-                    {{ slot:config_properties }}
-                })
-            }
-        }"
-        x-init="init()"
-    >
-        <div class="flex ml-[calc(var(--slide-spacing) * -1)]" :style="{ '--slide-spacing': `${slideSpacing}px` }">
-            {{ slot }}
-        </div>
-    </div>
+<div
+    class="relative outline-none {{ class }}"
+    role="region"
+    aria-roledescription="carousel"
+    x-data="{
+        emblaApi: null,
+        orientation: '{{ orientation ?? 'horizontal' }}',
+        canScrollPrev: false,
+        canScrollNext: false,
 
-    <div class="embla__controls {{ controls_class }}">
-        <button class="btn btn--outline btn--round {{ left_btn_class }}" aria-label="Previous">
-            {{ icon:lucide-chevron-left }}
-        </button>
-        <button class="btn btn--outline btn--round {{ right_btn_class }}" aria-label="Next">
-            {{ icon:lucide-chevron-right }}
-        </button>
-    </div>
+        init() {
+            const options = {
+                axis: this.orientation === 'horizontal' ? 'x' : 'y',
+                {{ slot:opts }}
+            };
+
+            this.emblaApi = window.EmblaCarousel(this.$refs.viewport, options);
+
+            this.updateScrollButtons();
+            this.emblaApi.on('select', () => this.updateScrollButtons());
+            this.emblaApi.on('reInit', () => this.updateScrollButtons());
+        },
+
+        updateScrollButtons() {
+            if (!this.emblaApi) return;
+            this.canScrollPrev = this.emblaApi.canScrollPrev();
+            this.canScrollNext = this.emblaApi.canScrollNext();
+        },
+
+        scrollPrev() {
+            if (this.emblaApi) this.emblaApi.scrollPrev();
+        },
+
+        scrollNext() {
+            if (this.emblaApi) this.emblaApi.scrollNext();
+        },
+    }"
+    x-init="init()"
+    @keydown.left.prevent="scrollPrev()"
+    @keydown.right.prevent="scrollNext()"
+    tabindex="0"
+>
+    {{ slot }}
 </div>

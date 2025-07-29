@@ -10,7 +10,6 @@ export default defineConfig(({ command, mode }) => {
       laravel({
         input: [
           'resources/css/site.css',
-          //   'resources/css/glide.css',
           'resources/css/fonts.css',
           'resources/js/site.js',
           'resources/js/embla.js',

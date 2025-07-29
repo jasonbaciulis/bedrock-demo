@@ -313,19 +313,27 @@
                 </div>
                 <div class="flex items-center">
                     <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">Carousel</dt>
-                    <dd class="w-full">
-                        {{ partial:components/carousel }}
-                            {{ slot:config_properties }}
-                                perView: 1,
-                            {{ /slot:config_properties }}
+                    <dd class="px-12">
+                        {{ partial:components/carousel class="w-full max-w-xs" }}
+                            {{ slot:opts }}
+                                loop: false,
+                                align: 'start',
+                            {{ /slot:opts }}
 
-                            {{ loop times="3" }}
-                                {{ partial:components/carousel-slide }}
-                                    <div class="bg-card text-card-foreground rounded-xl border p-6 shadow-sm flex items-center justify-center">
-                                        <span class="text-4xl font-semibold">{{ count }}</span>
-                                    </div>
-                                {{ /partial:components/carousel-slide }}
-                            {{ /loop }}
+                            {{ partial:components/carousel-content }}
+                                {{ loop times="5" }}
+                                    {{ partial:components/carousel-slide }}
+                                        <div class="p-1">
+                                            <div class="bg-card text-card-foreground rounded-xl border shadow-sm flex aspect-square items-center justify-center p-6">
+                                                <span class="text-4xl font-semibold">{{ count }}</span>
+                                            </div>
+                                        </div>
+                                    {{ /partial:components/carousel-slide }}
+                                {{ /loop }}
+                            {{ /partial:components/carousel-content }}
+
+                            {{ partial:components/carousel-previous class="btn--outline btn--round" }}
+                            {{ partial:components/carousel-next class="btn--outline btn--round" }}
                         {{ /partial:components/carousel }}
                     </dd>
                 </div>
