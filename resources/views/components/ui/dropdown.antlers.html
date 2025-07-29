@@ -56,7 +56,7 @@
         x-transition:leave-end="opacity-0 scale-95"
         @click.outside="close($refs.button)"
         :id="$id('dropdown-menu')"
-        class="absolute z-10 mt-1 rounded-lg bg-popover text-popover-foreground overflow-x-hidden overflow-y-auto shadow-md border p-1 max-h-80 {{ $width }}
+        class="absolute z-10 mt-1 rounded-lg bg-popover text-popover-foreground overflow-x-hidden overflow-y-auto shadow-md border p-1 max-h-60 {{ $width }}
             {{ switch(
                 ($alignment === 'left') => 'left-0 origin-top-left',
                 ($alignment === 'right') => 'right-0 origin-top-right',

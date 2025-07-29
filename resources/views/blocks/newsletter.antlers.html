@@ -41,14 +41,14 @@
                     class="sm:flex-1"
                     :disabled="sending"
                 >
-                {{ partial:components/form/fields/submit class="sm:w-auto shrink-0" :label="newsletter:button_label" }}
+                {{ partial:components/ui/form/fields/submit class="sm:w-auto shrink-0" :label="newsletter:button_label" }}
             </div>
 
-            {{ partial:components/form/error handle="email" }}
+            {{ partial:components/ui/form/error handle="email" }}
         </form>
 
         <template x-if="success">
-            {{ partial:components/alert style="success" :title="newsletter:success_message" class="mx-auto max-w-md mt-10" }}
+            {{ partial:components/ui/alert style="success" :title="newsletter:success_message" class="mx-auto max-w-md mt-10" }}
         </template>
     </div>
 </div>

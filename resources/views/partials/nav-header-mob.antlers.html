@@ -16,16 +16,16 @@
                     <div class="-my-6 divide-y divide-gray-500/10">
                         <div class="space-y-2 py-6">
                             {{ items }}
-                                {{ if children && two_col_flyout }}
+                                {{ if children && two_col_menu }}
                                     {{ children }}
-                                        {{ partial:partials/nav-flyout-item }}
+                                        {{ partial:partials/nav-header-item }}
                                     {{ /children }}
                                 {{ /if }}
                             {{ /items }}
                         </div>
                         <div class="space-y-2 py-6">
                             {{ items }}
-                                {{ if children && ! two_col_flyout }}
+                                {{ if children && ! two_col_menu }}
                                     {{ children }}
                                         <a
                                             href="{{ url }}"
@@ -49,7 +49,7 @@
                         <div class="py-6 flex flex-col-reverse gap-y-6">
                             {{ theme:header_buttons }}
                                 {{ button }}
-                                    {{ partial:components/button class="w-full" }}
+                                    {{ partial:components/ui/button class="w-full" }}
                                 {{ /button }}
                             {{ /theme:header_buttons }}
                         </div>

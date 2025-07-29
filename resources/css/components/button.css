@@ -4,7 +4,7 @@
   }
 
   .btn--primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/90 disabled:bg-primary/50 h-9 px-4 py-2 shadow-xs;
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/90 h-9 px-4 py-2 shadow-xs;
   }
 
   .btn--secondary {
