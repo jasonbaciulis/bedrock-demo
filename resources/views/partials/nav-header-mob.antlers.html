@@ -1,4 +1,4 @@
-{{ nav handle="header" max_depth="2" as="items" }}
+{{ nav handle="header" max_depth="2" select="title|url|is_external|icon|badge|two_col_menu" as="items" }}
     {{# Mobile menu #}}
     <div x-cloak x-show="mobileNavOpen" class="lg:hidden" role="dialog" aria-modal="true" >
         {{#  Background backdrop #}}
@@ -9,7 +9,7 @@
                     {{ partial:components/logo class="block w-44" }}
                     <button type="button" class="btn btn--ghost btn--square" @click="mobileNavOpen = false">
                         <span class="sr-only">Close menu</span>
-                        {{ icon:lucide-x class="size-5" }}
+                        {{ ico:lucide-x class="size-5" }}
                     </button>
                 </div>
                 <div class="mt-6 flow-root">

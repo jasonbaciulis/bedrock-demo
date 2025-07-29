@@ -1,5 +1,5 @@
 <nav class="hidden lg:flex space-x-10">
-    {{ nav handle="header" max_depth="2" }}
+    {{ nav handle="header" max_depth="2" select="title|url|is_external|icon|description|badge|two_col_menu" }}
         {{ if children }}
             <div class="relative" x-data="{ subnavOpen: false }">
                 <button
@@ -14,7 +14,7 @@
                         class="transition-transform duration-500 mt-0.5"
                         :class="{'translate-y-0.5': subnavOpen }"
                     >
-                        {{ icon:lucide-chevron-down class="size-4 opacity-50" }}
+                        {{ ico:lucide-chevron-down class="size-4 opacity-50" }}
                     </span>
                 </button>
 
