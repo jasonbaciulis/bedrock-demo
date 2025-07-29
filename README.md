@@ -26,7 +26,7 @@ Once you have started the Artisan development server, the website will be access
 resources/views/
 ├── blocks/                      # Page building blocks (Replicator fields)
 ├── components/                  # Project specific reusable components
-│   └── ui/                      # Highly-reusable Shadcn UI style Alpine.js components
+│   └── ui/                      # Highly-reusable shadcn/ui style Alpine.js components
 │       └── form/                # Form-specific components
 │           └── fields/          # Individual form field types (custom Statamic form fields will require a snake_case view here)
 ├── partials/                    # Template partials and fragments (things that aren't really reusable go here)
