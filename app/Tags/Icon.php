@@ -8,15 +8,24 @@ use Statamic\Tags\Tags;
 class Icon extends Tags
 {
     /**
+     * Tag aliases for when "icon" conflicts with variables
+     */
+    protected static $aliases = ['ui-icon', 'ico'];
+
+    /**
      * The {{ icon }} tag.
      *
      * Usage examples in Antlers:
      *
      * 1. Using wildcard syntax (preferred):
-     *    {{ icon:lucide-chevrons-up-down class="w-6 h-6 text-primary" }}
+     *    {{ icon:lucide-chevrons-up-down class="size-4 text-primary" }}
+     *    {{ ui-icon:lucide-chevrons-up-down class="size-4 text-primary" }}
+     *    {{ ico:lucide-chevrons-up-down class="size-4 text-primary" }}
      *
      * 2. Using parameters:
-     *    {{ icon name="lucide-chevrons-up-down" class="w-6 h-6" }}
+     *    {{ icon name="lucide-chevrons-up-down" class="size-4" }}
+     *    {{ ui-icon name="lucide-chevrons-up-down" class="size-4" }}
+     *    {{ ico name="lucide-chevrons-up-down" class="size-4" }}
      */
 
     /**
