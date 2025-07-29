@@ -19,8 +19,23 @@ Once you have started the Artisan development server, the website will be access
 - [Antlers](https://statamic.dev/new-antlers-parser) - Templating engine provided with Statamic.
 - [TailwindCSS](https://tailwindcss.com/docs/installation) - Utility-first CSS framework.
 - [AlpineJS](https://alpinejs.dev/start-here) - Rugged, minimal tool for composing behavior directly in your markup.
-- [Glide](https://glidejs.com/) OR [Swiper](https://swiperjs.com/get-started) - Modern mobile touch slider.
-- [Collaboration](https://statamic.com/addons/statamic/collaboration) - Statamic Addon for realtime collaboration and multi-user authoring.
+- [Embla](https://www.embla-carousel.com//) - A lightweight carousel library with fluid motion and great swipe precision.
+
+## Views folder structure
+```
+resources/views/
+├── blocks/                      # Page building blocks (Replicator fields)
+├── components/                  # Project specific reusable components
+│   └── ui/                      # Highly-reusable Shadcn UI style Alpine.js components
+│       └── form/                # Form-specific components
+│           └── fields/          # Individual form field types (custom Statamic form fields will require a snake_case view here)
+├── partials/                    # Template partials and fragments (things that aren't really reusable go here)
+│   └── alpine/                  # Alpine.js specific partials (e.g. if using Statamic REST API to load more entries)
+├── posts/                       # Posts collection templates
+├── sets/                        # Content sets for Article Block
+├── sitemap/                     # Sitemap templates
+└── errors/                      # Error page templates
+```
 
 ## Tailwind CSS config
 - `config.css` - site's config. This file would typically include custom config for the project.
