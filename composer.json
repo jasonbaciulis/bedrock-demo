@@ -13,6 +13,7 @@
     "blade-ui-kit/blade-icons": "^1.8",
     "laravel/framework": "^12",
     "laravel/tinker": "^2.9",
+    "maennchen/zipstream-php": "~3.1.0",
     "mallardduck/blade-lucide-icons": "^1.23",
     "statamic/cms": "^5.0",
     "statamic/ssg": "^3.1"
