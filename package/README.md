@@ -1,6 +1,6 @@
 # [Leap demo](https://leap.remarkable.dev)
 
-Developer-first Statamic starter kit built with Alpine.js, TailwindCSS, and shadcn/ui design. Features a complete block-based page builder with CLI tools, comprehensive SEO setup, and 10+ production-ready Alpine.js components for rapid development.
+Developer-first Statamic starter kit built with Alpine.js, TailwindCSS, and shadcn/ui design. Features shadcn/ui style Alpine.js components that you can customize, extend, and build on. Plus a block-based page builder with CLI tools and complete SEO setup.
 
 ## Features
 
