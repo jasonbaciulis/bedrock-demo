@@ -2,7 +2,7 @@
     :aria-invalid="hasError('{{ handle }}')"
     {{ instructions ?= 'aria-describedby="{handle}-instructions"' }}
 >
-    <legend class="block text-base font-medium text-neutral-900 select-none">{{ display }}</legend>
+    <legend class="block text-base font-medium text-foreground select-none">{{ display }}</legend>
 
     {{ if field:instructions }}
         <p id="{{ field:handle }}-instructions" class="text-sm text-muted-foreground">
@@ -21,7 +21,7 @@
                     value="{{ value }}"
                     @change="forgetError('{{ handle }}')"
                 >
-                <label for="{{ value }}" class="text-neutral-900">
+                <label for="{{ value }}" class="text-foreground">
                     {{ label }}
                 </label>
             </div>
