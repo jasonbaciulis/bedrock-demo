@@ -2,7 +2,7 @@
   <time datetime="{{ date | format('c') }}" class="text-xs text-muted-foreground">
       {{ date | format('M j, Y') }}
   </time>
-  {{ if categories }}
-      <span class="badge badge--outline">{{ categories:title }}</span>
+  {{ if category }}
+      <span class="badge badge--outline">{{ category }}</span>
   {{ /if }}
 </div>
