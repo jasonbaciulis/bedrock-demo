@@ -4,20 +4,20 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
 
 {{ once }}
     {{ push:scripts }}
-        {{ vite src="resources/js/cookieBanner.js" }}
+        {{ vite src="resources/js/cookieDialog.js" }}
     {{ /push:scripts }}
 {{ /once }}
 
 <div
     x-cloak
-    x-show="!$store.cookieBanner.getConsent()"
+    x-show="!$store.cookieDialog.getConsent()"
     x-transition:enter="ease duration-200"
     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
     x-transition:leave="ease duration-150"
     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-    x-data="cookieBanner({
+    x-data="cookieDialog({
         {{ if seo:cookie:consent_revoke_before }}
             consentRevokeBefore: {{ seo:cookie:consent_revoke_before format='U' }},
         {{ else }}
@@ -43,7 +43,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
         </div>
 
         <div x-cloak x-show="settingsOpen">
-            <template x-for="type in $store.cookieBanner.getConsentTypes()">
+            <template x-for="type in $store.cookieDialog.getConsentTypes()">
                 <div class="relative flex gap-x-3 items-start mt-4">
                     <div class="flex h-6 items-center">
                         <template x-if="!type.consent_api">
@@ -79,7 +79,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
             {{# Accept all cookies and set current date. #}}
             <button
                 x-show="!settingsOpen"
-                @click="$store.cookieBanner.acceptAll()"
+                @click="$store.cookieDialog.acceptAll()"
                 type="button"
                 class="btn btn--primary flex-1 sm:flex-none"
             >
@@ -89,7 +89,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
             {{# Accept user selected cookies and set current date. #}}
             <button
                 x-show="settingsOpen"
-                @click="$store.cookieBanner.saveConsent()"
+                @click="$store.cookieDialog.saveConsent()"
                 type="button"
                 class="btn btn--primary flex-1 sm:flex-none"
             >
@@ -98,7 +98,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
 
             {{# Reject all cookies #}}
             <button
-                @click="$store.cookieBanner.rejectAll()"
+                @click="$store.cookieDialog.rejectAll()"
                 type="button"
                 class="btn btn--secondary flex-1 sm:flex-none"
             >
@@ -119,13 +119,13 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
 
 {{# Yield this section in `partials/nav-bottom-footer.antlers.html` so users can reset their consent. #}}
 {{ section:reset_cookie_consent }}
-    {{ if seo:use_cookie_banner }}
+    {{ if seo:use_cookie_dialog }}
         <a
             x-cloak
-            x-show="$store.cookieBanner.getConsent()"
+            x-show="$store.cookieDialog.getConsent()"
             x-data
             href="#"
-            @click.prevent="$store.cookieBanner.revokeConsent()"
+            @click.prevent="$store.cookieDialog.revokeConsent()"
             class="text-xs text-muted-foreground hover:text-foreground"
         >
             {{ seo:cookie:reset_consent_label }}

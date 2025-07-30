@@ -493,13 +493,13 @@ tabs:
               if:
                 tracker_type: 'equals gtm'
           -
-            handle: use_cookie_banner
+            handle: use_cookie_dialog
             field:
               type: toggle
-              instructions: 'Enable the cookie banner. Make sure you load all tracking scripts via GTM. Uses the consent api: https://developers.google.com/tag-manager/consent'
+              instructions: 'Enable the cookie consent dialog. Make sure you load all tracking scripts via GTM. Uses the consent api: https://developers.google.com/tag-manager/consent'
               instructions_position: below
               listable: false
-              display: 'Cookie banner'
+              display: 'Cookie consent'
               width: 50
               if:
                 tracker_type: 'not none'
@@ -509,7 +509,7 @@ tabs:
               type: group
               display: 'Cookie banner'
               if:
-                use_cookie_banner: 'equals true'
+                use_cookie_dialog: 'equals true'
                 tracker_type: 'not none'
               fields:
                 -
