@@ -188,7 +188,7 @@ php please delete:set       # Remove set
 
 ### 3. Form Handling
 - Define forms in `resources/forms/`
-- Create custom form field templates in `resources/views/components/ui/form/fields/`
+- Create custom form field templates in `resources/views/components/ui/form/`
 - Use snake_case for form field names to match Statamic conventions
 
 ### 4. SEO & Performance
@@ -221,7 +221,7 @@ php please delete:set       # Remove set
 - Use `x-data` for component state
 - Follow Alpine.js naming conventions
 - Avoid complex logic in Alpine directives
-- If the component uses more than a few methods, create a separate JS file and load conditionally when component is used. Check for example inside `resources/views/components/ui/form/fields/combobox.antlers.html`
+- If the component uses more than a few methods, create a separate JS file and load conditionally when component is used. Check for example inside `resources/views/components/ui/form/combobox.antlers.html`
 
 ## Troubleshooting & Common Issues
 
