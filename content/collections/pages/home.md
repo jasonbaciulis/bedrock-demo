@@ -11,7 +11,7 @@ blocks:
     type: hero_home
     enabled: true
     title: 'The Foundation for your Statamic projects'
-    text: 'Features shadcn/ui style Alpine.js components that you can customize, extend, and build on. Plus page builder and complete SEO setup.'
+    text: 'shadcn/ui style Alpine.js components that you can customize, extend, and build on. Plus page builder and complete SEO setup.'
     buttons:
       -
         id: KdAsb0Ad
