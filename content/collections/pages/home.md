@@ -18,7 +18,7 @@ blocks:
         label: 'Get started'
         link_type: url
         target_blank: false
-        url: 'https://statamic.com/starter-kits/jasonbaciulis/leap'
+        url: 'https://statamic.com/starter-kits/jasonbaciulis/bedrock'
         button_type: primary
       -
         id: ALbCABEq

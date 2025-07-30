@@ -4,9 +4,9 @@ This file provides context and guidelines for AI assistants working with this St
 
 ## Project Overview
 
-**Leap** is a Statamic starter-kit that demonstrates a Statamic CMS built on Laravel with a flat-file architecture. This is a sophisticated CMS project with custom CLI tooling and a component-based architecture.
+**Bedrock** is a Statamic starter-kit that demonstrates a Statamic CMS built on Laravel with a flat-file architecture. This is a sophisticated CMS project with custom CLI tooling and a component-based architecture.
 
-- **Demo Site**: https://leap.remarkable.dev
+- **Demo Site**: https://bedrock.remarkable.dev
 - **Primary Tech Stack**: Statamic (Laravel CMS), Antlers templating, TailwindCSS, AlpineJS
 - **Architecture Pattern**: Component-based with modular blocks and sets
 - **Content Strategy**: Flat-file CMS with YAML front matter and Markdown content

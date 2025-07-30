@@ -1,4 +1,4 @@
-# [Leap demo](https://leap.remarkable.dev)
+# [Bedrock demo](https://bedrock.remarkable.dev)
 
 ## Requirements
 
