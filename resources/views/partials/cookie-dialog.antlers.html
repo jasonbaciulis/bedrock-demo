@@ -37,14 +37,17 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
     })"
     class="container max-w-xl fixed inset-x-0 bottom-0 pb-6 z-50"
 >
-    <div class="p-6 bg-white rounded-[0.625rem] shadow-lg border transition-all">
-        <div class="text-sm/6 prose prose-p:my-0 max-w-none">
-            {{ seo:cookie:description }}
+    <div class="card shadow-lg transition-all">
+        <div class="space-y-1.5">
+            <div class="leading-none font-semibold">{{ seo:cookie:title }}</div>
+            <div class="text-sm/6 text-muted-foreground prose prose-p:my-0 max-w-none">
+                {{ seo:cookie:description }}
+            </div>
         </div>
 
-        <div x-cloak x-show="settingsOpen">
+        <div x-cloak x-show="settingsOpen" class="flex flex-col gap-4">
             <template x-for="type in $store.cookieDialog.getConsentTypes()">
-                <div class="relative flex gap-x-3 items-start mt-4">
+                <div class="relative flex gap-x-3 items-start">
                     <div class="flex h-6 items-center">
                         <template x-if="!type.consent_api">
                             {{# Functional cookies are always on. #}}
@@ -68,14 +71,14 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
                         </template>
                     </div>
                     <div class="text-sm/6">
-                        <label :for="type.name" class="text-neutral-900" :class="{ 'cursor-not-allowed text-muted-foreground': !type.consent_api }" x-text="type.label"></label>
+                        <label :for="type.name" :class="{ 'cursor-not-allowed text-muted-foreground': !type.consent_api }" x-text="type.label"></label>
                         <p :id="`${type.name}-description`" class="text-muted-foreground text-pretty" x-text="type.description"></p>
                     </div>
                 </div>
             </template>
         </div>
 
-        <div class="flex flex-wrap gap-4 mt-4">
+        <div class="flex flex-wrap gap-2">
             {{# Accept all cookies and set current date. #}}
             <button
                 x-show="!settingsOpen"
@@ -100,7 +103,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
             <button
                 @click="$store.cookieDialog.rejectAll()"
                 type="button"
-                class="btn btn--secondary flex-1 sm:flex-none"
+                class="btn btn--outline flex-1 sm:flex-none"
             >
                 {{ seo:cookie:reject_label }}
             </button>
@@ -109,7 +112,7 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
             <button
                 @click="settingsOpen = !settingsOpen"
                 type="button"
-                class="btn btn--secondary flex-1 sm:flex-none"
+                class="btn btn--outline flex-1 sm:flex-none"
             >
                 {{ seo:cookie:settings_label }}
             </button>
