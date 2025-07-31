@@ -1,6 +1,6 @@
 # AGENTS.md - AI Development Guidelines
 
-This file provides context and guidelines for AI assistants working with this Statamic CMS project
+This file provides context and guidelines for AI assistants working with this Statamic CMS project.
 
 ## Project Overview
 
