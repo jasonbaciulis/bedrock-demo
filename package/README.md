@@ -1,6 +1,8 @@
-# [Bedrock demo](https://bedrock.remarkable.dev)
+# [Bedrock](https://bedrock.remarkable.dev)
 
-The Foundation for your Statamic projects. Features shadcn/ui style Alpine.js components that you can customize, extend, and build on. Plus a block-based page builder with CLI tools and complete SEO setup.
+## The Foundation for your Statamic projects.
+
+Features shadcn/ui style Alpine.js components that you can customize, extend, and build on. Plus a block-based page builder with CLI tools and complete SEO setup.
 
 ## Features
 
