@@ -12,7 +12,7 @@
         {{ partial:components/buttons container_class="gap-x-3" class="btn--xl" }}
     </div>
 
-    <div class="container max-w-screen-2xl site-grid pt-16 md:pt-24 lg:pt-32 items-start">
+    <div id="components" class="container max-w-screen-2xl site-grid pt-16 md:pt-24 lg:pt-32 items-start">
         <div class="col-span-full lg:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             <div class="space-y-6 lg:space-y-8">
                 {{# Contact Form #}}
@@ -172,6 +172,7 @@
                     </div>
                 </div>
 
+                {{# Alert #}}
                 <div class="col-span-full md:col-span-6 lg:col-span-3">
                     {{ partial:components/ui/alert style="success" title="Success! Your changes have been saved." description="This is an alert with icon, title and description." }}
                 </div>
