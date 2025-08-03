@@ -17,8 +17,8 @@
             <div class="space-y-6 lg:space-y-8">
                 {{# Contact Form #}}
                 <div class="col-span-full md:col-span-6 lg:col-span-3">
-                    <div class="card h-full">
-                        <div class="flex flex-col gap-1.5">
+                    <div class="card shadow-none">
+                        <div class="card__header">
                             <p class="leading-none font-semibold">Contact us</p>
                             <p class="text-muted-foreground text-sm">Get in touch and we'll respond within 24 hours.</p>
                         </div>
@@ -45,7 +45,7 @@
                  {{# Newsletter Form #}}
                 <div class="col-span-full md:col-span-6 lg:col-span-3" x-data="form({ handle: 'newsletter' })">
                     <div
-                        class="card"
+                        class="card shadow-none"
                         x-data="{
                             email: '',
                             frequency: 'weekly',
@@ -90,7 +90,7 @@
             <div class="space-y-6 lg:space-y-8">
                 {{# Carousel #}}
                 <div class="col-span-full md:col-span-6 lg:col-span-3">
-                    <div class="card">
+                    <div class="card shadow-none">
                         <div class="card__header">
                             <p class="leading-none font-semibold">Featured posts</p>
                             <p class="text-muted-foreground text-sm">Browse our most popular posts.</p>
@@ -125,7 +125,7 @@
                 {{# Preferences Form #}}
                 <div class="col-span-full md:col-span-6 lg:col-span-3" x-data="form({ handle: 'preferences' })">
                     <div
-                        class="card"
+                        class="card shadow-none"
                         x-data="{
                             theme: 'system',
                             language: 'en',
@@ -170,6 +170,10 @@
                             <button class="btn btn--outline w-full">Save preferences</button>
                         </div>
                     </div>
+                </div>
+
+                <div class="col-span-full md:col-span-6 lg:col-span-3">
+                    {{ partial:components/ui/alert style="success" title="Success! Your changes have been saved." description="This is an alert with icon, title and description." }}
                 </div>
             </div>
         </div>
@@ -218,7 +222,7 @@
                     {{ slot:tabs-panels }}
                         {{ $services_tabs }}
                             {{ partial:components/ui/tabs-panel class="flex-1 outline-none" }}
-                                <div class="card">
+                                <div class="card shadow-none">
                                     <p class="text-sm">{{ description }}</p>
                                     <ul class="text-sm space-y-1 list-disc list-inside">
                                         {{ features }}
@@ -237,8 +241,8 @@
 
             {{# Interactive Components and FAQs #}}
             <div class="col-span-full md:col-span-6 space-y-6 lg:space-y-8">
-                <div class="card">
-                    {{# Collapsible FAQ #}}
+                {{# Collapsible FAQ #}}
+                <div class="card shadow-none">
                     <div class="card__header">
                         <p class="font-semibold text-xl">FAQs</p>
                         <p class="text-muted-foreground text-sm">Here are some of the most frequently asked questions.</p>
@@ -274,13 +278,14 @@
                     </div>
                 </div>
 
-                <div class="card">
+                {{# Dialog and Dropdown #}}
+                <div class="card shadow-none">
                     <div class="card__header">
                         <p class="leading-none font-semibold">Interactive elements</p>
                         <p class="text-muted-foreground text-sm">Explore our components.</p>
                     </div>
 
-                    {{# Dialog Example #}}
+                    {{# Dialog #}}
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="font-medium text-sm">Share bedrock</p>
@@ -307,7 +312,7 @@
                         {{ /partial:components/ui/dialog }}
                     </div>
 
-                    {{# Dropdown Example #}}
+                    {{# Dropdown #}}
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="font-medium text-sm">Quick actions</p>
@@ -349,31 +354,32 @@
                         {{ /partial:components/ui/dropdown }}
                     </div>
                 </div>
+
+                {{# Mock pagination #}}
+                <div class="card shadow-none">
+                    <nav class="flex justify-center items-center gap-1">
+                        <button class="btn btn--ghost shrink-0">
+                            {{ icon:lucide-chevron-left class="size-4" }}
+                            <span class="sr-only md:not-sr-only">Previous</span>
+                        </button>
+
+                        <div class="flex gap-1">
+                            <button class="btn btn--ghost btn--square">1</button>
+                            <button class="btn btn--outline btn--square">2</button>
+                            <button class="btn btn--ghost btn--square">3</button>
+                            <span class="flex size-9 items-center justify-center">
+                                {{ icon:lucide-ellipsis class="size-4" }}
+                            </span>
+                            <button class="btn btn--ghost btn--square">12</button>
+                        </div>
+
+                        <button class="btn btn--ghost shrink-0">
+                            <span class="sr-only md:not-sr-only">Next</span>
+                            {{ icon:lucide-chevron-right class="size-4" }}
+                        </button>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>
 </section>
-
-
-{{# Mock pagination - using static HTML since we don't have real pagination data #}}
-{{# <nav class="flex justify-center items-center gap-1">
-    <button class="btn btn--ghost shrink-0" disabled>
-        {{ icon:lucide-chevron-left class="size-4" }}
-        <span class="sr-only md:not-sr-only">Previous</span>
-    </button>
-
-    <div class="flex gap-1">
-        <button class="btn btn--primary btn--square pointer-events-none">1</button>
-        <a href="#" class="btn btn--ghost btn--square">2</a>
-        <a href="#" class="btn btn--ghost btn--square">3</a>
-        <span class="flex size-9 items-center justify-center">
-            {{ icon:lucide-ellipsis class="size-4" }}
-        </span>
-        <a href="#" class="btn btn--ghost btn--square">12</a>
-    </div>
-
-    <a href="#" class="btn btn--ghost shrink-0">
-        <span class="sr-only md:not-sr-only">Next</span>
-        {{ icon:lucide-chevron-right class="size-4" }}
-    </a>
-</nav> #}}
