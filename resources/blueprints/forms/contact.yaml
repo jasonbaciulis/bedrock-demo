@@ -133,7 +133,7 @@ tabs:
               max_items: 1
               type: dictionary
               display: Timezone
-              width: 50
+              width: 66
               validate:
                 - sometimes
                 - string
@@ -149,6 +149,14 @@ tabs:
               validate:
                 - sometimes
                 - active_url
+              width: 50
+          -
+            handle: design_file
+            field:
+              max_files: 2
+              type: files
+              display: 'Design file'
+              width: 50
           -
             handle: referral_source
             field:
