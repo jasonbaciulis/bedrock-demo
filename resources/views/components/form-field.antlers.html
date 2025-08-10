@@ -10,9 +10,7 @@
             {{ partial src="components/ui/form/{type}" model="{form:handle}.{handle}" }}
 
             {{ if field:instructions && !($fields_without_labels | contains(type)) }}
-                <p id="{{ field:handle }}-instructions" class="mt-2 text-sm text-muted-foreground">
-                    {{ field:instructions }}
-                </p>
+                {{ partial:components/ui/input-instructions }}
             {{ /if }}
 
             {{ partial:components/ui/input-error }}
