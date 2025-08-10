@@ -1,0 +1,84 @@
+<div
+    class="flex items-center flex-wrap gap-y-3 gap-x-6"
+    x-data="{
+        count: 0,
+        min: {{ min }},
+        max: {{ max }},
+        step: 1,
+
+        isAtMax() {
+            return this.count >= this.max;
+        },
+
+        isAtMin() {
+            return this.count <= this.min;
+        },
+
+        increment() {
+            let newValue = parseInt(this.count) + this.step;
+
+            if (newValue > this.max) {
+                newValue = this.max;
+            }
+
+            this.count = newValue;
+        },
+
+        decrement() {
+            let newValue = parseInt(this.count) - this.step;
+
+            if (newValue < this.min) {
+                newValue = this.min;
+            }
+
+            this.count = newValue;
+        },
+
+        handleInput() {
+            this.count = parseInt(this.$refs.input.value);
+        },
+    }"
+>
+    {{ partial:components/ui/label }}
+
+    <div class="flex items-center gap-x-2">
+        <button
+            type="button"
+            class="btn btn--outline btn--sm btn--round shrink-0"
+            @click="decrement()"
+            :disabled="isAtMin()"
+        >
+            {{ icon:lucide-minus }}
+            <span class="sr-only">Decrease quantity</span>
+        </button>
+
+        {{ if show_input }}
+            <input
+                x-ref="input"
+                x-model.number="{{ model }}"
+                x-modelable.number="count"
+                x-mask="{{ max }}"
+                class="w-10 px-0 text-center"
+                id="{{ handle }}"
+                name="{{ handle }}"
+                type="text"
+                :aria-invalid="hasError('{{ handle }}')"
+                aria-describedBy="error-{{ handle }}"
+                @input="handleInput()"
+                @change="forgetError('{{ handle }}')"
+            />
+        {{ else }}
+            <span class="text-lg/none font-semibold text-center w-9 tabular-nums" x-text="count"></span>
+        {{ /if }}
+
+        <button
+            type="button"
+            class="btn btn--outline btn--sm btn--round shrink-0"
+            @click="increment()"
+            :disabled="isAtMax"
+        >
+            {{ icon:lucide-plus }}
+            <span class="sr-only">Increase quantity</span>
+        </button>
+    </div>
+</div>
