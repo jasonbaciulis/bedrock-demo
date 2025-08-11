@@ -1,43 +1,12 @@
+{{ once }}
+    {{ push:scripts }}
+        {{ vite src="resources/js/components/stepper.js" }}
+    {{ /push:scripts }}
+{{ /once }}
+
 <div
     class="flex items-center flex-wrap gap-y-3 gap-x-6"
-    x-data="{
-        count: 0,
-        min: {{ min ?? 0 }},
-        max: {{ max ?? 9999 }},
-        step: {{ step ?? 1 }},
-
-        isAtMax() {
-            return this.count >= this.max;
-        },
-
-        isAtMin() {
-            return this.count <= this.min;
-        },
-
-        increment() {
-            let newValue = parseInt(this.count) + this.step;
-
-            if (newValue > this.max) {
-                newValue = this.max;
-            }
-
-            this.count = newValue;
-        },
-
-        decrement() {
-            let newValue = parseInt(this.count) - this.step;
-
-            if (newValue < this.min) {
-                newValue = this.min;
-            }
-
-            this.count = newValue;
-        },
-
-        handleInput(event) {
-            this.count = parseInt(event.target.value) || 0;
-        },
-    }"
+    x-data="stepper({{ min ?? 0 }}, {{ max ?? 9999 }}, {{ step ?? 1 }})"
 >
     {{ partial:components/ui/label }}
 
