@@ -2,9 +2,9 @@
     class="flex items-center flex-wrap gap-y-3 gap-x-6"
     x-data="{
         count: 0,
-        min: {{ min }},
-        max: {{ max }},
-        step: {{ step }},
+        min: {{ min ?? 0 }},
+        max: {{ max ?? 9999 }},
+        step: {{ step ?? 1 }},
 
         isAtMax() {
             return this.count >= this.max;
@@ -34,8 +34,8 @@
             this.count = newValue;
         },
 
-        handleInput() {
-            this.count = parseInt(this.$refs.input.value);
+        handleInput(event) {
+            this.count = parseInt(event.target.value) || 0;
         },
     }"
 >
@@ -68,7 +68,7 @@
                 {{ else }}
                     :aria-describedby="hasError('{{ handle }}') ? '{{ handle }}-error' : undefined"
                 {{ /if }}
-                @input="handleInput()"
+                @input="handleInput"
                 @change="forgetError('{{ handle }}')"
             />
         {{ else }}

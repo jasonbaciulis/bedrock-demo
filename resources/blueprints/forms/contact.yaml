@@ -118,8 +118,6 @@ tabs:
               validate:
                 - integer
                 - 'max:99'
-              min: 1
-              default: 1
           -
             handle: message
             field:
