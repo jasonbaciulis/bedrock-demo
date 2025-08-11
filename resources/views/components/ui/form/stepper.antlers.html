@@ -1,6 +1,6 @@
 {{ once }}
     {{ push:scripts }}
-        {{ vite src="resources/js/components/stepper.js" }}
+        {{ vite src="resources/js/stepper.js" }}
     {{ /push:scripts }}
 {{ /once }}
 
@@ -31,18 +31,18 @@
                 x-modelable="count"
                 x-mask="{{ max }}"
                 class="size-8 px-0 text-center border-none shadow-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-inner-spin-button]:m-0"
-                id="{{ handle }}"
+                id="{{ id }}"
                 name="{{ handle }}"
                 type="number"
                 :min="min"
                 :max="max"
                 :step="step"
-                aria-labelledby="{{ handle }}-label"
+                aria-labelledby="{{ id }}-label"
                 :aria-invalid="hasError('{{ handle }}')"
                 {{ if instructions }}
-                    :aria-describedby="hasError('{{ handle }}') ? '{{ handle }}-error' : '{{ handle }}-instructions'"
+                    :aria-describedby="hasError('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
                 {{ else }}
-                    :aria-describedby="hasError('{{ handle }}') ? '{{ handle }}-error' : undefined"
+                    :aria-describedby="hasError('{{ handle }}') ? '{{ id }}-error' : undefined"
                 {{ /if }}
                 @input="handleInput"
                 @change="forgetError('{{ handle }}')"

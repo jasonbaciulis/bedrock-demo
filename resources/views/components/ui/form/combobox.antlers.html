@@ -6,7 +6,7 @@
 
 <div
     x-data="combobox({
-        id: '{{ handle }}',
+        id: '{{ id }}',
         items: {{ options | to_js }},
         value: '{{ old_value ?? value }}',
         placeholder: '{{ placeholder ?? 'Select a value…' }}'
@@ -18,7 +18,7 @@
     <input type="hidden" name="{{ handle }}" x-model="value">
 
     <button
-        id="{{ handle }}"
+        id="{{ id }}"
         @click="toggleListbox()"
         type="button"
         role="combobox"
