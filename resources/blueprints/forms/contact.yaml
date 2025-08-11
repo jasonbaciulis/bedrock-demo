@@ -111,6 +111,16 @@ tabs:
                 - string
                 - 'max:255'
           -
+            handle: pages
+            field:
+              type: stepper
+              display: Pages
+              validate:
+                - integer
+                - 'max:99'
+              min: 1
+              default: 1
+          -
             handle: message
             field:
               placeholder: 'Describe your project, needs, and timeline'
@@ -204,13 +214,3 @@ tabs:
               validate:
                 - required
                 - accepted
-          -
-            handle: pages
-            field:
-              type: stepper
-              display: Pages
-              validate:
-                - integer
-                - 'max:99'
-              min: 1
-              default: 1
