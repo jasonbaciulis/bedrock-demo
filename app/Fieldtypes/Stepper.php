@@ -28,6 +28,12 @@ class Stepper extends Fieldtype
                         'type' => 'integer',
                         'default' => 9999,
                     ],
+                    'step' => [
+                        'display' => __('Step Size'),
+                        'instructions' => __('The amount to increment or decrement'),
+                        'type' => 'integer',
+                        'default' => 1,
+                    ],
                     'default' => [
                         'display' => __('Default Value'),
                         'instructions' => __('The default starting value'),
