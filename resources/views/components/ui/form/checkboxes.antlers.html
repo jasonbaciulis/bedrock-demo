@@ -1,6 +1,10 @@
 <fieldset
     :aria-invalid="hasError('{{ handle }}')"
-    {{ instructions ?= 'aria-describedby="{handle}-instructions"' }}
+    {{ if instructions }}
+        :aria-describedby="hasError('{{ handle }}') ? '{{ handle }}-error' : '{{ handle }}-instructions'"
+    {{ else }}
+        :aria-describedby="hasError('{{ handle }}') ? '{{ handle }}-error' : undefined"
+    {{ /if }}
 >
     <legend class="block font-medium text-foreground select-none text-sm">{{ display }}</legend>
 

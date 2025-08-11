@@ -4,7 +4,7 @@
         count: 0,
         min: {{ min }},
         max: {{ max }},
-        step: 1,
+        step: {{ step }},
 
         isAtMax() {
             return this.count >= this.max;
@@ -63,7 +63,11 @@
                 name="{{ handle }}"
                 type="text"
                 :aria-invalid="hasError('{{ handle }}')"
-                aria-describedBy="error-{{ handle }}"
+                {{ if instructions }}
+                    :aria-describedby="hasError('{{ handle }}') ? '{{ handle }}-error' : '{{ handle }}-instructions'"
+                {{ else }}
+                    :aria-describedby="hasError('{{ handle }}') ? '{{ handle }}-error' : undefined"
+                {{ /if }}
                 @input="handleInput()"
                 @change="forgetError('{{ handle }}')"
             />
