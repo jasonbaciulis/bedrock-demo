@@ -1,5 +1,5 @@
 <template x-if="{{ show_field }}">
-    <div class="grid gap-3 {{ container_class }} {{ input_type === 'hidden' ?= 'hidden' }}">
+    <div class="grid gap-3 content-start {{ container_class }} {{ input_type === 'hidden' ?= 'hidden' }}">
 
         {{ $fields_without_labels = ['toggle', 'radio', 'checkboxes', 'stepper'] }}
         {{ unless $fields_without_labels | contains(type) || input_type === 'hidden' }}
