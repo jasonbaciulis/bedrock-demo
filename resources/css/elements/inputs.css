@@ -17,7 +17,7 @@
   [type='password'],
   [type='tel'],
   [type='file'] {
-    @apply flex h-9 w-full min-w-0 bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
+    @apply flex h-9 w-full min-w-0 bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] read-only:cursor-not-allowed read-only:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
   }
 
   [type='file'] {
