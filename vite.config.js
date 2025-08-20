@@ -13,14 +13,14 @@ export default defineConfig(({ command, mode }) => {
           'resources/css/fonts.css',
           'resources/js/site.js',
           'resources/js/embla.js',
-          'resources/js/form.js',
-          'resources/js/cookieDialog.js',
-          'resources/js/newsletter.js',
-          'resources/js/fetchEntries.js',
-          'resources/js/combobox.js',
-          'resources/js/stepper.js',
           'resources/js/lite-yt-embed.js',
           'resources/css/lite-yt-embed.css',
+          'resources/js/fetchEntries.js',
+          'resources/js/components/form.js',
+          'resources/js/components/cookieDialog.js',
+          'resources/js/components/newsletter.js',
+          'resources/js/components/combobox.js',
+          'resources/js/components/stepper.js',
 
           // Control Panel assets.
           // https://statamic.dev/extending/control-panel#adding-css-and-js-assets

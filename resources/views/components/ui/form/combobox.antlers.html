@@ -1,6 +1,6 @@
 {{ once }}
     {{ push:scripts }}
-        {{ vite src="resources/js/combobox.js" }}
+        {{ vite src="resources/js/components/combobox.js" }}
     {{ /push:scripts }}
 {{ /once }}
 
@@ -8,11 +8,12 @@
     x-data="combobox({
         id: {{ id | to_js }},
         items: {{ options | to_js }},
-        setModel: v => {{ model }} = v,
-        value: {{ model }},
         placeholder: '{{ placeholder ?? 'Select a value…' }}'
     })"
+    x-modelable="value"
+    x-model="{{ model }}"
     @keydown.escape.stop.prevent="closeListbox()"
+    @change="forgetError('{{ handle }}')"
     class="relative"
     {{ attributes }}
 >

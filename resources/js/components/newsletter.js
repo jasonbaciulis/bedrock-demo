@@ -8,6 +8,7 @@ document.addEventListener('alpine:init', () => {
       email: '',
       storageKey: `${siteName}_newsletter_subscribed`,
 
+      // TODO: use alpine $persist to store the subscription status
       getSubscriptionStatus() {
         return !!localStorage.getItem(this.storageKey)
       },

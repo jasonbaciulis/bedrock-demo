@@ -1,10 +1,8 @@
 document.addEventListener('alpine:init', () => {
-  Alpine.data('combobox', config => ({
-    id: config.id || 'combobox',
-    items: config.items,
-    value: config.value || null,
-    setModel: config.setModel || null,
-    placeholder: config.placeholder || 'Select an option…',
+  Alpine.data('combobox', props => ({
+    id: props.id || 'combobox',
+    items: props.items,
+    placeholder: props.placeholder || 'Select an option…',
 
     itemsFiltered: [],
     itemsShown: [],
@@ -14,6 +12,20 @@ document.addEventListener('alpine:init', () => {
     itemSelected: null,
     comboboxSearch: '',
     listboxOpen: false,
+
+    get value() {
+      return this._value ?? null
+    },
+
+    set value(value) {
+      this._value = value
+      this.$dispatch('input', value)
+
+      const oldValue = this._value
+      if (oldValue !== value) {
+        this.$dispatch('change', value)
+      }
+    },
 
     get buttonLabel() {
       if (this.itemSelected) {
