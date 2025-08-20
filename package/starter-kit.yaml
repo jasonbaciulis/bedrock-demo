@@ -3,6 +3,7 @@ export_paths:
   - app/Fieldtypes
   - app/Http/Controllers/NewsletterController.php
   - app/Modifiers
+  - app/Providers/AppServiceProvider.php
   - app/Tags
   - config/app.php
   - config/statamic/editions.php

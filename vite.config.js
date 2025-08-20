@@ -25,7 +25,7 @@ export default defineConfig(({ command, mode }) => {
           // Control Panel assets.
           // https://statamic.dev/extending/control-panel#adding-css-and-js-assets
           // 'resources/css/cp.css',
-          // 'resources/js/cp.js',
+          'resources/js/cp.js',
         ],
         refresh: true,
         detectTls: false,

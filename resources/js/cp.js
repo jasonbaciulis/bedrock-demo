@@ -3,12 +3,8 @@
  * https://statamic.dev/extending/control-panel
  */
 
-/** Example Fieldtype
-
-import ExampleFieldtype from './components/fieldtypes/ExampleFieldtype.vue';
+import slugifyAction from './components/actions/slugify'
 
 Statamic.booting(() => {
-    Statamic.$components.register('example-fieldtype', ExampleFieldtype);
-});
-
-*/
+  Statamic.$fieldActions.add('slug-fieldtype', slugifyAction)
+})
