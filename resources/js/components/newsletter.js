@@ -1,109 +1,57 @@
 document.addEventListener('alpine:init', () => {
   const persistKey = appName.toLowerCase().replaceAll(' ', '_') + '_newsletter_subscribed'
 
-  Alpine.data('newsletter', ({ route }) => {
-    return {
-      error: false,
-      errors: [],
-      success: false,
-      subscribed: Alpine.$persist(false).as(persistKey),
-      form: {
-        email: '',
-        honeypot: '',
-        processing: false,
-        validating: false,
+  Alpine.data('newsletter', ({ form }) => ({
+    // component state
+    success: false,
+    error: false,
+    subscribed: Alpine.$persist(false).as(persistKey),
+    form,
 
-        validate(fieldHandle) {
-          if (typeof fieldHandle !== 'string' || !fieldHandle) return
+    init() {
+      this.form.setValidationTimeout(100)
+    },
 
-          const value = this.form[fieldHandle]
+    // derived state
+    get isSubscribed() {
+      return this.subscribed
+    },
+    set isSubscribed(status) {
+      this.subscribed = !!status
+    },
 
-          if (value.length > 0 && this.form.errors?.[fieldHandle]) {
-            this.form.forgeError(fieldHandle)
-          }
-        },
-
-        invalid(fieldHandle) {
-          const map = this.errors || {}
-          if (!fieldHandle) return Object.keys(map).length > 0
-          if (map[fieldHandle]) return true
-          return false
-        },
-
-        hasErrors() {
-          return Object.keys(this.errors || {}).length > 0
-        },
-
-        forgeError(fieldHandle) {
-          const next = { ...(this.form.errors || {}) }
-          delete next[fieldHandle]
-          this.form.errors = next
-        },
-      },
-
-      get isSubscribed() {
-        return this.subscribed
-      },
-
-      set isSubscribed(status) {
-        this.subscribed = status
-      },
-
-      reset() {
-        this.$refs.form.reset()
-      },
-
-      async fetchData(url, options) {
-        const response = await fetch(url, options)
-        if (!response.ok) {
-          throw new Error('Newsletter subscription network error')
+    /** main submit flow */
+    async submit() {
+      try {
+        // honeypot: pretend success (don’t surface errors to bots)
+        if (this.form.honeypot) {
+          this.form.reset()
+          this.success = true
+          this.error = false
+          return
         }
-        return response.json()
-      },
 
-      setFormState({ success, error, errors = [] }) {
-        this.success = success
-        this.error = error
-        this.errors = errors
-      },
-
-      handleSuccess() {
-        this.setFormState({ success: true, error: false })
-        this.isSubscribed = true
-        this.reset()
-      },
-
-      async submit() {
-        try {
-          // If honeypot field is filled by bots show "successful" submission.
-          if (this.form.honeypot) {
-            this.setFormState({ success: true, error: false })
-            this.reset()
-
-            return
-          }
-
-          this.form.processing = true
-
-          const json = await this.fetchData(route, {
-            headers: {
-              'X-Requested-With': 'XMLHttpRequest',
-            },
-            method: 'POST',
-            body: new FormData(this.$refs.form),
+        this.form
+          .submit()
+          .then(response => {
+            if (response?.data?.success) {
+              this.success = true
+              this.error = false
+              this.isSubscribed = true
+              this.form.reset()
+            } else {
+              this.success = false
+              this.error = true
+            }
           })
-
-          if (json['success']) {
-            this.handleSuccess()
-          } else {
-            this.setFormState({ success: false, error: true, errors: json['errors'] })
-          }
-        } catch (error) {
-          console.error(error)
-        } finally {
-          this.form.processing = false
-        }
-      },
-    }
-  })
+          .catch(error => {
+            console.log(error)
+          })
+      } catch (error) {
+        console.error(error)
+        this.success = false
+        this.error = true
+      }
+    },
+  }))
 })

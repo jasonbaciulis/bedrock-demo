@@ -13,7 +13,10 @@
     x-cloak
     x-show="!isSubscribed"
     x-data="newsletter({
-        route: '{{ route:newsletter }}',
+        form: $form('post', '{{ route:newsletter }}', {
+            email: '',
+            honeypot: '',
+        }),
     })"
     class="m-section"
 >
