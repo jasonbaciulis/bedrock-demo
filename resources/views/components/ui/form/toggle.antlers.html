@@ -6,7 +6,7 @@
             this.on = !this.on;
             this.$refs.switch.focus();
             this.{{ model }} = this.on;
-            this.forgetError('{{ handle }}');
+            this.form.validate('{{ handle }}');
         }
     }"
 >
@@ -19,9 +19,9 @@
         role="switch"
         aria-labelledby="{{ id }}-label"
         {{ if instructions }}
-            :aria-describedby="hasError('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
+            :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
         {{ else }}
-            :aria-describedby="hasError('{{ handle }}') ? '{{ id }}-error' : undefined"
+            :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : undefined"
         {{ /if }}
         :aria-checked="on.toString()"
         @click="toggle()"

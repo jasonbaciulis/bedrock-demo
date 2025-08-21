@@ -1,6 +1,6 @@
 {{ once }}
     {{ push:scripts }}
-        {{ vite src="resources/js/stepper.js" }}
+        {{ vite src="resources/js/components/stepper.js" }}
     {{ /push:scripts }}
 {{ /once }}
 
@@ -37,14 +37,14 @@
                 :max="max"
                 :step="step"
                 aria-labelledby="{{ id }}-label"
-                :aria-invalid="hasError('{{ handle }}')"
+                :aria-invalid="form.invalid('{{ handle }}')"
                 {{ if instructions }}
-                    :aria-describedby="hasError('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
+                    :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
                 {{ else }}
-                    :aria-describedby="hasError('{{ handle }}') ? '{{ id }}-error' : undefined"
+                    :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : undefined"
                 {{ /if }}
                 @input="handleInput"
-                @change="forgetError('{{ handle }}')"
+                @change="form.validate('{{ handle }}')"
             />
         {{ else }}
             <span class="text-lg/none font-semibold text-center w-8 tabular-nums" x-text="count"></span>

@@ -1,9 +1,9 @@
 <fieldset
-    :aria-invalid="hasError('{{ handle }}')"
+    :aria-invalid="form.invalid('{{ handle }}')"
     {{ if instructions }}
-        :aria-describedby="hasError('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
+        :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
     {{ else }}
-        :aria-describedby="hasError('{{ handle }}') ? '{{ id }}-error' : undefined"
+        :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : undefined"
     {{ /if }}
 >
     <legend class="block font-medium text-foreground select-none text-sm">{{ display }}</legend>
@@ -21,8 +21,8 @@
                     type="checkbox"
                     name="{{ handle }}[]"
                     value="{{ option }}"
-                    :aria-invalid="hasError('{{ handle }}')"
-                    @change="forgetError('{{ handle }}')"
+                    :aria-invalid="form.invalid('{{ handle }}')"
+                    @change="form.validate('{{ handle }}')"
                 >
                 <label for="{{ id }}-{{ option | slugify }}-option" class="text-foreground font-normal">
                     {{ label }}

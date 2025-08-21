@@ -7,7 +7,7 @@
         {{ /unless }}
 
         <div class="grid gap-2">
-            {{ partial src="components/ui/form/{type}" model="{form:handle}.{handle}" }}
+            {{ partial src="components/ui/form/{type}" model="form.{handle}" }}
 
             {{ if instructions && !($fields_without_labels | contains(type)) }}
                 {{ partial:components/ui/input-instructions }}
