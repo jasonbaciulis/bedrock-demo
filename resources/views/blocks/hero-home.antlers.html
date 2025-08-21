@@ -1,7 +1,6 @@
 {{ once }}
     {{ push:scripts }}
         <script src="/vendor/statamic/frontend/js/helpers.js" defer></script>
-        {{ vite src="resources/js/components/form.js" }}
     {{ /push:scripts }}
 {{ /once }}
 
@@ -16,14 +15,17 @@
         <div class="col-span-full xl:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="space-y-4">
                 {{# Contact Form #}}
-                <div class="col-span-full md:col-span-6 lg:col-span-3" x-data="form()">
-                    <div class="card shadow-none" x-data="{
+                <div
+                    x-data="{
                         form: $form('post', '', {
                             name: '',
                             email: '',
                             message: '',
                         }),
-                    }">
+                    }"
+                    class="col-span-full md:col-span-6 lg:col-span-3"
+                >
+                    <div class="card shadow-none">
                         <div class="card__header">
                             <p class="leading-none font-semibold">Contact us</p>
                             <p class="text-muted-foreground text-sm">Get in touch and we'll respond within 24 hours.</p>
@@ -49,18 +51,18 @@
                 </div>
 
                  {{# Newsletter Form #}}
-                <div class="col-span-full md:col-span-6 lg:col-span-3" x-data="form()">
-                    <div
-                        class="card shadow-none"
-                        x-data="{
-                            form: $form('post', '', {
-                                email: '',
-                                frequency: 'weekly',
-                                topics: [],
-                                marketing: false,
-                            }),
-                        }"
-                    >
+                <div
+                    x-data="{
+                        form: $form('post', '', {
+                            email: '',
+                            frequency: 'weekly',
+                            topics: [],
+                            marketing: false,
+                        }),
+                    }"
+                    class="col-span-full md:col-span-6 lg:col-span-3"
+                >
+                    <div class="card shadow-none">
                         <div class="card__header">
                             <p class="leading-none font-semibold">Newsletter</p>
                             <p class="text-muted-foreground text-sm">Stay updated with our latest insights and tips.</p>
@@ -131,17 +133,17 @@
                 </div>
 
                 {{# Preferences Form #}}
-                <div class="col-span-full md:col-span-6 lg:col-span-3" x-data="form()">
-                    <div
-                        class="card shadow-none"
-                        x-data="{
-                            form: $form('post', '', {
-                                theme: 'system',
-                                language: 'en',
-                                notifications: false,
-                            }),
-                        }"
-                    >
+                <div
+                    x-data="{
+                        form: $form('post', '', {
+                            theme: 'system',
+                            language: 'en',
+                            notifications: false,
+                        }),
+                    }"
+                    class="col-span-full md:col-span-6 lg:col-span-3"
+                >
+                    <div class="card shadow-none">
                         <div class="card__header">
                             <p class="leading-none font-semibold">Preferences</p>
                             <p class="text-muted-foreground text-sm">Customize your experience.</p>
