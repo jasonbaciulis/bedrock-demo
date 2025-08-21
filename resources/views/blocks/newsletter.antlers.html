@@ -5,16 +5,15 @@
 
 {{ once }}
     {{ push:scripts }}
-        {{ vite src="resources/js/newsletter.js" }}
+        {{ vite src="resources/js/components/newsletter.js" }}
     {{ /push:scripts }}
 {{ /once }}
 
 <div
     x-cloak
-    x-show="!isSubscribed()"
+    x-show="!isSubscribed"
     x-data="newsletter({
         route: '{{ route:newsletter }}',
-        siteName: '{{ site:name | underscored }}'
     })"
     class="m-section"
 >
@@ -25,22 +24,15 @@
             x-ref="form"
             x-show="!success"
             @submit.prevent="submit()"
-            class="mx-auto max-w-md"
+            class="mx-auto max-w-md grid gap-2"
         >
             <div class="flex flex-col md:flex-row gap-3">
-                <input type="text" name="fax_number" class="hidden" x-ref="honeypot" />
+                {{ partial:components/ui/form/honeypot model="form.honeypot" honeypot="fax_number" }}
                 <input type="hidden" name="_token" value="{{ csrf_token }}">
-                <label for="{{ type }}-{{ count }}-email" class="sr-only">Email</label>
-                <input
-                    x-model="email"
-                    id="{{ type }}-{{ count }}-email"
-                    type="email"
-                    name="email"
-                    autocomplete="email"
-                    placeholder="{{ newsletter:input_placeholder }}"
-                    class="sm:flex-1"
-                    :disabled="sending"
-                >
+
+                {{ partial:components/ui/label id="{type}-{count}-email" display="Email" hide_display="true" }}
+                {{ partial:components/ui/form/text id="{type}-{count}-email" model="form.email" handle="email" input_type="email" autocomplete="email" :placeholder="newsletter:input_placeholder" }}
+
                 {{ partial:components/ui/form/submit class="sm:w-auto shrink-0" :label="newsletter:button_label" }}
             </div>
 

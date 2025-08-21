@@ -1,34 +1,62 @@
 document.addEventListener('alpine:init', () => {
-  Alpine.data('newsletter', ({ route, siteName }) => {
+  const persistKey = appName.toLowerCase().replaceAll(' ', '_') + '_newsletter_subscribed'
+
+  Alpine.data('newsletter', ({ route }) => {
     return {
       error: false,
       errors: [],
-      sending: false,
       success: false,
-      email: '',
-      storageKey: `${siteName}_newsletter_subscribed`,
+      subscribed: Alpine.$persist(false).as(persistKey),
+      form: {
+        email: '',
+        honeypot: '',
+        processing: false,
+        validating: false,
 
-      // TODO: use alpine $persist to store the subscription status
-      getSubscriptionStatus() {
-        return !!localStorage.getItem(this.storageKey)
+        validate(fieldHandle) {
+          if (typeof fieldHandle !== 'string' || !fieldHandle) return
+
+          const value = this.form[fieldHandle]
+
+          if (value.length > 0 && this.form.errors?.[fieldHandle]) {
+            this.form.forgeError(fieldHandle)
+          }
+        },
+
+        invalid(fieldHandle) {
+          const map = this.errors || {}
+          if (!fieldHandle) return Object.keys(map).length > 0
+          if (map[fieldHandle]) return true
+          return false
+        },
+
+        hasErrors() {
+          return Object.keys(this.errors || {}).length > 0
+        },
+
+        forgeError(fieldHandle) {
+          const next = { ...(this.form.errors || {}) }
+          delete next[fieldHandle]
+          this.form.errors = next
+        },
       },
 
-      setSubscriptionStatus(status) {
-        localStorage.setItem(this.storageKey, status)
+      get isSubscribed() {
+        return this.subscribed
       },
 
-      isSubscribed() {
-        return this.getSubscriptionStatus()
+      set isSubscribed(status) {
+        this.subscribed = status
       },
 
-      resetForm() {
+      reset() {
         this.$refs.form.reset()
       },
 
       async fetchData(url, options) {
         const response = await fetch(url, options)
         if (!response.ok) {
-          throw new Error('Network response was not ok')
+          throw new Error('Newsletter subscription network error')
         }
         return response.json()
       },
@@ -41,21 +69,21 @@ document.addEventListener('alpine:init', () => {
 
       handleSuccess() {
         this.setFormState({ success: true, error: false })
-        this.setSubscriptionStatus(true)
-        this.resetForm()
+        this.isSubscribed = true
+        this.reset()
       },
 
       async submit() {
         try {
           // If honeypot field is filled by bots show "successful" submission.
-          if (this.$refs.honeypot.value) {
+          if (this.form.honeypot) {
             this.setFormState({ success: true, error: false })
-            this.resetForm()
+            this.reset()
 
             return
           }
 
-          this.sending = true
+          this.form.processing = true
 
           const json = await this.fetchData(route, {
             headers: {
@@ -73,7 +101,7 @@ document.addEventListener('alpine:init', () => {
         } catch (error) {
           console.error(error)
         } finally {
-          this.sending = false
+          this.form.processing = false
         }
       },
     }
