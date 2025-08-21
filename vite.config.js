@@ -16,7 +16,6 @@ export default defineConfig(({ command, mode }) => {
           'resources/js/lite-yt-embed.js',
           'resources/css/lite-yt-embed.css',
           'resources/js/fetchEntries.js',
-          'resources/js/components/form.js',
           'resources/js/components/cookieDialog.js',
           'resources/js/components/newsletter.js',
           'resources/js/components/combobox.js',
