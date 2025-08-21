@@ -1,13 +1,17 @@
+import { slugify } from '../utils/shared.js'
+
 document.addEventListener('alpine:init', () => {
   Alpine.data('combobox', props => ({
     id: props.id || 'combobox',
-    items: props.items,
     placeholder: props.placeholder || 'Select an option…',
+    itemsRaw: props.items,
+    initialLoad: Number(props.initialLoad ?? 10),
+    batchSize: Number(props.batchSize ?? 25),
 
+    items: [],
     itemsFiltered: [],
     itemsShown: [],
-    itemsLoaded: 10,
-
+    itemsLoaded: Number(props.initialLoad ?? 10),
     itemActive: null,
     itemSelected: null,
     comboboxSearch: '',
@@ -16,74 +20,74 @@ document.addEventListener('alpine:init', () => {
     get value() {
       return this._value ?? null
     },
-
-    set value(value) {
-      this._value = value
-      this.$dispatch('input', value)
-
+    set value(newValue) {
       const oldValue = this._value
-      if (oldValue !== value) {
-        this.$dispatch('change', value)
+      this._value = newValue
+      this.$dispatch('input', newValue)
+
+      if (oldValue !== newValue) {
+        this.$dispatch('change', newValue)
       }
     },
 
     get buttonLabel() {
-      if (this.itemSelected) {
-        return this.itemSelected.value
-      }
+      return this.itemSelected?.value ?? this.placeholder
+    },
 
-      return this.placeholder
+    get listboxId() {
+      return `${this.id}-items`
+    },
+
+    get activeDescendant() {
+      return this.itemActive ? this.optionId(this.itemActive.key) : null
     },
 
     init() {
-      this.initializeItems()
+      this.items = this._normalizeItems(this.itemsRaw)
 
-      if (this.value) {
-        this.itemSelected = this.items.find(item => item.key == this.value) || null
-      }
+      // Use $nextTick to ensure this runs after component has set the value
+      this.$nextTick(() => {
+        // Set initial selection if value exists
+        if (this.value) {
+          this.itemSelected = this.items.find(item => item.key === this.value) || null
+        }
+      })
 
       this.$watch('comboboxSearch', () => {
         if (this.listboxOpen) {
-          this.searchItems()
+          this._searchItems()
         }
       })
 
       this.$watch('listboxOpen', isOpen => {
-        if (isOpen) {
-          this.comboboxSearch = ''
-          this.$nextTick(() => {
-            this.searchItems()
-            this.$refs.comboboxInput.focus()
-            if (this.itemSelected) {
-              this.itemActive = this.itemSelected
-              this.scrollToActiveItem()
-            }
-          })
-        }
+        if (!isOpen) return
+        this.comboboxSearch = ''
+        this.$nextTick(() => {
+          this._searchItems()
+          this.$refs.comboboxInput.focus()
+          if (this.itemSelected) {
+            this.itemActive = this.itemSelected
+            this._scrollToActiveItem()
+          }
+        })
       })
     },
 
-    initializeItems() {
-      if (this.isObject(this.items)) {
-        this.convertItemsToArray()
-      }
+    optionId(key) {
+      return `${this.id}-option-${slugify(key)}`
     },
 
-    isObject(obj) {
-      return typeof obj === 'object' && obj !== null && !Array.isArray(obj)
+    toggleListbox() {
+      this.listboxOpen = !this.listboxOpen
     },
 
-    convertItemsToArray() {
-      this.items = Object.entries(this.items).map(([key, value]) => ({ key, value }))
+    closeListbox() {
+      this.listboxOpen = false
     },
 
     loadMoreItems() {
-      this.itemsLoaded += 25
+      this.itemsLoaded += this.batchSize
       this.itemsShown = this.itemsFiltered.slice(0, this.itemsLoaded)
-    },
-
-    searchIsEmpty() {
-      return this.comboboxSearch.length === 0
     },
 
     itemIsActive(item) {
@@ -98,41 +102,39 @@ document.addEventListener('alpine:init', () => {
       this.itemActive = item
     },
 
-    navigate(direction) {
-      if (!this.listboxOpen) return
+    selectOption(item = null) {
+      const selected = item || this.itemActive
+      if (!selected) return
+      this.itemSelected = selected
+      this.value = selected.key
+      this.closeListbox()
+    },
 
-      const index = this.itemsFiltered.indexOf(this.itemActive)
-      let newIndex = direction === 'next' ? index + 1 : index - 1
-
-      if (newIndex < 0) {
-        newIndex = this.itemsFiltered.length - 1
-      } else if (newIndex >= this.itemsFiltered.length) {
-        newIndex = 0
-      }
-
+    navigate(step) {
+      if (!this.listboxOpen || !this.itemsFiltered.length) return
+      const dir = step === 'next' ? 1 : -1
+      const index = Math.max(0, this.itemsFiltered.indexOf(this.itemActive))
+      const len = this.itemsFiltered.length
+      const newIndex = (index + dir + len) % len
       this.itemActive = this.itemsFiltered[newIndex]
-      this.scrollToActiveItem()
+      this._scrollToActiveItem()
     },
 
-    scrollToActiveItem() {
+    _scrollToActiveItem() {
       if (!this.itemActive) return
-      const activeElement = document.getElementById(`${this.id}-option-${this.itemActive.key}`)
-
-      if (activeElement) {
-        this.$refs.listbox.scroll({
-          top:
-            activeElement.offsetTop - this.$refs.listbox.offsetHeight + activeElement.offsetHeight,
-        })
-      }
+      const el = document.getElementById(this.optionId(this.itemActive.key))
+      if (!el || !this.$refs.listbox) return
+      requestAnimationFrame(() => el.scrollIntoView({ block: 'nearest' }))
     },
 
-    searchItems() {
-      this.itemsFiltered = this.searchIsEmpty()
-        ? this.items
-        : this.items.filter(item =>
-            item.value.toLowerCase().includes(this.comboboxSearch.toLowerCase())
-          )
+    _searchItems() {
+      const query = this.comboboxSearch
+      this.itemsFiltered =
+        query.length === 0
+          ? this.items
+          : this.items.filter(item => this._includesCaseInsensitive(item, query))
 
+      this.itemsLoaded = Math.max(this.itemsLoaded, this.initialLoad)
       this.itemsShown = this.itemsFiltered.slice(0, this.itemsLoaded)
 
       this.itemActive = this.itemsFiltered.includes(this.itemSelected)
@@ -140,24 +142,36 @@ document.addEventListener('alpine:init', () => {
         : this.itemsFiltered[0] || null
     },
 
-    toggleListbox() {
-      this.listboxOpen = !this.listboxOpen
-    },
-
-    selectOption(item = null) {
-      const selected = item || this.itemActive
-      if (selected) {
-        this.itemSelected = selected
-        this.value = selected.key
-        if (typeof this.setModel === 'function') {
-          this.setModel(this.value)
-        }
-        this.closeListbox()
+    _normalizeItems(map) {
+      if (this._isObject(map)) {
+        return this._convertItemsToArray(map)
       }
+      return []
     },
 
-    closeListbox() {
-      this.listboxOpen = false
+    _isObject(obj) {
+      return typeof obj === 'object' && obj !== null && !Array.isArray(obj)
+    },
+
+    _convertItemsToArray(map) {
+      return Object.entries(map).map(([k, v]) => {
+        const value = String(v)
+        return {
+          key: String(k), // original key for value/selection
+          value, // label
+          searchValue: this._normalizeString(value), // pre-normalized for efficient searching
+        }
+      })
+    },
+
+    _normalizeString(string) {
+      return String(string).normalize('NFKD').toLowerCase()
+    },
+
+    _includesCaseInsensitive(item, searchQuery) {
+      if (!searchQuery) return true
+      const normalizedQuery = this._normalizeString(searchQuery)
+      return item.searchValue.includes(normalizedQuery)
     },
   }))
 })
