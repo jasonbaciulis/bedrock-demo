@@ -1,4 +1,4 @@
-import { slugify } from '../utils/shared.js'
+import { slugify } from '../lib/utils.js'
 
 document.addEventListener('alpine:init', () => {
   Alpine.data('combobox', props => ({
