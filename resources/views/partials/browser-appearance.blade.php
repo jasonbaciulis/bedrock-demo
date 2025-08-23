@@ -1,4 +1,4 @@
-{{ if browser_appearance:disable_phone_detection }}
+{{-- {{ if browser_appearance:disable_phone_detection }}
     <meta name="format-detection" content="telephone=no">
 {{ /if }}
 {{ if browser_appearance:disable_email_detection }}
@@ -29,4 +29,4 @@
 <link rel="shortcut icon" href="/favicon/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-title" content="{{ config:app:name  }}">
-<link rel="manifest" href="/favicon/site.webmanifest" />
+<link rel="manifest" href="/favicon/site.webmanifest" /> --}}

@@ -1,4 +1,4 @@
-{{# Page title #}}
+{{-- {{# Page title #}}
 <title>
     {{ yield:seo_title }}
     {{ seo_title ? seo_title : title }}
@@ -211,4 +211,4 @@
     {{ if seo:use_cloudflare_web_analytics }}
         <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "{{ seo:cloudflare_web_analytics }}"}'></script>
     {{ /if }}
-{{ /if }}
+{{ /if }} --}}

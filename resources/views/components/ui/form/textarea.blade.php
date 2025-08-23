@@ -1,16 +1,30 @@
+@props([
+    'model',
+    'rows' => 5,
+    'placeholder' => null,
+    'character_limit' => null,
+    'handle',
+    'id',
+    'instructions',
+    'display',
+])
+
 <textarea
-    x-model="{{ model }}"
-    id="{{ id }}"
-    name="{{ handle }}"
-    rows="5"
-    {{ class | attribute:class }}
-    {{ placeholder | attribute:placeholder }}
-    {{ character_limit | attribute:maxlength }}
-    :aria-invalid="form.invalid('{{ handle }}')"
-    {{ if instructions }}
-        :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
-    {{ else }}
-        :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : undefined"
-    {{ /if }}
-    @change="form.validate('{{ handle }}')"
+    x-model="{{ $model }}"
+    {{
+        $attributes->merge([
+            'placeholder' => $placeholder,
+            'maxlength' => $character_limit,
+        ])
+    }}
+    id="{{ $id }}"
+    name="{{ $handle }}"
+    rows="{{ $rows }}"
+    x-bind:aria-invalid="form.invalid('{{ $handle }}')"
+    @unless (empty($instructions))
+        x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : '{{ $id }}-instructions'"
+    @else
+        x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : false"
+    @endunless
+    x-on:change="form.validate('{{ $handle }}')"
 ></textarea>

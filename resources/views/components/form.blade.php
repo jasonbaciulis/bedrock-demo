@@ -68,23 +68,7 @@
 
                     <div class="grid md:grid-cols-12 gap-y-6 gap-x-8">
                         @foreach ($section['fields'] as $field)
-
-                            @php
-                                $width = $field['width'] ?? '100';
-                                $field_container_classes = match($width) {
-                                    25, '25' => 'md:col-span-3',
-                                    33, '33' => 'md:col-span-4',
-                                    50, '50' => 'md:col-span-6',
-                                    66, '66' => 'md:col-span-8',
-                                    75, '75' => 'md:col-span-9',
-                                    default => 'md:col-span-12'
-                                };
-                            @endphp
-
-
-                            <x-form-field
-                                :field="(object)$field"
-                            />
+                            <x-form-field :$field />
                         @endforeach
                     </div>
                 </div>

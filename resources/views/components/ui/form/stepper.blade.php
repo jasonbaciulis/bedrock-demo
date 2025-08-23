@@ -1,66 +1,80 @@
-{{ once }}
-    {{ push:scripts }}
-        {{ vite src="resources/js/components/stepper.js" }}
-    {{ /push:scripts }}
-{{ /once }}
+@props([
+    'model',
+    'min' => 0,
+    'max' => 9999,
+    'step' => 1,
+    'handle',
+    'id',
+    'display' => null,
+    'instructions',
+    'show_input' => true,
+    'hide_display' => false,
+])
+
+@once
+    @push('scripts')
+        @vite('resources/js/components/stepper.js')
+    @endpush
+@endonce
 
 <div
     class="flex items-center flex-wrap gap-y-3 gap-x-6"
-    x-data="stepper({{ min ?? 0 }}, {{ max ?? 9999 }}, {{ step ?? 1 }})"
+    x-data="stepper({{ $min }}, {{ $max }}, {{ $step }})"
 >
-    {{ partial:components/ui/label }}
+    <x-ui.label :$display :$id :$hide_display />
 
     <div class="flex items-center gap-x-1">
         <button
             type="button"
             class="btn btn--outline btn--sm btn--round shrink-0"
-            @click="decrement"
             tabindex="-1"
             aria-label="Decrement"
-            aria-controls="{{ handle }}"
-            :disabled="isAtMin"
-            :aria-disabled="isAtMin"
+            aria-controls="{{ $id }}"
+            x-on:click="decrement"
+            x-bind:disabled="isAtMin"
+            x-bind:aria-disabled="isAtMin"
         >
-            {{ icon:lucide-minus }}
+            <x-lucide-minus />
         </button>
 
-        {{ if show_input }}
+        @if ($show_input)
             <input
                 x-ref="input"
-                x-model="{{ model }}"
+                x-model="{{ $model }}"
                 x-modelable="count"
+                id="{{ $id }}"
                 class="size-8 px-0 text-center border-none shadow-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-inner-spin-button]:m-0"
-                id="{{ id }}"
-                name="{{ handle }}"
+                name="{{ $handle }}"
                 type="number"
-                :min="min"
-                :max="max"
-                :step="step"
-                aria-labelledby="{{ id }}-label"
-                :aria-invalid="form.invalid('{{ handle }}')"
-                {{ if instructions }}
-                    :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
-                {{ else }}
-                    :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : undefined"
-                {{ /if }}
-                @input="handleInput"
-                @change="form.validate('{{ handle }}')"
+                x-bind:min="min"
+                x-bind:max="max"
+                x-bind:step="step"
+                aria-labelledby="{{ $id }}-label"
+                x-bind:aria-invalid="form.invalid('{{ $handle }}')"
+                @unless (empty($instructions))
+                    x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : '{{ $id }}-instructions'"
+                @else
+                    x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : false"
+                @endunless
+                x-on:input="handleInput"
+                x-on:change="form.validate('{{ $handle }}')"
+                {{ $attributes }}
             />
-        {{ else }}
+        @else
             <span class="text-lg/none font-semibold text-center w-8 tabular-nums" x-text="count"></span>
-        {{ /if }}
+        @endif
 
         <button
             type="button"
             class="btn btn--outline btn--sm btn--round shrink-0"
-            @click="increment"
             tabindex="-1"
             aria-label="Increment"
-            aria-controls="{{ handle }}"
-            :disabled="isAtMax"
-            :aria-disabled="isAtMax"
+            aria-controls="{{ $id }}"
+            x-on:click="increment"
+            x-bind:disabled="isAtMax"
+            x-bind:aria-disabled="isAtMax"
         >
-            {{ icon:lucide-plus }}
+            <x-lucide-plus />
         </button>
     </div>
 </div>

@@ -1,14 +1,26 @@
+@props([
+    'model',
+    'max_files' => 1,
+    'handle',
+    'id',
+    'instructions',
+])
+
 <input
-    x-model="{{ model }}"
-    id="{{ id }}"
-    name="{{ handle }}{{ if max_files !== 1 }}[]{{ /if }}"
+    x-model="{{ $model }}"
+    {{
+        $attributes->merge([
+            'multiple' => $max_files !== 1,
+        ])
+    }}
+    id="{{ $id }}"
+    name="{{ $handle }}{{ $max_files !== 1 ? '[]' : '' }}"
     type="file"
-    {{ max_files !== 1 ?= 'multiple' }}
-    :aria-invalid="form.invalid('{{ handle }}')"
-    {{ if instructions }}
-        :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
-    {{ else }}
-        :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : undefined"
-    {{ /if }}
-    @change="form.validate('{{ handle }}')"
+    x-bind:aria-invalid="form.invalid('{{ $handle }}')"
+    @unless (empty($instructions))
+        x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : '{{ $id }}-instructions'"
+    @else
+        x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : false"
+    @endunless
+    x-on:change="form.validate('{{ $handle }}')"
 />

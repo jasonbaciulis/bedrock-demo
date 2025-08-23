@@ -1,4 +1,4 @@
-<div class="relative bg-white" x-data="{ mobileNavOpen: false }">
+{{-- <div class="relative bg-white" x-data="{ mobileNavOpen: false }">
     <div class="container">
         <div class="flex justify-between items-center py-6 md:justify-start md:gap-x-10">
             <div class="flex-1 flex">
@@ -28,4 +28,4 @@
 
     {{# Hidden from lg and up #}}
     {{ partial:partials/nav-header-mob }}
-</div>
+</div> --}}

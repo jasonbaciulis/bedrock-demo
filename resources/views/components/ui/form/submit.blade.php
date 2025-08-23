@@ -1,8 +1,16 @@
+@props([
+    'label' => 'Submit',
+])
+
 <button
     type="submit"
-    class="btn btn--primary w-full {{ class }}"
+    {{
+        $attributes->class([
+            'btn btn--primary w-full'
+        ])
+    }}
     :disabled="form.processing || form.hasErrors"
 >
-    {{ icon:lucide-loader-circle class="animate-spin" x-show="form.processing" }}
-    {{ label }}
+    <x-lucide-loader-circle class="animate-spin" x-show="form.processing" />
+    {{ $label }}
 </button>

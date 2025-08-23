@@ -1,4 +1,4 @@
-<footer class="pb-12 pt-20 bg-white" aria-labelledby="footer">
+{{-- <footer class="pb-12 pt-20 bg-white" aria-labelledby="footer">
     <h2 id="footer" class="sr-only">Footer</h2>
     <div class="container">
         <hr />
@@ -29,4 +29,4 @@
             </div>
         </div>
     </div>
-</footer>
+</footer> --}}

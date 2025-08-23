@@ -1,41 +1,49 @@
 @props([
-    'field',
     'model',
+    'prepend' => null,
+    'append' => null,
+    'character_limit' => null,
+    'autocomplete' => null,
+    'visibility' => null,
+    'placeholder' => null,
+    'id',
+    'handle',
+    'input_type' => 'text',
+    'instructions' => null,
 ])
 
 <div class="relative w-full">
-    @unless (empty($field->prepend))
+    @unless (empty($prepend))
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
-            <span class="text-sm text-muted-foreground">{!! $field->prepend !!}</span>
+            <span class="text-sm text-muted-foreground">{!! $prepend !!}</span>
         </div>
     @endunless
     <input
         x-model="{{ $model }}"
         {{
             $attributes
-                ->class(['pl-10' => $field->prepend ?? false, 'pr-10' => $field->append ?? false])
+                ->class(['pl-10' => $prepend, 'pr-10' => $append])
                 ->merge([
-                    'maxlength' => $field->character_limit ?? null,
-                    'autocomplete' => $field->autocomplete ?? null,
-                    'readonly' => $field->visibility === 'read_only' ? 'readonly' : null,
-                    'placeholder' => $field->placeholder ?? null,
-
+                    'maxlength' => $character_limit,
+                    'autocomplete' => $autocomplete,
+                    'readonly' => $visibility === 'read_only' ? 'readonly' : null,
+                    'placeholder' => $placeholder,
                 ])
         }}
-        id="{{ $field->id }}"
-        name="{{ $field->handle }}"
-        type="{{ $field->input_type ?? 'text' }}"
-        ::aria-invalid="form.invalid('{{ $field->handle }}')"
-        @unless (empty($field->instructions))
-            ::aria-describedby="form.invalid('{{ $field->handle }}') ? '{{ $field->id }}-error' : '{{ $field->id }}-instructions'"
+        id="{{ $id }}"
+        name="{{ $handle }}"
+        type="{{ $input_type }}"
+        x-bind:aria-invalid="form.invalid('{{ $handle }}')"
+        @unless (empty($instructions))
+            x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : '{{ $id }}-instructions'"
         @else
-            ::aria-describedby="form.invalid('{{ $field->handle }}') ? '{{ $field->id }}-error' : undefined"
+            x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : false"
         @endunless
-        x-on:change="form.validate('{{ $field->handle }}')"
+        x-on:change="form.validate('{{ $handle }}')"
     />
-    @unless (empty($field->append))
+    @unless (empty($append))
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pr-5">
-            <span class="text-sm text">{!! $field->append !!}</span>
+            <span class="text-sm text">{!! $append !!}</span>
         </div>
     @endunless
 </div>

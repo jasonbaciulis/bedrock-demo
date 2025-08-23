@@ -1,31 +1,46 @@
-{{ if searchable }}
-    {{ partial:components/ui/form/combobox }}
-{{ else }}
+@props([
+    'model',
+    'options',
+    'placeholder' => 'Select a value…',
+    'multiple' => false,
+    'handle',
+    'id',
+    'instructions',
+    'searchable' => false,
+])
+
+@if ($searchable)
+    @include('components.ui.form.combobox', array_merge($attributes->getAttributes(), ['model' => $model]))
+@else
     <select
-        x-model="{{ model }}"
-        :class="{
-            'text-muted-foreground': !{{ model }}
+        x-model="{{ $model }}"
+        x-bind:class="{
+            'text-muted-foreground': !{{ $model }}
         }"
-        id="{{ id }}"
-        name="{{ handle }}{{ multiple ?= "[]" }}"
-        :aria-invalid="form.invalid('{{ handle }}')"
-        {{ if instructions }}
-            :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
-        {{ else }}
-            :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : undefined"
-        {{ /if }}
-        {{ multiple | attribute:multiple }}
-        @change="form.validate('{{ handle }}')"
+        {{
+            $attributes->merge([
+                'multiple' => $multiple,
+            ])
+        }}
+        id="{{ $id }}"
+        name="{{ $handle }}{{ $multiple ? '[]' : '' }}"
+        x-bind:aria-invalid="form.invalid('{{ $handle }}')"
+        @unless (empty($instructions))
+            x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : '{{ $id }}-instructions'"
+        @else
+            x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : false"
+        @endunless
+        x-on:change="form.validate('{{ $handle }}')"
     >
-        {{ unless multiple }}
-            <option value :selected="!{{ model }} ? true : false" disabled>
-                Select {{ handle | deslugify }}…
+        @unless ($multiple)
+            <option value x-bind:selected="!{{ $model }} ? true : false" disabled>
+                Select {{ Str::title(str_replace('_', ' ', $handle)) }}…
             </option>
-        {{ /unless }}
-        {{ foreach:options as="option|label" }}
-            <option value="{{ option }}">
-                {{ label }}
+        @endunless
+        @foreach ($options as $option => $label)
+            <option value="{!! $option !!}">
+                {!! $label !!}
             </option>
-        {{ /foreach:options }}
+        @endforeach
     </select>
-{{ /if }}
+@endif

@@ -1,1 +1,1 @@
-{{ partial:components/ui/form/text type="number" }}
+@include('components.ui.form.text', array_merge($attributes->getAttributes(), ['model' => $model]))

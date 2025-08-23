@@ -13,7 +13,7 @@
         <s:vite
             src="resources/css/fonts.css"
             attr:style:media="print"
-            attr:style:onload='this.media="all"'
+            attr:style:onload="this.media='all'"
         />
 
         {!! $scripts->code_head !!}

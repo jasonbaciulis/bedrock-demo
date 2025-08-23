@@ -1,4 +1,4 @@
-{{#
+{{-- {{#
     Configure Banner inside Control Panel in /cp/globals/banner
     Relies on a tiny `js-cookie` npm package for setting and getting cookies.
  #}}
@@ -36,4 +36,4 @@
             {{ icon:lucide-x class="size-4 text-white" }}
         </button>
     </div>
-</div>
+</div> --}}
