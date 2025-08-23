@@ -9,7 +9,7 @@
             'btn btn--primary w-full'
         ])
     }}
-    :disabled="form.processing || form.hasErrors"
+    x-bind:disabled="form.processing || form.hasErrors"
 >
     <x-lucide-loader-circle class="animate-spin" x-show="form.processing" />
     {{ $label }}

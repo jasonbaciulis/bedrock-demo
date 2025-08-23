@@ -42,7 +42,7 @@ class FormField extends Component
                 ->merge([
                     'fields_without_labels' => $this->fieldsWithoutLabels(),
                     'container_class' => $this->containerClass(),
-                    'field' => $this->field,
+                    'field_data' => $this->field,
                 ])
                 ->toArray()
         );

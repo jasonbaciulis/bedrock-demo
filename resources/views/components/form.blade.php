@@ -61,7 +61,7 @@
 
         <div class="space-y-12 divide-y divide-gray-300">
             @foreach ($sections as $section)
-                <div class="@class(['pb-12' => !$loop->last])">
+                <div @class(['pb-12' => !$loop->last])>
                     @unless (empty($section['display']))
                         <h3 class="h6 mb-8">{!! $section['display'] !!}</h3>
                     @endunless

@@ -1,11 +1,6 @@
 @props([
     'model',
-    'options',
-    'placeholder' => 'Select a value…',
-    'handle',
-    'id',
-    'instructions',
-    'display',
+    'field_data' => [],
 ])
 
-@include('components.ui.form.combobox', array_merge($field, ['model' => $model]))
+@include('components.ui.form.combobox', array_merge($field_data, ['model' => $model]))
