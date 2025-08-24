@@ -4,16 +4,16 @@
     'button_type' => 'primary',
     'size' => 'md',
     'link_type' => 'url', // Options: `entry`, `url`, `email`, `tel`, `asset`, `code`
-    'url',
-    'entry',
-    'email',
-    'tel',
-    'asset',
-    'code',
+    'url' => null,
+    'entry' => null,
+    'email' => null,
+    'phone' => null,
+    'asset' => null,
+    'code' => null,
     'target_blank' => false,
 ])
 
-@unless (empty($label))
+@unless (empty($label) && empty($slot))
     <{{ $as }}
         {{ $attributes->class([
             'btn',
@@ -34,8 +34,8 @@
                 href="{{ $url }}"
             @elseif ($link_type === 'email')
                 href="mailto:{{ Statamic::modify($email)->obfuscateEmail() }}"
-            @elseif ($link_type === 'tel')
-                href="tel:{{ $tel }}"
+            @elseif ($link_type === 'phone')
+                href="tel:{{ $phone }}"
             @elseif ($link_type === 'asset')
                 href="{{ $asset }}" download
             @elseif ($link_type === 'code')
