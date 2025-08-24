@@ -5,7 +5,9 @@
 
 @props([
     'orientation' => 'horizontal',
-    'opts' => '',
+    'opts' => '', // Available options: https://www.embla-carousel.com/api/options/
+    'content',
+    'nav',
 ])
 
 @once
@@ -60,15 +62,15 @@
 >
     <div x-ref="viewport" class="overflow-hidden">
         <div
-            {{ $content->attributes->class([
-                'flex',
-                '-ml-4' => $orientation === 'horizontal',
-                '-mt-4 flex-col' => $orientation === 'vertical',
-            ]) }}
+            {{ $content->attributes->class(['flex']) }}
+            x-bind:class="{
+                '-ml-4': orientation === 'horizontal',
+                '-mt-4 flex-col': orientation === 'vertical'
+            }"
         >
             {{ $content }}
         </div>
     </div>
 
-    {{ $navigation }}
+    {{ $nav }}
 </div>
