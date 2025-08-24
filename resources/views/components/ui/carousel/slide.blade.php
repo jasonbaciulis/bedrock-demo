@@ -1,7 +1,3 @@
-{{--
-    CarouselItem component - individual carousel slide
---}}
-
 <div
     {{ $attributes->class(['min-w-0 shrink-0 grow-0 basis-full']) }}
     role="group"

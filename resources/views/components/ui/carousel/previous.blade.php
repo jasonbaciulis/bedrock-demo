@@ -1,7 +1,3 @@
-{{--
-    CarouselPrevious component - previous navigation button
---}}
-
 <button
     {{ $attributes->class(['absolute btn']) }}
     x-bind:class="{
