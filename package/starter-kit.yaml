@@ -33,3 +33,4 @@ export_paths:
 dependencies:
   - blade-ui-kit/blade-icons
   - mallardduck/blade-lucide-icons
+  - laravel/boost
