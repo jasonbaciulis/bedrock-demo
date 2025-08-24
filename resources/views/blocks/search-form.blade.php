@@ -1,4 +1,4 @@
-<section id="{{ type | slugify }}" class="m-section">
+<section id="{{ Statamic::modify($block->type)->slugify() }}" class="m-section">
     <div class="container">
         {{ partial:partials/section-header }}
 

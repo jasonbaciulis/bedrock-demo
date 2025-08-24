@@ -4,7 +4,7 @@
     {{ /push:scripts }}
 {{ /once }}
 
-<section id="{{ type | slugify }}" class="m-section">
+<section id="{{ Statamic::modify($block->type)->slugify() }}" class="m-section">
 
 {{#
     Example of using fetchEntries.js to fetch entries from a collection via Statamic REST API.
