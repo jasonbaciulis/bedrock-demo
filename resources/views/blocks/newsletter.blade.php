@@ -21,11 +21,7 @@
     class="m-section"
 >
     <div class="container">
-        @include('partials.section-header', [
-            'title' => $newsletter->title,
-            'text' => $newsletter->text ?? null,
-            'margin' => 'mb-10',
-        ])
+        <x-section-header :title="$newsletter->title" :text="$newsletter->text ?? null" margin="mb-10" />
 
         <form
             x-ref="form"

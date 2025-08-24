@@ -1,9 +1,6 @@
 <section id="{{ Statamic::modify($block->type)->slugify() }}" class="m-section">
     <div class="container">
-        @include('partials.section-header', [
-            'title' => $block->title,
-            'text' => $block->text ?? null,
-        ])
+        <x-section-header :title="$block->title" :text="$block->text ?? null" />
 
         @if ($block->query->value() === 'custom')
             @php($entries = $block->entries)
