@@ -55,7 +55,7 @@
             <x-ui.alert style="success" :title="$success_message" class="mb-8" />
         </template>
 
-        @csrf
+        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
         <x-ui.form.honeypot model="form.{{ $form->honeypot }}" handle="{{ $form->honeypot }}" />
 
 

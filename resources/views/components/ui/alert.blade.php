@@ -28,7 +28,7 @@
         @endif
     </div>
     <div class="alert__content">
-        <p class="line-clamp-1 font-medium tracking-tight">{{ $title }}</p>
+        <p class="line-clamp-1 font-medium tracking-tight">{!! $title !!}</p>
         @unless (empty($description))
             <p class="text-muted-foreground text-sm">{!! $description !!}</p>
         @endunless

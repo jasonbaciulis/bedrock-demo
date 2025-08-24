@@ -1,4 +1,4 @@
-<section id="{{ type | slugify }}" class="container m-section">
+<section id="{{ Statamic::modify($block->type)->slugify() }}" class="container m-section">
     <h2 class="h2 mb-28">Style guide</h2>
     <div class="space-y-28">
         <div>
@@ -18,20 +18,20 @@
                     }
                 }"
                 x-init="calcGrid()"
-                @resize.window="calcGrid()"
+                x-on:resize.window="calcGrid()"
             >
-                {{ loop times="12" }}
+                @for ($i = 0; $i < 12; $i++)
                     <div class="relative bg-pink-50 h-40">
-                        {{ unless last }}
+                        @unless ($loop->last)
                             <span
                                 class="hidden sm:block absolute -translate-y-1/2 top-1/2 left-full border-b border-dashed border-gray-400 text-[10px] font-mono text-muted-foreground text-center"
-                                :style="`width:${columnGap}px`" x-text="`${columnGap}px`">
-
+                                x-bind:style="`width:${columnGap}px`" x-text="`${columnGap}px`"
+                            >
                             </span>
-                        {{ /unless }}
+                        @endunless
                         <span class="absolute top-full left-1/2 sm:mt-2 -translate-x-1/2 text-[10px] font-mono text-muted-foreground" x-text="`${columnWidth.toFixed(1)}px`"></span>
                     </div>
-                {{ /loop }}
+                @endfor
             </div>
         </div>
 
@@ -41,8 +41,7 @@
             </div>
             <div class="space-y-10">
                 <div class="grid grid-cols-1 md:grid-cols-11 gap-y-3 gap-x-2">
-                    {{ foreach
-                        :array="[
+                    @foreach ([
                             'bg-background',
                             'bg-foreground',
                             'bg-primary',
@@ -54,21 +53,19 @@
                             'bg-accent',
                             'bg-accent-foreground',
                             'bg-destructive',
-                        ]"
-                    }}
+                        ] as $color)
                         <div class="relative flex">
                             <div class="flex items-center gap-x-3 w-full md:block md:space-y-1.5">
-                                <div class="size-24 rounded md:w-full {{ value }}"></div>
+                                <div class="size-24 rounded md:w-full {{ $color }}"></div>
                                 <div class="px-0.5">
-                                    <div class="text-xs font-mono w-full text-muted-foreground">{{ value | replace('bg-', '') }}</div>
+                                    <div class="text-xs font-mono w-full text-muted-foreground">{{ str_replace('bg-', '', $color) }}</div>
                                 </div>
                             </div>
                         </div>
-                    {{ /foreach }}
+                    @endforeach
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-11 gap-y-3 gap-x-2">
-                    {{ foreach
-                        :array="[
+                    @foreach ([
                             'bg-neutral-50',
                             'bg-neutral-100',
                             'bg-neutral-200',
@@ -80,17 +77,16 @@
                             'bg-neutral-800',
                             'bg-neutral-900',
                             'bg-neutral-950',
-                        ]"
-                    }}
+                        ] as $color)
                         <div class="relative flex">
                             <div class="flex items-center gap-x-3 w-full md:block md:space-y-1.5">
-                                <div class="size-24 rounded md:w-full {{ value }}"></div>
+                                <div class="size-24 rounded md:w-full {{ $color }}"></div>
                                 <div class="px-0.5">
-                                    <div class="text-xs font-mono w-full text-muted-foreground">{{ value | replace('bg-', '') }}</div>
+                                    <div class="text-xs font-mono w-full text-muted-foreground">{{ str_replace('bg-', '', $color) }}</div>
                                 </div>
                             </div>
                         </div>
-                    {{ /foreach }}
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -103,52 +99,52 @@
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
                     <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--primary</dt>
                     <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        {{ partial:components/ui/button button_type="primary" label="Get started" link_type="url" url="/" class="btn--sm" }}
-                        {{ partial:components/ui/button button_type="primary" label="Get started" link_type="url" url="/" }}
-                        {{ partial:components/ui/button button_type="primary" label="Get started" link_type="url" url="/" class="btn--lg" }}
-                        {{ partial:components/ui/button button_type="primary" label="Get started" link_type="url" url="/" class="btn--xl" }}
+                        <x-ui.button button_type="primary" label="Get started" link_type="url" url="/" size="sm" />
+                        <x-ui.button button_type="primary" label="Get started" link_type="url" url="/" />
+                        <x-ui.button button_type="primary" label="Get started" link_type="url" url="/" size="lg" />
+                        <x-ui.button button_type="primary" label="Get started" link_type="url" url="/" size="xl" />
                     </dd>
                 </div>
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
                     <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--secondary</dt>
                     <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        {{ partial:components/ui/button button_type="secondary" label="Get started" link_type="url" url="/" class="btn--sm" }}
-                        {{ partial:components/ui/button button_type="secondary" label="Get started" link_type="url" url="/" }}
-                        {{ partial:components/ui/button button_type="secondary" label="Get started" link_type="url" url="/" class="btn--lg" }}
-                        {{ partial:components/ui/button button_type="secondary" label="Get started" link_type="url" url="/" class="btn--xl" }}
+                        <x-ui.button button_type="secondary" label="Get started" link_type="url" url="/" size="sm" />
+                        <x-ui.button button_type="secondary" label="Get started" link_type="url" url="/" />
+                        <x-ui.button button_type="secondary" label="Get started" link_type="url" url="/" size="lg" />
+                        <x-ui.button button_type="secondary" label="Get started" link_type="url" url="/" size="xl" />
                     </dd>
                 </div>
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
                     <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--outline</dt>
                     <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        {{ partial:components/ui/button button_type="outline" label="Get started" link_type="url" url="/" class="btn--sm" }}
-                        {{ partial:components/ui/button button_type="outline" label="Get started" link_type="url" url="/" }}
-                        {{ partial:components/ui/button button_type="outline" label="Get started" link_type="url" url="/" class="btn--lg" }}
-                        {{ partial:components/ui/button button_type="outline" label="Get started" link_type="url" url="/" class="btn--xl" }}
+                        <x-ui.button button_type="outline" label="Get started" link_type="url" url="/" size="sm" />
+                        <x-ui.button button_type="outline" label="Get started" link_type="url" url="/" />
+                        <x-ui.button button_type="outline" label="Get started" link_type="url" url="/" size="lg" />
+                        <x-ui.button button_type="outline" label="Get started" link_type="url" url="/" size="xl" />
                     </dd>
                 </div>
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
                     <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--destructive</dt>
                     <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        {{ partial:components/ui/button button_type="destructive" label="Get started" link_type="url" url="/" class="btn--sm" }}
-                        {{ partial:components/ui/button button_type="destructive" label="Get started" link_type="url" url="/" }}
-                        {{ partial:components/ui/button button_type="destructive" label="Get started" link_type="url" url="/" class="btn--lg" }}
-                        {{ partial:components/ui/button button_type="destructive" label="Get started" link_type="url" url="/" class="btn--xl" }}
+                        <x-ui.button button_type="destructive" label="Get started" link_type="url" url="/" size="sm" />
+                        <x-ui.button button_type="destructive" label="Get started" link_type="url" url="/" />
+                        <x-ui.button button_type="destructive" label="Get started" link_type="url" url="/" size="lg" />
+                        <x-ui.button button_type="destructive" label="Get started" link_type="url" url="/" size="xl" />
                     </dd>
                 </div>
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
                     <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--ghost</dt>
                     <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        {{ partial:components/ui/button button_type="ghost" label="Get started" link_type="url" url="/" class="btn--sm" }}
-                        {{ partial:components/ui/button button_type="ghost" label="Get started" link_type="url" url="/" }}
-                        {{ partial:components/ui/button button_type="ghost" label="Get started" link_type="url" url="/" class="btn--lg" }}
-                        {{ partial:components/ui/button button_type="ghost" label="Get started" link_type="url" url="/" class="btn--xl" }}
+                        <x-ui.button button_type="ghost" label="Get started" link_type="url" url="/" size="sm" />
+                        <x-ui.button button_type="ghost" label="Get started" link_type="url" url="/" />
+                        <x-ui.button button_type="ghost" label="Get started" link_type="url" url="/" size="lg" />
+                        <x-ui.button button_type="ghost" label="Get started" link_type="url" url="/" size="xl" />
                     </dd>
                 </div>
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
                     <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--link</dt>
                     <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        {{ partial:components/ui/button button_type="link" label="Get started" link_type="url" url="/" }}
+                        <x-ui.button button_type="link" label="Get started" link_type="url" url="/" />
                     </dd>
                 </div>
             </div>
