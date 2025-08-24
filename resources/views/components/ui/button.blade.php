@@ -1,5 +1,5 @@
 @props([
-    'label',
+    'label' => null,
     'as' => 'a', // The HTML element to render as a button
     'button_type' => 'primary',
     'size' => 'md',
