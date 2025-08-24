@@ -25,7 +25,7 @@
                     }"
                     class="col-span-full md:col-span-6 lg:col-span-3"
                 >
-                    {{-- <div class="card shadow-none">
+                    <div class="card shadow-none">
                         <div class="card__header">
                             <p class="leading-none font-semibold">Contact us</p>
                             <p class="text-muted-foreground text-sm">Get in touch and we'll respond within 24 hours.</p>
@@ -47,7 +47,7 @@
                                 <x-ui.button as="button">Submit</x-ui.button>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
 
                  {{-- Newsletter Form --}}
@@ -62,7 +62,7 @@
                     }"
                     class="col-span-full md:col-span-6 lg:col-span-3"
                 >
-                    {{-- <div class="card shadow-none">
+                    <div class="card shadow-none">
                         <div class="card__header">
                             <p class="leading-none font-semibold">Newsletter</p>
                             <p class="text-muted-foreground text-sm">Stay updated with our latest insights and tips.</p>
@@ -91,7 +91,7 @@
                                 <x-ui.button as="button">Subscribe</x-ui.button>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
 
@@ -105,7 +105,7 @@
                         </div>
 
                         <div class="px-8 flex-1 flex items-center">
-                            <x-ui.carousel class="w-full max-w-full" opts="loop: true, align: center" />
+                            <x-ui.carousel class="w-full max-w-full" opts="loop: true, align: 'center'">
                                 <x-slot:content>
                                     @for ($i = 1; $i <= 5; $i++)
                                         <x-ui.carousel.slide>
@@ -118,10 +118,10 @@
                                     @endfor
                                 </x-slot:content>
 
-                                <x-slot:navigation>
+                                <x-slot:nav>
                                     <x-ui.carousel.previous class="btn--outline btn--round" />
                                     <x-ui.carousel.next class="btn--outline btn--round" />
-                                </x-slot:navigation>
+                                </x-slot:nav>
                             </x-ui.carousel>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
                                         'ja' => 'Japanese',
                                         'ko' => 'Korean',
                                         'ar' => 'Arabic',
-                                    ]
+                                    ];
                                     @endphp
                                     <x-ui.form.combobox id="language" handle="language" model="form.language" placeholder="Select language…" :options="$languages" />
                                 </div>
@@ -212,7 +212,7 @@
                         'description' => 'Build high-converting websites.',
                         'features' => ['Beautiful design', 'Lightning-fast loading', 'SEO-friendly']
                     ],
-                ]
+                ];
                 @endphp
 
                 <x-ui.tabs>
@@ -270,7 +270,7 @@
                             'question' => 'How do I get started?',
                             'answer' => 'Contact us to discuss your project and we’ll provide a free consultation to help you get started.'
                         ],
-                    ]
+                    ];
                     @endphp
                     <div class="space-y-2">
                         @foreach ($faqs as $faq)
