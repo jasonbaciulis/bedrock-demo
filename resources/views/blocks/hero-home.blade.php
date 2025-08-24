@@ -44,7 +44,7 @@
                                 <x-ui.form.textarea model="form.message" handle="contact_message" id="contact_message" class="min-h-24" placeholder="Tell us about your project…" />
                             </div>
                             <div class="flex justify-end">
-                                <x-ui.button as="button">Submit</x-ui.button>
+                                <x-ui.button as="button" type="button">Submit</x-ui.button>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                                 ]" />
                             </div>
                             <div class="flex justify-end">
-                                <x-ui.button as="button">Subscribe</x-ui.button>
+                                <x-ui.button as="button" type="button">Subscribe</x-ui.button>
                             </div>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
                                     <x-ui.form.toggle model="form.notifications" handle="notifications" id="notifications" inline_label="Notifications" />
                                 </div>
                             </div>
-                            <x-ui.button class="w-full" button_type="outline">Save preferences</x-ui.button>
+                            <x-ui.button class="w-full" button_type="outline" type="button" as="button">Save preferences</x-ui.button>
                         </div>
                     </div>
                 </div>
@@ -238,7 +238,7 @@
                                         @endforeach
                                     </ul>
                                     <div>
-                                        <x-ui.button button_type="outline" size="sm">Learn more</x-ui.button>
+                                        <x-ui.button button_type="outline" size="sm" type="button" as="button">Learn more</x-ui.button>
                                     </div>
                                 </div>
                             </x-ui.tabs.panel>
