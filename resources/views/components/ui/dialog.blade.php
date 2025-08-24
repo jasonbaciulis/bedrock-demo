@@ -1,19 +1,13 @@
-{{#
-    Dialog component contains two slots. Named slot `slot:trigger_button` for the trigger button content and
-    the default slot for the dialog content. More about slots in Antlers docs: https://statamic.dev/antlers#slots
-
-    Params:
-    - name: Defaults to `dialog`.
-    - size: The size of the dialog. Options: `md`, `xl`. Defaults to `md`.
-    - container_class: Additional classes for the dialog container.
-    - trigger_button_class: Additional classes for the trigger button.
- #}}
-
-{{ $size = size or 'md' }}
+@props([
+    'name' => 'dialog',
+    'size' => 'md',
+    'trigger',
+    'content',
+])
 
 <div
     x-data="{
-        id: $id('{{ name or 'dialog' }}'),
+        id: $id('{{ $name }}'),
         open: false,
         scrollbarWidth: 0,
         init() {
@@ -55,28 +49,28 @@
             document.body.classList.remove('no-scroll');
         }
     }"
-    @keydown.escape.prevent.stop="close($refs.button)"
-    class="{{ container_class }}"
+    x-on:keydown.escape.prevent.stop="close($refs.button)"
+    {{ $attributes }}
 >
-    {{ if slot:trigger_button }}
+    @if ($trigger->hasActualContent())
         <button
             x-ref="button"
-            class="btn {{ trigger_button_class }}"
             type="button"
-            @click="toggle()"
-            :aria-expanded="open"
-            :aria-controls="id"
+            x-on:click="toggle()"
+            x-bind:aria-expanded="open"
+            x-bind:aria-controls="id"
             aria-label="Open dialog"
+            {{ $trigger->attributes->class(['btn']) }}
         >
-            {{ slot:trigger_button }}
+            {{ $trigger }}
         </button>
-    {{ /if }}
+    @endif
 
-    {{#
+    {{--
         Uses the Alpine.js teleport directive, which will teleport the Dialog
         element to be a child of the body element. This allows the dialog
         to be full-screen and prevents any display issues with its parent elements.
-    #}}
+    --}}
     <template x-teleport="body">
         <div
             x-cloak
@@ -84,10 +78,10 @@
             class="relative z-10"
             aria-label="Dialog"
             role="dialog"
-            :aria-modal="open"
-            @focusin.window="! $refs.panel.contains($event.target) && close()"
+            x-bind:aria-modal="open"
+            x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
         >
-            {{# Background backdrop #}}
+            {{-- Background backdrop --}}
             <div
                 x-cloak
                 x-show="open"
@@ -100,7 +94,7 @@
                 class="fixed inset-0 bg-black/50 transition-opacity"
             ></div>
 
-            {{# Dialog panel #}}
+            {{-- Dialog panel --}}
             <div class="fixed inset-0 z-10 overflow-y-auto">
                 <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                     <div
@@ -114,20 +108,24 @@
                         x-transition:leave="ease duration-150"
                         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        class="relative transform overflow-hidden rounded-[0.625rem] bg-background text-left border shadow-lg transition-all sm:my-8 sm:w-full
-                        {{ switch(
-                          ($size === 'sm') => 'px-4 pt-5 pb-4 sm:p-6 sm:max-w-md',
-                          ($size === 'md') => 'px-4 pt-5 pb-4 sm:p-6 sm:max-w-xl',
-                          ($size === 'xl') => 'px-4 pt-5 pb-4 sm:p-6 sm:max-w-(--breakpoint-xl) md:p-12 xl:px-16 xl:py-20',
-                        )}}"
-                        @click.outside="close($refs.button)"
-                        :id="id"
+                        x-on:click.outside="close($refs.button)"
+                        x-bind:id="id"
+                        {{ $content->attributes->class([
+                            'relative transform overflow-hidden rounded-[0.625rem] bg-background text-left border shadow-lg transition-all sm:my-8 sm:w-full',
+                            'px-4 pt-5 pb-4 sm:p-6 sm:max-w-md' => $size === 'sm',
+                            'px-4 pt-5 pb-4 sm:p-6 sm:max-w-xl' => $size === 'md',
+                            'px-4 pt-5 pb-4 sm:p-6 sm:max-w-(--breakpoint-xl) md:p-12 xl:px-16 xl:py-20' => $size === 'xl',
+                        ]) }}
                     >
-                        {{ slot }}
+                        {{ $content }}
 
-                        <button @click="close($refs.button)" class="btn absolute top-4 right-4 size-6 text-neutral-800/70 rounded-xs hover:text-foreground">
-                            <span class="sr-only">Close</span>
-                            {{ icon:lucide-x class="size-4" }}
+                        <button
+                            x-on:click="close($refs.button)"
+                            class="btn absolute top-4 right-4 size-6 text-neutral-800/70 rounded-xs hover:text-foreground"
+                            type="button"
+                            aria-label="Close"
+                        >
+                            <x-lucide-x class="size-4" />
                         </button>
                     </div>
                 </div>

@@ -1,34 +1,35 @@
-{{#
+{{--
     Carousel component similar to shadcn/ui carousel
     Uses Embla Carousel with Alpine.js state management
+--}}
 
-    Params:
-    - orientation: "horizontal" | "vertical" (default: "horizontal")
-    - opts: Embla carousel options object
-    - class: Additional CSS classes
-    - slot: Carousel content (should contain carousel-content component)
-#}}
+@props([
+    'orientation' => 'horizontal',
+    'opts' => '',
+])
 
-{{ once }}
-    {{ push:scripts }}
-        {{ vite src="resources/js/embla.js" }}
-    {{ /push:scripts }}
-{{ /once }}
+@once
+    @push('scripts')
+        @vite('resources/js/embla.js')
+    @endpush
+@endonce
 
 <div
-    class="relative outline-none {{ class }}"
+    {{ $attributes->class([
+        'relative outline-none',
+    ]) }}
     role="region"
     aria-roledescription="carousel"
     x-data="{
         emblaApi: null,
-        orientation: '{{ orientation ?? 'horizontal' }}',
+        orientation: '{{ $orientation }}',
         canScrollPrev: false,
         canScrollNext: false,
 
         init() {
             const options = {
                 axis: this.orientation === 'horizontal' ? 'x' : 'y',
-                {{ slot:opts }}
+                {!! $opts !!}
             };
 
             this.emblaApi = window.EmblaCarousel(this.$refs.viewport, options);
@@ -53,9 +54,21 @@
         },
     }"
     x-init="init()"
-    @keydown.left.prevent="scrollPrev()"
-    @keydown.right.prevent="scrollNext()"
+    x-on:keydown.left.prevent="scrollPrev()"
+    x-on:keydown.right.prevent="scrollNext()"
     tabindex="0"
 >
-    {{ slot }}
+    <div x-ref="viewport" class="overflow-hidden">
+        <div
+            {{ $content->attributes->class([
+                'flex',
+                '-ml-4' => $orientation === 'horizontal',
+                '-mt-4 flex-col' => $orientation === 'vertical',
+            ]) }}
+        >
+            {{ $content }}
+        </div>
+    </div>
+
+    {{ $navigation }}
 </div>

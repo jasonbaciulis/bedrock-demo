@@ -1,33 +1,28 @@
-{{#
-    Collapsible component
+@props([
+    'trigger',
+    'content',
+    'name' => Str::random(8),
+])
 
-    Params:
-    - class: Additional CSS classes for the collapsible
-    - trigger_class: Additional CSS classes for the trigger
-    - content_class: Additional CSS classes for the content
-    - slot:trigger: Trigger content
-    - slot: Content
- #}}
-
-<div class="relative {{ class }}" x-data="{ open: false }">
+<div x-data="{ open: false }" {{ $attributes->class(['relative']) }}>
     <dt>
         <button
             type="button"
-            class="{{ trigger_class }}"
-            aria-controls="collapsible-{{ count }}"
-            :aria-expanded="open"
-            @click="open = !open"
+            aria-controls="collapsible-{{ $name }}"
+            x-bind:aria-expanded="open"
+            x-on:click="open = !open"
+            {{ $trigger->attributes }}
         >
-            {{ slot:trigger }}
+            {{ $trigger }}
         </button>
     </dt>
     <dd
         x-cloak
         x-show="open"
         x-collapse
-        id="collapsible-{{ count }}"
-        class="relative {{ content_class }}"
+        id="collapsible-{{ $name }}"
+        {{ $content->attributes->class(['relative']) }}
     >
-        {{ slot }}
+        {{ $content }}
     </dd>
 </div>
