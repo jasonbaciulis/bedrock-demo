@@ -1,52 +1,52 @@
-{{ once }}
-    {{ push:scripts }}
-        {{ vite src="resources/js/fetchEntries.js" }}
-    {{ /push:scripts }}
-{{ /once }}
+{{-- @once
+    @push('scripts')
+        @vite('resources/js/fetchEntries.js')
+    @endpush
+@endonce --}}
 
 <section id="{{ Statamic::modify($block->type)->slugify() }}" class="m-section">
 
-{{#
+{{--
     Example of using fetchEntries.js to fetch entries from a collection via Statamic REST API.
     x-data="fetchEntries({
         collection: 'testimonials',
-        entriesPerPage: {{ limit }},
+        entriesPerPage: {{ $block->limit }},
         sort: 'order',
     })"
- #}}
+--}}
 
     <div class="container">
-        {{ partial:partials/section-header }}
+        <x-section-header :title="$block->title" :text="$block->text ?? null" />
 
-        {{ if query === 'custom' }}
-            {{ $entries = entries }}
-        {{ elseif query === 'latest' }}
-            {{ $entries = {collection:testimonials :limit="limit" sort="date:desc"} }}
-        {{ elseif query === 'featured' }}
-            {{ $entries = {collection:testimonials :limit="limit" featured:is="true" sort="order"} }}
-        {{ /if }}
+        @if ($block->query->value() === 'custom')
+            @php($entries = $block->entries)
+        @elseif ($block->query->value() === 'latest')
+            @php($entries = Statamic::tag('collection:testimonials')->limit($block->limit)->sort('date:desc')->fetch())
+        @elseif ($block->query->value() === 'featured')
+            @php($entries = Statamic::tag('collection:testimonials')->limit($block->limit)->featured()->sort('order')->fetch())
+        @endif
 
         <div class="site-grid">
-            {{ $entries }}
+            @foreach ($entries as $entry)
                 <div class="sm:col-span-6 lg:col-span-4">
-                    {{ partial:partials/entry-testimonials }}
+                    <x-entry-testimonials :$entry />
                 </div>
-            {{ /$entries }}
+            @endforeach
 
-            {{# Example how to output entries returned from REST API request #}}
-            {{# <template x-for="(entry, index) in entries">
+            {{-- Example how to output entries returned from REST API request --}}
+            {{-- <template x-for="(entry, index) in entries">
                 <div class="sm:col-span-6 lg:col-span-4">
-                    {{ partial:partials/alpine/entry-testimonials }}
+                    <x-alpine.entry-testimonials :$entry />
                 </div>
-            </template> #}}
+            </template> --}}
         </div>
 
-        {{# Example of load more button when using REST API to fetch entries #}}
-        {{# <div x-show="nextPage" class="text-center mt-16">
-            <button class="btn btn--outline" @click="loadMore()" :disabled="loading">
-                {{ icon:lucide-loader-circle class="animate-spin" x-show="loading" }}
+        {{-- Example of load more button when using REST API to fetch entries --}}
+        {{-- <div x-show="nextPage" class="text-center mt-16">
+            <button class="btn btn--outline" x-on:click="loadMore()" x-bind:disabled="loading">
+                <x-lucide-loader-circle class="animate-spin" x-show="loading" />
                 Load more
             </button>
-        </div> #}}
+        </div> --}}
     </div>
 </section>

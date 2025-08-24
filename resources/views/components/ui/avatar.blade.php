@@ -1,14 +1,7 @@
-{{#
-    Avatar component
+@props(['image', 'w', 'h', 'name'])
 
-    Params:
-    - image: Image URL
-    - w: Width
-    - h: Height
-    - class: Additional CSS classes
-    - name: Name
-#}}
-
-<div class="shrink-0 rounded-full overflow-hidden bg-primary-foreground {{ class }}">
-    <img src="{{ glide :src='image' :width='w' :height='h' dpr='2' fit='crop_focal' }}" alt="{{ name }}'s avatar" loading="lazy">
+<div {{ $attributes->class(['shrink-0 rounded-full overflow-hidden bg-primary-foreground']) }}>
+    <s:glide :src="$image" :width="$w" :height="$h" dpr="2" fit="crop_focal">
+        <img src="{{ $url }}" alt="{!! $name !!}'s avatar" loading="lazy">
+    </s:glide>
 </div>
