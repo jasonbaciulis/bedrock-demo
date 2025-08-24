@@ -1,8 +1,10 @@
-<div class="flex items-center gap-4 {{ class }}">
-  <time datetime="{{ date | format('c') }}" class="text-xs text-muted-foreground">
-      {{ date | format('M j, Y') }}
+@props(['entry'])
+
+<div {{ $attributes->class(['flex items-center gap-4']) }}>
+  <time datetime="{{ Statamic::modify($entry->date)->format('c') }}" class="text-xs text-muted-foreground">
+      {{ Statamic::modify($entry->date)->format('M j, Y') }}
   </time>
-  {{ if category }}
-      <span class="badge badge--outline">{{ category }}</span>
-  {{ /if }}
+  @unless (empty($entry->categories->title))
+      <span class="badge badge--outline">{{ $entry->categories->title }}</span>
+  @endunless
 </div>
