@@ -342,11 +342,32 @@
                                 <x-lucide-chevron-down class="size-4 opacity-50 -mr-1 mt-px" />
                             </x-slot:toggle>
 
+                            @php
+                            $actions = [
+                                (object)[
+                                    'label' => 'Edit Content',
+                                    'icon' => 'lucide-edit',
+                                ],
+                                (object)[
+                                    'label' => 'Share Page',
+                                    'icon' => 'lucide-share',
+                                ],
+                                (object)[
+                                    'label' => 'Export Data',
+                                    'icon' => 'lucide-download',
+                                ],
+                                (object)[
+                                    'label' => 'Settings',
+                                    'icon' => 'lucide-settings',
+                                ],
+                            ];
+                            @endphp
+
                             <x-slot:content>
-                                @foreach (['Edit Content', 'Share Page', 'Export Data', 'Settings'] as $action)
+                                @foreach ($actions as $action)
                                     <x-ui.dropdown.item href="javascript:void(0)">
-                                        <x-lucide-edit class="size-4" />
-                                        {{ $action }}
+                                        {{ svg($action->icon) }}
+                                        {!! $action->label !!}
                                     </x-ui.dropdown.item>
                                 @endforeach
                             </x-slot:content>
