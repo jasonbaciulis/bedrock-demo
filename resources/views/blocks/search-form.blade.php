@@ -1,9 +1,9 @@
 <section id="{{ Statamic::modify($block->type)->slugify() }}" class="m-section">
     <div class="container">
-        {{ partial:partials/section-header }}
+        <x-section-header :title="$block->title" :text="$block->text ?? null" margin="mb-10" />
 
         <div class="mx-auto max-w-xl">
-            {{ partial:components/search-form }}
+            <x-search-form :action="$theme->search_results->url" />
         </div>
     </div>
 </section>

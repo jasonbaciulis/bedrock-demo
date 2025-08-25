@@ -1,32 +1,30 @@
 <section id="{{ Statamic::modify($block->type)->slugify() }}" class="m-section">
     <div class="container max-w-4xl">
-        {{ partial:partials/section-header }}
+        <x-section-header :title="$block->title" :description="$block->description" />
 
         <dl class="divide-y divide-gray-300 border-b border-gray-300">
-            {{ items }}
-                {{ partial:components/faq-item }}
-            {{ /items }}
+            @foreach ($block->items as $item)
+                <x-faq-item :title="$item->title" :text="$item->text" />
+            @endforeach
         </dl>
     </div>
 </section>
 
 <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
         "mainEntity": [
-            {{ if items }}
-                {{ items }}
-                    {
-                        "@type": "Question",
-                        "name": "{{ title }}",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "{{ text | add_slashes }}"
-                        }
-                    }{{ unless last }},{{ /unless }}
-                {{ /items }}
-            {{ /if }}
+            @foreach ($block->items as $item)
+                {
+                    "@@type": "Question",
+                    "name": "{{ $item->title }}",
+                    "acceptedAnswer": {
+                        "@@type": "Answer",
+                        "text": "{{ $item->text }}"
+                    }
+                }{{ !$loop->last ? ',' : '' }}
+            @endforeach
         ]
     }
 </script>

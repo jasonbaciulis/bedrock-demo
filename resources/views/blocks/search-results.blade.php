@@ -1,29 +1,27 @@
 <section class="m-section">
     <div class="container">
-        {{ partial:partials/section-header }}
+        <x-section-header :title="$block->title" :text="$block->text ?? null" />
 
-        {{#
+        {{--
             You can set index in config/statamic/search.php
             Docs: https://statamic.dev/search#indexes
-         #}}
-        {{ search:results index="blog" :limit="limit" paginate="true" on_each_side="1" as="search_results" }}
+        --}}
+        <s:search:results index="blog" :limit="$block->limit" paginate="true" on_each_side="1" as="results" />
             <div class="site-grid gap-y-20 md:gap-y-12">
                 <div class="sm:col-span-12 max-w-md">
-                    {{ partial:components/search-form }}
+                    <x-search-form :action="$theme->search_results->url" :total_results="$paginate['total_items']" />
                 </div>
 
-                {{ if no_results }}
+                @forelse ($results as $result)
+                    <x-entry-posts :entry="$result" class="col-span-full md:col-span-6 lg:col-span-4" />
+                @empty
                     <div class="rounded-lg bg-yellow-50 sm:col-span-8 px-6 py-4">
-                        <p class="text-lg text-yellow-800">{{ no_results_text }}</p>
+                        <p class="text-lg text-yellow-800">{!! $block->no_results_text !!}</p>
                     </div>
-                {{ /if }}
-
-                {{ search_results }}
-                    {{ partial:partials/entry-posts class="col-span-full md:col-span-6 lg:col-span-4" }}
-                {{ /search_results }}
+                @endforelse
             </div>
 
-            {{ partial:components/pagination class="mt-20" }}
-        {{ /search:results }}
+            <x-ui.pagination class="mt-20" :$paginate />
+        </s:search:results>
     </div>
 </section>
