@@ -13,7 +13,15 @@
                 </div>
 
                 @forelse ($results as $result)
-                    <x-entry-posts :entry="$result" class="col-span-full md:col-span-6 lg:col-span-4" />
+                    <x-entry-posts
+                        :image="$result->image"
+                        :url="$result->url"
+                        :title="$result->title"
+                        :excerpt="$result->excerpt"
+                        :date="$result->date"
+                        :categories="$result->categories"
+                        class="col-span-full md:col-span-6 lg:col-span-4"
+                    />
                 @empty
                     <div class="rounded-lg bg-yellow-50 sm:col-span-8 px-6 py-4">
                         <p class="text-lg text-yellow-800">{!! $block->no_results_text !!}</p>

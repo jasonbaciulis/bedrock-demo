@@ -1,5 +1,5 @@
 <ul
-    class="flex items-center gap-4 {{ class }}"
+    class="flex items-center gap-4 {{ $class }}"
     x-data="{
         popupWindow: (url, windowName, win, w, h) => {
             const y = win.top.outerHeight / 2 + win.top.screenY - ( h / 2);
@@ -11,31 +11,31 @@
     <li>
         <a
             href="#"
-            @click.prevent="popupWindow('https://x.com/intent/tweet?url={{ current_url }}&text={{ title | urlencode }}&via={{ seo:twitter_site }}', 'X', window, 611, 435)"
+            x-on:click.prevent="popupWindow('https://x.com/intent/tweet?url={{ $current_url }}&text={{ Statamic::modify($title)->urlencode() }}&via={{ $seo->twitter_site }}', 'X', window, 611, 435)"
             aria-label="X"
             class="block hover:opacity-80"
         >
-            {{ svg src="social/x" class="size-5" }}
+            <s:svg src="social/x" class="size-5" />
         </a>
     </li>
     <li>
         <a
             href="#"
-            @click.prevent="popupWindow('https://www.facebook.com/sharer.php?u={{ current_url }}', 'Facebook', window, 611, 435)"
+            x-on:click.prevent="popupWindow('https://www.facebook.com/sharer.php?u={{ $current_url }}', 'Facebook', window, 611, 435)"
             aria-label="Facebook"
             class="block hover:opacity-80"
         >
-            {{ svg src="social/facebook" class="size-5" }}
+            <s:svg src="social/facebook" class="size-5" />
         </a>
     </li>
     <li>
         <a
             href="#"
-            @click.prevent="popupWindow('https://www.linkedin.com/sharing/share-offsite/?url={{ current_url }}', 'Linkedin', window, 611, 435)"
+            x-on:click.prevent="popupWindow('https://www.linkedin.com/sharing/share-offsite/?url={{ $current_url }}', 'Linkedin', window, 611, 435)"
             aria-label="Linkedin"
             class="block hover:opacity-80"
         >
-            {{ svg src="social/linkedin" class="size-5" }}
+            <s:svg src="social/linkedin" class="size-5" />
         </a>
     </li>
 </ul>

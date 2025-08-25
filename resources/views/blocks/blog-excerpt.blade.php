@@ -12,7 +12,15 @@
 
         <div class="site-grid gap-y-20 max-w-2xl mx-auto lg:max-w-none">
             @foreach ($entries as $entry)
-                <x-entry-posts :$entry class="col-span-full lg:col-span-4" />
+                <x-entry-posts
+                    :image="$entry->image"
+                    :url="$entry->url"
+                    :title="$entry->title"
+                    :excerpt="$entry->excerpt"
+                    :date="$entry->date"
+                    :categories="$entry->categories"
+                    class="col-span-full lg:col-span-4"
+                />
             @endforeach
         </div>
     </div>

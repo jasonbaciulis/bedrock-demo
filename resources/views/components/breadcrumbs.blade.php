@@ -1,37 +1,37 @@
-<nav aria-label="breadcrumb" class="overflow-hidden max-w-[calc(100vw-48px)] {{ class }}">
+<nav aria-label="breadcrumb" {{ $attributes->class(['overflow-hidden max-w-[calc(100vw-48px)]']) }}>
     <ol
         vocab="https://schema.org/"
         typeof="BreadcrumbList"
         class="flex gap-1.5 sm:gap-2.5 text-sm text-muted-foreground"
     >
-        {{ nav:breadcrumbs }}
+        <s:nav:breadcrumbs>
             <li
-                class="flex items-center gap-1.5 {{ last ?= 'truncate' }}"
+                class="flex items-center gap-1.5 {{ $loop->last ? 'truncate' : '' }}"
                 property="itemListElement"
                 typeof="ListItem"
             >
-                {{ unless last }}
+                @unless ($loop->last)
                     <a
-                        href="{{ url }}"
+                        href="{{ $url }}"
                         property="item"
                         typeof="WebPage"
                         class="whitespace-nowrap hover:text-foreground"
                     >
-                        <span property="name">{{ title }}</span>
+                        <span property="name">{!! $title !!}</span>
                     </a>
-                    <meta property="position" content="{{ count }}">
-                    {{ icon:lucide-chevron-right class="size-3.5 shrink-0" }}
-                {{ else }}
+                    <meta property="position" content="{{ $loop->iteration }}">
+                    <x-lucide-chevron-right class="size-3.5 shrink-0" />
+                @else
                     <span
                         property="name"
                         class="truncate text-primary"
                         aria-current="page"
                     >
-                        <span property="name">{{ title }}</span>
+                        <span property="name">{!! $title !!}</span>
                     </span>
-                    <meta property="position" content="{{ count }}">
-                {{ /unless }}
+                    <meta property="position" content="{{ $loop->iteration }}">
+                @endunless
             </li>
-        {{ /nav:breadcrumbs }}
+        </s:nav:breadcrumbs>
     </ol>
 </nav>
