@@ -6,9 +6,10 @@
         @endunless
 
         <div class="grid gap-2">
-            @component('components.ui.form.' . $type, array_merge($field, [
-                'model' => 'form.' . $handle
-            ]))
+            @component('components.ui.form.' . $type, [
+                'model' => 'form.' . $handle,
+                ...$field
+            ])
             @endcomponent
 
             @if ($instructions && !in_array($type, $fields_without_labels))

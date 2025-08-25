@@ -1,6 +1,3 @@
-@props([
-    'model',
-    'field_data' => [],
-])
+@props(['model'])
 
-@include('components.ui.form.text', array_merge($field_data, ['model' => $model]))
+@include('components.ui.form.text', ['model' => $model, ...$attributes])
