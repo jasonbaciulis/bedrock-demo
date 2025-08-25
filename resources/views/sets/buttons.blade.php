@@ -1,1 +1,1 @@
-{{ partial:components/buttons container_class="not-prose" }}
+<x-ui.buttons :$buttons class="not-prose" />

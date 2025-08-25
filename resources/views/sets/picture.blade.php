@@ -1,9 +1,9 @@
 <figure class="my-0 not-prose">
-    {{ partial:components/ui/picture w="800" h="auto" }}
+    <x-ui.picture :$image w="800" h="auto" />
 
-    {{ if caption }}
+    @unless (empty($caption))
         <figcaption class="text-sm block mt-2">
-            {{ caption }}
+            {!! $caption !!}
         </figcaption>
-    {{ /if }}
+    @endunless
 </figure>

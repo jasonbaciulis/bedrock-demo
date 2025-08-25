@@ -1,10 +1,10 @@
 <figure class="my-0 not-prose">
     <blockquote class="h3 leading-snug text-primary text-pretty">
-        “{{ quote }}”
+        “{!! $quote !!}”
     </blockquote>
-    {{ if author }}
+    @unless (empty($author))
         <figcaption class="block mt-4 text-sm text-muted-foreground">
-            — {{ author }}
+            — {!! $author !!}
         </figcaption>
-    {{ /if }}
+    @endunless
 </figure>
