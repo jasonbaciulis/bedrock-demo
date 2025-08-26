@@ -1,155 +1,158 @@
-{{-- Page title --}}
-<title>
-    @yield('seo_title')
-    {!! $page->seo_title ?: $page->title !!}
-    {{ $seo->title_separator }}
-    {!! $seo->site_name ?: config('app.name') !!}
-</title>
+@unless (empty($page))
+    {{-- Page title --}}
+    <title>
+        @yield('seo_title')
+        {!! $page->seo_title ?: $page->title !!}
+        {{ $seo->title_separator }}
+        {!! $seo->site_name ?: config('app.name') !!}
+    </title>
 
-{{-- Page description --}}
-@if ($page->seo_description)
-    <meta name="description" content="{{ $page->seo_description }}">
-@elseif ($seo->collection_defaults)
-    <meta name="description" content="@include('partials.fallback-description')">
-@endif
-
-{{-- No index and no follow --}}
-@if (
-    (config('app.env') == 'local' && ! $seo->noindex_local) ||
-    (config('app.env') == 'staging' && ! $seo->noindex_staging) ||
-    (config('app.env') == 'production' && ! $seo->noindex_production)
-)
-    @if ($page->seo_noindex && $page->seo_nofollow)
-        <meta name="robots" content="noindex, nofollow">
-    @elseif ($page->seo_nofollow)
-        <meta name="robots" content="nofollow">
-    @elseif ($page->seo_noindex)
-        <meta name="robots" content="noindex">
-    @endif
-@else
-    <meta name="robots" content="noindex, nofollow">
-@endif
-
-{{-- hreflang tags --}}
-@if ($seo->hreflang_auto)
-    @if (! $page->seo_noindex && $page->seo_canonical_type->value() === 'entry' && $current_full_url === $permalink->value())
-        <s:locales all="false">
-            <link rel="alternate" hreflang="{{ str_replace('_','-', $locale['full']) }}" href="{{ $locale['permalink'] }}">
-        </s:locales>
-    @endif
-@endif
-
-{{-- Canonical URL --}}
-@unless ($page->seo_noindex)
-    @if ($page->seo_canonical_type->value() === 'entry')
-        <link rel="canonical" href="{{ $permalink }}">
-    @elseif ($page->seo_canonical_type->value() === 'domain')
-        <link rel="canonical" href="{{ trim(config('app.url'), '/') . $page->seo_canonical_domain->url }}">
-    @elseif ($page->seo_canonical_type->value() === 'external')
-        <link rel="canonical" href="{{ $page->seo_canonical_external }}">
-    @endif
-@endunless
-
-{{-- Auto add pagination links when using resources/views/components/ui/pagination/pagination.blade.php. --}}
-@yield('pagination')
-
-{{-- Knowledge graph JSON-ld --}}
-@if ($seo->json_ld_type->value() !== 'none')
-    @php
-        $schemaData = null;
-
-        if ($seo->json_ld_type->value() === 'organization') {
-            $schemaData = [
-                '@context' => 'http://schema.org',
-                '@type' => 'Organization',
-                'name' => $seo->organization_name,
-                'url' => config('app.url'),
-            ];
-
-            if ($seo->organization_logo) {
-                $schemaData['logo'] = Statamic::tag('glide')
-                    ->src($seo->organization_logo)
-                    ->width(336)
-                    ->height(336)
-                    ->fit('fill')
-                    ->absolute()
-                    ->fetch();
-            }
-        } elseif ($seo->json_ld_type->value() === 'person') {
-            $schemaData = [
-                '@context' => 'http://schema.org',
-                '@type' => 'Person',
-                'url' => config('app.url'),
-                'name' => $seo->person_name,
-            ];
-        }
-    @endphp
-
-    @if ($seo->json_ld_type->value() === 'custom')
-        <script type="application/ld+json" id="schema">{!! $seo->json_ld !!}</script>
-    @elseif ($schemaData)
-        <script type="application/ld+json" id="schema">@json($schemaData, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)</script>
-    @endif
-@endif
-
-@unless (empty($page->schema_jsonld))
-    <script type="application/ld+json" id="schema-page">{!! $page->schema_jsonld !!}</script>
-@endunless
-
-{{-- Breadcrumbs JSON-ld --}}
-@if ($seo->breadcrumbs && !empty($segment_1))
-    @php
-        $crumbs = collect(Statamic::tag('nav:breadcrumbs')->fetch())
-            ->values()
-            ->map(function ($crumb, $index) {
-                return [
-                    '@type' => 'ListItem',
-                    'position' => $index + 1,
-                    'name' => $crumb['title'] ?? '',
-                    'item' => $crumb['permalink'] ?? '',
-                ];
-            })->all();
-
-        $breadcrumbsSchema = [
-            '@context' => 'https://schema.org',
-            '@type' => 'BreadcrumbList',
-            'itemListElement' => $crumbs,
-        ];
-    @endphp
-    <script type="application/ld+json" id="schema-breadcrumbs">@json($breadcrumbsSchema, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)</script>
-@endif
-
-{{-- Open Graph --}}
-<meta property="og:site_name" content="{{ $seo->site_name ?: config('app.name') }}">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="{{ $site->locale }}">
-<meta property="og:title" content="{{ $page->og_title ?: $page->seo_title ?: $page->title }}">
-@if ($page->og_description || $page->seo_description)
-    <meta property="og:description" content="{{ $page->og_description ?: $page->seo_description }}">
-@elseif ($seo->collection_defaults)
-    <meta property="og:description" content="@include('partials.fallback-description')">
-@endif
-@if ($og_image = $page->og_image ?: $seo->og_image)
-    <s:glide src="{{ $og_image }}" width="1200" height="630" fit="crop_focal" absolute="true">
-        <meta property="og:image" content="{{ $url }}">
-    </s:glide>
-@endif
-
-{{-- Twitter --}}
-@if ($twitter_image = $page->twitter_image ?: $seo->twitter_image)
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="{{ Statamic::modify($seo->twitter_handle)->ensure_left('@') }}">
-    <meta name="twitter:title" content="{{ $page->og_title ?: $page->seo_title ?: $page->title }}">
-    @if ($page->og_description || $page->seo_description)
-        <meta name="twitter:description" content="{{ $page->og_description ?: $page->seo_description }}">
+    {{-- Page description --}}
+    @if ($page->seo_description)
+        <meta name="description" content="{{ $page->seo_description }}">
     @elseif ($seo->collection_defaults)
-        <meta name="twitter:description" content="@include('partials.fallback-description')">
+        <meta name="description" content="@include('partials.fallback-description')">
     @endif
-    <s:glide src="{{ $twitter_image }}" width="1200" height="600" fit="crop_focal" absolute="true">
-        <meta name="twitter:image" content="{{ $url }}">
-        <meta name="twitter:image:alt" content="{{ $alt }}">
-    </s:glide>
-@endif
+
+    {{-- No index and no follow --}}
+    @if (
+        (config('app.env') == 'local' && ! $seo->noindex_local) ||
+        (config('app.env') == 'staging' && ! $seo->noindex_staging) ||
+        (config('app.env') == 'production' && ! $seo->noindex_production)
+    )
+        @if ($page->seo_noindex && $page->seo_nofollow)
+            <meta name="robots" content="noindex, nofollow">
+        @elseif ($page->seo_nofollow)
+            <meta name="robots" content="nofollow">
+        @elseif ($page->seo_noindex)
+            <meta name="robots" content="noindex">
+        @endif
+    @else
+        <meta name="robots" content="noindex, nofollow">
+    @endif
+
+    {{-- hreflang tags --}}
+    @if ($seo->hreflang_auto)
+        @if (! $page->seo_noindex && $page->seo_canonical_type->value() === 'entry' && $current_full_url === $permalink->value())
+            <s:locales all="false">
+                <link rel="alternate" hreflang="{{ str_replace('_','-', $locale['full']) }}" href="{{ $locale['permalink'] }}">
+            </s:locales>
+        @endif
+    @endif
+
+    {{-- Canonical URL --}}
+    @unless ($page->seo_noindex)
+        @if ($page->seo_canonical_type->value() === 'entry')
+            <link rel="canonical" href="{{ $permalink }}">
+        @elseif ($page->seo_canonical_type->value() === 'domain')
+            <link rel="canonical" href="{{ trim(config('app.url'), '/') . $page->seo_canonical_domain->url }}">
+        @elseif ($page->seo_canonical_type->value() === 'external')
+            <link rel="canonical" href="{{ $page->seo_canonical_external }}">
+        @endif
+    @endunless
+
+    {{-- Auto add pagination links when using resources/views/components/ui/pagination/pagination.blade.php. --}}
+    @yield('pagination')
+
+    {{-- Knowledge graph JSON-ld --}}
+    @if ($seo->json_ld_type->value() !== 'none')
+        @php
+            $schemaData = null;
+
+            if ($seo->json_ld_type->value() === 'organization') {
+                $schemaData = [
+                    '@context' => 'http://schema.org',
+                    '@type' => 'Organization',
+                    'name' => $seo->organization_name,
+                    'url' => config('app.url'),
+                ];
+
+                if ($seo->organization_logo) {
+                    $schemaData['logo'] = Statamic::tag('glide')
+                        ->src($seo->organization_logo)
+                        ->width(336)
+                        ->height(336)
+                        ->fit('fill')
+                        ->absolute()
+                        ->fetch();
+                }
+            } elseif ($seo->json_ld_type->value() === 'person') {
+                $schemaData = [
+                    '@context' => 'http://schema.org',
+                    '@type' => 'Person',
+                    'url' => config('app.url'),
+                    'name' => $seo->person_name,
+                ];
+            }
+        @endphp
+
+        @if ($seo->json_ld_type->value() === 'custom')
+            <script type="application/ld+json" id="schema">{!! $seo->json_ld !!}</script>
+        @elseif ($schemaData)
+            <script type="application/ld+json" id="schema">@json($schemaData, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)</script>
+        @endif
+    @endif
+    @unless (empty($page->schema_jsonld))
+        <script type="application/ld+json" id="schema-page">{!! $page->schema_jsonld !!}</script>
+    @endunless
+
+    {{-- Breadcrumbs JSON-ld --}}
+    @if ($seo->breadcrumbs && !empty($segment_1))
+        @php
+            $crumbs = collect(Statamic::tag('nav:breadcrumbs')->fetch())
+                ->values()
+                ->map(function ($crumb, $index) {
+                    return [
+                        '@type' => 'ListItem',
+                        'position' => $index + 1,
+                        'name' => $crumb['title'] ?? '',
+                        'item' => $crumb['permalink'] ?? '',
+                    ];
+                })->all();
+
+            $breadcrumbsSchema = [
+                '@context' => 'https://schema.org',
+                '@type' => 'BreadcrumbList',
+                'itemListElement' => $crumbs,
+            ];
+        @endphp
+        <script type="application/ld+json" id="schema-breadcrumbs">@json($breadcrumbsSchema, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)</script>
+    @endif
+
+    {{-- Open Graph --}}
+    <meta property="og:site_name" content="{{ $seo->site_name ?: config('app.name') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="{{ $site->locale }}">
+    <meta property="og:title" content="{{ $page->og_title ?: $page->seo_title ?: $page->title }}">
+    @if ($page->og_description || $page->seo_description)
+        <meta property="og:description" content="{{ $page->og_description ?: $page->seo_description }}">
+    @elseif ($seo->collection_defaults)
+        <meta property="og:description" content="@include('partials.fallback-description')">
+    @endif
+    @if ($og_image = $page->og_image ?: $seo->og_image)
+        <s:glide src="{{ $og_image }}" width="1200" height="630" fit="crop_focal" absolute="true">
+            <meta property="og:image" content="{{ $url }}">
+        </s:glide>
+    @endif
+
+    {{-- Twitter --}}
+    @if ($twitter_image = $page->twitter_image ?: $seo->twitter_image)
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="{{ Statamic::modify($seo->twitter_handle)->ensure_left('@') }}">
+        <meta name="twitter:title" content="{{ $page->og_title ?: $page->seo_title ?: $page->title }}">
+        @if ($page->og_description || $page->seo_description)
+            <meta name="twitter:description" content="{{ $page->og_description ?: $page->seo_description }}">
+        @elseif ($seo->collection_defaults)
+            <meta name="twitter:description" content="@include('partials.fallback-description')">
+        @endif
+        <s:glide src="{{ $twitter_image }}" width="1200" height="600" fit="crop_focal" absolute="true">
+            <meta name="twitter:image" content="{{ $url }}">
+            <meta name="twitter:image:alt" content="{{ $alt }}">
+        </s:glide>
+    @endif
+@elseif ($response_code !== 200)
+    <title>{{ $response_code }} | {!! config('app.name') !!}</title>
+@endunless
 
 {{-- Trackers --}}
 @if (
