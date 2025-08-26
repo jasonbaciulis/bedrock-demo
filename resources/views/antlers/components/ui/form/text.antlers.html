@@ -15,7 +15,7 @@
         {{ if instructions }}
             :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
         {{ else }}
-            :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : undefined"
+            :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : false"
         {{ /if }}
         {{ character_limit | attribute:maxlength }}
         {{ old | attribute:value }}

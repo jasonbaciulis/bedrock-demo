@@ -3,7 +3,7 @@
     {{ if instructions }}
         :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
     {{ else }}
-        :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : undefined"
+        :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : false"
     {{ /if }}
 >
     <legend class="block font-medium text-foreground select-none text-sm">{{ display }}</legend>
