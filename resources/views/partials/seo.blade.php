@@ -1,182 +1,169 @@
-{{-- {{# Page title #}}
+{{-- Page title --}}
 <title>
-    {{ yield:seo_title }}
-    {{ seo_title ? seo_title : title }}
-    {{ seo:title_separator ? seo:title_separator : " &#124; " }}
-    {{ seo:change_page_title | where('collection', {collection}) }}
-        {{ if what_to_add == 'collection_title' }}
-            {{ collection:title }}
-        {{ elseif what_to_add == 'custom_text' }}
-            {{ custom_text }}
-        {{ /if }}
-        {{ seo:title_separator ? seo:title_separator : " &#124; " }}
-    {{ /seo:change_page_title }}
-    {{ seo:site_name ? seo:site_name : config:app:name }}
+    @yield('seo_title')
+    {!! $page->seo_title ?: $page->title !!}
+    {{ $seo->title_separator }}
+    {!! $seo->site_name ?: config('app.name') !!}
 </title>
 
-{{# Page description #}}
-{{ if seo_description }}
-    <meta name="description" content="{{ seo_description }}">
-{{ elseif seo:collection_defaults }}
-    <meta name="description" content="{{ partial:partials/fallback-description }}">
-{{ /if }}
+{{-- Page description --}}
+@if ($page->seo_description)
+    <meta name="description" content="{{ $page->seo_description }}">
+@elseif ($seo->collection_defaults)
+    <meta name="description" content="@include('partials.fallback-description')">
+@endif
 
-{{# No index and no follow #}}
-{{ if
-    (environment == 'local' && !seo:noindex_local) or
-    (environment == 'staging' && !seo:noindex_staging) or
-    (environment == 'production' && !seo:noindex_production)
-}}
-    {{ if seo_noindex & seo_nofollow }}
+{{-- No index and no follow --}}
+@if (
+    (config('app.env') == 'local' && ! $seo->noindex_local) ||
+    (config('app.env') == 'staging' && ! $seo->noindex_staging) ||
+    (config('app.env') == 'production' && ! $seo->noindex_production)
+)
+    @if ($page->seo_noindex && $page->seo_nofollow)
         <meta name="robots" content="noindex, nofollow">
-    {{ elseif seo_nofollow }}
+    @elseif ($page->seo_nofollow)
         <meta name="robots" content="nofollow">
-    {{ elseif seo_noindex }}
+    @elseif ($page->seo_noindex)
         <meta name="robots" content="noindex">
-    {{ /if }}
-{{ else }}
+    @endif
+@else
     <meta name="robots" content="noindex, nofollow">
-{{ /if }}
+@endif
 
-{{# hreflang tags #}}
-{{ if seo:hreflang_auto }}
-    {{ if not seo_noindex and seo_canonical_type == 'entry' and current_full_url === permalink }}
-        {{ locales all="false" }}
-            <link rel="alternate" hreflang="{{ locale:full | replace('_','-') }}" href="{{ permalink }}">
-        {{ /locales }}
-    {{ /if }}
-{{ /if }}
+{{-- hreflang tags --}}
+@if ($seo->hreflang_auto)
+    @if (! $page->seo_noindex && $page->seo_canonical_type->value() === 'entry' && $current_full_url === $permalink->value())
+        <s:locales all="false">
+            <link rel="alternate" hreflang="{{ str_replace('_','-', $locale['full']) }}" href="{{ $locale['permalink'] }}">
+        </s:locales>
+    @endif
+@endif
 
-{{# Canonical URL #}}
-{{ if not seo_noindex }}
-    {{ if seo_canonical_type == 'current' }}
-        <link rel="canonical" href="{{ config:app:url }}{{ seo_canonical_current | url }}">
-    {{ elseif seo_canonical_type == 'external' }}
-        <link rel="canonical" href="{{ seo_canonical_external }}">
-    {{ elseif seo_canonical_type == 'entry' }}
-        <link rel="canonical" href="{{ permalink }}">
-    {{ /if }}
-{{ /if }}
+{{-- Canonical URL --}}
+@unless ($page->seo_noindex)
+    @if ($page->seo_canonical_type->value() === 'entry')
+        <link rel="canonical" href="{{ $permalink }}">
+    @elseif ($page->seo_canonical_type->value() === 'domain')
+        <link rel="canonical" href="{{ trim(config('app.url'), '/') . $page->seo_canonical_domain->url }}">
+    @elseif ($page->seo_canonical_type->value() === 'external')
+        <link rel="canonical" href="{{ $page->seo_canonical_external }}">
+    @endif
+@endunless
 
-{{# Auto add pagination links when using resources/views/components/pagination.antlers.html. #}}
-{{ yield:pagination }}
+{{-- Auto add pagination links when using resources/views/components/ui/pagination/pagination.blade.php. --}}
+@yield('pagination')
 
-{{# Knowledge graph JSON-ld #}}
-{{ if seo:json_ld_type && seo:json_ld_type != 'none' }}
-    <script type="application/ld+json" id="schema">
-        {{ if seo:json_ld_type == 'organization'  }}
-            {
-                "@context": "http://schema.org",
-                "@type": "Organization",
-                "name": "{{ seo:organization_name }}",
-                "url": "{{ config:app:url }}{{ homepage }}"{{ if seo:organization_logo }},
-                "logo": "{{ config:app:url }}{{ glide:seo:organization_logo width='336' height='336' fit='fill' }}"{{ /if }}
+{{-- Knowledge graph JSON-ld --}}
+@if ($seo->json_ld_type->value() !== 'none')
+    @php
+        $schemaData = null;
+
+        if ($seo->json_ld_type->value() === 'organization') {
+            $schemaData = [
+                '@context' => 'http://schema.org',
+                '@type' => 'Organization',
+                'name' => $seo->organization_name,
+                'url' => config('app.url'),
+            ];
+
+            if ($seo->organization_logo) {
+                $schemaData['logo'] = Statamic::tag('glide')
+                    ->src($seo->organization_logo)
+                    ->width(336)
+                    ->height(336)
+                    ->fit('fill')
+                    ->absolute()
+                    ->fetch();
             }
-        {{ elseif seo:json_ld_type == 'person' }}
-            {
-                "@context": "http://schema.org",
-                "@type": "Person",
-                "url": "{{ config:app:url }}{{ homepage }}",
-                "name": "{{ seo:person_name }}"
-            }
-        {{ elseif seo:json_ld_type == 'custom' }}
-            {{ seo:json_ld }}
-        {{ /if }}
-    </script>
-{{ /if }}
-
-{{ if schema_jsonld  }}
-    <script type="application/ld+json">{{ schema_jsonld }}</script>
-{{ /if }}
-
-{{# Breadcrumbs JSON-ld #}}
-{{ if seo:breadcrumbs && segment_1 }}
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {{ nav:breadcrumbs }}
-                    {
-                        "@type": "ListItem",
-                        "position": {{ count }},
-                        "name": "{{ title }}",
-                        "item": "{{ permalink }}"
-                    } {{ unless last}},{{ /unless}}
-                {{ /nav:breadcrumbs }}
-            ]
+        } elseif ($seo->json_ld_type->value() === 'person') {
+            $schemaData = [
+                '@context' => 'http://schema.org',
+                '@type' => 'Person',
+                'url' => config('app.url'),
+                'name' => $seo->person_name,
+            ];
         }
-    </script>
-{{ /if }}
+    @endphp
 
-{{# Open Graph #}}
-<meta property="og:site_name" content="{{ seo:site_name ? seo:site_name : config:app:name }}">
+    @if ($seo->json_ld_type->value() === 'custom')
+        <script type="application/ld+json" id="schema">{!! $seo->json_ld !!}</script>
+    @elseif ($schemaData)
+        <script type="application/ld+json" id="schema">@json($schemaData, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)</script>
+    @endif
+@endif
+
+@unless (empty($page->schema_jsonld))
+    <script type="application/ld+json" id="schema-page">{!! $page->schema_jsonld !!}</script>
+@endunless
+
+{{-- Breadcrumbs JSON-ld --}}
+@if ($seo->breadcrumbs && !empty($segment_1))
+    @php
+        $crumbs = collect(Statamic::tag('nav:breadcrumbs')->fetch())
+            ->values()
+            ->map(function ($crumb, $index) {
+                return [
+                    '@type' => 'ListItem',
+                    'position' => $index + 1,
+                    'name' => $crumb['title'] ?? '',
+                    'item' => $crumb['permalink'] ?? '',
+                ];
+            })->all();
+
+        $breadcrumbsSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => $crumbs,
+        ];
+    @endphp
+    <script type="application/ld+json" id="schema-breadcrumbs">@json($breadcrumbsSchema, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)</script>
+@endif
+
+{{-- Open Graph --}}
+<meta property="og:site_name" content="{{ $seo->site_name ?: config('app.name') }}">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="{{ site:locale }}">
-{{ if og_title }}
-    <meta property="og:title" content="{{ og_title }}">
-{{ else }}
-    <meta property="og:title" content="{{ seo_title ? seo_title : title }}">
-{{ /if }}
-{{ if og_description }}
-    <meta property="og:description" content="{{ og_description }}">
-{{ elseif seo_description }}
-    <meta property="og:description" content="{{ seo_description }}">
-{{ elseif seo:collection_defaults }}
-    <meta property="og:description" content="{{ partial:partials/fallback-description }}">
-{{ /if }}
-{{ if og_image }}
-    <meta property="og:image" content="{{ glide:og_image width='1200' height='630' fit='crop_focal' absolute='true' }}">
-{{ elseif seo:og_image }}
-    <meta property="og:image" content="{{ glide:seo:og_image width='1200' height='630' fit='crop_focal' absolute='true' }}">
-{{ /if }}
+<meta property="og:locale" content="{{ $site->locale }}">
+<meta property="og:title" content="{{ $page->og_title ?: $page->seo_title ?: $page->title }}">
+@if ($page->og_description || $page->seo_description)
+    <meta property="og:description" content="{{ $page->og_description ?: $page->seo_description }}">
+@elseif ($seo->collection_defaults)
+    <meta property="og:description" content="@include('partials.fallback-description')">
+@endif
+@if ($og_image = $page->og_image ?: $seo->og_image)
+    <s:glide src="{{ $og_image }}" width="1200" height="630" fit="crop_focal" absolute="true">
+        <meta property="og:image" content="{{ $url }}">
+    </s:glide>
+@endif
 
-{{# Twitter #}}
-{{ if twitter_image or seo:twitter_image }}
+{{-- Twitter --}}
+@if ($twitter_image = $page->twitter_image ?: $seo->twitter_image)
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="{{ seo:twitter_handle | ensure_left('@') }}">
-    {{ if og_title }}
-        <meta name="twitter:title" content="{{ og_title }}">
-    {{ else }}
-        <meta name="twitter:title" content="{{ seo_title ? seo_title : title }}">
-    {{ /if }}
-    {{ if og_description }}
-        <meta name="twitter:description" content="{{ og_description }}">
-    {{ elseif seo_description }}
-        <meta name="twitter:description" content="{{ seo_description }}">
-    {{ elseif seo:collection_defaults }}
-        <meta name="twitter:description" content="{{ partial:partials/fallback-description }}">
-    {{ /if }}
-    {{ if twitter_image }}
-        <meta name="twitter:image" content="{{ glide:twitter_image width='1200' height='600' fit='crop_focal' absolute='true' }}">
-        {{ asset :url="twitter_image" }}
-            {{ if alt }}
-                <meta name="twitter:image:alt" content="{{ alt }}">
-            {{ /if }}
-        {{ /asset }}
-    {{ elseif seo:twitter_image }}
-        <meta name="twitter:image" content="{{ glide:seo:twitter_image width='1200' height='600' fit='crop_focal' absolute='true' }}">
-        {{ asset :url="seo:twitter_image" }}
-            {{ if alt }}
-                <meta name="twitter:image:alt" content="{{ alt }}">
-            {{ /if }}
-        {{ /asset }}
-    {{ /if }}
-{{ /if }}
+    <meta name="twitter:site" content="{{ Statamic::modify($seo->twitter_handle)->ensure_left('@') }}">
+    <meta name="twitter:title" content="{{ $page->og_title ?: $page->seo_title ?: $page->title }}">
+    @if ($page->og_description || $page->seo_description)
+        <meta name="twitter:description" content="{{ $page->og_description ?: $page->seo_description }}">
+    @elseif ($seo->collection_defaults)
+        <meta name="twitter:description" content="@include('partials.fallback-description')">
+    @endif
+    <s:glide src="{{ $twitter_image }}" width="1200" height="600" fit="crop_focal" absolute="true">
+        <meta name="twitter:image" content="{{ $url }}">
+        <meta name="twitter:image:alt" content="{{ $alt }}">
+    </s:glide>
+@endif
 
-{{# Trackers #}}
-{{ if
-    (environment == 'local' && seo:trackers_local) or
-    (environment == 'staging' && seo:trackers_staging) or
-    (environment == 'production' && seo:trackers_production)
-}}
-    {{ if seo:tracker_type == 'gtm' }}
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ seo:google_tag_manager }}');function gtag(){dataLayer.push(arguments);}</script>
-    {{ elseif seo:tracker_type == 'gtag' }}
-        <script async src="https://www.googletagmanager.com/gtag/js?id={{ seo:google_analytics }}"></script>
-        <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('set', new Date());gtag('config', '{{ seo:google_analytics }}' {{ if seo:anonymize_ip }}, {'anonymize_ip': true}{{ /if }});</script>
-    {{ /if }}
-    {{ if seo:use_cookie_dialog }}
+{{-- Trackers --}}
+@if (
+    (config('app.env') == 'local' && $seo->trackers_local) ||
+    (config('app.env') == 'staging' && $seo->trackers_staging) ||
+    (config('app.env') == 'production' && $seo->trackers_production)
+)
+    @if ($seo->tracker_type == 'gtm')
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ $seo->google_tag_manager }}');function gtag(){dataLayer.push(arguments);}</script>
+    @elseif ($seo->tracker_type == 'gtag')
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $seo->google_analytics }}"></script>
+        <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('set', new Date());gtag('config', '{{ $seo->google_analytics }}' {{ $seo->anonymize_ip ? ", {'anonymize_ip': true}" : '' }});</script>
+    @endif
+    @if ($seo->use_cookie_dialog)
         <script>
             gtag('consent', 'default', {
                 'analytics_storage': 'denied',
@@ -186,29 +173,29 @@
                 'wait_for_update': 1500
             });
         </script>
-    {{ /if }}
+    @endif
 
-    {{# Yield this section in all your layouts after opening the <body> #}}
-    {{ section:seo_body }}
-        {{ if seo:tracker_type == 'gtm' }}
-            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ seo:google_tag_manager }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        {{ /if }}
-        {{ if seo:use_cookie_dialog }}
-            {{ partial:partials/cookie-dialog }}
-        {{ /if }}
-    {{ /section:seo_body }}
+    {{-- Yield this section in all your layouts after opening the <body> --}}
+    @section('seo_body')
+        @if ($seo->tracker_type == 'gtm')
+            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $seo->google_tag_manager }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        @endif
+        @if ($seo->use_cookie_dialog)
+            @include('partials.cookie-dialog')
+        @endif
+    @endsection
 
-    {{ if seo:use_google_site_verification }}
-        <meta name="google-site-verification" content="{{ seo:google_site_verification }}" />
-    {{ /if }}
+    @if ($seo->use_google_site_verification)
+        <meta name="google-site-verification" content="{{ $seo->google_site_verification }}" />
+    @endif
 
-    {{ if seo:use_fathom && seo:fathom_use_custom_domain }}
-        <script src="{{ seo:fathom_custom_script_url }}" site="{{ seo:fathom }}" defer></script>
-    {{ elseif seo:use_fathom }}
-        <script src="https://cdn.usefathom.com/script.js" site="{{ seo:fathom }}" defer></script>
-    {{ /if }}
+    @if ($seo->use_fathom && $seo->fathom_use_custom_domain)
+        <script src="{{ $seo->fathom_custom_script_url }}" site="{{ $seo->fathom }}" defer></script>
+    @elseif ($seo->use_fathom)
+        <script src="https://cdn.usefathom.com/script.js" site="{{ $seo->fathom }}" defer></script>
+    @endif
 
-    {{ if seo:use_cloudflare_web_analytics }}
-        <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "{{ seo:cloudflare_web_analytics }}"}'></script>
-    {{ /if }}
-{{ /if }} --}}
+    @if ($seo->use_cloudflare_web_analytics)
+        <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "{{ $seo->cloudflare_web_analytics }}"}'></script>
+    @endif
+@endif
