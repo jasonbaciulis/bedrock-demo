@@ -11,7 +11,6 @@
         @endif
 
         <div class="site-grid gap-y-20">
-            @php($entries = Statamic::tag('collection:team')->limit($block->limit)->sort('order')->fetch())
             @foreach ($entries as $entry)
                 <div class="sm:col-span-6 lg:col-span-4">
                     <div class="aspect-3/2 rounded-2xl bg-gray-100 ring-1 ring-gray-900/10 ring-inset">
