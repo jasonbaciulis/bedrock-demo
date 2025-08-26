@@ -17,11 +17,17 @@
                 {{-- Contact Form --}}
                 <div
                     x-data="{
-                        form: $form('post', '', {
+                        form: {
                             name: '',
                             email: '',
                             message: '',
-                        }),
+                            validate() {
+                                return true;
+                            },
+                            invalid() {
+                                return false;
+                            },
+                        },
                     }"
                     class="col-span-full md:col-span-6 lg:col-span-3"
                 >
@@ -53,12 +59,18 @@
                  {{-- Newsletter Form --}}
                 <div
                     x-data="{
-                        form: $form('post', '', {
+                        form:{
                             email: '',
                             frequency: 'weekly',
                             topics: [],
                             marketing: false,
-                        }),
+                            validate() {
+                                return true;
+                            },
+                            invalid() {
+                                return false;
+                            },
+                        },
                     }"
                     class="col-span-full md:col-span-6 lg:col-span-3"
                 >
@@ -130,11 +142,17 @@
                 {{-- Preferences Form --}}
                 <div
                     x-data="{
-                        form: $form('post', '', {
+                        form: {
                             theme: 'system',
                             language: 'en',
                             notifications: false,
-                        }),
+                            validate() {
+                                return true;
+                            },
+                            invalid() {
+                                return false;
+                            },
+                        },
                     }"
                     class="col-span-full md:col-span-6 lg:col-span-3"
                 >
