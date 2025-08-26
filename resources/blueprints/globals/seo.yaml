@@ -50,6 +50,7 @@ tabs:
               instructions_position: below
               width: 33
               display: Separator
+              default: ' | '
           -
             handle: site_name
             field:
@@ -187,7 +188,7 @@ tabs:
                       fallback: 'equals custom_text'
       -
         display: Hreflang
-        instructions: 'Set for which sites in your multisite a hreflang tag should be generated.'
+        instructions: 'This will generate a hreflang tag for each site in your sites config.'
         fields:
           -
             handle: hreflang_auto
