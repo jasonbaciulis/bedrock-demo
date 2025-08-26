@@ -9,17 +9,17 @@
 
 <fieldset
     {{ $attributes }}
-    ::aria-invalid="form.invalid('{{ $handle }}')"
+    x-bind:aria-invalid="form.invalid('{{ $handle }}')"
     @unless (empty($instructions))
-        ::aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : '{{ $id }}-instructions'"
+        x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : '{{ $id }}-instructions'"
     @else
-        ::aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : undefined"
+        x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : false"
     @endunless
 >
-    <legend class="block font-medium text-foreground select-none text-sm">{{ $display }}</legend>
+    <legend class="block text-sm font-medium text-foreground select-none">{!! $display !!}</legend>
 
     @unless (empty($instructions))
-        @include('components.ui.input-instructions', ['field' => $field])
+        <x-ui.input-instructions :$instructions :$id />
     @endunless
 
     <div class="mt-3 space-y-4">

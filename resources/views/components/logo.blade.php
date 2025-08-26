@@ -1,7 +1,13 @@
-{{#
+{{--
     Set the logo inside Control Panel in /cp/globals/theme
-#}}
+--}}
 
-<a href="{{ site:url }}" {{ class | attribute:class }} aria-label="{{ config:app:name }} logo">
-    {{ svg :src="theme:logo" }}
+@props([
+    'logo',
+    'url' => config('app.url'),
+    'aria_label' => config('app.name') . ' logo',
+])
+
+<a href="{{ $url }}" aria-label="{{ $aria_label }}" {{ $attributes }}>
+    <s:svg :src="$logo" />
 </a>

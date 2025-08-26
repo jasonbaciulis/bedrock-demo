@@ -1,16 +1,16 @@
-{{ nav handle="bottom_footer" max_depth="1" select="title|url|is_external" as="links" }}
+<s:nav handle="bottom_footer" max_depth="1" select="title|url|is_external" as="links">
     <nav class="flex gap-8">
-        {{ links }}
+        @foreach ($links as $link)
             <a
-                href="{{ url }}"
+                href="{{ $link['url'] }}"
                 class="text-xs text-muted-foreground hover:text-foreground"
-                {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}
+                @if ($link['is_external']) target="_blank" rel="noopener nofollow" @endif
             >
-                {{ title }}
+                {!! $link['title'] !!}
             </a>
-        {{ /links }}
+        @endforeach
 
-        {{# Let's users reset their cookies consent when using the cookie banner. #}}
-        {{ yield:reset_cookie_consent }}
+        {{-- Let's users reset their cookies consent when using the cookie banner. --}}
+        @yield('reset_cookie_consent')
     </nav>
-{{ /nav }}
+</s:nav>

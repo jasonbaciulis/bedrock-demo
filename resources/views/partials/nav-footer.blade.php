@@ -1,20 +1,20 @@
-{{ nav handle="footer" max_depth="2" select="title|url|is_external" }}
+<s:nav handle="footer" max_depth="2" select="title|url|is_external">
     <div>
-        <p class="text-sm/6 font-medium text-foreground">{{ title }}</p>
-        {{ if children }}
+        <p class="text-sm/6 font-medium text-foreground">{!! $title !!}</p>
+        @if (count($children))
             <ul role="list" class="space-y-4 mt-6">
-                {{ children }}
+                @foreach ($children as $child)
                     <li>
                         <a
-                            href="{{ url }}"
+                            href="{{ $child['url'] }}"
                             class="text-sm/6 text-muted-foreground hover:text-foreground"
-                            {{ if is_external }} target="_blank" rel="noopener nofollow" {{ /if }}
+                            @if ($child['is_external']) target="_blank" rel="noopener nofollow" @endif
                         >
-                            {{ title }}
+                            {!! $child['title'] !!}
                         </a>
                     </li>
-                {{ /children }}
+                @endforeach
             </ul>
-        {{ /if }}
+        @endif
     </div>
-{{ /nav }}
+</s:nav>

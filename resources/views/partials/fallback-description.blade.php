@@ -1,23 +1,44 @@
-{{ seo:collection_defaults | where('collection', {collection}) }}
-    {{ if fallback == 'field' }}
-        {{ scope:field }}
-            {{ field[field_handle] | strip_tags | entities | trim | safe_truncate(157, '…') }}
-        {{ /scope:field }}
-    {{ elseif fallback == 'custom_text' }}
-        {{ custom_text }}
-    {{ elseif fallback == 'blocks' }}
-        {{ if blocks:0:text }}
-            {{ if blocks:0:text | is_array }}
-                {{ blocks:0:text | raw | where('type', 'paragraph') | bard_text | strip_tags | entities | trim | safe_truncate(157, '…') }}
-            {{ else }}
-                {{ blocks:0:text | strip_tags | entities | trim | safe_truncate(157, '…') }}
-            {{ /if }}
-        {{ else }}
-            {{ blocks where="type:article" limit="1" }}
-                {{ if article }}
-                    {{ article | raw | where('type', 'paragraph') | bard_text | entities | trim | safe_truncate(157, '…') }}
-                {{ /if }}
-            {{ /blocks }}
-        {{ /if }}
-    {{ /if }}
-{{ /seo:collection_defaults }}
+@foreach (collect($seo->collection_defaults)->where('collection', $collection) as $item)
+    @if ($item['fallback'] == 'field')
+        @foreach ($item['field'] as $field)
+            {!! Statamic::modify($field['field_handle'])->stripTags()->entities()->trim()->safeTruncate(159, '…') !!}
+        @endforeach
+    @elseif ($item['fallback'] == 'custom_text')
+        {!! $item['custom_text'] !!}
+    @elseif ($item['fallback'] == 'blocks')
+        @if ($first_block = Arr::first($item['blocks'], fn($block) => $block['type'] == 'text'))
+            @if (is_array($first_block))
+                {!! Statamic::modify($first_block)
+                        ->raw()
+                        ->where('type', 'paragraph')
+                        ->bardText()
+                        ->stripTags()
+                        ->entities()
+                        ->trim()
+                        ->safeTruncate(159, '…')
+                !!}
+            @else
+                {!! Statamic::modify($first_block)
+                    ->stripTags()
+                    ->entities()
+                    ->trim()
+                    ->safeTruncate(159, '…')
+                !!}
+            @endif
+        @else
+            @foreach ($item['blocks'] as $block)
+                @if ($block['type'] == 'article')
+                    {!! Statamic::modify($block['article'])
+                        ->raw()
+                        ->where('type', 'paragraph')
+                        ->bardText()
+                        ->stripTags()
+                        ->entities()
+                        ->trim()
+                        ->safeTruncate(159, '…')
+                    !!}
+                @endif
+            @endforeach
+        @endif
+    @endif
+@endforeach

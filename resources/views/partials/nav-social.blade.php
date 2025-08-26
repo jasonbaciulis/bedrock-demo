@@ -1,15 +1,15 @@
-{{ if social_media:platforms }}
+@if (count($social_media->platforms))
     <div class="flex gap-6">
-        {{ social_media:platforms }}
+        @foreach ($social_media->platforms as $platform)
             <a
-                href="{{ prefix }}{{ url }}"
+                href="{{ $platform->prefix }}{{ $platform->url }}"
                 class="text-muted-foreground hover:text-foreground"
                 target="_blank"
                 rel="noopener"
-                aria-label="External source: {{ type | title }} (Opens in a new window)"
+                aria-label="{{ config('app.name') }} {{ Str::title($platform->type) }} (Opens in a new window)"
             >
-                {{ svg src="social/{type}" class="size-5" }}
+                <s:svg :src="'social/' . $platform->type" class="size-5" />
             </a>
-        {{ /social_media:platforms }}
+        @endforeach
     </div>
-{{ /if }}
+@endif

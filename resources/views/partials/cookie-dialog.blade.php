@@ -1,12 +1,12 @@
-{{#
-The cookie banner component that is in `resources/views/partials/seo.antlers.html` and yielded in `resources/views/layout.antlers.html`.
-#}}
+{{--
+    The component is added in `resources/views/partials/seo.blade.php` and yielded in `resources/views/layout.blade.php`.
+--}}
 
-{{ once }}
-    {{ push:scripts }}
-        {{ vite src="resources/js/components/cookieDialog.js" }}
-    {{ /push:scripts }}
-{{ /once }}
+@once
+    @push('scripts')
+        @vite('resources/js/components/cookieDialog.js')
+    @endpush
+@endonce
 
 <div
     x-cloak
@@ -18,30 +18,29 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     x-data="cookieDialog({
-        {{ if seo:cookie:consent_revoke_before }}
-            consentRevokeBefore: {{ seo:cookie:consent_revoke_before format='U' }},
-        {{ else }}
+        @if ($seo->cookie->consent_revoke_before)
+            consentRevokeBefore: {{ $seo->cookie->consent_revoke_before->format('U') }},
+        @else
             consentRevokeBefore: null,
-        {{ /if }}
+        @endif
         consentData: {
             consent: false,
             date: null,
-            consent_api: {{ (seo:tracker_type == 'gtag' || seo:tracker_type == 'gtm') | bool_string }},
-            {{ if seo:tracker_type == 'gtag' }}
-                {{# Keep only relevant types #}}
-                types: {{ seo:cookie:consent_types | where_in('name', ['functionalCookies', 'analyticsStorage']) | to_js }},
-            {{ else if seo:tracker_type == 'gtm' }}
-                types: {{ seo:cookie:consent_types | to_js }},
-            {{ /if }}
+            consent_api: {{ ($seo->tracker_type == 'gtag' || $seo->tracker_type == 'gtm') ? 'true' : 'false' }},
+            @if ($seo->tracker_type == 'gtag')
+                types: {{ Js::from(collect($seo->cookie->consent_types)->whereIn('name', ['functionalCookies', 'analyticsStorage'])) }},
+            @elseif ($seo->tracker_type == 'gtm')
+                types: {{ Js::from($seo->cookie->consent_types) }},
+            @endif
         }
     })"
     class="container max-w-xl fixed inset-x-0 bottom-0 pb-6 z-50"
 >
     <div class="card shadow-lg transition-all">
         <div class="space-y-1.5">
-            <div class="leading-none font-semibold">{{ seo:cookie:title }}</div>
+            <div class="leading-none font-semibold">{!! $seo->cookie->title !!}</div>
             <div class="text-sm/6 text-muted-foreground prose prose-p:my-0 max-w-none">
-                {{ seo:cookie:description }}
+                {!! $seo->cookie->description !!}
             </div>
         </div>
 
@@ -50,11 +49,11 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
                 <div class="relative flex gap-x-3 items-start">
                     <div class="flex h-6 items-center">
                         <template x-if="!type.consent_api">
-                            {{# Functional cookies are always on. #}}
+                            {{-- Functional cookies are always on. --}}
                             <input
-                                :name="type.name"
-                                :id="type.name"
-                                :aria-describedby="`${type.name}-description`"
+                                x-bind:name="type.name"
+                                x-bind:id="type.name"
+                                x-bind:aria-describedby="`${type.name}-description`"
                                 type="checkbox"
                                 checked
                                 disabled
@@ -63,75 +62,75 @@ The cookie banner component that is in `resources/views/partials/seo.antlers.htm
                         <template x-if="type.consent_api">
                             <input
                                 x-model="type.value"
-                                :id="type.name"
-                                :aria-describedby="`${type.name}-description`"
-                                :name="type.name"
+                                x-bind:id="type.name"
+                                x-bind:aria-describedby="`${type.name}-description`"
+                                x-bind:name="type.name"
                                 type="checkbox"
                             >
                         </template>
                     </div>
                     <div class="text-sm/6">
-                        <label :for="type.name" :class="{ 'cursor-not-allowed text-muted-foreground': !type.consent_api }" x-text="type.label"></label>
-                        <p :id="`${type.name}-description`" class="text-muted-foreground text-pretty" x-text="type.description"></p>
+                        <label x-bind:for="type.name" x-bind:class="{ 'cursor-not-allowed text-muted-foreground': !type.consent_api }" x-text="type.label"></label>
+                        <p x-bind:id="`${type.name}-description`" class="text-muted-foreground text-pretty" x-text="type.description"></p>
                     </div>
                 </div>
             </template>
         </div>
 
         <div class="flex flex-wrap gap-2">
-            {{# Accept all cookies and set current date. #}}
+            {{-- Accept all cookies and set current date. --}}
             <button
                 x-show="!settingsOpen"
-                @click="$store.cookieDialog.acceptAll()"
+                x-on:click="$store.cookieDialog.acceptAll()"
                 type="button"
                 class="btn btn--primary flex-1 sm:flex-none"
             >
-                {{ seo:cookie:accept_label }}
+                {!! $seo->cookie->accept_label !!}
             </button>
 
-            {{# Accept user selected cookies and set current date. #}}
+            {{-- Accept user selected cookies and set current date. --}}
             <button
                 x-show="settingsOpen"
-                @click="$store.cookieDialog.saveConsent()"
+                x-on:click="$store.cookieDialog.saveConsent()"
                 type="button"
                 class="btn btn--primary flex-1 sm:flex-none"
             >
-                {{ seo:cookie:accept_selected_label }}
+                {!! $seo->cookie->accept_selected_label !!}
             </button>
 
-            {{# Reject all cookies #}}
+            {{-- Reject all cookies --}}
             <button
-                @click="$store.cookieDialog.rejectAll()"
+                x-on:click="$store.cookieDialog.rejectAll()"
                 type="button"
                 class="btn btn--outline flex-1 sm:flex-none"
             >
-                {{ seo:cookie:reject_label }}
+                {!! $seo->cookie->reject_label !!}
             </button>
 
-            {{# Customize which cookies to accept. #}}
+            {{-- Customize which cookies to accept. --}}
             <button
-                @click="settingsOpen = !settingsOpen"
+                x-on:click="settingsOpen = !settingsOpen"
                 type="button"
                 class="btn btn--outline flex-1 sm:flex-none"
             >
-                {{ seo:cookie:settings_label }}
+                {!! $seo->cookie->settings_label !!}
             </button>
         </div>
     </div>
 </div>
 
-{{# Yield this section in `partials/nav-bottom-footer.antlers.html` so users can reset their consent. #}}
-{{ section:reset_cookie_consent }}
-    {{ if seo:use_cookie_dialog }}
+{{-- Yield this section in `partials/nav-bottom-footer.blade.php` so users can reset their consent. --}}
+@section('reset_cookie_consent')
+    @if ($seo->use_cookie_dialog)
         <a
             x-cloak
             x-show="$store.cookieDialog.getConsent()"
             x-data
             href="#"
-            @click.prevent="$store.cookieDialog.revokeConsent()"
+            x-on:click.prevent="$store.cookieDialog.revokeConsent()"
             class="text-xs text-muted-foreground hover:text-foreground"
         >
-            {{ seo:cookie:reset_consent_label }}
+            {!! $seo->cookie->reset_consent_label !!}
         </a>
-    {{ /if }}
-{{ /section:reset_cookie_consent }}
+    @endif
+@endsection
