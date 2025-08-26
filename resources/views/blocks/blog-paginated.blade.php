@@ -17,7 +17,9 @@
                 @endforeach
             </div>
 
-            <x-ui.pagination class="mt-20" :$paginate />
+            @isset($paginate)
+                <x-ui.pagination class="mt-20" :$paginate />
+            @endisset
         </s:collection>
     </div>
 </section>
