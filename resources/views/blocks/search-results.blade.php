@@ -6,10 +6,10 @@
             You can set index in config/statamic/search.php
             Docs: https://statamic.dev/search#indexes
         --}}
-        <s:search:results index="blog" :limit="$block->limit" paginate="true" on_each_side="1" as="results" />
+        <s:search:results index="blog" :limit="$block->limit" paginate="true" on_each_side="1" as="results">
             <div class="site-grid gap-y-20 md:gap-y-12">
                 <div class="sm:col-span-12 max-w-md">
-                    <x-search-form :action="$theme->search_results->url" :total_results="$paginate['total_items']" />
+                    <x-search-form :action="$theme->search_results->url" :total_results="isset($paginate) ? $paginate['total_items'] : 0" />
                 </div>
 
                 @forelse ($results as $result)
@@ -29,7 +29,9 @@
                 @endforelse
             </div>
 
-            <x-ui.pagination class="mt-20" :$paginate />
+            @isset($paginate)
+                <x-ui.pagination class="mt-20" :$paginate />
+            @endisset
         </s:search:results>
     </div>
 </section>
