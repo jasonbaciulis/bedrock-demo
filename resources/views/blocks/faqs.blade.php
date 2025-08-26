@@ -10,21 +10,25 @@
     </div>
 </section>
 
+@php
+    $faqEntities = collect($block->items ?? [])
+        ->map(function ($item) {
+            return [
+                '@type' => 'Question',
+                'name' => $item->title,
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => $item->text,
+                ],
+            ];
+        })->all();
+
+    $faqSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'FAQPage',
+        'mainEntity' => $faqEntities,
+    ];
+@endphp
 <script type="application/ld+json">
-    {
-        "@@context": "https://schema.org",
-        "@@type": "FAQPage",
-        "mainEntity": [
-            @foreach ($block->items as $item)
-                {
-                    "@@type": "Question",
-                    "name": "{{ $item->title }}",
-                    "acceptedAnswer": {
-                        "@@type": "Answer",
-                        "text": "{{ $item->text }}"
-                    }
-                }{{ !$loop->last ? ',' : '' }}
-            @endforeach
-        ]
-    }
+    @json($faqSchema, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)
 </script>
