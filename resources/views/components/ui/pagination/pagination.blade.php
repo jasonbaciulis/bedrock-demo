@@ -11,16 +11,15 @@
     @endphp
 
     <div {{ $attributes }}>
-        {{-- TODO: add this after SEO partial is converted --}}
         {{-- Section that will be yielded in the <head> of documents for search engines. --}}
-        {{-- {{ section:pagination }}
-            {{ if prev_page }}
-                <link rel="prev" href="{{ prev_page }}">
-            {{ /if }}
-            {{ if next_page }}
-                <link rel="next" href="{{ next_page }}">
-            {{ /if }}
-        {{ /section:pagination }} --}}
+        @section('pagination')
+            @if ($paginate['prev_page'])
+                <link rel="prev" href="{{ $paginate['prev_page'] }}">
+            @endif
+            @if ($paginate['next_page'])
+                <link rel="next" href="{{ $paginate['next_page'] }}">
+            @endif
+        @endsection
 
         <nav class="flex justify-center items-center md:items-start gap-1">
             <a href="{{ $paginate['prev_page'] ?? 'javascript:void(0)' }}" @class([
