@@ -1,4 +1,4 @@
-@unless (empty($page))
+@isset($page)
     {{-- Page title --}}
     <title>
         @yield('seo_title')
@@ -92,9 +92,9 @@
             <script type="application/ld+json" id="schema">@json($schemaData, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)</script>
         @endif
     @endif
-    @unless (empty($page->schema_jsonld))
+    @isset($page->schema_jsonld)
         <script type="application/ld+json" id="schema-page">{!! $page->schema_jsonld !!}</script>
-    @endunless
+    @endisset
 
     {{-- Breadcrumbs JSON-ld --}}
     @if ($seo->breadcrumbs && !empty($segment_1))
@@ -152,7 +152,7 @@
     @endif
 @elseif ($response_code !== 200)
     <title>{{ $response_code }} | {!! config('app.name') !!}</title>
-@endunless
+@endisset
 
 {{-- Trackers --}}
 @if (

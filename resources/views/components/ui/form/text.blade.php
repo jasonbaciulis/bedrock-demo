@@ -13,11 +13,11 @@
 ])
 
 <div class="relative w-full">
-    @unless (empty($prepend))
+    @isset($prepend)
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
             <span class="text-sm text-muted-foreground">{!! $prepend !!}</span>
         </div>
-    @endunless
+    @endisset
     <input
         x-model="{{ $model }}"
         {{
@@ -34,16 +34,16 @@
         name="{{ $handle }}"
         type="{{ $input_type }}"
         x-bind:aria-invalid="form.invalid('{{ $handle }}')"
-        @unless (empty($instructions))
+        @isset($instructions)
             x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : '{{ $id }}-instructions'"
         @else
             x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : false"
-        @endunless
+        @endisset
         x-on:change="form.validate('{{ $handle }}')"
     />
-    @unless (empty($append))
+    @isset($append)
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pr-5">
             <span class="text-sm text">{!! $append !!}</span>
         </div>
-    @endunless
+    @endisset
 </div>

@@ -62,9 +62,9 @@
         <div class="space-y-12 divide-y divide-gray-300">
             @foreach ($sections as $section)
                 <div @class(['pb-12' => !$loop->last])>
-                    @unless (empty($section['display']))
+                    @isset($section['display'])
                         <h3 class="h6 mb-8">{!! $section['display'] !!}</h3>
-                    @endunless
+                    @endisset
 
                     <div class="grid md:grid-cols-12 gap-y-6 gap-x-8">
                         @foreach ($section['fields'] as $field)

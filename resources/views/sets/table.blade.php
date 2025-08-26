@@ -42,9 +42,9 @@
         @endforeach
     </table>
 
-    @unless (empty($caption))
+    @isset($caption)
         <span class="text-xs block pt-3 border-t border-neutral-300 text-muted-foreground">
             {!! $caption !!}
         </span>
-    @endunless
+    @endisset
 </div>

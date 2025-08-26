@@ -27,11 +27,11 @@
         x-bind:class="{ 'bg-primary': on, 'bg-input dark:bg-input/80': !on }"
         role="switch"
         aria-labelledby="{{ $id }}-label"
-        @unless (empty($instructions))
+        @isset($instructions)
             x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : '{{ $id }}-instructions'"
         @else
             x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : false"
-        @endunless
+        @endisset
         x-bind:aria-checked="on.toString()"
         x-on:click="toggle()"
     >

@@ -15,10 +15,10 @@
                 {!! $badge !!}
             </span>
         @endunless
-        @unless (empty($description))
+        @isset($description)
             <p class="hidden lg:block text-muted-foreground text-pretty">
                 {!! $description !!}
             </p>
-        @endunless
+        @endisset
     </div>
 </a>

@@ -10,17 +10,17 @@
 <fieldset
     {{ $attributes }}
     x-bind:aria-invalid="form.invalid('{{ $handle }}')"
-    @unless (empty($instructions))
+    @isset($instructions)
         x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : '{{ $id }}-instructions'"
     @else
         x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : false"
-    @endunless
+    @endisset
 >
     <legend class="block text-sm font-medium text-foreground select-none">{!! $display !!}</legend>
 
-    @unless (empty($instructions))
+    @isset($instructions)
         <x-ui.input-instructions :$instructions :$id />
-    @endunless
+    @endisset
 
     <div class="mt-3 space-y-4">
         @foreach ($options as $option => $label)

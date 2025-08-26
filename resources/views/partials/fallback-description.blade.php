@@ -11,9 +11,9 @@
         {!! $item['custom_text'] !!}
     @elseif ($fallback === 'blocks')
         @if ($first_block = Arr::first($page->blocks)->all())
-            @unless (empty($first_block['text']))
+            @isset($first_block['text'])
                 {!! Statamic::modify($first_block['text'])->stripTags()->trim()->safeTruncate([160, '…']) !!}
-            @endunless
+            @endisset
         @endif
     @endif
 @endif

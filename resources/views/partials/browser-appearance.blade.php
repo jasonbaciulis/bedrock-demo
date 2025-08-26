@@ -16,9 +16,9 @@
 @if ($browser_appearance->android_mobile_web_app)
     <meta name="mobile-web-app-capable" content="yes">
 @endif
-@unless (empty($browser_appearance->theme_color))
+@isset ($browser_appearance->theme_color)
     <meta name="theme-color" content="{{ $browser_appearance->theme_color }}">
-@endunless
+@endisset
 
 {{--
     Generate favicons here:

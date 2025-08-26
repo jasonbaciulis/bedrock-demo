@@ -14,9 +14,9 @@
         </a>
     </lite-youtube>
 
-    @unless (empty($caption))
+    @isset($caption)
         <figcaption class="text-sm block mt-2 text-muted-foreground">
             {!! $caption !!}
         </figcaption>
-    @endunless
+    @endisset
 </figure>

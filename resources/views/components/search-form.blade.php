@@ -24,9 +24,9 @@
             <x-lucide-x class="opacity-50" />
         </button>
     </div>
-    @unless (empty($query))
+    @isset($query)
         <span class="shrink-0 font-semibold">
             {{ $total_results }} {{ Statamic::modify('result')->plural($total_results) }}
         </span>
-    @endunless
+    @endisset
 </form>
