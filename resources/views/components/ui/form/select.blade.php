@@ -10,7 +10,7 @@
 ])
 
 @if ($searchable)
-    @include('components.ui.form.combobox', array_merge($attributes->getAttributes(), ['model' => $model]))
+    @include('components.ui.form.combobox', [...$attributes, 'model' => $model])
 @else
     <select
         x-model="{{ $model }}"
@@ -25,11 +25,11 @@
         id="{{ $id }}"
         name="{{ $handle }}{{ $multiple ? '[]' : '' }}"
         x-bind:aria-invalid="form.invalid('{{ $handle }}')"
-        @unless (empty($instructions))
+        @isset($instructions)
             x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : '{{ $id }}-instructions'"
         @else
             x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : false"
-        @endunless
+        @endisset
         x-on:change="form.validate('{{ $handle }}')"
     >
         @unless ($multiple)
