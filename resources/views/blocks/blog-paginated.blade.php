@@ -1,14 +1,23 @@
 <section id="{{ Statamic::modify($block->type)->slugify() }}" class="m-section">
     <div class="container">
-        {{ partial:partials/section-header }}
+        <x-section-header :title="$block->title" :text="$block->text ?? null" />
 
-        {{ collection from="posts" paginate="true" :limit="limit" on_each_side="1" as="posts" }}
+        <s:collection from="posts" paginate="true" :limit="$block->limit" on_each_side="1" as="posts">
             <div class="site-grid gap-y-20 md:gap-y-12">
-                {{ posts }}
-                    {{ partial:partials/entry-posts class="col-span-full md:col-span-6 lg:col-span-4" }}
-                {{ /posts }}
+                @foreach ($posts as $post)
+                    <x-entry-posts
+                        :image="$post->image"
+                        :url="$post->url"
+                        :title="$post->title"
+                        :excerpt="$post->excerpt"
+                        :date="$post->date"
+                        :categories="$post->categories"
+                        class="col-span-full md:col-span-6 lg:col-span-4"
+                    />
+                @endforeach
             </div>
-            {{ partial:components/pagination class="mt-20" }}
-        {{ /collection }}
+
+            <x-ui.pagination class="mt-20" :$paginate />
+        </s:collection>
     </div>
 </section>
