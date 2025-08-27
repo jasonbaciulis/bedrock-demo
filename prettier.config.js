@@ -5,7 +5,7 @@ export default {
   tabWidth: 2,
   overrides: [
     {
-      files: ['*.php', '*.vue'],
+      files: ['*.php', '*.vue', '*.blade.php'],
       options: {
         tabWidth: 4,
       },
