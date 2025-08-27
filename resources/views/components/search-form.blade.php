@@ -11,12 +11,21 @@
 ])
 
 <form
-    class="flex gap-6 items-center"
+    class="flex items-center gap-6"
     action="{{ $action }}"
     x-data="{ search: '{{ $query }}' }"
 >
-    <div class="relative flex-1 text-foreground">
-        <input x-model="search" class="w-full px-12" placeholder="{!! $placeholder !!}" type="text" name="q" autocorrect="off" autocomplete="off" spellcheck="false">
+    <div class="text-foreground relative flex-1">
+        <input
+            x-model="search"
+            class="w-full px-12"
+            placeholder="{!! $placeholder !!}"
+            type="text"
+            name="q"
+            autocorrect="off"
+            autocomplete="off"
+            spellcheck="false"
+        />
         <button class="btn absolute inset-y-0 left-0 px-4" type="submit">
             <x-lucide-search class="opacity-50" />
         </button>

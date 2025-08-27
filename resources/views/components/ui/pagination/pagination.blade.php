@@ -14,26 +14,33 @@
         {{-- Section that will be yielded in the <head> of documents for search engines. --}}
         @section('pagination')
             @if ($paginate['prev_page'])
-                <link rel="prev" href="{{ $paginate['prev_page'] }}">
+                <link rel="prev" href="{{ $paginate['prev_page'] }}" />
             @endif
+
             @if ($paginate['next_page'])
-                <link rel="next" href="{{ $paginate['next_page'] }}">
+                <link rel="next" href="{{ $paginate['next_page'] }}" />
             @endif
         @endsection
 
-        <nav class="flex justify-center items-center md:items-start gap-1">
-            <a href="{{ $paginate['prev_page'] ?? 'javascript:void(0)' }}" @class([
-                'btn btn--ghost shrink-0',
-                'pointer-events-none opacity-50' => !$paginate['prev_page']
-            ])>
+        <nav class="flex items-center justify-center gap-1 md:items-start">
+            <a
+                href="{{ $paginate['prev_page'] ?? 'javascript:void(0)' }}"
+                @class([
+                    'btn btn--ghost shrink-0',
+                    'pointer-events-none opacity-50' => ! $paginate['prev_page'],
+                ])
+            >
                 <x-lucide-chevron-left class="size-4" />
                 <span class="sr-only md:not-sr-only">Previous</span>
             </a>
 
-            <ul class="flex-wrap gap-1 hidden md:flex">
+            <ul class="hidden flex-wrap gap-1 md:flex">
                 @foreach (Arr::get($paginate, 'links.segments.first', []) as $segment)
                     @if ($segment['page'] == $paginate['current_page'])
-                        <x-ui.pagination.item-current :url="$segment['url']" :page="$segment['page']" />
+                        <x-ui.pagination.item-current
+                            :url="$segment['url']"
+                            :page="$segment['page']"
+                        />
                     @else
                         <x-ui.pagination.item :url="$segment['url']" :page="$segment['page']" />
                     @endif
@@ -45,7 +52,10 @@
 
                 @foreach (Arr::get($paginate, 'links.segments.slider', []) as $segment)
                     @if ($segment['page'] == $paginate['current_page'])
-                        <x-ui.pagination.item-current :url="$segment['url']" :page="$segment['page']" />
+                        <x-ui.pagination.item-current
+                            :url="$segment['url']"
+                            :page="$segment['page']"
+                        />
                     @else
                         <x-ui.pagination.item :url="$segment['url']" :page="$segment['page']" />
                     @endif
@@ -57,21 +67,27 @@
 
                 @foreach (Arr::get($paginate, 'links.segments.last', []) as $segment)
                     @if ($segment['page'] == $paginate['current_page'])
-                        <x-ui.pagination.item-current :url="$segment['url']" :page="$segment['page']" />
+                        <x-ui.pagination.item-current
+                            :url="$segment['url']"
+                            :page="$segment['page']"
+                        />
                     @else
                         <x-ui.pagination.item :url="$segment['url']" :page="$segment['page']" />
                     @endif
                 @endforeach
             </ul>
 
-            <p class="shrink-0 content-sm font-semibold leading-none md:hidden">
+            <p class="content-sm shrink-0 leading-none font-semibold md:hidden">
                 {{ $paginate['current_page'] }} of {{ $paginate['total_pages'] }}
             </p>
 
-            <a href="{{ $paginate['next_page'] ?? 'javascript:void(0)' }}" @class([
-                'btn btn--ghost shrink-0',
-                'pointer-events-none opacity-50' => !$paginate['next_page']
-            ])>
+            <a
+                href="{{ $paginate['next_page'] ?? 'javascript:void(0)' }}"
+                @class([
+                    'btn btn--ghost shrink-0',
+                    'pointer-events-none opacity-50' => ! $paginate['next_page'],
+                ])
+            >
                 <span class="sr-only md:not-sr-only">Next</span>
                 <x-lucide-chevron-right class="size-4" />
             </a>

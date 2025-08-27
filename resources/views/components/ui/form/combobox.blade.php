@@ -16,17 +16,17 @@
 
 <div
     x-data="combobox({
-        id: '{{ $id }}',
-        items: {{ Js::from($options) }},
-        placeholder: '{{ $placeholder }}'
-    })"
+                id: '{{ $id }}',
+                items: {{ Js::from($options) }},
+                placeholder: '{{ $placeholder }}',
+            })"
     x-modelable="value"
     x-model="{{ $model }}"
     x-on:keydown.escape.stop.prevent="closeListbox()"
     x-on:change="form.validate('{{ $handle }}')"
     {{ $attributes->merge(['class' => 'relative']) }}
 >
-    <input type="hidden" name="{{ $handle }}" x-model="value">
+    <input type="hidden" name="{{ $handle }}" x-model="value" />
 
     <button
         x-cloak
@@ -37,7 +37,11 @@
         class="btn btn--outline w-full justify-between font-normal"
         x-on:click="toggleListbox()"
     >
-        <span class="block truncate" x-text="buttonLabel" x-bind:class="{ 'text-muted-foreground': !value }"></span>
+        <span
+            class="block truncate"
+            x-text="buttonLabel"
+            x-bind:class="{ 'text-muted-foreground': ! value }"
+        ></span>
         <x-lucide-chevrons-up-down class="opacity-50" />
     </button>
 
@@ -46,14 +50,14 @@
         x-show="listboxOpen"
         x-cloak
         x-trap="listboxOpen"
-        x-transition:enter="transition ease-out duration-100"
-        x-transition:enter-start="opacity-0 scale-95"
-        x-transition:enter-end="opacity-100 scale-100"
-        x-transition:leave="transition ease-in duration-75"
-        x-transition:leave-start="opacity-100 scale-100"
-        x-transition:leave-end="opacity-0 scale-95"
+        x-transition:enter="transition duration-100 ease-out"
+        x-transition:enter-start="scale-95 opacity-0"
+        x-transition:enter-end="scale-100 opacity-100"
+        x-transition:leave="transition duration-75 ease-in"
+        x-transition:leave-start="scale-100 opacity-100"
+        x-transition:leave-end="scale-95 opacity-0"
         x-on:click.away="closeListbox()"
-        class="absolute z-50 mt-1 w-full bg-popover text-popover-foreground shadow-md rounded-md border origin-top p-0 outline-none"
+        class="bg-popover text-popover-foreground absolute z-50 mt-1 w-full origin-top rounded-md border p-0 shadow-md outline-none"
     >
         <div class="flex h-full w-full flex-col overflow-hidden rounded-md">
             <div class="flex h-9 items-center gap-2 border-b px-3">
@@ -63,7 +67,7 @@
                     x-ref="comboboxInput"
                     x-model.debounce.200ms="comboboxSearch"
                     placeholder="Search…"
-                    class="placeholder:text-muted-foreground flex w-full rounded-md bg-transparent py-3 px-0 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50 h-9 border-none ring-0"
+                    class="placeholder:text-muted-foreground flex h-9 w-full rounded-md border-none bg-transparent px-0 py-3 text-sm ring-0 outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
                     role="combobox"
                     x-bind:aria-controls="listboxId"
                     x-bind:aria-activedescendant="activeDescendant"
@@ -81,7 +85,7 @@
             <ul
                 x-ref="listbox"
                 x-bind:id="listboxId"
-                class="max-h-[300px] overflow-y-auto overflow-x-hidden p-1"
+                class="max-h-[300px] overflow-x-hidden overflow-y-auto p-1"
                 tabindex="-1"
                 role="listbox"
             >
@@ -96,16 +100,26 @@
                         x-on:mousemove="setActiveItem(item)"
                     >
                         <span x-text="item.value"></span>
-                        <x-lucide-check class="ml-auto size-4 pointer-events-none shrink-0 text-muted-foreground" x-show="itemIsSelected(item)" />
+                        <x-lucide-check
+                            class="text-muted-foreground pointer-events-none ml-auto size-4 shrink-0"
+                            x-show="itemIsSelected(item)"
+                        />
                     </li>
                 </template>
 
                 {{-- Loads more items when the user scrolls to the bottom of the list. --}}
-                <li x-show="itemsFiltered.length > itemsLoaded" x-intersect="loadMoreItems()" class="px-2 py-1.5 text-xs text-muted-foreground">
+                <li
+                    x-show="itemsFiltered.length > itemsLoaded"
+                    x-intersect="loadMoreItems()"
+                    class="text-muted-foreground px-2 py-1.5 text-xs"
+                >
                     Loading more…
                 </li>
 
-                <li x-show="!itemsFiltered.length && comboboxSearch.length > 0" class="py-6 text-center text-sm">
+                <li
+                    x-show="! itemsFiltered.length && comboboxSearch.length > 0"
+                    class="py-6 text-center text-sm"
+                >
                     No results match your search.
                 </li>
             </ul>

@@ -5,7 +5,7 @@
 @props([
     'logo',
     'url' => config('app.url'),
-    'aria_label' => config('app.name') . ' logo',
+    'aria_label' => config('app.name').' logo',
 ])
 
 <a href="{{ $url }}" aria-label="{{ $aria_label }}" {{ $attributes }}>

@@ -18,7 +18,7 @@
 @endonce
 
 <div
-    class="flex items-center flex-wrap gap-y-3 gap-x-6"
+    class="flex flex-wrap items-center gap-x-6 gap-y-3"
     x-data="stepper({{ $min }}, {{ $max }}, {{ $step }})"
 >
     <x-ui.label :$display :$id :$hide_display />
@@ -43,7 +43,7 @@
                 x-model="{{ $model }}"
                 x-modelable="count"
                 id="{{ $id }}"
-                class="size-8 px-0 text-center border-none shadow-none [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-inner-spin-button]:m-0"
+                class="size-8 border-none px-0 text-center shadow-none [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
                 name="{{ $handle }}"
                 type="number"
                 x-bind:min="min"
@@ -61,7 +61,10 @@
                 {{ $attributes }}
             />
         @else
-            <span class="text-lg/none font-semibold text-center w-8 tabular-nums" x-text="count"></span>
+            <span
+                class="w-8 text-center text-lg/none font-semibold tabular-nums"
+                x-text="count"
+            ></span>
         @endif
 
         <button

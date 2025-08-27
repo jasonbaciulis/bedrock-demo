@@ -15,7 +15,7 @@
         x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : false"
     @endisset
 >
-    <legend class="block text-sm font-medium text-foreground select-none">{!! $display !!}</legend>
+    <legend class="text-foreground block text-sm font-medium select-none">{!! $display !!}</legend>
 
     @isset($instructions)
         <x-ui.input-instructions :$instructions :$id />
@@ -33,7 +33,7 @@
                     x-bind:aria-invalid="form.invalid('{{ $handle }}')"
                     x-on:change="form.validate('{{ $handle }}')"
                     {{ $attributes }}
-                >
+                />
                 <label for="{{ $id }}-{{ Str::slug($option) }}-option" class="font-normal">
                     {!! $label !!}
                 </label>

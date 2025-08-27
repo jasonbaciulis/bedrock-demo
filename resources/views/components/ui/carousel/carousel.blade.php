@@ -17,9 +17,11 @@
 @endonce
 
 <div
-    {{ $attributes->class([
-        'relative outline-none',
-    ]) }}
+    {{
+        $attributes->class([
+            'relative outline-none',
+        ])
+    }}
     role="region"
     aria-roledescription="carousel"
     x-data="{
@@ -65,7 +67,7 @@
             {{ $content->attributes->class(['flex']) }}
             x-bind:class="{
                 '-ml-4': orientation === 'horizontal',
-                '-mt-4 flex-col': orientation === 'vertical'
+                '-mt-4 flex-col': orientation === 'vertical',
             }"
         >
             {{ $content }}

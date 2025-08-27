@@ -7,5 +7,9 @@
 @props(['handle', 'id'])
 
 <template x-if="form.invalid('{{ $handle }}')">
-    <p id="{{ $id }}-error" {{ $attributes->class(['text-destructive text-sm']) }} x-text="form.errors.{{ $handle }}"></p>
+    <p
+        id="{{ $id }}-error"
+        {{ $attributes->class(['text-destructive text-sm']) }}
+        x-text="form.errors.{{ $handle }}"
+    ></p>
 </template>

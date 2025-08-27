@@ -12,7 +12,6 @@
         'alert--warning' => $style === 'warning',
         'alert--error' => $style === 'error',
     ]) }}
-
     @if ($dismissible)
         x-data="{ dismissed: false }"
         x-show="!dismissed"
@@ -39,7 +38,7 @@
             <div class="-m-2">
                 <button
                     type="button"
-                    class="inline-flex translate-y-0.5 rounded-xs p-1.5 text-neutral-800/70 hover:text-foreground"
+                    class="hover:text-foreground inline-flex translate-y-0.5 rounded-xs p-1.5 text-neutral-800/70"
                     aria-label="Dismiss"
                     x-on:click="dismissed = !dismissed"
                 >

@@ -15,7 +15,7 @@
     <select
         x-model="{{ $model }}"
         x-bind:class="{
-            'text-muted-foreground': !{{ $model }}
+            'text-muted-foreground': ! {{ $model }},
         }"
         {{
             $attributes->merge([
@@ -33,10 +33,11 @@
         x-on:change="form.validate('{{ $handle }}')"
     >
         @unless ($multiple)
-            <option value x-bind:selected="!{{ $model }} ? true : false" disabled>
+            <option value x-bind:selected="! {{ $model }} ? true : false" disabled>
                 Select {{ Str::title(str_replace('_', ' ', $handle)) }}…
             </option>
         @endunless
+
         @foreach ($options as $option => $label)
             <option value="{!! $option !!}">
                 {!! $label !!}

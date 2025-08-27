@@ -1,6 +1,6 @@
 @props([
     'buttons' => [],
-    'size' => null
+    'size' => null,
 ])
 
 @isset($buttons)

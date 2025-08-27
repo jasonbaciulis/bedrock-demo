@@ -6,7 +6,7 @@
     type="submit"
     {{
         $attributes->class([
-            'btn btn--primary w-full'
+            'btn btn--primary w-full',
         ])
     }}
     x-bind:disabled="form.processing || form.hasErrors"

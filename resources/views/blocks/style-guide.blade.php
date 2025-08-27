@@ -47,19 +47,18 @@
             <div class="space-y-10">
                 <div class="grid grid-cols-1 gap-x-2 gap-y-3 md:grid-cols-11">
                     @foreach ([
-                            'bg-background',
-                            'bg-foreground',
-                            'bg-primary',
-                            'bg-primary-foreground',
-                            'bg-secondary',
-                            'bg-secondary-foreground',
-                            'bg-muted',
-                            'bg-muted-foreground',
-                            'bg-accent',
-                            'bg-accent-foreground',
-                            'bg-destructive'
-                        ]
-                        as $color)
+                                  'bg-background',
+                                  'bg-foreground',
+                                  'bg-primary',
+                                  'bg-primary-foreground',
+                                  'bg-secondary',
+                                  'bg-secondary-foreground',
+                                  'bg-muted',
+                                  'bg-muted-foreground',
+                                  'bg-accent',
+                                  'bg-accent-foreground',
+                                  'bg-destructive',
+                              ] as $color)
                         <div class="relative flex">
                             <div class="flex w-full items-center gap-x-3 md:block md:space-y-1.5">
                                 <div class="{{ $color }} size-24 rounded md:w-full"></div>
@@ -74,19 +73,18 @@
                 </div>
                 <div class="grid grid-cols-1 gap-x-2 gap-y-3 md:grid-cols-11">
                     @foreach ([
-                            'bg-neutral-50',
-                            'bg-neutral-100',
-                            'bg-neutral-200',
-                            'bg-neutral-300',
-                            'bg-neutral-400',
-                            'bg-neutral-500',
-                            'bg-neutral-600',
-                            'bg-neutral-700',
-                            'bg-neutral-800',
-                            'bg-neutral-900',
-                            'bg-neutral-950'
-                        ]
-                        as $color)
+                                  'bg-neutral-50',
+                                  'bg-neutral-100',
+                                  'bg-neutral-200',
+                                  'bg-neutral-300',
+                                  'bg-neutral-400',
+                                  'bg-neutral-500',
+                                  'bg-neutral-600',
+                                  'bg-neutral-700',
+                                  'bg-neutral-800',
+                                  'bg-neutral-900',
+                                  'bg-neutral-950',
+                              ] as $color)
                         <div class="relative flex">
                             <div class="flex w-full items-center gap-x-3 md:block md:space-y-1.5">
                                 <div class="{{ $color }} size-24 rounded md:w-full"></div>

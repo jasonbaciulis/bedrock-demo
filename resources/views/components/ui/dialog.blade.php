@@ -11,43 +11,47 @@
         open: false,
         scrollbarWidth: 0,
         init() {
-            this.scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            this.scrollbarWidth =
+                window.innerWidth - document.documentElement.clientWidth
         },
         toggle() {
             if (this.open) {
-                return this.close();
+                return this.close()
             }
-            this.open = true;
-            this.preventBodyScroll();
+            this.open = true
+            this.preventBodyScroll()
         },
         close(focusAfter) {
-            if (! this.open) return;
-            this.open = false;
+            if (! this.open) return
+            this.open = false
 
             // Wait for the close transition to complete before restoring scroll and setting focus
             // The leave transition is 150ms (duration-150)
             setTimeout(() => {
-                this.restoreBodyScroll();
-                if (!focusAfter) {
-                    this.focusTrigger();
+                this.restoreBodyScroll()
+                if (! focusAfter) {
+                    this.focusTrigger()
                 } else {
-                    focusAfter.focus();
+                    focusAfter.focus()
                 }
-            }, 150);
+            }, 150)
         },
         focusTrigger() {
-            const trigger = this.$refs.button;
+            const trigger = this.$refs.button
             if (trigger) {
-                trigger.focus();
+                trigger.focus()
             }
         },
         preventBodyScroll() {
-            document.documentElement.style.setProperty('--scrollbar-width', this.scrollbarWidth + 'px');
-            document.body.classList.add('no-scroll');
+            document.documentElement.style.setProperty(
+                '--scrollbar-width',
+                this.scrollbarWidth + 'px',
+            )
+            document.body.classList.add('no-scroll')
         },
         restoreBodyScroll() {
-            document.body.classList.remove('no-scroll');
-        }
+            document.body.classList.remove('no-scroll')
+        },
     }"
     x-on:keydown.escape.prevent.stop="close($refs.button)"
     {{ $attributes }}
@@ -96,32 +100,36 @@
 
             {{-- Dialog panel --}}
             <div class="fixed inset-0 z-10 overflow-y-auto">
-                <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div
+                    class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+                >
                     <div
                         x-cloak
                         x-ref="panel"
                         x-show="open"
                         x-trap.inert="open"
                         x-transition:enter="ease duration-200"
-                        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+                        x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
                         x-transition:leave="ease duration-150"
-                        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        x-transition:leave-start="translate-y-0 opacity-100 sm:scale-100"
+                        x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
                         x-on:click.outside="close($refs.button)"
                         x-bind:id="id"
-                        {{ $content->attributes->class([
-                            'relative transform overflow-hidden rounded-[0.625rem] bg-background text-left border shadow-lg transition-all sm:my-8 sm:w-full',
-                            'px-4 pt-5 pb-4 sm:p-6 sm:max-w-md' => $size === 'sm',
-                            'px-4 pt-5 pb-4 sm:p-6 sm:max-w-xl' => $size === 'md',
-                            'px-4 pt-5 pb-4 sm:p-6 sm:max-w-(--breakpoint-xl) md:p-12 xl:px-16 xl:py-20' => $size === 'xl',
-                        ]) }}
+                        {{
+                            $content->attributes->class([
+                                'bg-background relative transform overflow-hidden rounded-[0.625rem] border text-left shadow-lg transition-all sm:my-8 sm:w-full',
+                                'px-4 pt-5 pb-4 sm:max-w-md sm:p-6' => $size === 'sm',
+                                'px-4 pt-5 pb-4 sm:max-w-xl sm:p-6' => $size === 'md',
+                                'px-4 pt-5 pb-4 sm:max-w-(--breakpoint-xl) sm:p-6 md:p-12 xl:px-16 xl:py-20' => $size === 'xl',
+                            ])
+                        }}
                     >
                         {{ $content }}
 
                         <button
                             x-on:click="close($refs.button)"
-                            class="btn absolute top-4 right-4 size-6 text-neutral-800/70 rounded-xs hover:text-foreground"
+                            class="btn hover:text-foreground absolute top-4 right-4 size-6 rounded-xs text-neutral-800/70"
                             type="button"
                             aria-label="Close"
                         >

@@ -15,9 +15,10 @@
 <div class="relative w-full">
     @isset($prepend)
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
-            <span class="text-sm text-muted-foreground">{!! $prepend !!}</span>
+            <span class="text-muted-foreground text-sm">{!! $prepend !!}</span>
         </div>
     @endisset
+
     <input
         x-model="{{ $model }}"
         {{
@@ -43,7 +44,7 @@
     />
     @isset($append)
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pr-5">
-            <span class="text-sm text">{!! $append !!}</span>
+            <span class="text-muted-foreground text-sm">{!! $append !!}</span>
         </div>
     @endisset
 </div>

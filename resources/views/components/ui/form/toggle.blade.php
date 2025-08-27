@@ -11,11 +11,11 @@
     x-data="{
         on: false,
         toggle() {
-            this.on = !this.on;
-            this.$refs.switch.focus();
-            this.{{ $model }} = this.on;
-            this.form.validate('{{ $handle }}');
-        }
+            this.on = ! this.on
+            this.$refs.switch.focus()
+            this.{{ $model }} = this.on
+            this.form.validate('{{ $handle }}')
+        },
     }"
     {{ $attributes }}
 >
@@ -24,7 +24,7 @@
         id="{{ $id }}"
         type="button"
         class="peer focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50"
-        x-bind:class="{ 'bg-primary': on, 'bg-input dark:bg-input/80': !on }"
+        x-bind:class="{ 'bg-primary': on, 'bg-input dark:bg-input/80': ! on }"
         role="switch"
         aria-labelledby="{{ $id }}-label"
         @isset($instructions)
@@ -38,18 +38,25 @@
         <span
             aria-hidden="true"
             class="bg-background pointer-events-none block size-4 rounded-full ring-0 transition-transform"
-            x-bind:class="{ 'translate-x-[calc(100%-2px)] dark:bg-primary-foreground': on, 'translate-x-0 dark:bg-foreground': !on }"
+            x-bind:class="{
+                'translate-x-[calc(100%-2px)] dark:bg-primary-foreground': on,
+                'translate-x-0 dark:bg-foreground': ! on,
+            }"
         ></span>
         <span class="sr-only">Toggle {{ Str::headline($handle) }}</span>
     </button>
 
-    <label
-        class="text-sm/none text-foreground prose"
-        id="{{ $id }}-label"
-        for="{{ $id }}"
-    >
+    <label class="text-foreground prose text-sm/none" id="{{ $id }}-label" for="{{ $id }}">
         {!! $inline_label !!}
     </label>
 
-    <input name="{{ $handle }}" aria-hidden="true" tabindex="-1" type="checkbox" value="on" x-bind:checked="on" class="sr-only">
+    <input
+        name="{{ $handle }}"
+        aria-hidden="true"
+        tabindex="-1"
+        type="checkbox"
+        value="on"
+        x-bind:checked="on"
+        class="sr-only"
+    />
 </div>

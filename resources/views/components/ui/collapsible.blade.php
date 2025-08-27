@@ -7,8 +7,12 @@
 <div
     x-data="{
         open: false,
-        toggle() { this.open = !this.open },
-        close() { this.open = false }
+        toggle() {
+            this.open = ! this.open
+        },
+        close() {
+            this.open = false
+        },
     }"
     {{ $attributes->class(['relative']) }}
 >

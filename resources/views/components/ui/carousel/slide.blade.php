@@ -4,7 +4,7 @@
     aria-roledescription="slide"
     x-bind:class="{
         'pl-4': orientation === 'horizontal',
-        'pt-4': orientation === 'vertical'
+        'pt-4': orientation === 'vertical',
     }"
 >
     {{ $slot }}
