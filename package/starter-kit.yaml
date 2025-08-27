@@ -6,7 +6,7 @@ export_paths:
   - app/Modifiers
   - app/Providers/AppServiceProvider.php
   - app/Tags
-  - config/app.php
+  - app/View/Components
   - config/statamic/editions.php
   - config/statamic/git.php
   - config/statamic/search.php
