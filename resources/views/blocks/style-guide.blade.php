@@ -363,9 +363,12 @@
                         badge
                     </dt>
                     <dd class="flex gap-3">
-                        <span class="badge">Brown</span>
-                        <span class="badge badge--secondary">Brown</span>
-                        <span class="badge badge--outline">Brown</span>
+                        <x-ui.badge variant="primary">Primary</x-ui.badge>
+                        <x-ui.badge variant="secondary" as="a" href="/">
+                            Secondary
+                            <x-lucide-arrow-right />
+                        </x-ui.badge>
+                        <x-ui.badge variant="outline">Outline</x-ui.badge>
                     </dd>
                 </div>
                 <div class="flex items-center">
