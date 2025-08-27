@@ -21,7 +21,8 @@
                     'text' => $item->text,
                 ],
             ];
-        })->all();
+        })
+        ->all();
 
     $faqSchema = [
         '@context' => 'https://schema.org',
@@ -29,6 +30,7 @@
         'mainEntity' => $faqEntities,
     ];
 @endphp
+
 <script type="application/ld+json">
-    @json($faqSchema, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)
+    @json($faqSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
 </script>

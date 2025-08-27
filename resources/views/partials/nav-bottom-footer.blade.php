@@ -3,7 +3,7 @@
         @foreach ($links as $link)
             <a
                 href="{{ $link['url'] }}"
-                class="text-xs text-muted-foreground hover:text-foreground"
+                class="text-muted-foreground hover:text-foreground text-xs"
                 @if ($link['is_external']) target="_blank" rel="noopener nofollow" @endif
             >
                 {!! $link['title'] !!}

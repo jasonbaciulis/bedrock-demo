@@ -10,13 +10,13 @@
 
 <div
     x-cloak
-    x-show="!$store.cookieDialog.getConsent()"
+    x-show="! $store.cookieDialog.getConsent()"
     x-transition:enter="ease duration-200"
-    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+    x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+    x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
     x-transition:leave="ease duration-150"
-    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+    x-transition:leave-start="translate-y-0 opacity-100 sm:scale-100"
+    x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
     x-data="cookieDialog({
         @if ($seo->cookie->consent_revoke_before)
             consentRevokeBefore: {{ $seo->cookie->consent_revoke_before->format('U') }},
@@ -34,19 +34,19 @@
             @endif
         }
     })"
-    class="container max-w-xl fixed inset-x-0 bottom-0 pb-6 z-50"
+    class="fixed inset-x-0 bottom-0 z-50 container max-w-xl pb-6"
 >
     <div class="card shadow-lg transition-all">
         <div class="space-y-1.5">
             <div class="leading-none font-semibold">{!! $seo->cookie->title !!}</div>
-            <div class="text-sm/6 text-muted-foreground prose prose-p:my-0 max-w-none">
+            <div class="text-muted-foreground prose prose-p:my-0 max-w-none text-sm/6">
                 {!! $seo->cookie->description !!}
             </div>
         </div>
 
         <div x-cloak x-show="settingsOpen" class="flex flex-col gap-4">
             <template x-for="type in $store.cookieDialog.getConsentTypes()">
-                <div class="relative flex gap-x-3 items-start">
+                <div class="relative flex items-start gap-x-3">
                     <div class="flex h-6 items-center">
                         <template x-if="!type.consent_api">
                             {{-- Functional cookies are always on. --}}
@@ -57,7 +57,7 @@
                                 type="checkbox"
                                 checked
                                 disabled
-                            >
+                            />
                         </template>
                         <template x-if="type.consent_api">
                             <input
@@ -66,12 +66,22 @@
                                 x-bind:aria-describedby="`${type.name}-description`"
                                 x-bind:name="type.name"
                                 type="checkbox"
-                            >
+                            />
                         </template>
                     </div>
                     <div class="text-sm/6">
-                        <label x-bind:for="type.name" x-bind:class="{ 'cursor-not-allowed text-muted-foreground': !type.consent_api }" x-text="type.label"></label>
-                        <p x-bind:id="`${type.name}-description`" class="text-muted-foreground text-pretty" x-text="type.description"></p>
+                        <label
+                            x-bind:for="type.name"
+                            x-bind:class="{
+                                'cursor-not-allowed text-muted-foreground': ! type.consent_api,
+                            }"
+                            x-text="type.label"
+                        ></label>
+                        <p
+                            x-bind:id="`${type.name}-description`"
+                            class="text-muted-foreground text-pretty"
+                            x-text="type.description"
+                        ></p>
                     </div>
                 </div>
             </template>
@@ -128,7 +138,7 @@
             x-data
             href="#"
             x-on:click.prevent="$store.cookieDialog.revokeConsent()"
-            class="text-xs text-muted-foreground hover:text-foreground"
+            class="text-muted-foreground hover:text-foreground text-xs"
         >
             {!! $seo->cookie->reset_consent_label !!}
         </a>

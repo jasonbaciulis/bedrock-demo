@@ -1,3 +1,4 @@
+{{-- format-ignore-start --}}
 {{-- @once
     @push('scripts')
         @vite('resources/js/fetchEntries.js')
@@ -14,6 +15,7 @@
         sort: 'order',
     })"
 --}}
+{{-- format-ignore-end --}}
 
     <div class="container">
         <x-section-header :title="$block->title" :text="$block->text ?? null" />
@@ -34,6 +36,7 @@
             @endforeach
 
             {{-- Example how to output entries returned from REST API request --}}
+            {{-- format-ignore-start --}}
             {{-- <template x-for="(entry, index) in entries">
                 <div class="sm:col-span-6 lg:col-span-4">
                     <x-alpine.entry-testimonials :$entry />
@@ -48,5 +51,6 @@
                 Load more
             </button>
         </div> --}}
+        {{-- format-ignore-end --}}
     </div>
 </section>

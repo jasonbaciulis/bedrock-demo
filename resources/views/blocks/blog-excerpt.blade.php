@@ -10,7 +10,7 @@
             @php($entries = Statamic::tag('collection:posts')->limit($block->limit)->featured()->sort('order')->fetch())
         @endif
 
-        <div class="site-grid gap-y-20 max-w-2xl mx-auto lg:max-w-none">
+        <div class="site-grid mx-auto max-w-2xl gap-y-20 lg:max-w-none">
             @foreach ($entries as $entry)
                 <x-entry-posts
                     :image="$entry->image"

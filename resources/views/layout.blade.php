@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ $site->short_locale }}">
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
         @include('partials.seo')
         @include('partials.browser-appearance')
@@ -18,7 +18,9 @@
 
         {!! $scripts->code_head !!}
     </head>
-    <body class="min-h-screen bg-white font-sans antialiased text-base/6 text-neutral-800 overflow-x-hidden selection:bg-primary selection:text-white">
+    <body
+        class="selection:bg-primary min-h-screen overflow-x-hidden bg-white font-sans text-base/6 text-neutral-800 antialiased selection:text-white"
+    >
         @include('partials.skip-to-content')
         @yield('seo_body')
 

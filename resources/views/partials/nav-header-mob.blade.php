@@ -1,13 +1,25 @@
-<s:nav handle="header" max_depth="2" select="title|url|is_external|icon|badge|two_col_menu" as="items">
+<s:nav
+    handle="header"
+    max_depth="2"
+    select="title|url|is_external|icon|badge|two_col_menu"
+    as="items"
+>
     {{-- Mobile menu --}}
-    <div x-cloak x-show="mobileNavOpen" class="lg:hidden" role="dialog" aria-modal="true" >
+    <div x-cloak x-show="mobileNavOpen" class="lg:hidden" role="dialog" aria-modal="true">
         {{-- Background backdrop --}}
         <div x-cloak x-show="mobileNavOpen" class="fixed inset-0 z-10"></div>
-        <div class="fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <div
+            class="fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+        >
             <div class="p-6">
                 <div class="flex items-center justify-between">
-                    <x-logo :logo="$theme->logo" class="w-40 h-8 inline-flex" />
-                    <button type="button" class="btn btn--ghost btn--square" x-on:click="mobileNavOpen = false" aria-label="Close menu">
+                    <x-logo :logo="$theme->logo" class="inline-flex h-8 w-40" />
+                    <button
+                        type="button"
+                        class="btn btn--ghost btn--square"
+                        x-on:click="mobileNavOpen = false"
+                        aria-label="Close menu"
+                    >
                         <x-lucide-x class="size-5" />
                     </button>
                 </div>
@@ -28,7 +40,7 @@
                                     @foreach ($item['children'] as $child)
                                         <a
                                             href="{{ $child['url'] }}"
-                                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-neutral-900 hover:bg-accent"
+                                            class="hover:bg-accent -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-neutral-900"
                                             @if ($child['is_external']) target="_blank" rel="noopener nofollow" @endif
                                         >
                                             {!! $child['title'] !!}
@@ -37,7 +49,7 @@
                                 @elseif (! $item['children'])
                                     <a
                                         href="{{ $item['url'] }}"
-                                        class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-neutral-900 hover:bg-accent"
+                                        class="hover:bg-accent -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-neutral-900"
                                         @if ($item['is_external']) target="_blank" rel="noopener nofollow" @endif
                                     >
                                         {!! $item['title'] !!}
@@ -45,7 +57,7 @@
                                 @endif
                             @endforeach
                         </div>
-                        <div class="py-6 flex flex-col-reverse gap-y-6">
+                        <div class="flex flex-col-reverse gap-y-6 py-6">
                             @foreach ($theme->header_buttons as $button)
                                 <x-ui.button
                                     :button_type="$button->button_type"

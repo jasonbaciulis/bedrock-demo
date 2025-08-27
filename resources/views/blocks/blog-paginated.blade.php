@@ -2,7 +2,13 @@
     <div class="container">
         <x-section-header :title="$block->title" :text="$block->text ?? null" />
 
-        <s:collection from="posts" paginate="true" :limit="$block->limit" on_each_side="1" as="posts">
+        <s:collection
+            from="posts"
+            paginate="true"
+            :limit="$block->limit"
+            on_each_side="1"
+            as="posts"
+        >
             @isset($posts)
                 <div class="site-grid gap-y-20 md:gap-y-12">
                     @foreach ($posts as $post)

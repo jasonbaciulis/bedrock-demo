@@ -1,8 +1,8 @@
-<section id="{{ Statamic::modify($block->type)->slugify() }}" class="container m-section">
+<section id="{{ Statamic::modify($block->type)->slugify() }}" class="m-section container">
     <h2 class="h2 mb-28">Style guide</h2>
     <div class="space-y-28">
         <div>
-            <div class="border-b border-gray-300 mb-10">
+            <div class="mb-10 border-b border-gray-300">
                 <h3 class="h3 pb-6">Site grid</h3>
             </div>
             <div
@@ -11,36 +11,41 @@
                     columnGap: 0,
                     columnWidth: 0,
                     calcGrid() {
-                        const styles = window.getComputedStyle($el);
-                        this.columnGap = parseInt(styles.gridColumnGap);
-                        const columnCount = styles.gridTemplateColumns.split(' ').length;
-                        this.columnWidth = ($el.clientWidth - (this.columnGap * (columnCount - 1))) / columnCount;
-                    }
+                        const styles = window.getComputedStyle($el)
+                        this.columnGap = parseInt(styles.gridColumnGap)
+                        const columnCount = styles.gridTemplateColumns.split(' ').length
+                        this.columnWidth =
+                            ($el.clientWidth - this.columnGap * (columnCount - 1)) / columnCount
+                    },
                 }"
                 x-init="calcGrid()"
                 x-on:resize.window="calcGrid()"
             >
                 @for ($i = 0; $i < 12; $i++)
-                    <div class="relative bg-pink-50 h-40">
+                    <div class="relative h-40 bg-pink-50">
                         @unless ($loop->last)
                             <span
-                                class="hidden sm:block absolute -translate-y-1/2 top-1/2 left-full border-b border-dashed border-gray-400 text-[10px] font-mono text-muted-foreground text-center"
-                                x-bind:style="`width:${columnGap}px`" x-text="`${columnGap}px`"
-                            >
-                            </span>
+                                class="text-muted-foreground absolute top-1/2 left-full hidden -translate-y-1/2 border-b border-dashed border-gray-400 text-center font-mono text-[10px] sm:block"
+                                x-bind:style="`width:${columnGap}px`"
+                                x-text="`${columnGap}px`"
+                            ></span>
                         @endunless
-                        <span class="absolute top-full left-1/2 sm:mt-2 -translate-x-1/2 text-[10px] font-mono text-muted-foreground" x-text="`${columnWidth.toFixed(1)}px`"></span>
+
+                        <span
+                            class="text-muted-foreground absolute top-full left-1/2 -translate-x-1/2 font-mono text-[10px] sm:mt-2"
+                            x-text="`${columnWidth.toFixed(1)}px`"
+                        ></span>
                     </div>
                 @endfor
             </div>
         </div>
 
         <div>
-            <div class="border-b border-gray-300 mb-10">
+            <div class="mb-10 border-b border-gray-300">
                 <h3 class="h3 pb-6">Colors</h3>
             </div>
             <div class="space-y-10">
-                <div class="grid grid-cols-1 md:grid-cols-11 gap-y-3 gap-x-2">
+                <div class="grid grid-cols-1 gap-x-2 gap-y-3 md:grid-cols-11">
                     @foreach ([
                             'bg-background',
                             'bg-foreground',
@@ -52,19 +57,22 @@
                             'bg-muted-foreground',
                             'bg-accent',
                             'bg-accent-foreground',
-                            'bg-destructive',
-                        ] as $color)
+                            'bg-destructive'
+                        ]
+                        as $color)
                         <div class="relative flex">
-                            <div class="flex items-center gap-x-3 w-full md:block md:space-y-1.5">
-                                <div class="size-24 rounded md:w-full {{ $color }}"></div>
+                            <div class="flex w-full items-center gap-x-3 md:block md:space-y-1.5">
+                                <div class="{{ $color }} size-24 rounded md:w-full"></div>
                                 <div class="px-0.5">
-                                    <div class="text-xs font-mono w-full text-muted-foreground">{{ str_replace('bg-', '', $color) }}</div>
+                                    <div class="text-muted-foreground w-full font-mono text-xs">
+                                        {{ str_replace('bg-', '', $color) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-11 gap-y-3 gap-x-2">
+                <div class="grid grid-cols-1 gap-x-2 gap-y-3 md:grid-cols-11">
                     @foreach ([
                             'bg-neutral-50',
                             'bg-neutral-100',
@@ -76,13 +84,16 @@
                             'bg-neutral-700',
                             'bg-neutral-800',
                             'bg-neutral-900',
-                            'bg-neutral-950',
-                        ] as $color)
+                            'bg-neutral-950'
+                        ]
+                        as $color)
                         <div class="relative flex">
-                            <div class="flex items-center gap-x-3 w-full md:block md:space-y-1.5">
-                                <div class="size-24 rounded md:w-full {{ $color }}"></div>
+                            <div class="flex w-full items-center gap-x-3 md:block md:space-y-1.5">
+                                <div class="{{ $color }} size-24 rounded md:w-full"></div>
                                 <div class="px-0.5">
-                                    <div class="text-xs font-mono w-full text-muted-foreground">{{ str_replace('bg-', '', $color) }}</div>
+                                    <div class="text-muted-foreground w-full font-mono text-xs">
+                                        {{ str_replace('bg-', '', $color) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -92,103 +103,277 @@
         </div>
 
         <div>
-            <div class="border-b border-gray-300 mb-10">
+            <div class="mb-10 border-b border-gray-300">
                 <h3 class="h3 pb-6">Buttons</h3>
             </div>
             <div class="space-y-10">
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
-                    <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--primary</dt>
-                    <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        <x-ui.button button_type="primary" label="Get started" link_type="url" url="/" size="sm" />
-                        <x-ui.button button_type="primary" label="Get started" link_type="url" url="/" />
-                        <x-ui.button button_type="primary" label="Get started" link_type="url" url="/" size="lg" />
-                        <x-ui.button button_type="primary" label="Get started" link_type="url" url="/" size="xl" />
+                    <dt
+                        class="content-sm text-muted-foreground shrink-0 font-mono leading-6 md:w-44"
+                    >
+                        btn--primary
+                    </dt>
+                    <dd
+                        class="flex flex-col items-start justify-start gap-6 md:flex-row md:items-end"
+                    >
+                        <x-ui.button
+                            button_type="primary"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="sm"
+                        />
+                        <x-ui.button
+                            button_type="primary"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                        />
+                        <x-ui.button
+                            button_type="primary"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="lg"
+                        />
+                        <x-ui.button
+                            button_type="primary"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="xl"
+                        />
                     </dd>
                 </div>
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
-                    <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--secondary</dt>
-                    <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        <x-ui.button button_type="secondary" label="Get started" link_type="url" url="/" size="sm" />
-                        <x-ui.button button_type="secondary" label="Get started" link_type="url" url="/" />
-                        <x-ui.button button_type="secondary" label="Get started" link_type="url" url="/" size="lg" />
-                        <x-ui.button button_type="secondary" label="Get started" link_type="url" url="/" size="xl" />
+                    <dt
+                        class="content-sm text-muted-foreground shrink-0 font-mono leading-6 md:w-44"
+                    >
+                        btn--secondary
+                    </dt>
+                    <dd
+                        class="flex flex-col items-start justify-start gap-6 md:flex-row md:items-end"
+                    >
+                        <x-ui.button
+                            button_type="secondary"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="sm"
+                        />
+                        <x-ui.button
+                            button_type="secondary"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                        />
+                        <x-ui.button
+                            button_type="secondary"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="lg"
+                        />
+                        <x-ui.button
+                            button_type="secondary"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="xl"
+                        />
                     </dd>
                 </div>
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
-                    <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--outline</dt>
-                    <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        <x-ui.button button_type="outline" label="Get started" link_type="url" url="/" size="sm" />
-                        <x-ui.button button_type="outline" label="Get started" link_type="url" url="/" />
-                        <x-ui.button button_type="outline" label="Get started" link_type="url" url="/" size="lg" />
-                        <x-ui.button button_type="outline" label="Get started" link_type="url" url="/" size="xl" />
+                    <dt
+                        class="content-sm text-muted-foreground shrink-0 font-mono leading-6 md:w-44"
+                    >
+                        btn--outline
+                    </dt>
+                    <dd
+                        class="flex flex-col items-start justify-start gap-6 md:flex-row md:items-end"
+                    >
+                        <x-ui.button
+                            button_type="outline"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="sm"
+                        />
+                        <x-ui.button
+                            button_type="outline"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                        />
+                        <x-ui.button
+                            button_type="outline"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="lg"
+                        />
+                        <x-ui.button
+                            button_type="outline"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="xl"
+                        />
                     </dd>
                 </div>
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
-                    <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--destructive</dt>
-                    <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        <x-ui.button button_type="destructive" label="Get started" link_type="url" url="/" size="sm" />
-                        <x-ui.button button_type="destructive" label="Get started" link_type="url" url="/" />
-                        <x-ui.button button_type="destructive" label="Get started" link_type="url" url="/" size="lg" />
-                        <x-ui.button button_type="destructive" label="Get started" link_type="url" url="/" size="xl" />
+                    <dt
+                        class="content-sm text-muted-foreground shrink-0 font-mono leading-6 md:w-44"
+                    >
+                        btn--destructive
+                    </dt>
+                    <dd
+                        class="flex flex-col items-start justify-start gap-6 md:flex-row md:items-end"
+                    >
+                        <x-ui.button
+                            button_type="destructive"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="sm"
+                        />
+                        <x-ui.button
+                            button_type="destructive"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                        />
+                        <x-ui.button
+                            button_type="destructive"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="lg"
+                        />
+                        <x-ui.button
+                            button_type="destructive"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="xl"
+                        />
                     </dd>
                 </div>
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
-                    <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--ghost</dt>
-                    <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        <x-ui.button button_type="ghost" label="Get started" link_type="url" url="/" size="sm" />
-                        <x-ui.button button_type="ghost" label="Get started" link_type="url" url="/" />
-                        <x-ui.button button_type="ghost" label="Get started" link_type="url" url="/" size="lg" />
-                        <x-ui.button button_type="ghost" label="Get started" link_type="url" url="/" size="xl" />
+                    <dt
+                        class="content-sm text-muted-foreground shrink-0 font-mono leading-6 md:w-44"
+                    >
+                        btn--ghost
+                    </dt>
+                    <dd
+                        class="flex flex-col items-start justify-start gap-6 md:flex-row md:items-end"
+                    >
+                        <x-ui.button
+                            button_type="ghost"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="sm"
+                        />
+                        <x-ui.button
+                            button_type="ghost"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                        />
+                        <x-ui.button
+                            button_type="ghost"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="lg"
+                        />
+                        <x-ui.button
+                            button_type="ghost"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                            size="xl"
+                        />
                     </dd>
                 </div>
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
-                    <dt class="md:w-44 shrink-0 content-sm text-muted-foreground font-mono leading-6">btn--link</dt>
-                    <dd class="flex flex-col gap-6 items-start justify-start md:flex-row md:items-end">
-                        <x-ui.button button_type="link" label="Get started" link_type="url" url="/" />
+                    <dt
+                        class="content-sm text-muted-foreground shrink-0 font-mono leading-6 md:w-44"
+                    >
+                        btn--link
+                    </dt>
+                    <dd
+                        class="flex flex-col items-start justify-start gap-6 md:flex-row md:items-end"
+                    >
+                        <x-ui.button
+                            button_type="link"
+                            label="Get started"
+                            link_type="url"
+                            url="/"
+                        />
                     </dd>
                 </div>
             </div>
         </div>
 
         <div>
-            <div class="border-b border-gray-300 mb-10">
+            <div class="mb-10 border-b border-gray-300">
                 <h3 class="h3 pb-6">Headings</h3>
             </div>
             <div class="space-y-10">
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h1</dt>
-                    <dd class="h1 leading-tight truncate">The quick brown fox jumps over the lazy dog.</dd>
+                    <dt class="content-sm text-muted-foreground w-16 shrink-0 font-mono leading-6">
+                        h1
+                    </dt>
+                    <dd class="h1 truncate leading-tight">
+                        The quick brown fox jumps over the lazy dog.
+                    </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h2</dt>
-                    <dd class="h2 leading-tight truncate">The quick brown fox jumps over the lazy dog.</dd>
+                    <dt class="content-sm text-muted-foreground w-16 shrink-0 font-mono leading-6">
+                        h2
+                    </dt>
+                    <dd class="h2 truncate leading-tight">
+                        The quick brown fox jumps over the lazy dog.
+                    </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h3</dt>
+                    <dt class="content-sm text-muted-foreground w-16 shrink-0 font-mono leading-6">
+                        h3
+                    </dt>
                     <dd class="h3 truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h4</dt>
+                    <dt class="content-sm text-muted-foreground w-16 shrink-0 font-mono leading-6">
+                        h4
+                    </dt>
                     <dd class="h4 truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h5</dt>
+                    <dt class="content-sm text-muted-foreground w-16 shrink-0 font-mono leading-6">
+                        h5
+                    </dt>
                     <dd class="h5 truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-16 shrink-0 content-sm text-muted-foreground font-mono leading-6">h6</dt>
+                    <dt class="content-sm text-muted-foreground w-16 shrink-0 font-mono leading-6">
+                        h6
+                    </dt>
                     <dd class="h6 truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
             </div>
         </div>
 
         <div>
-            <div class="border-b border-gray-300 mb-10">
+            <div class="mb-10 border-b border-gray-300">
                 <h3 class="h3 pb-6">Typography</h3>
             </div>
             <div class="space-y-10">
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">badge</dt>
+                    <dt class="content-sm text-muted-foreground w-32 shrink-0 font-mono leading-6">
+                        badge
+                    </dt>
                     <dd class="flex gap-3">
                         <span class="badge">Brown</span>
                         <span class="badge badge--secondary">Brown</span>
@@ -196,28 +381,48 @@
                     </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">tagline</dt>
+                    <dt class="content-sm text-muted-foreground w-32 shrink-0 font-mono leading-6">
+                        tagline
+                    </dt>
                     <dd class="tagline text-primary truncate">The quick brown fox</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">content-xl</dt>
-                    <dd class="content-xl truncate">The quick brown fox jumps over the lazy dog.</dd>
+                    <dt class="content-sm text-muted-foreground w-32 shrink-0 font-mono leading-6">
+                        content-xl
+                    </dt>
+                    <dd class="content-xl truncate">
+                        The quick brown fox jumps over the lazy dog.
+                    </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">content-lg</dt>
-                    <dd class="content-lg truncate">The quick brown fox jumps over the lazy dog.</dd>
+                    <dt class="content-sm text-muted-foreground w-32 shrink-0 font-mono leading-6">
+                        content-lg
+                    </dt>
+                    <dd class="content-lg truncate">
+                        The quick brown fox jumps over the lazy dog.
+                    </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">content</dt>
+                    <dt class="content-sm text-muted-foreground w-32 shrink-0 font-mono leading-6">
+                        content
+                    </dt>
                     <dd class="content truncate">The quick brown fox jumps over the lazy dog.</dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">content-sm</dt>
-                    <dd class="content-sm truncate">The quick brown fox jumps over the lazy dog.</dd>
+                    <dt class="content-sm text-muted-foreground w-32 shrink-0 font-mono leading-6">
+                        content-sm
+                    </dt>
+                    <dd class="content-sm truncate">
+                        The quick brown fox jumps over the lazy dog.
+                    </dd>
                 </div>
                 <div class="flex items-center">
-                    <dt class="w-32 shrink-0 content-sm text-muted-foreground font-mono leading-6">content-xs</dt>
-                    <dd class="content-xs truncate">The quick brown fox jumps over the lazy dog.</dd>
+                    <dt class="content-sm text-muted-foreground w-32 shrink-0 font-mono leading-6">
+                        content-xs
+                    </dt>
+                    <dd class="content-xs truncate">
+                        The quick brown fox jumps over the lazy dog.
+                    </dd>
                 </div>
             </div>
         </div>
