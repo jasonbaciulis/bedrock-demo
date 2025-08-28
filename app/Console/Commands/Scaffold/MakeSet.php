@@ -14,6 +14,7 @@ class MakeSet extends Command
     protected $signature = 'make:set
         {group? : Group handle in Article}
         {name?  : Set display name}
+        {--instructions= : Editor instructions}
         {--force : Overwrite existing files}';
 
     protected $description = 'Create a new Statamic Article set.';
@@ -44,6 +45,13 @@ class MakeSet extends Command
                 placeholder: 'e.g. Gallery'
             );
 
+        $instructions =
+            (string) ($this->option('instructions') ??
+                text(
+                    label: 'What should be the instructions?',
+                    placeholder: '(Optional) Short guidance to editors'
+                ));
+
         $locale = Config::getShortLocale();
         $view = Str::slug($name, '-', $locale);
         $fieldset = Str::slug($name, '_', $locale);
@@ -52,7 +60,7 @@ class MakeSet extends Command
             $this->assertWritable($fieldset, $view, (bool) $this->option('force'));
             $this->createFieldset($fieldset, $name);
             $this->createPartial($view, $name);
-            $this->updateArticleFieldset($group, $fieldset, $name);
+            $this->updateArticleFieldset($group, $fieldset, $name, $instructions);
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
             return self::FAILURE;
@@ -67,9 +75,9 @@ class MakeSet extends Command
         $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
         $viewPath = base_path("resources/views/sets/{$view}.blade.php");
 
-        foreach ([$fieldsetPath, $viewPath] as $p) {
-            if ($this->files->exists($p) && !$force) {
-                throw new \RuntimeException("File exists: {$p} (use --force to overwrite)");
+        foreach ([$fieldsetPath, $viewPath] as $path) {
+            if ($this->files->exists($path) && !$force) {
+                throw new \RuntimeException("File exists: {$path} (use --force to overwrite)");
             }
         }
     }
@@ -94,10 +102,15 @@ class MakeSet extends Command
         );
     }
 
-    private function updateArticleFieldset(string $group, string $fieldset, string $name): void
-    {
+    private function updateArticleFieldset(
+        string $group,
+        string $fieldset,
+        string $name,
+        string $instructions
+    ): void {
         $this->article->addSet($group, $fieldset, [
             'display' => $name,
+            'instructions' => $instructions,
             'fields' => [['import' => $fieldset]],
         ]);
     }

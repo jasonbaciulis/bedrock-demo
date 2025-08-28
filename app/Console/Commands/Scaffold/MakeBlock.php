@@ -75,9 +75,9 @@ class MakeBlock extends Command
         $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
         $viewPath = base_path("resources/views/blocks/{$view}.blade.php");
 
-        foreach ([$fieldsetPath, $viewPath] as $p) {
-            if ($this->files->exists($p) && !$force) {
-                throw new \RuntimeException("File exists: {$p} (use --force to overwrite)");
+        foreach ([$fieldsetPath, $viewPath] as $path) {
+            if ($this->files->exists($path) && !$force) {
+                throw new \RuntimeException("File exists: {$path} (use --force to overwrite)");
             }
         }
     }
