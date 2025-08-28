@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Scaffold;
 
 use Illuminate\Support\Str;
 use Statamic\Facades\Config;
 use Illuminate\Console\Command;
-use App\Support\Statamic\ArticleYaml;
+use App\Support\Yaml\ArticleYaml;
 use Illuminate\Filesystem\Filesystem;
-use App\Actions\Article\MakeArticleSetAction;
+use App\Console\Actions\MakeArticleSetAction;
 use function Laravel\Prompts\{select, text};
 
 class MakeSet extends Command

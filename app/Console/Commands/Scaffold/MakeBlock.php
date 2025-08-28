@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Scaffold;
 
 use Illuminate\Support\Str;
 use Statamic\Facades\Config;
 use Illuminate\Console\Command;
-use App\Support\Statamic\BlocksYaml;
+use App\Support\Yaml\BlocksYaml;
 use Illuminate\Filesystem\Filesystem;
-use App\Actions\Blocks\MakeBlockAction;
+use App\Console\Actions\MakeBlockAction;
 use function Laravel\Prompts\{select, suggest, text};
 
 class MakeBlock extends Command

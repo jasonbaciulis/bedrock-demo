@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Scaffold;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use App\Support\Statamic\BlocksYaml;
-use App\Actions\Blocks\DeleteBlockAction;
+use App\Support\Yaml\BlocksYaml;
+use App\Console\Actions\DeleteBlockAction;
 use function Laravel\Prompts\{select, confirm, info, warning};
 
 class DeleteBlock extends Command

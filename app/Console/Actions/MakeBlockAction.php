@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Actions\Blocks;
+namespace App\Console\Actions;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use App\Support\Statamic\BlocksYaml;
+use App\Support\Yaml\BlocksYaml;
 
 class MakeBlockAction
 {
@@ -47,14 +47,16 @@ class MakeBlockAction
 
     private function createFieldset(string $fieldset, string $name): void
     {
-        $stub = $this->files->get(app_path('Console/Commands/stubs/fieldset_block.yaml.stub'));
+        $stub = $this->files->get(
+            app_path('Console/Commands/Scaffold/stubs/fieldset_block.yaml.stub')
+        );
         $contents = Str::of($stub)->replace('{{ name }}', $name);
         $this->files->put(base_path("resources/fieldsets/{$fieldset}.yaml"), $contents);
     }
 
     private function createPartial(string $view, string $name): void
     {
-        $stub = $this->files->get(app_path('Console/Commands/stubs/block.blade.php.stub'));
+        $stub = $this->files->get(app_path('Console/Commands/Scaffold/stubs/block.blade.php.stub'));
         $contents = Str::of($stub)->replace('{{ name }}', $name)->replace('{{ filename }}', $view);
 
         $this->files->put(base_path("resources/views/blocks/{$view}.blade.php"), $contents);

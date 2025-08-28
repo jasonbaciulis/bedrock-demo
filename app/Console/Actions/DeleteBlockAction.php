@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Blocks;
+namespace App\Console\Actions;
 
 use Illuminate\Filesystem\Filesystem;
-use App\Support\Statamic\BlocksYaml;
+use App\Support\Yaml\BlocksYaml;
 
 class DeleteBlockAction
 {
@@ -18,7 +18,7 @@ class DeleteBlockAction
         bool $keepFiles = false,
         bool $force = false
     ): void {
-        // 1) Remove from blocks.yaml first (source of truth)
+        // 1) Remove from blocks.yaml first
         $this->blocks->removeSet($group, $fieldset);
 
         if ($keepFiles) {
@@ -33,7 +33,7 @@ class DeleteBlockAction
         $missing = [];
 
         if ($this->files->exists($fieldsetPath)) {
-            $this->files->delete($fieldsetPath); // returns bool
+            $this->files->delete($fieldsetPath);
         } else {
             $missing[] = $fieldsetPath;
         }

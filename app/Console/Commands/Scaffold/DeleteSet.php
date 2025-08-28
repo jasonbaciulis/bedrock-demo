@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Scaffold;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use App\Support\Statamic\ArticleYaml;
-use App\Actions\Article\DeleteArticleSetAction;
+use App\Support\Yaml\ArticleYaml;
+use App\Console\Actions\DeleteArticleSetAction;
 use function Laravel\Prompts\{select, confirm, info, warning};
 
 class DeleteSet extends Command

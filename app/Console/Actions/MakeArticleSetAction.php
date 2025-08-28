@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Actions\Article;
+namespace App\Console\Actions;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use App\Support\Statamic\ArticleYaml;
+use App\Support\Yaml\ArticleYaml;
 
 class MakeArticleSetAction
 {
@@ -16,8 +16,8 @@ class MakeArticleSetAction
     public function __invoke(
         string $group,
         string $displayName,
-        string $fieldset, // snake_case
-        string $view, // kebab-case
+        string $fieldset,
+        string $view,
         bool $force = false
     ): void {
         $this->assertWritable($fieldset, $view, $force);
@@ -45,7 +45,9 @@ class MakeArticleSetAction
 
     private function createFieldset(string $fieldset, string $name): void
     {
-        $stub = $this->files->get(app_path('Console/Commands/stubs/fieldset_set.yaml.stub'));
+        $stub = $this->files->get(
+            app_path('Console/Commands/Scaffold/stubs/fieldset_set.yaml.stub')
+        );
         $this->files->put(
             base_path("resources/fieldsets/{$fieldset}.yaml"),
             Str::of($stub)->replace('{{ name }}', $name)
@@ -54,7 +56,7 @@ class MakeArticleSetAction
 
     private function createPartial(string $view, string $name): void
     {
-        $stub = $this->files->get(app_path('Console/Commands/stubs/set.blade.php.stub'));
+        $stub = $this->files->get(app_path('Console/Commands/Scaffold/stubs/set.blade.php.stub'));
         $this->files->put(
             base_path("resources/views/sets/{$view}.blade.php"),
             Str::of($stub)->replace('{{ name }}', $name)

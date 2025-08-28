@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Article;
+namespace App\Console\Actions;
 
 use Illuminate\Filesystem\Filesystem;
-use App\Support\Statamic\ArticleYaml;
+use App\Support\Yaml\ArticleYaml;
 
 class DeleteArticleSetAction
 {

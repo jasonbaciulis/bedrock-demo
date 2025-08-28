@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\Statamic;
+namespace App\Support\Yaml;
 
 use Illuminate\Filesystem\Filesystem;
 use Statamic\Facades\YAML;
