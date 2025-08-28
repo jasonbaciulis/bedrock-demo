@@ -3,9 +3,8 @@
 namespace App\Console\Commands\Scaffold;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 use App\Support\Yaml\BlocksYaml;
-use App\Console\Actions\DeleteBlockAction;
+use Illuminate\Filesystem\Filesystem;
 use function Laravel\Prompts\{select, confirm, info, warning};
 
 class DeleteBlock extends Command
@@ -20,8 +19,7 @@ class DeleteBlock extends Command
 
     public function __construct(
         private readonly Filesystem $files,
-        private readonly BlocksYaml $blocks,
-        private readonly DeleteBlockAction $deleteBlock
+        private readonly BlocksYaml $blocks
     ) {
         parent::__construct();
     }
@@ -32,6 +30,7 @@ class DeleteBlock extends Command
         $groups = $this->blocks->groups();
         if (empty($groups)) {
             warning('No groups found in blocks.yaml.');
+
             return self::FAILURE;
         }
 
@@ -43,6 +42,7 @@ class DeleteBlock extends Command
         $sets = $this->blocks->sets($group);
         if (empty($sets)) {
             warning("The '{$groups[$group]}' group has no blocks.");
+
             return self::SUCCESS;
         }
 
@@ -63,23 +63,53 @@ class DeleteBlock extends Command
             )
         ) {
             info('Aborted.');
+
             return self::SUCCESS;
         }
 
-        // 4) Delegate to action
+        // 4) Perform deletion
         try {
-            ($this->deleteBlock)(
-                group: $group,
-                fieldset: $fieldset,
-                keepFiles: (bool) $this->option('keep-files'),
-                force: (bool) $this->option('force')
-            );
+            $this->blocks->removeSet($group, $fieldset);
+
+            if (!(bool) $this->option('keep-files')) {
+                $this->deleteFiles(fieldset: $fieldset, force: (bool) $this->option('force'));
+            }
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
+
             return self::FAILURE;
         }
 
         $this->info("Removed '{$label}' block.");
+
         return self::SUCCESS;
+    }
+
+    private function deleteFiles(string $fieldset, bool $force = false): void
+    {
+        $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
+        $view = str_replace('_', '-', $fieldset);
+        $viewPath = base_path("resources/views/blocks/{$view}.blade.php");
+
+        $missing = [];
+
+        if ($this->files->exists($fieldsetPath)) {
+            $this->files->delete($fieldsetPath);
+        } else {
+            $missing[] = $fieldsetPath;
+        }
+
+        if ($this->files->exists($viewPath)) {
+            $this->files->delete($viewPath);
+        } else {
+            $missing[] = $viewPath;
+        }
+
+        if ($missing && !$force) {
+            $list = implode("\n - ", $missing);
+            throw new \RuntimeException(
+                "Some files were not found to delete:\n - {$list}\n(Use --force to ignore.)"
+            );
+        }
     }
 }
