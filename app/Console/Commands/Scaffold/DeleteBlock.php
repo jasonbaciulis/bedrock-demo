@@ -29,7 +29,7 @@ class DeleteBlock extends Command
     public function handle(): int
     {
         // 1) Pick group (associative options; returns the key/handle)
-        $groups = $this->blocks->groups(); // ['hero' => 'Hero Blocks', ...]
+        $groups = $this->blocks->groups();
         if (empty($groups)) {
             warning('No groups found in blocks.yaml.');
             return self::FAILURE;
@@ -40,7 +40,7 @@ class DeleteBlock extends Command
             select(label: 'Which group contains the block?', options: $groups, required: true);
 
         // 2) Pick block within the group (associative; returns fieldset handle)
-        $sets = $this->blocks->sets($group); // ['hero_simple' => 'Hero Simple', ...]
+        $sets = $this->blocks->sets($group);
         if (empty($sets)) {
             warning("The '{$groups[$group]}' group has no blocks.");
             return self::SUCCESS;
