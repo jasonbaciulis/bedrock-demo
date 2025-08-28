@@ -2,10 +2,10 @@
 
 namespace App\Support\Statamic;
 
-use Stringy\StaticStringy as Stringy;
-use Statamic\Support\Arr;
-use Symfony\Component\Yaml\Yaml;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
+use Statamic\Support\Arr;
+use Stringy\StaticStringy as Stringy;
 
 class BlocksYaml
 {
@@ -19,10 +19,31 @@ class BlocksYaml
         $data = $this->read();
         $raw = Arr::get($data, 'fields.0.field.sets', []);
 
-        // ['hero' => 'Hero Blocks', ...]
         $pairs = [];
         foreach ($raw as $handle => $group) {
             $pairs[$handle] = $group['display'] ?? Stringy::humanize($handle);
+        }
+
+        return $pairs;
+    }
+
+    /**
+     * Map of set handle => display for a given group.
+     */
+    public function sets(string $groupHandle): array
+    {
+        $data = $this->read();
+        $groups = Arr::get($data, 'fields.0.field.sets', []);
+        $group = $groups[$groupHandle] ?? null;
+
+        if (!$group) {
+            throw new \RuntimeException("Group '{$groupHandle}' not found.");
+        }
+
+        $sets = Arr::get($group, 'sets', []);
+        $pairs = [];
+        foreach ($sets as $handle => $config) {
+            $pairs[$handle] = $config['display'] ?? Stringy::humanize($handle);
         }
 
         return $pairs;
@@ -41,6 +62,31 @@ class BlocksYaml
 
         ksort($existing, SORT_NATURAL | SORT_FLAG_CASE);
         $group['sets'] = $existing;
+        $groups[$groupHandle] = $group;
+
+        Arr::set($data, 'fields.0.field.sets', $groups);
+        $this->write($data);
+    }
+
+    public function removeSet(string $groupHandle, string $fieldsetHandle): void
+    {
+        $data = $this->read();
+        $groups = Arr::get($data, 'fields.0.field.sets', []);
+        $group =
+            $groups[$groupHandle] ??
+            throw new \RuntimeException("Group '{$groupHandle}' not found.");
+
+        $sets = Arr::get($group, 'sets', []);
+        if (!array_key_exists($fieldsetHandle, $sets)) {
+            throw new \RuntimeException(
+                "Block '{$fieldsetHandle}' not found in group '{$groupHandle}'."
+            );
+        }
+
+        unset($sets[$fieldsetHandle]);
+        ksort($sets, SORT_NATURAL | SORT_FLAG_CASE);
+
+        $group['sets'] = $sets;
         $groups[$groupHandle] = $group;
 
         Arr::set($data, 'fields.0.field.sets', $groups);

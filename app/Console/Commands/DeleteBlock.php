@@ -3,155 +3,83 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
-use Statamic\Console\RunsInPlease;
-use Statamic\Facades\Config;
-use Statamic\Support\Arr;
-use Stringy\StaticStringy as Stringy;
-use Symfony\Component\Yaml\Yaml;
+use Illuminate\Filesystem\Filesystem;
+use App\Support\Statamic\BlocksYaml;
+use App\Actions\Blocks\DeleteBlockAction;
+use function Laravel\Prompts\{select, confirm, info, warning};
 
 class DeleteBlock extends Command
 {
-    use RunsInPlease;
+    protected $signature = 'delete:block
+        {group? : The group handle (e.g. hero)}
+        {block? : The block (fieldset) handle to delete}
+        {--keep-files : Only remove from blocks.yaml; keep fieldset/view files}
+        {--force : Ignore missing files when deleting}';
 
-    /**
-     * The name of the console command.
-     *
-     * @var string
-     */
-    protected $name = 'delete:block';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Delete a Statamic page builder block.';
 
-    /**
-     * The block name.
-     *
-     * @var string
-     */
-    protected $block_name = '';
+    public function __construct(
+        private readonly Filesystem $files,
+        private readonly BlocksYaml $blocks,
+        private readonly DeleteBlockAction $deleteBlock
+    ) {
+        parent::__construct();
+    }
 
-    /**
-     * The block fieldset filename.
-     *
-     * @var string
-     */
-    protected $fieldset_name = '';
-
-    /**
-     * The block view filename.
-     *
-     * @var string
-     */
-    protected $view_name = '';
-
-    /**
-     * Execute the console command.
-     *
-     * @return bool|null
-     */
-    public function handle()
+    public function handle(): int
     {
-        $this->block_name = $this->ask('What is the name of the block?');
-        $this->view_name = Stringy::slugify($this->block_name, '-', Config::getShortLocale());
-        $this->fieldset_name = Stringy::slugify($this->block_name, '_', Config::getShortLocale());
+        // 1) Pick group (associative options; returns the key/handle)
+        $groups = $this->blocks->groups(); // ['hero' => 'Hero Blocks', ...]
+        if (empty($groups)) {
+            warning('No groups found in blocks.yaml.');
+            return self::FAILURE;
+        }
 
+        $group =
+            $this->argument('group') ?:
+            select(label: 'Which group contains the block?', options: $groups, required: true);
+
+        // 2) Pick block within the group (associative; returns fieldset handle)
+        $sets = $this->blocks->sets($group); // ['hero_simple' => 'Hero Simple', ...]
+        if (empty($sets)) {
+            warning("The '{$groups[$group]}' group has no blocks.");
+            return self::SUCCESS;
+        }
+
+        $fieldset =
+            $this->argument('block') ?:
+            select(label: 'Which block would you like to delete?', options: $sets, required: true);
+
+        $label = $sets[$fieldset] ?? $fieldset;
+
+        // 3) Confirm destructive action
+        if (
+            !confirm(
+                label: "Delete '{$label}' from '{$groups[$group]}'?",
+                hint: $this->option('keep-files')
+                    ? 'Only remove from blocks.yaml (files will be kept).'
+                    : 'This will also delete the fieldset YAML and block view file.',
+                default: false
+            )
+        ) {
+            info('Aborted.');
+            return self::SUCCESS;
+        }
+
+        // 4) Delegate to action
         try {
-            $this->checkExistence('Fieldset', "resources/fieldsets/{$this->fieldset_name}.yaml");
-            $this->checkExistence('Partial', "resources/views/blocks/{$this->view_name}.blade.php");
-
-            $this->deleteFieldset();
-            $this->deletePartial();
-            $this->updateBlocks();
-        } catch (\Exception $e) {
-            return $this->error($e->getMessage());
-        }
-
-        $this->info("Removed '{$this->block_name}' block.");
-    }
-
-    /**
-     * Check if a file exists.
-     *
-     * @return bool|null
-     */
-    protected function checkExistence($type, $path)
-    {
-        if (!File::exists(base_path($path))) {
-            throw new \Exception("{$type} '{$path}' does not exist.");
-        }
-    }
-
-    /**
-     * Delete fieldset.
-     *
-     * @return bool|null
-     */
-    protected function deleteFieldset()
-    {
-        File::delete(base_path("resources/fieldsets/{$this->fieldset_name}.yaml"));
-    }
-
-    /**
-     * Delete partial.
-     *
-     * @return bool|null
-     */
-    protected function deletePartial()
-    {
-        File::delete(base_path("resources/views/blocks/{$this->view_name}.blade.php"));
-    }
-
-    /**
-     * Updates the blocks.yaml file by removing the
-     * specified fieldset and saving the changes.
-     *
-     * @return bool|null
-     */
-    protected function updateBlocks()
-    {
-        $fieldsetPath = base_path('resources/fieldsets/blocks.yaml');
-        $fieldset = Yaml::parseFile($fieldsetPath);
-
-        $existingGroups = Arr::get($fieldset, 'fields.0.field.sets', []);
-
-        // Find which group contains the block to delete
-        $groupKey = $this->findBlockGroup($existingGroups, $this->fieldset_name);
-
-        if (!$groupKey) {
-            $this->warn(
-                "Block '{$this->block_name}' not found in blocks.yaml - it may have already been removed."
+            ($this->deleteBlock)(
+                group: $group,
+                fieldset: $fieldset,
+                keepFiles: (bool) $this->option('keep-files'),
+                force: (bool) $this->option('force')
             );
-
-            return;
+        } catch (\Throwable $e) {
+            $this->error($e->getMessage());
+            return self::FAILURE;
         }
 
-        // Remove the block from the found group
-        $groupSets = Arr::get($existingGroups, "{$groupKey}.sets", []);
-        if (Arr::exists($groupSets, $this->fieldset_name)) {
-            Arr::forget($groupSets, $this->fieldset_name);
-            Arr::set($existingGroups, "{$groupKey}.sets", $groupSets);
-            Arr::set($fieldset, 'fields.0.field.sets', $existingGroups);
-            File::put($fieldsetPath, Yaml::dump($fieldset, 99, 2));
-        }
-    }
-
-    /**
-     * Find which group contains the specified block.
-     */
-    protected function findBlockGroup(array $groups, string $blockName): ?string
-    {
-        foreach ($groups as $groupKey => $group) {
-            $groupSets = Arr::get($group, 'sets', []);
-            if (Arr::exists($groupSets, $blockName)) {
-                return $groupKey;
-            }
-        }
-
-        return null;
+        $this->info("Removed '{$label}' block.");
+        return self::SUCCESS;
     }
 }
