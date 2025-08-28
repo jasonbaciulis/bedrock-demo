@@ -89,7 +89,7 @@ class AddBlock extends Command
 
         $this->instructions = text(
             label: 'What should be the instructions?',
-            placeholder: 'Short guidance to editors',
+            placeholder: '(Optional) Short guidance to editors',
             required: false
         );
 
@@ -113,13 +113,18 @@ class AddBlock extends Command
     protected function selectGroup(): string
     {
         $fieldset = Yaml::parseFile(base_path('resources/fieldsets/blocks.yaml'));
-        $existingGroups = Arr::get($fieldset, 'fields.0.field.sets', []);
+        $groups = Arr::get($fieldset, 'fields.0.field.sets', []);
+
+        $options = collect($groups)
+            ->mapWithKeys(function ($group, $handle) {
+                $label = $group['display'] ?? Stringy::humanize($handle);
+                return [$handle => (string) $label];
+            })
+            ->all();
 
         return select(
             label: 'Which type of block would you like?',
-            options: array_keys($existingGroups),
-            default: null,
-            scroll: 8,
+            options: $options,
             required: true
         );
     }
