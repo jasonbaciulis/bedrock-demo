@@ -2,13 +2,12 @@
 
 namespace App\Console\Commands\Scaffold;
 
+use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Statamic\Facades\Config;
-use Illuminate\Console\Command;
 use App\Support\Yaml\BlocksYaml;
-use Illuminate\Filesystem\Filesystem;
-use App\Console\Actions\MakeBlockAction;
-use function Laravel\Prompts\{select, suggest, text};
+use function Laravel\Prompts\{select, suggest, text, info};
 
 class MakeBlock extends Command
 {
@@ -22,15 +21,14 @@ class MakeBlock extends Command
 
     public function __construct(
         private readonly Filesystem $files,
-        private readonly BlocksYaml $blocks,
-        private readonly MakeBlockAction $makeBlock
+        private readonly BlocksYaml $blocks
     ) {
         parent::__construct();
     }
 
     public function handle(): int
     {
-        // 1) Resolve input (prompt if missing)
+        // pick group (CLI options keep YAML order)
         $groups = $this->blocks->groups();
         $group =
             $this->argument('group') ?:
@@ -53,33 +51,70 @@ class MakeBlock extends Command
                     placeholder: '(Optional) Short guidance to editors'
                 ));
 
-        // 2) Compute slugs
+        // Compute slugs
         $locale = Config::getShortLocale();
-        $viewName = Str::slug($name, '-', $locale);
-        $fieldsetName = Str::slug($name, '_', $locale);
+        $view = Str::slug($name, '-', $locale);
+        $fieldset = Str::slug($name, '_', $locale);
 
-        // 3) Delegate all IO / mutations to the Action
         try {
-            ($this->makeBlock)(
-                group: $group,
-                displayName: $name,
-                fieldset: $fieldsetName,
-                view: $viewName,
-                instructions: $instructions,
-                force: (bool) $this->option('force')
-            );
+            $this->assertWritable($fieldset, $view, (bool) $this->option('force'));
+            $this->createFieldset($fieldset, $name);
+            $this->createPartial($view, $name);
+            $this->updateBlocksFieldset($group, $fieldset, $name, $instructions);
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
             return self::FAILURE;
         }
 
-        $this->info("Created '{$name}' block in '{$groups[$group]}' group.");
+        info("Created '{$name}' block in '{$groups[$group]}' group.");
         return self::SUCCESS;
     }
 
-    /**
-     * Keep suggestions local & simple. Extract later if it grows.
-     **/
+    private function assertWritable(string $fieldset, string $view, bool $force): void
+    {
+        $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
+        $viewPath = base_path("resources/views/blocks/{$view}.blade.php");
+
+        foreach ([$fieldsetPath, $viewPath] as $p) {
+            if ($this->files->exists($p) && !$force) {
+                throw new \RuntimeException("File exists: {$p} (use --force to overwrite)");
+            }
+        }
+    }
+
+    private function createFieldset(string $fieldset, string $name): void
+    {
+        $stub = $this->files->get(
+            app_path('Console/Commands/Scaffold/stubs/fieldset_block.yaml.stub')
+        );
+        $this->files->put(
+            base_path("resources/fieldsets/{$fieldset}.yaml"),
+            Str::of($stub)->replace('{{ name }}', $name)
+        );
+    }
+
+    private function createPartial(string $view, string $name): void
+    {
+        $stub = $this->files->get(app_path('Console/Commands/Scaffold/stubs/block.blade.php.stub'));
+        $this->files->put(
+            base_path("resources/views/blocks/{$view}.blade.php"),
+            Str::of($stub)->replace('{{ name }}', $name)->replace('{{ filename }}', $view)
+        );
+    }
+
+    private function updateBlocksFieldset(
+        string $group,
+        string $fieldset,
+        string $name,
+        string $instructions
+    ): void {
+        $this->blocks->addSet($group, $fieldset, [
+            'display' => $name,
+            'instructions' => $instructions,
+            'fields' => [['import' => $fieldset]],
+        ]);
+    }
+
     private function suggestedBlocksFor(string $group): array
     {
         $map = [
