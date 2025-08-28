@@ -5,7 +5,6 @@ namespace App\Console\Commands\Scaffold;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use App\Support\Yaml\ArticleYaml;
-use App\Console\Actions\DeleteArticleSetAction;
 use function Laravel\Prompts\{select, confirm, info, warning};
 
 class DeleteSet extends Command
@@ -20,8 +19,7 @@ class DeleteSet extends Command
 
     public function __construct(
         private readonly Filesystem $files,
-        private readonly ArticleYaml $article,
-        private readonly DeleteArticleSetAction $deleteSet
+        private readonly ArticleYaml $article
     ) {
         parent::__construct();
     }
@@ -68,12 +66,11 @@ class DeleteSet extends Command
         }
 
         try {
-            ($this->deleteSet)(
-                group: $group,
-                fieldset: $fieldset,
-                keepFiles: (bool) $this->option('keep-files'),
-                force: (bool) $this->option('force')
-            );
+            $this->article->removeSet($group, $fieldset);
+
+            if (!(bool) $this->option('keep-files')) {
+                $this->deleteFiles(fieldset: $fieldset, force: (bool) $this->option('force'));
+            }
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
             return self::FAILURE;
@@ -81,5 +78,29 @@ class DeleteSet extends Command
 
         $this->info("Removed '{$label}' set.");
         return self::SUCCESS;
+    }
+
+    private function deleteFiles(string $fieldset, bool $force = false): void
+    {
+        $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
+        $view = str_replace('_', '-', $fieldset);
+        $viewPath = base_path("resources/views/sets/{$view}.blade.php");
+
+        $missing = [];
+
+        foreach ([$fieldsetPath, $viewPath] as $p) {
+            if ($this->files->exists($p)) {
+                $this->files->delete($p);
+            } elseif (!$force) {
+                $missing[] = $p;
+            }
+        }
+
+        if ($missing && !$force) {
+            $list = implode("\n - ", $missing);
+            throw new \RuntimeException(
+                "Some files were not found:\n - {$list}\n(Use --force to ignore.)"
+            );
+        }
     }
 }
