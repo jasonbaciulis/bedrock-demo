@@ -98,7 +98,7 @@ class MakeBlock extends Command
         $stub = $this->files->get(app_path('Console/Commands/Scaffold/stubs/block.blade.php.stub'));
         $this->files->put(
             base_path("resources/views/blocks/{$view}.blade.php"),
-            Str::of($stub)->replace('{{ name }}', $name)->replace('{{ filename }}', $view)
+            Str::of($stub)->replace('{{ name }}', $name)
         );
     }
 
