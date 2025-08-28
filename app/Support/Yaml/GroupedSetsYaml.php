@@ -49,9 +49,12 @@ class GroupedSetsYaml
     {
         $data = $this->read();
         $root = &$this->setsRoot($data);
-        $group =
-            $root[$groupHandle] ?? throw new \RuntimeException("Group '{$groupHandle}' not found.");
 
+        if (!isset($root[$groupHandle])) {
+            throw new \RuntimeException("Group '{$groupHandle}' not found.");
+        }
+
+        $group = $root[$groupHandle];
         $sets = Arr::get($group, 'sets', []);
         $sets[$setHandle] = $set;
         ksort($sets, SORT_NATURAL | SORT_FLAG_CASE);
@@ -80,16 +83,29 @@ class GroupedSetsYaml
         $this->write($data);
     }
 
+    /**
+     * Return a reference to the actual sets array inside $data.
+     * IMPORTANT: do not use Arr::get here; it breaks references.
+     */
     private function &setsRoot(array &$data): array
     {
-        $fields = Arr::get($data, 'fields', []);
-        foreach ($fields as &$field) {
+        if (!isset($data['fields']) || !is_array($data['fields'])) {
+            throw new \RuntimeException(
+                "Invalid YAML structure in {$this->path}: missing 'fields'."
+            );
+        }
+
+        foreach ($data['fields'] as &$field) {
             if (($field['handle'] ?? null) === $this->fieldHandle) {
+                if (!isset($field['field']['sets'])) {
+                    $field['field']['sets'] = [];
+                }
                 $sets = &$field['field']['sets'];
 
                 return $sets;
             }
         }
+
         throw new \RuntimeException(
             "Field handle '{$this->fieldHandle}' not found in {$this->path}."
         );
