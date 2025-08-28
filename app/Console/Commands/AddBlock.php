@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Statamic\Console\RunsInPlease;
 use Statamic\Facades\Config;
 use Statamic\Support\Arr;
@@ -27,7 +27,7 @@ class AddBlock extends Command
      *
      * @var string
      */
-    protected $description = 'Add a page builder block.';
+    protected $description = 'Create a new Statamic page builder block.';
 
     /**
      * The block name.
@@ -58,16 +58,29 @@ class AddBlock extends Command
     protected $instructions = '';
 
     /**
+     * The selected group.
+     *
+     * @var string
+     */
+    protected $selected_group = '';
+
+    /**
      * Execute the console command.
      *
      * @return bool|null
      */
     public function handle()
     {
-        $this->block_name = $this->ask('What should be the name for this block?');
+        // First ask for the group
+        $this->selected_group = $this->selectGroup();
+
+        // Then ask for block name with suggestions based on group
+        $suggestedBlocks = $this->getSuggestedBlocksForGroup($this->selected_group);
+        $this->block_name = $this->anticipate('What should the block be named?', $suggestedBlocks);
+
         $this->view_name = Stringy::slugify($this->block_name, '-', Config::getShortLocale());
         $this->fieldset_name = Stringy::slugify($this->block_name, '_', Config::getShortLocale());
-        $this->instructions = $this->ask('What should be the instructions for this block?');
+        $this->instructions = $this->ask('What should be the instructions?');
 
         try {
             $this->checkExistence('Fieldset', "resources/fieldsets/{$this->fieldset_name}.yaml");
@@ -81,6 +94,53 @@ class AddBlock extends Command
         }
 
         $this->info("Created '{$this->block_name}' block.");
+    }
+
+    /**
+     * Select which group to install the block in.
+     */
+    protected function selectGroup(): string
+    {
+        $fieldset = Yaml::parseFile(base_path('resources/fieldsets/blocks.yaml'));
+        $existingGroups = Arr::get($fieldset, 'fields.0.field.sets');
+
+        // TODO: make a nicer UX, show like a nice select like Laravel commands show (i.e. Which type of test would you like? in make:test)
+        return $this->choice(
+            'Which type of block would you like?',
+            array_keys($existingGroups),
+            null,
+            null,
+            false
+        );
+    }
+
+    /**
+     * Get suggested block names for a group.
+     */
+    protected function getSuggestedBlocksForGroup(string $group): array
+    {
+        $suggestedBlocks = [
+            'hero' => ['Hero Home', 'Hero Simple', 'Hero With Video', 'Hero With CTA'],
+            'messaging' => [
+                'Features',
+                'Benefits',
+                'How It Works',
+                'Process Steps',
+                'Value Proposition',
+            ],
+            'authority' => [
+                'Testimonials',
+                'Client Logos',
+                'Trust Indicators',
+                'Awards & Recognition',
+                'Press Mentions',
+            ],
+            'content' => ['Case Studies', 'Portfolio'],
+            'conversion' => ['Call to Action', 'Pricing Table', 'Demo Request'],
+            'special' => ['Google Map'],
+        ];
+
+        return $suggestedBlocks[$group] ?? [];
     }
 
     /**
@@ -102,7 +162,7 @@ class AddBlock extends Command
      */
     protected function createFieldset()
     {
-        $stub = File::get(__DIR__ . '/stubs/fieldset_block.yaml.stub');
+        $stub = File::get(__DIR__.'/stubs/fieldset_block.yaml.stub');
         $contents = Str::of($stub)->replace('{{ name }}', $this->block_name);
 
         File::put(base_path("resources/fieldsets/{$this->fieldset_name}.yaml"), $contents);
@@ -115,7 +175,7 @@ class AddBlock extends Command
      */
     protected function createPartial()
     {
-        $stub = File::get(__DIR__ . '/stubs/block.blade.php.stub');
+        $stub = File::get(__DIR__.'/stubs/block.blade.php.stub');
         $contents = Str::of($stub)
             ->replace('{{ name }}', $this->block_name)
             ->replace('{{ filename }}', $this->view_name);
@@ -142,15 +202,7 @@ class AddBlock extends Command
         ];
 
         $existingGroups = Arr::get($fieldset, 'fields.0.field.sets');
-        $group = $this->choice(
-            "In which group of blocks do you want to install: '{$this->block_name}'?",
-            array_keys($existingGroups),
-            null,
-            null,
-            false
-        );
-
-        $groupSets = $existingGroups[$group];
+        $groupSets = $existingGroups[$this->selected_group];
         $existingSets = Arr::get($groupSets, 'sets');
         $existingSets[$this->fieldset_name] = $newSet;
         $existingSets = collect($existingSets)
@@ -160,7 +212,7 @@ class AddBlock extends Command
             ->all();
 
         Arr::set($groupSets, 'sets', $existingSets);
-        $existingGroups[$group] = $groupSets;
+        $existingGroups[$this->selected_group] = $groupSets;
         Arr::set($fieldset, 'fields.0.field.sets', $existingGroups);
 
         File::put(base_path('resources/fieldsets/blocks.yaml'), Yaml::dump($fieldset, 99, 2));
