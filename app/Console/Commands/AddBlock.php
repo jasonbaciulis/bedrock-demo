@@ -10,6 +10,7 @@ use Statamic\Facades\Config;
 use Statamic\Support\Arr;
 use Stringy\StaticStringy as Stringy;
 use Symfony\Component\Yaml\Yaml;
+use function Laravel\Prompts\{select, suggest, text};
 
 class AddBlock extends Command
 {
@@ -71,16 +72,26 @@ class AddBlock extends Command
      */
     public function handle()
     {
-        // First ask for the group
+        // First ask for the group (nice arrow-key UI)
         $this->selected_group = $this->selectGroup();
 
-        // Then ask for block name with suggestions based on group
+        // Then ask for block name with rich autocomplete suggestions
         $suggestedBlocks = $this->getSuggestedBlocksForGroup($this->selected_group);
-        $this->block_name = $this->anticipate('What should the block be named?', $suggestedBlocks);
+        $this->block_name = suggest(
+            label: 'What should the block be named?',
+            options: $suggestedBlocks,
+            placeholder: 'e.g. Hero Split',
+            required: true
+        );
 
         $this->view_name = Stringy::slugify($this->block_name, '-', Config::getShortLocale());
         $this->fieldset_name = Stringy::slugify($this->block_name, '_', Config::getShortLocale());
-        $this->instructions = $this->ask('What should be the instructions?');
+
+        $this->instructions = text(
+            label: 'What should be the instructions?',
+            placeholder: 'Short guidance to editors',
+            required: false
+        );
 
         try {
             $this->checkExistence('Fieldset', "resources/fieldsets/{$this->fieldset_name}.yaml");
@@ -102,15 +113,14 @@ class AddBlock extends Command
     protected function selectGroup(): string
     {
         $fieldset = Yaml::parseFile(base_path('resources/fieldsets/blocks.yaml'));
-        $existingGroups = Arr::get($fieldset, 'fields.0.field.sets');
+        $existingGroups = Arr::get($fieldset, 'fields.0.field.sets', []);
 
-        // TODO: make a nicer UX, show like a nice select like Laravel commands show (i.e. Which type of test would you like? in make:test)
-        return $this->choice(
-            'Which type of block would you like?',
-            array_keys($existingGroups),
-            null,
-            null,
-            false
+        return select(
+            label: 'Which type of block would you like?',
+            options: array_keys($existingGroups),
+            default: null,
+            scroll: 8,
+            required: true
         );
     }
 
@@ -162,7 +172,7 @@ class AddBlock extends Command
      */
     protected function createFieldset()
     {
-        $stub = File::get(__DIR__.'/stubs/fieldset_block.yaml.stub');
+        $stub = File::get(__DIR__ . '/stubs/fieldset_block.yaml.stub');
         $contents = Str::of($stub)->replace('{{ name }}', $this->block_name);
 
         File::put(base_path("resources/fieldsets/{$this->fieldset_name}.yaml"), $contents);
@@ -175,7 +185,7 @@ class AddBlock extends Command
      */
     protected function createPartial()
     {
-        $stub = File::get(__DIR__.'/stubs/block.blade.php.stub');
+        $stub = File::get(__DIR__ . '/stubs/block.blade.php.stub');
         $contents = Str::of($stub)
             ->replace('{{ name }}', $this->block_name)
             ->replace('{{ filename }}', $this->view_name);
