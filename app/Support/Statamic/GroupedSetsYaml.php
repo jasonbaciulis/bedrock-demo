@@ -3,10 +3,9 @@
 namespace App\Support\Statamic;
 
 use Illuminate\Filesystem\Filesystem;
+use Statamic\Facades\YAML;
 use Statamic\Support\Arr;
 use Stringy\StaticStringy as Stringy;
-use Symfony\Component\Yaml\Yaml;
-// use Statamic\Yaml\Yaml;
 
 class GroupedSetsYaml
 {
@@ -25,6 +24,7 @@ class GroupedSetsYaml
         foreach ($root as $handle => $group) {
             $out[$handle] = (string) ($group['display'] ?? Stringy::humanize($handle));
         }
+
         return $out;
     }
 
@@ -41,6 +41,7 @@ class GroupedSetsYaml
         foreach (Arr::get($root[$groupHandle], 'sets', []) as $handle => $config) {
             $pairs[$handle] = (string) ($config['display'] ?? Stringy::humanize($handle));
         }
+
         return $pairs;
     }
 
@@ -85,6 +86,7 @@ class GroupedSetsYaml
         foreach ($fields as &$field) {
             if (($field['handle'] ?? null) === $this->fieldHandle) {
                 $sets = &$field['field']['sets'];
+
                 return $sets;
             }
         }
@@ -99,11 +101,12 @@ class GroupedSetsYaml
         if (!$this->files->exists($full)) {
             throw new \RuntimeException("Missing fieldset file: {$this->path}");
         }
-        return Yaml::parseFile($full) ?? [];
+
+        return YAML::file($full)->parse() ?? [];
     }
 
     private function write(array $data): void
     {
-        $this->files->put(base_path($this->path), Yaml::dump($data, 99, 2));
+        $this->files->put(base_path($this->path), YAML::dump($data));
     }
 }
