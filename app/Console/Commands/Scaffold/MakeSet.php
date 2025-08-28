@@ -7,7 +7,6 @@ use Statamic\Facades\Config;
 use Illuminate\Console\Command;
 use App\Support\Yaml\ArticleYaml;
 use Illuminate\Filesystem\Filesystem;
-use App\Console\Actions\MakeArticleSetAction;
 use function Laravel\Prompts\{select, text};
 
 class MakeSet extends Command
@@ -21,8 +20,7 @@ class MakeSet extends Command
 
     public function __construct(
         private readonly Filesystem $files,
-        private readonly ArticleYaml $article,
-        private readonly MakeArticleSetAction $makeSet
+        private readonly ArticleYaml $article
     ) {
         parent::__construct();
     }
@@ -43,21 +41,18 @@ class MakeSet extends Command
             text(
                 label: 'What should be the name for this set?',
                 required: true,
-                placeholder: 'e.g. Image Gallery'
+                placeholder: 'e.g. Gallery'
             );
 
         $locale = Config::getShortLocale();
-        $viewName = Str::slug($name, '-', $locale);
-        $fieldsetName = Str::slug($name, '_', $locale);
+        $view = Str::slug($name, '-', $locale);
+        $fieldset = Str::slug($name, '_', $locale);
 
         try {
-            ($this->makeSet)(
-                group: $group,
-                displayName: $name,
-                fieldset: $fieldsetName,
-                view: $viewName,
-                force: (bool) $this->option('force')
-            );
+            $this->assertWritable($fieldset, $view, (bool) $this->option('force'));
+            $this->createFieldset($fieldset, $name);
+            $this->createPartial($view, $name);
+            $this->updateArticleFieldset($group, $fieldset, $name);
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
             return self::FAILURE;
@@ -65,5 +60,45 @@ class MakeSet extends Command
 
         $this->info("Created '{$name}' set in '{$groups[$group]}' group.");
         return self::SUCCESS;
+    }
+
+    private function assertWritable(string $fieldset, string $view, bool $force): void
+    {
+        $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
+        $viewPath = base_path("resources/views/sets/{$view}.blade.php");
+
+        foreach ([$fieldsetPath, $viewPath] as $p) {
+            if ($this->files->exists($p) && !$force) {
+                throw new \RuntimeException("File exists: {$p} (use --force to overwrite)");
+            }
+        }
+    }
+
+    private function createFieldset(string $fieldset, string $name): void
+    {
+        $stub = $this->files->get(
+            app_path('Console/Commands/Scaffold/stubs/fieldset_set.yaml.stub')
+        );
+        $this->files->put(
+            base_path("resources/fieldsets/{$fieldset}.yaml"),
+            Str::of($stub)->replace('{{ name }}', $name)
+        );
+    }
+
+    private function createPartial(string $view, string $name): void
+    {
+        $stub = $this->files->get(app_path('Console/Commands/Scaffold/stubs/set.blade.php.stub'));
+        $this->files->put(
+            base_path("resources/views/sets/{$view}.blade.php"),
+            Str::of($stub)->replace('{{ name }}', $name)
+        );
+    }
+
+    private function updateArticleFieldset(string $group, string $fieldset, string $name): void
+    {
+        $this->article->addSet($group, $fieldset, [
+            'display' => $name,
+            'fields' => [['import' => $fieldset]],
+        ]);
     }
 }
