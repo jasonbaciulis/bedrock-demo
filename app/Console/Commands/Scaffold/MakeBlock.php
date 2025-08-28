@@ -31,7 +31,7 @@ class MakeBlock extends Command
     public function handle(): int
     {
         // 1) Resolve input (prompt if missing)
-        $groups = $this->blocks->groups(); // ['hero' => 'Hero Blocks', ...]
+        $groups = $this->blocks->groups();
         $group =
             $this->argument('group') ?:
             select(label: 'Which type of block would you like?', options: $groups, required: true);
@@ -53,7 +53,7 @@ class MakeBlock extends Command
                     placeholder: '(Optional) Short guidance to editors'
                 ));
 
-        // 2) Compute slugs once
+        // 2) Compute slugs
         $locale = Config::getShortLocale();
         $viewName = Str::slug($name, '-', $locale);
         $fieldsetName = Str::slug($name, '_', $locale);
@@ -77,7 +77,9 @@ class MakeBlock extends Command
         return self::SUCCESS;
     }
 
-    /** Keep suggestions local & simple. Extract later if it grows. */
+    /**
+     * Keep suggestions local & simple. Extract later if it grows.
+     **/
     private function suggestedBlocksFor(string $group): array
     {
         $map = [

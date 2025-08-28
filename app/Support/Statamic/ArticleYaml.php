@@ -4,10 +4,10 @@ namespace App\Support\Statamic;
 
 use Illuminate\Filesystem\Filesystem;
 
-class BlocksYaml extends GroupedSetsYaml
+class ArticleYaml extends GroupedSetsYaml
 {
     public function __construct(Filesystem $files)
     {
-        parent::__construct($files, 'resources/fieldsets/blocks.yaml', 'blocks');
+        parent::__construct($files, 'resources/fieldsets/article.yaml', 'article');
     }
 }
