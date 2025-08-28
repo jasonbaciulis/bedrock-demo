@@ -18,49 +18,37 @@ class GroupedSetsYaml
     public function groups(): array
     {
         $data = $this->read();
-        $root = $this->setsRoot($data);
+        $root = $this->groupsRoot($data);
 
-        $out = [];
-        foreach ($root as $handle => $group) {
-            $out[$handle] = (string) ($group['display'] ?? Stringy::humanize($handle));
-        }
-
-        return $out;
+        return $this->labelsFromConfig($root);
     }
 
     public function sets(string $groupHandle): array
     {
         $data = $this->read();
-        $root = $this->setsRoot($data);
+        $root = $this->groupsRoot($data);
 
         if (!array_key_exists($groupHandle, $root)) {
             throw new \RuntimeException("Group '{$groupHandle}' not found in {$this->path}.");
         }
 
-        $pairs = [];
-        foreach (Arr::get($root[$groupHandle], 'sets', []) as $handle => $config) {
-            $pairs[$handle] = (string) ($config['display'] ?? Stringy::humanize($handle));
-        }
-
-        return $pairs;
+        return $this->labelsFromConfig(Arr::get($root[$groupHandle], 'sets', []));
     }
 
     public function addSet(string $groupHandle, string $setHandle, array $set): void
     {
         $data = $this->read();
-        $root = &$this->setsRoot($data);
+        $root = $this->groupsRoot($data);
 
         if (!isset($root[$groupHandle])) {
             throw new \RuntimeException("Group '{$groupHandle}' not found.");
         }
 
-        $group = $root[$groupHandle];
-        $sets = Arr::get($group, 'sets', []);
-        $sets[$setHandle] = $set;
-        ksort($sets, SORT_NATURAL | SORT_FLAG_CASE);
+        $sets = collect(Arr::get($root[$groupHandle], 'sets', []))
+            ->put($setHandle, $set)
+            ->pipe(fn($collection) => $this->sortKeysNaturally($collection->all()));
 
-        $group['sets'] = $sets;
-        $root[$groupHandle] = $group;
+        $data = $this->updateGroupSets($data, $groupHandle, $sets);
 
         $this->write($data);
     }
@@ -68,26 +56,38 @@ class GroupedSetsYaml
     public function removeSet(string $groupHandle, string $setHandle): void
     {
         $data = $this->read();
-        $root = &$this->setsRoot($data);
+        $root = $this->groupsRoot($data);
 
         if (!isset($root[$groupHandle]['sets'][$setHandle])) {
             throw new \RuntimeException("Set '{$setHandle}' not found in group '{$groupHandle}'.");
         }
 
-        unset($root[$groupHandle]['sets'][$setHandle]);
+        $sets = collect($root[$groupHandle]['sets'] ?? [])
+            ->except($setHandle)
+            ->pipe(fn($collection) => $this->sortKeysNaturally($collection->all()));
 
-        $sets = $root[$groupHandle]['sets'] ?? [];
-        ksort($sets, SORT_NATURAL | SORT_FLAG_CASE);
-        $root[$groupHandle]['sets'] = $sets;
+        $data = $this->updateGroupSets($data, $groupHandle, $sets);
 
         $this->write($data);
     }
 
-    /**
-     * Return a reference to the actual sets array inside $data.
-     * IMPORTANT: do not use Arr::get here; it breaks references.
-     */
-    private function &setsRoot(array &$data): array
+    private function groupsRoot(array $data): array
+    {
+        $index = $this->groupFieldIndexOrFail($data);
+
+        return $data['fields'][$index]['field']['sets'] ?? [];
+    }
+
+    private function updateGroupSets(array $data, string $groupHandle, array $sets): array
+    {
+        $index = $this->groupFieldIndexOrFail($data);
+
+        $data['fields'][$index]['field']['sets'][$groupHandle]['sets'] = $sets;
+
+        return $data;
+    }
+
+    private function groupFieldIndexOrFail(array $data): int
     {
         if (!isset($data['fields']) || !is_array($data['fields'])) {
             throw new \RuntimeException(
@@ -95,20 +95,33 @@ class GroupedSetsYaml
             );
         }
 
-        foreach ($data['fields'] as &$field) {
+        foreach ($data['fields'] as $index => $field) {
             if (($field['handle'] ?? null) === $this->fieldHandle) {
-                if (!isset($field['field']['sets'])) {
-                    $field['field']['sets'] = [];
-                }
-                $sets = &$field['field']['sets'];
-
-                return $sets;
+                return $index;
             }
         }
 
         throw new \RuntimeException(
             "Field handle '{$this->fieldHandle}' not found in {$this->path}."
         );
+    }
+
+    private function sortKeysNaturally(array $items): array
+    {
+        return collect($items)
+            ->sortKeysUsing(static fn(string $a, string $b): int => strnatcasecmp($a, $b))
+            ->all();
+    }
+
+    private function labelsFromConfig(array $items): array
+    {
+        return collect($items)
+            ->mapWithKeys(
+                fn(array $config, string $handle) => [
+                    $handle => (string) ($config['display'] ?? Stringy::humanize($handle)),
+                ]
+            )
+            ->all();
     }
 
     private function read(): array
