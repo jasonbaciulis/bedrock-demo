@@ -7,7 +7,7 @@ use Statamic\Facades\Config;
 use Illuminate\Console\Command;
 use App\Support\Yaml\ArticleYaml;
 use Illuminate\Filesystem\Filesystem;
-use function Laravel\Prompts\{select, text};
+use function Laravel\Prompts\{select, text, info};
 
 class MakeSet extends Command
 {
@@ -66,7 +66,7 @@ class MakeSet extends Command
             return self::FAILURE;
         }
 
-        $this->info("Created '{$name}' set in '{$groups[$group]}' group.");
+        info("Created '{$name}' set in '{$groups[$group]}' group.");
         return self::SUCCESS;
     }
 

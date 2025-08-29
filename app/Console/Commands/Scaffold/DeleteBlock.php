@@ -80,10 +80,12 @@ class DeleteBlock extends Command
             return self::FAILURE;
         }
 
-        $this->info("Removed '{$label}' block.");
+        info("Removed '{$label}' block.");
 
         return self::SUCCESS;
     }
+
+    // TODO: If the block is used in any entries, remove the block from the entry.
 
     private function deleteFiles(string $fieldset, bool $force = false): void
     {

@@ -76,9 +76,11 @@ class DeleteSet extends Command
             return self::FAILURE;
         }
 
-        $this->info("Removed '{$label}' set.");
+        info("Removed '{$label}' set.");
         return self::SUCCESS;
     }
+
+    // TODO: If the set is used in any entries, remove the set from the entry.
 
     private function deleteFiles(string $fieldset, bool $force = false): void
     {
