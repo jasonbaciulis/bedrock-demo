@@ -89,12 +89,17 @@
         @if ($seo->json_ld_type->value() === 'custom')
             <script type="application/ld+json" id="schema">{!! $seo->json_ld !!}</script>
         @elseif ($schemaData)
-            <script type="application/ld+json" id="schema">@json($schemaData, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)</script>
+            <script type="application/ld+json" id="schema-{{ $seo->json_ld_type->value() }}">
+                @json($schemaData, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)
+            </script>
         @endif
     @endif
     @isset($page->schema_jsonld)
         <script type="application/ld+json" id="schema-page">{!! $page->schema_jsonld !!}</script>
     @endisset
+
+    {{-- Add JSON-LD coming from other places like FAQs --}}
+    @yield('json_ld')
 
     {{-- Breadcrumbs JSON-ld --}}
     @if ($seo->breadcrumbs && !empty($segment_1))
