@@ -21,9 +21,9 @@
                 x-init="calcGrid()"
                 x-on:resize.window="calcGrid()"
             >
-                @for ($i = 0; $i < 12; $i++)
+                @for ($i = 1; $i <= 12; $i++)
                     <div class="relative h-40 bg-pink-50">
-                        @unless ($loop->last)
+                        @unless ($i === 12)
                             <span
                                 class="text-muted-foreground absolute top-1/2 left-full hidden -translate-y-1/2 border-b border-dashed border-gray-400 text-center font-mono text-[10px] sm:block"
                                 x-bind:style="`width:${columnGap}px`"
