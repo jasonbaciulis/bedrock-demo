@@ -4,7 +4,7 @@ blueprint: pages
 title: Home
 template: default
 updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
-updated_at: 1756464542
+updated_at: 1756477433
 blocks:
   -
     id: ZbruxJDq
@@ -63,16 +63,16 @@ blocks:
     type: testimonials
     enabled: true
   -
+    id: m3h0yigt
+    type: newsletter
+    enabled: true
+  -
     id: m4seyrjx
     title: 'Recent posts'
     text: 'Some description for the blog'
     query: latest
     limit: 3
     type: blog_excerpt
-    enabled: true
-  -
-    id: m3h0yigt
-    type: newsletter
     enabled: true
   -
     id: UXTueUcZ
