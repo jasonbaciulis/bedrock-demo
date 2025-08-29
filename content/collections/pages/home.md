@@ -8,7 +8,7 @@ updated_at: 1756464542
 blocks:
   -
     id: ZbruxJDq
-    type: hero_home
+    type: hero_demo
     enabled: true
     title: 'The Foundation for your Statamic projects'
     text: 'shadcn/ui style Alpine.js components that you can customize, extend, and build on. Plus page builder and complete SEO setup.'

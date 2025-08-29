@@ -16,12 +16,12 @@ fields:
           instructions: 'Above-the-fold intro blocks'
           icon: align-object-top
           sets:
-            hero_home:
+            hero_demo:
               display: 'Hero Home'
               icon: align-object-top
               fields:
                 -
-                  import: hero_home
+                  import: hero_demo
         messaging:
           display: Messaging
           instructions: 'Features, benefits, how it works'
