@@ -56,18 +56,18 @@ class DeleteSet extends Command
         $setLabel = $sets[$fieldset] ?? $fieldset;
 
         // Inform usage counts and confirm destructive action
-        $entriesUsing = $this->countEntriesUsingSet($fieldset);
-        if ($entriesUsing > 0) {
-            $entriesLabel = Str::plural('entry', $entriesUsing);
+        $usingCount = $this->countEntriesUsingSet($fieldset);
+        if ($usingCount > 0) {
+            $usingLabel = $this->entriesLabel($usingCount);
             warning(
-                "Heads up: '{$setLabel}' set is used in {$entriesUsing} {$entriesLabel}. It will be removed from the {$entriesLabel}."
+                "Heads up: '{$setLabel}' set is used in {$usingCount} {$usingLabel}. It will be removed from the {$usingLabel}."
             );
         }
 
         if (
             !confirm(
                 label: "Delete '{$setLabel}' from '{$groups[$group]}' group?",
-                hint: $this->option('keep-files')
+                hint: (bool) $this->option('keep-files')
                     ? 'Only remove from article.yaml (files will be kept).'
                     : 'This will also delete the fieldset and set view file.',
                 default: false
@@ -87,7 +87,8 @@ class DeleteSet extends Command
             // Also remove usages from entries (posts etc.)
             $removedCount = $this->removeSetUsagesFromEntries($fieldset);
             if ($removedCount > 0) {
-                info("Removed from {$removedCount} {$entriesLabel}.");
+                $removedLabel = $this->entriesLabel($removedCount);
+                info("Removed from {$removedCount} {$removedLabel}.");
             }
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
@@ -127,12 +128,10 @@ class DeleteSet extends Command
      */
     private function removeSetUsagesFromEntries(string $fieldset): int
     {
-        $totalRemoved = 0;
-
-        foreach (Entry::all() as $entry) {
+        return Entry::all()->sum(function ($entry) use ($fieldset): int {
             $article = collect((array) $entry->get('article'));
             if ($article->isEmpty()) {
-                continue;
+                return 0;
             }
 
             $filtered = $article
@@ -149,11 +148,15 @@ class DeleteSet extends Command
             if ($removed > 0) {
                 $entry->set('article', $filtered->all());
                 $entry->save();
-                $totalRemoved += $removed;
             }
-        }
 
-        return $totalRemoved;
+            return $removed;
+        });
+    }
+
+    private function entriesLabel(int $count): string
+    {
+        return Str::plural('entry', $count);
     }
 
     private function countEntriesUsingSet(string $fieldset): int

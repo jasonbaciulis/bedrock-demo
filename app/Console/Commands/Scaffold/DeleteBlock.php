@@ -56,18 +56,18 @@ class DeleteBlock extends Command
         $blockLabel = $sets[$fieldset] ?? $fieldset;
 
         // 3) Inform usage counts and confirm destructive action
-        $entriesCount = $this->countEntriesUsingBlock($fieldset);
-        if ($entriesCount > 0) {
-            $entriesLabel = Str::plural('entry', $entriesCount);
+        $usingCount = $this->countEntriesUsingBlock($fieldset);
+        if ($usingCount > 0) {
+            $usingLabel = $this->entriesLabel($usingCount);
             warning(
-                "Heads up: '{$blockLabel}' is used in {$entriesCount} {$entriesLabel}. It will be removed from the {$entriesLabel}."
+                "Heads up: '{$blockLabel}' is used in {$usingCount} {$usingLabel}. It will be removed from the {$usingLabel}."
             );
         }
 
         if (
             !confirm(
                 label: "Delete '{$blockLabel}' from '{$groups[$group]}' group?",
-                hint: $this->option('keep-files')
+                hint: (bool) $this->option('keep-files')
                     ? 'Only remove from blocks.yaml (files will be kept).'
                     : 'This will also delete the fieldset and block view file.',
                 default: false
@@ -89,7 +89,8 @@ class DeleteBlock extends Command
             // Also remove usages from entries (pages, etc.)
             $removedCount = $this->removeBlockUsagesFromEntries($fieldset);
             if ($removedCount > 0) {
-                info("Removed from {$removedCount} {$entriesLabel}.");
+                $removedLabel = $this->entriesLabel($removedCount);
+                info("Removed from {$removedCount} {$removedLabel}.");
             }
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
@@ -135,12 +136,10 @@ class DeleteBlock extends Command
      */
     private function removeBlockUsagesFromEntries(string $fieldset): int
     {
-        $totalRemoved = 0;
-
-        foreach (Entry::all() as $entry) {
+        return Entry::all()->sum(function ($entry) use ($fieldset): int {
             $blocks = collect((array) $entry->get('blocks'));
             if ($blocks->isEmpty()) {
-                continue;
+                return 0;
             }
 
             $filtered = $blocks
@@ -154,11 +153,15 @@ class DeleteBlock extends Command
             if ($removed > 0) {
                 $entry->set('blocks', $filtered->all());
                 $entry->save();
-                $totalRemoved += $removed;
             }
-        }
 
-        return $totalRemoved;
+            return $removed;
+        });
+    }
+
+    private function entriesLabel(int $count): string
+    {
+        return Str::plural('entry', $count);
     }
 
     private function countEntriesUsingBlock(string $fieldset): int
