@@ -2,9 +2,12 @@
 
 namespace App\Console\Commands\Scaffold;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Statamic\Facades\Entry;
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 use App\Support\Yaml\ArticleYaml;
+use Illuminate\Filesystem\Filesystem;
 use function Laravel\Prompts\{select, confirm, info, warning};
 
 class DeleteSet extends Command
@@ -50,14 +53,23 @@ class DeleteSet extends Command
             $this->argument('set') ?:
             select(label: 'Which set would you like to delete?', options: $sets, required: true);
 
-        $label = $sets[$fieldset] ?? $fieldset;
+        $setLabel = $sets[$fieldset] ?? $fieldset;
+
+        // Inform usage counts and confirm destructive action
+        $entriesUsing = $this->countEntriesUsingSet($fieldset);
+        if ($entriesUsing > 0) {
+            $entriesLabel = Str::plural('entry', $entriesUsing);
+            warning(
+                "Heads up: '{$setLabel}' set is used in {$entriesUsing} {$entriesLabel}. It will be removed from the {$entriesLabel}."
+            );
+        }
 
         if (
             !confirm(
-                label: "Delete '{$label}' from '{$groups[$group]}'?",
+                label: "Delete '{$setLabel}' from '{$groups[$group]}' group?",
                 hint: $this->option('keep-files')
                     ? 'Only remove from article.yaml (files will be kept).'
-                    : 'This will also delete the fieldset YAML and set view file.',
+                    : 'This will also delete the fieldset and set view file.',
                 default: false
             )
         ) {
@@ -71,16 +83,20 @@ class DeleteSet extends Command
             if (!(bool) $this->option('keep-files')) {
                 $this->deleteFiles(fieldset: $fieldset, force: (bool) $this->option('force'));
             }
+
+            // Also remove usages from entries (posts etc.)
+            $removedCount = $this->removeSetUsagesFromEntries($fieldset);
+            if ($removedCount > 0) {
+                info("Removed from {$removedCount} {$entriesLabel}.");
+            }
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
             return self::FAILURE;
         }
 
-        info("Removed '{$label}' set.");
+        info("Removed '{$setLabel}' set.");
         return self::SUCCESS;
     }
-
-    // TODO: If the set is used in any entries, remove the set from the entry.
 
     private function deleteFiles(string $fieldset, bool $force = false): void
     {
@@ -104,5 +120,59 @@ class DeleteSet extends Command
                 "Some files were not found:\n - {$list}\n(Use --force to ignore.)"
             );
         }
+    }
+
+    /**
+     * Remove Bard set items of a given type from all entries using the `article` field.
+     */
+    private function removeSetUsagesFromEntries(string $fieldset): int
+    {
+        $totalRemoved = 0;
+
+        foreach (Entry::all() as $entry) {
+            $article = collect((array) $entry->get('article'));
+            if ($article->isEmpty()) {
+                continue;
+            }
+
+            $filtered = $article
+                ->reject(static function ($node) use ($fieldset): bool {
+                    if (!is_array($node) || Arr::get($node, 'type') !== 'set') {
+                        return false; // keep non-set nodes
+                    }
+
+                    return Arr::get($node, 'attrs.values.type') === $fieldset; // reject matching set
+                })
+                ->values();
+
+            $removed = $article->count() - $filtered->count();
+            if ($removed > 0) {
+                $entry->set('article', $filtered->all());
+                $entry->save();
+                $totalRemoved += $removed;
+            }
+        }
+
+        return $totalRemoved;
+    }
+
+    private function countEntriesUsingSet(string $fieldset): int
+    {
+        return Entry::all()
+            ->filter(static function ($entry) use ($fieldset) {
+                $article = collect((array) $entry->get('article'));
+                if ($article->isEmpty()) {
+                    return false;
+                }
+
+                return $article->contains(static function ($node) use ($fieldset): bool {
+                    if (!is_array($node) || ($node['type'] ?? null) !== 'set') {
+                        return false;
+                    }
+
+                    return ($node['attrs']['values']['type'] ?? null) === $fieldset;
+                });
+            })
+            ->count();
     }
 }

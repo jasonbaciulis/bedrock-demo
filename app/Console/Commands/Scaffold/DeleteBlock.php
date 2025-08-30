@@ -2,6 +2,9 @@
 
 namespace App\Console\Commands\Scaffold;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Statamic\Facades\Entry;
 use Illuminate\Console\Command;
 use App\Support\Yaml\BlocksYaml;
 use Illuminate\Filesystem\Filesystem;
@@ -50,15 +53,23 @@ class DeleteBlock extends Command
             $this->argument('block') ?:
             select(label: 'Which block would you like to delete?', options: $sets, required: true);
 
-        $label = $sets[$fieldset] ?? $fieldset;
+        $blockLabel = $sets[$fieldset] ?? $fieldset;
 
-        // 3) Confirm destructive action
+        // 3) Inform usage counts and confirm destructive action
+        $entriesCount = $this->countEntriesUsingBlock($fieldset);
+        if ($entriesCount > 0) {
+            $entriesLabel = Str::plural('entry', $entriesCount);
+            warning(
+                "Heads up: '{$blockLabel}' is used in {$entriesCount} {$entriesLabel}. It will be removed from the {$entriesLabel}."
+            );
+        }
+
         if (
             !confirm(
-                label: "Delete '{$label}' from '{$groups[$group]}'?",
+                label: "Delete '{$blockLabel}' from '{$groups[$group]}' group?",
                 hint: $this->option('keep-files')
                     ? 'Only remove from blocks.yaml (files will be kept).'
-                    : 'This will also delete the fieldset YAML and block view file.',
+                    : 'This will also delete the fieldset and block view file.',
                 default: false
             )
         ) {
@@ -74,18 +85,22 @@ class DeleteBlock extends Command
             if (!(bool) $this->option('keep-files')) {
                 $this->deleteFiles(fieldset: $fieldset, force: (bool) $this->option('force'));
             }
+
+            // Also remove usages from entries (pages, etc.)
+            $removedCount = $this->removeBlockUsagesFromEntries($fieldset);
+            if ($removedCount > 0) {
+                info("Removed from {$removedCount} {$entriesLabel}.");
+            }
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
 
             return self::FAILURE;
         }
 
-        info("Removed '{$label}' block.");
+        info("Removed '{$blockLabel}' block.");
 
         return self::SUCCESS;
     }
-
-    // TODO: If the block is used in any entries, remove the block from the entry.
 
     private function deleteFiles(string $fieldset, bool $force = false): void
     {
@@ -113,5 +128,53 @@ class DeleteBlock extends Command
                 "Some files were not found to delete:\n - {$list}\n(Use --force to ignore.)"
             );
         }
+    }
+
+    /**
+     * Remove items of a given block type from all entries using the `blocks` field.
+     */
+    private function removeBlockUsagesFromEntries(string $fieldset): int
+    {
+        $totalRemoved = 0;
+
+        foreach (Entry::all() as $entry) {
+            $blocks = collect((array) $entry->get('blocks'));
+            if ($blocks->isEmpty()) {
+                continue;
+            }
+
+            $filtered = $blocks
+                ->reject(
+                    static fn($item): bool => is_array($item) &&
+                        Arr::get($item, 'type') === $fieldset
+                )
+                ->values();
+
+            $removed = $blocks->count() - $filtered->count();
+            if ($removed > 0) {
+                $entry->set('blocks', $filtered->all());
+                $entry->save();
+                $totalRemoved += $removed;
+            }
+        }
+
+        return $totalRemoved;
+    }
+
+    private function countEntriesUsingBlock(string $fieldset): int
+    {
+        return Entry::all()
+            ->filter(static function ($entry) use ($fieldset) {
+                $blocks = collect((array) $entry->get('blocks'));
+                if ($blocks->isEmpty()) {
+                    return false;
+                }
+
+                return $blocks->contains(
+                    static fn($item): bool => is_array($item) &&
+                        Arr::get($item, 'type') === $fieldset
+                );
+            })
+            ->count();
     }
 }
