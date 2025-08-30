@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Install PHP 8.3 (simple)
 if command -v amazon-linux-extras >/dev/null 2>&1; then
