@@ -17,7 +17,7 @@ fields:
           icon: align-object-top
           sets:
             hero_demo:
-              display: 'Hero Home'
+              display: 'Hero Demo'
               icon: align-object-top
               fields:
                 -
