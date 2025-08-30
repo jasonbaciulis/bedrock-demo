@@ -132,7 +132,7 @@ test('make:set creates files and updates article.yaml', function () {
     expect($config['fields'][0]['import'] ?? null)->toBe($fieldset);
 });
 
-test('delete:block removes from YAML and deletes files', function () {
+test('delete:block removes from blocks.yaml and deletes files', function () {
     $group = 'messaging';
     $name = 'Scaffold Test Block ' . Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -168,7 +168,7 @@ test('delete:block removes from YAML and deletes files', function () {
     expect($exists)->toBeFalse();
 });
 
-test('delete:block with --keep-files removes YAML but keeps files', function () {
+test('delete:block with --keep-files removes blocks.yaml but keeps files', function () {
     $group = 'messaging';
     $name = 'Scaffold Test Block ' . Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -209,7 +209,7 @@ test('delete:block with --keep-files removes YAML but keeps files', function () 
     @unlink($viewPath);
 });
 
-test('delete:set removes from YAML and deletes files', function () {
+test('delete:set removes from article.yaml and deletes files', function () {
     $group = 'text_layout';
     $name = 'Scaffold Test Set ' . Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -245,7 +245,7 @@ test('delete:set removes from YAML and deletes files', function () {
     expect($exists)->toBeFalse();
 });
 
-test('delete:set with --keep-files removes YAML but keeps files', function () {
+test('delete:set with --keep-files removes from article.yaml but keeps files', function () {
     $group = 'text_layout';
     $name = 'Scaffold Test Set ' . Str::random(6);
     $locale = StatamicConfig::getShortLocale();
