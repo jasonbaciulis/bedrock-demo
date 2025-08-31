@@ -4,7 +4,6 @@ namespace App\View\Components;
 
 use Closure;
 use Illuminate\View\Component;
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
 
 class FAQs extends Component
