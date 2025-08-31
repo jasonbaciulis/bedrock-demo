@@ -152,7 +152,7 @@
         @endif
         <s:glide src="{{ $twitter_image }}" width="1200" height="600" fit="crop_focal" absolute="true">
             <meta name="twitter:image" content="{{ $url }}">
-            <meta name="twitter:image:alt" content="{{ $alt }}">
+            <meta name="twitter:image:alt" content="{{ $alt ?? '' }}">
         </s:glide>
     @endif
 @elseif ($response_code !== 200)
