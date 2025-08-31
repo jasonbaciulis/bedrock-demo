@@ -13,7 +13,7 @@ class FAQs extends Component
      */
     public function __construct(public array $items) {}
 
-    public function faqSchema(): array
+    private function faqSchema(): array
     {
         $faqEntities = collect($this->items ?? [])
             ->map(function ($item) {
@@ -40,6 +40,8 @@ class FAQs extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.faqs');
+        return view('components.faqs', [
+            'faqSchema' => $this->faqSchema(),
+        ]);
     }
 }
