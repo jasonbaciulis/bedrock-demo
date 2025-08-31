@@ -18,7 +18,7 @@ class ClearDemoContent extends Command
     /**
      * The name and signature of the console command.
      */
-    protected $signature = 'demo:clear {--force : Run without confirmation}';
+    protected $signature = 'bedrock:demo:clear {--force : Run without confirmation}';
 
     /**
      * The console command description.
