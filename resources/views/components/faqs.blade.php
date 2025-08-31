@@ -1,4 +1,4 @@
-<dl {{ $attributes }}>
+<dl {{ $attributes->except(['items']) }}>
     {{ $slot }}
 </dl>
 
