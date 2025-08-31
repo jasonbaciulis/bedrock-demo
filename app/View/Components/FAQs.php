@@ -41,7 +41,7 @@ class FAQs extends Component
     public function render(): View|Closure|string
     {
         return view('components.faqs', [
-            'faqSchema' => $this->faqSchema(),
+            'faq_schema' => $this->faqSchema(),
         ]);
     }
 }
