@@ -21,7 +21,7 @@ php composer-setup.php --quiet
 rm composer-setup.php
 
 # INSTALL COMPOSER DEPENDENCIES
-php composer.phar install --no-dev --no-interaction --prefer-dist --no-progress --optimize-autoloader
+php composer.phar install --no-interaction --prefer-dist --no-progress --optimize-autoloader
 
 # GENERATE APP KEY
 php artisan key:generate
