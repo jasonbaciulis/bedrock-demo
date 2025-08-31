@@ -13,7 +13,7 @@ class FAQs extends Component
      */
     public function __construct(public array $items) {}
 
-    private function faqSchema(): array
+    protected function faqSchema(): array
     {
         $faqEntities = collect($this->items ?? [])
             ->map(function ($item) {
