@@ -4,6 +4,6 @@
 
 @section('json_ld')
     <script type="application/ld+json" id="schema-faq">
-        @json($faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+        @json($faqSchema(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
     </script>
 @endsection
