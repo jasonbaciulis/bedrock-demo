@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
 
-class FAQs extends Component
+class Faqs extends Component
 {
     /**
      * Create a new component instance.
