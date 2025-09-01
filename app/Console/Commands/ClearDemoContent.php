@@ -61,6 +61,8 @@ class ClearDemoContent extends Command
             'theme',
         ]);
 
+        // TODO: delete assets except logos
+
         info('Demo content cleared.');
 
         return self::SUCCESS;
@@ -105,7 +107,12 @@ class ClearDemoContent extends Command
 
     private function cleanHomeEntryFields(Entry $home): void
     {
-        $home->remove('blocks')->remove('seo_title')->remove('seo_description');
+        $home
+            ->remove('blocks')
+            ->remove('seo_title')
+            ->remove('seo_description')
+            ->remove('og_image')
+            ->remove('twitter_image');
 
         $home->save();
 

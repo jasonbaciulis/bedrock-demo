@@ -112,6 +112,8 @@ test('bedrock:demo:clear removes demo content while preserving home entry', func
     expect($freshHome->data()->get('blocks'))->toBeNull();
     expect($freshHome->data()->get('seo_title'))->toBeNull();
     expect($freshHome->data()->get('seo_description'))->toBeNull();
+    expect($freshHome->data()->get('og_image'))->toBeNull();
+    expect($freshHome->data()->get('twitter_image'))->toBeNull();
 
     // 2) Navs: all trees should be empty
     foreach (Nav::all() as $nav) {
