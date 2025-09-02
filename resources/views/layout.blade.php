@@ -10,6 +10,7 @@
 
         <s:vite src="resources/css/site.css" />
         {{-- Async load fonts --}}
+        <s:vite src="resources/css/fonts.css" attr:style:rel="preload" attr:style:as="style" />
         <s:vite
             src="resources/css/fonts.css"
             attr:style:media="print"
