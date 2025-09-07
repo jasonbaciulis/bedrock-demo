@@ -3,7 +3,7 @@
  * https://statamic.dev/extending/control-panel
  */
 
-import slugifyAction from './components/actions/slugify'
+import slugifyAction from './components/actions/slugify.js'
 
 Statamic.booting(() => {
   // Field actions allow you to modify value for specific fields:
