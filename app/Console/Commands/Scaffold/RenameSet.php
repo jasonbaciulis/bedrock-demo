@@ -83,23 +83,23 @@ class RenameSet extends Command
                 'sets'
             );
 
+            // Derive current display name from the current display label in its group
+            $currentName = $this->article->sets($currentGroup)[$currentHandle] ?? null;
+
             if (
                 !$this->option('force') &&
                 !confirm(
-                    "Rename set '{$currentHandle}' to '{$newName}'? This will update all content entries."
+                    "Rename set '{$currentName}' to '{$newName}'? This will update all content entries."
                 )
             ) {
                 $this->info('Rename cancelled.');
                 return self::SUCCESS;
             }
 
-            // Derive original view from current display label
-            $originalDisplayName = $this->article->sets($currentGroup)[$currentHandle] ?? null;
-            $originalView = $originalDisplayName
-                ? Str::slug($originalDisplayName, '-', $locale)
-                : $currentHandle;
+            $originalView = $currentName ? Str::slug($currentName, '-', $locale) : $currentHandle;
 
             $this->moveFilesFor($currentHandle, $originalView, $newFieldset, $newView, 'sets');
+            $this->updateFieldsetTitle($newFieldset, $newName);
             $this->updateArticleYaml(
                 $currentGroup,
                 $targetGroup,

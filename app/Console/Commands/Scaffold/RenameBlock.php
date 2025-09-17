@@ -83,10 +83,13 @@ class RenameBlock extends Command
                 'blocks'
             );
 
+            // Derive current display name from the current display label in its group
+            $currentName = $this->blocks->sets($currentGroup)[$currentHandle] ?? null;
+
             if (
                 !$this->option('force') &&
                 !confirm(
-                    "Rename block '{$currentHandle}' to '{$newName}'? This will update all content entries."
+                    "Rename block '{$currentName}' to '{$newName}'? This will update all content entries."
                 )
             ) {
                 $this->info('Rename cancelled.');
@@ -94,14 +97,11 @@ class RenameBlock extends Command
                 return self::SUCCESS;
             }
 
-            // Derive original view name from the original display label in its group
-            $originalDisplayName = $this->blocks->sets($currentGroup)[$currentHandle] ?? null;
             $locale = Config::getShortLocale();
-            $originalView = $originalDisplayName
-                ? Str::slug($originalDisplayName, '-', $locale)
-                : $currentHandle;
+            $originalView = $currentName ? Str::slug($currentName, '-', $locale) : $currentHandle;
 
             $this->moveFilesFor($currentHandle, $originalView, $newFieldset, $newView, 'blocks');
+            $this->updateFieldsetTitle($newFieldset, $newName);
             $this->updateBlocksYaml(
                 $currentGroup,
                 $targetGroup,
