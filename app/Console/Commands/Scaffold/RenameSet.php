@@ -118,7 +118,7 @@ class RenameSet extends Command
             return self::FAILURE;
         }
 
-        info("Successfully renamed set '{$currentHandle}' to '{$newName}'");
+        info("Successfully renamed set '{$currentName}' to '{$newName}'");
         return self::SUCCESS;
     }
 

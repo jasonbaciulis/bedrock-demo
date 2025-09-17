@@ -121,7 +121,7 @@ class RenameBlock extends Command
             return self::FAILURE;
         }
 
-        info("Successfully renamed block '{$currentHandle}' to '{$newName}'");
+        info("Successfully renamed block '{$currentName}' to '{$newName}'");
 
         return self::SUCCESS;
     }
