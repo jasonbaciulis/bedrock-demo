@@ -37,7 +37,7 @@ afterEach(function () {
     }
 });
 
-test('bedrock:demo:clear removes demo content while preserving home entry', function () {
+test('bedrock:clear removes demo content while preserving home entry', function () {
     // Ensure home exists; if not, create it.
     $home = EntryFacade::whereCollection('pages')->first(fn($entry) => $entry->slug() === 'home');
     if (!$home) {
@@ -92,7 +92,7 @@ test('bedrock:demo:clear removes demo content while preserving home entry', func
     }
 
     // Run the command
-    $this->artisan('bedrock:demo:clear', ['--force' => true])->assertExitCode(Command::SUCCESS);
+    $this->artisan('bedrock:clear', ['--force' => true])->assertExitCode(Command::SUCCESS);
 
     // 1) Entries: only home page should remain in pages; other collections should be empty
     $entries = EntryFacade::all();
