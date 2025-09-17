@@ -9,6 +9,8 @@ use Statamic\Facades\GlobalVariables;
 use Statamic\Facades\Nav;
 use Statamic\Facades\Site;
 use Statamic\Facades\Term;
+use Statamic\Facades\Asset;
+use Statamic\Facades\AssetContainer;
 
 beforeAll(function () {
     // Auto-confirm prompts for destructive actions.
@@ -26,6 +28,17 @@ beforeEach(function () {
         $this->fs->deleteDirectory($this->backupPath);
     }
     $this->fs->copyDirectory($this->contentPath, $this->backupPath);
+
+    // Backup the assets directory so we can restore it after the test.
+    $this->assetsPath = public_path('assets');
+    $this->assetsBackupPath = public_path('assets_backup_for_tests');
+
+    if ($this->fs->exists($this->assetsBackupPath)) {
+        $this->fs->deleteDirectory($this->assetsBackupPath);
+    }
+    if ($this->fs->exists($this->assetsPath)) {
+        $this->fs->copyDirectory($this->assetsPath, $this->assetsBackupPath);
+    }
 });
 
 afterEach(function () {
@@ -34,6 +47,15 @@ afterEach(function () {
         $this->fs->deleteDirectory($this->contentPath);
         $this->fs->copyDirectory($this->backupPath, $this->contentPath);
         $this->fs->deleteDirectory($this->backupPath);
+    }
+
+    // Restore assets directory from backup
+    if (isset($this->fs) && $this->fs->exists($this->assetsBackupPath)) {
+        if ($this->fs->exists($this->assetsPath)) {
+            $this->fs->deleteDirectory($this->assetsPath);
+        }
+        $this->fs->copyDirectory($this->assetsBackupPath, $this->assetsPath);
+        $this->fs->deleteDirectory($this->assetsBackupPath);
     }
 });
 
@@ -91,19 +113,51 @@ test('bedrock:clear removes demo content while preserving home entry', function 
         }
     }
 
+    // Create test assets by copying existing files and creating new Statamic asset entries
+    $fs = new Filesystem();
+    $container = AssetContainer::findByHandle('assets');
+    $assetsPath = public_path('assets');
+
+    // Create simple test files in the filesystem first
+    $fs->ensureDirectoryExists($assetsPath . '/images');
+    $fs->ensureDirectoryExists($assetsPath . '/avatars');
+    $fs->ensureDirectoryExists($assetsPath . '/logos');
+
+    $fs->put($assetsPath . '/images/test-demo-image.txt', 'test image content');
+    $fs->put($assetsPath . '/avatars/test-demo-avatar.txt', 'test avatar content');
+    $fs->put($assetsPath . '/logos/test-demo-logo.txt', 'test logo content');
+
+    // Create Statamic asset entries for these files
+    $testImageAsset = Asset::make()
+        ->container($container->handle())
+        ->path('images/test-demo-image.txt')
+        ->syncOriginal();
+    $testImageAsset->save();
+
+    $testAvatarAsset = Asset::make()
+        ->container($container->handle())
+        ->path('avatars/test-demo-avatar.txt')
+        ->syncOriginal();
+    $testAvatarAsset->save();
+
+    $testLogoAsset = Asset::make()
+        ->container($container->handle())
+        ->path('logos/test-demo-logo.txt')
+        ->syncOriginal();
+    $testLogoAsset->save();
+
+    // Store references for assertions later
+    $this->testImageAssetId = $testImageAsset->id();
+    $this->testAvatarAssetId = $testAvatarAsset->id();
+    $this->testLogoAssetId = $testLogoAsset->id();
+
     // Run the command
     $this->artisan('bedrock:clear', ['--force' => true])->assertExitCode(Command::SUCCESS);
 
     // 1) Entries: only home page should remain in pages; other collections should be empty
     $entries = EntryFacade::all();
     // Keep everything that is the home entry
-    $nonHome = $entries->reject(function ($entry) use ($home) {
-        if ($entry->id() === $home->id()) {
-            return true;
-        }
-
-        return false;
-    });
+    $nonHome = $entries->reject(fn($entry) => $entry->id() === $home->id());
     expect($nonHome->count())->toBe(0);
 
     // Home must have fields cleared
@@ -132,4 +186,19 @@ test('bedrock:clear removes demo content while preserving home entry', function 
     foreach (['banner', 'browser_appearance', 'newsletter', 'social_media', 'theme'] as $handle) {
         expect(GlobalVariables::whereSet($handle)->count())->toBe(0);
     }
+
+    // 5) Assets: demo assets should be deleted, but logos should be preserved
+    expect(Asset::find($this->testImageAssetId))->toBeNull();
+    expect(Asset::find($this->testAvatarAssetId))->toBeNull();
+
+    // Logo asset should still exist
+    expect(Asset::find($this->testLogoAssetId))->not->toBeNull();
+
+    // Verify by folder: logos folder should still have assets, others should be empty
+    $remainingLogoAssets = Asset::whereFolder('logos', 'assets');
+    expect($remainingLogoAssets->count())->toBeGreaterThan(0);
+
+    // .gitkeep should be preserved
+    $fs = new Filesystem();
+    expect($fs->exists(public_path('assets/.gitkeep')))->toBeTrue();
 });
