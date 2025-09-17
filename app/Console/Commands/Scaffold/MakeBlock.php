@@ -11,7 +11,7 @@ use function Laravel\Prompts\{select, suggest, text, info};
 
 class MakeBlock extends Command
 {
-    protected $signature = 'make:block
+    protected $signature = 'make:bedrock-block
         {group? : The group handle (e.g. hero)}
         {name? : The block display name}
         {--instructions= : Editor instructions}

@@ -12,7 +12,7 @@ use function Laravel\Prompts\{select, confirm, info, warning};
 
 class DeleteBlock extends Command
 {
-    protected $signature = 'delete:block
+    protected $signature = 'delete:bedrock-block
         {group? : The group handle (e.g. hero)}
         {block? : The block (fieldset) handle to delete}
         {--keep-files : Only remove from blocks.yaml; keep fieldset/view files}

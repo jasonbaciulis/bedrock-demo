@@ -11,7 +11,7 @@ use function Laravel\Prompts\{select, text, info};
 
 class MakeSet extends Command
 {
-    protected $signature = 'make:set
+    protected $signature = 'make:bedrock-set
         {group? : Group handle in Article}
         {name?  : Set display name}
         {--instructions= : Editor instructions}

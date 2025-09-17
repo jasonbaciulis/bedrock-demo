@@ -12,7 +12,7 @@ use function Laravel\Prompts\{select, confirm, info, warning};
 
 class DeleteSet extends Command
 {
-    protected $signature = 'delete:set
+    protected $signature = 'delete:bedrock-set
         {group? : Group handle in Article}
         {set?   : Set (fieldset) handle to delete}
         {--keep-files : Only remove from article.yaml; keep fieldset/view files}

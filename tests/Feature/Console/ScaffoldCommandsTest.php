@@ -69,7 +69,7 @@ function findFieldIndexByHandle(array $data, string $handle): int
     return -1;
 }
 
-test('make:block creates files and updates blocks.yaml', function () {
+test('make:bedrock-block creates files and updates blocks.yaml', function () {
     $group = 'messaging';
     $name = 'Scaffold Test Block ' . Str::random(6);
     $instructions = 'Test instructions';
@@ -78,7 +78,7 @@ test('make:block creates files and updates blocks.yaml', function () {
     $fieldset = Str::slug($name, '_', $locale);
     $view = Str::slug($name, '-', $locale);
 
-    $this->artisan('make:block', [
+    $this->artisan('make:bedrock-block', [
         'group' => $group,
         'name' => $name,
         '--instructions' => $instructions,
@@ -102,7 +102,7 @@ test('make:block creates files and updates blocks.yaml', function () {
     expect($config['fields'][0]['import'] ?? null)->toBe($fieldset);
 });
 
-test('make:set creates files and updates article.yaml', function () {
+test('make:bedrock-set creates files and updates article.yaml', function () {
     $group = 'text_layout';
     $name = 'Scaffold Test Set ' . Str::random(6);
     $instructions = 'Test instructions';
@@ -111,7 +111,7 @@ test('make:set creates files and updates article.yaml', function () {
     $fieldset = Str::slug($name, '_', $locale);
     $view = Str::slug($name, '-', $locale);
 
-    $this->artisan('make:set', [
+    $this->artisan('make:bedrock-set', [
         'group' => $group,
         'name' => $name,
         '--instructions' => $instructions,
@@ -135,7 +135,7 @@ test('make:set creates files and updates article.yaml', function () {
     expect($config['fields'][0]['import'] ?? null)->toBe($fieldset);
 });
 
-test('delete:block removes from blocks.yaml and deletes files', function () {
+test('delete:bedrock-block removes from blocks.yaml and deletes files', function () {
     $group = 'messaging';
     $name = 'Scaffold Test Block ' . Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -143,7 +143,7 @@ test('delete:block removes from blocks.yaml and deletes files', function () {
     $view = Str::slug($name, '-', $locale);
 
     // Create first
-    $this->artisan('make:block', [
+    $this->artisan('make:bedrock-block', [
         'group' => $group,
         'name' => $name,
         '--instructions' => 'irrelevant',
@@ -164,7 +164,7 @@ test('delete:block removes from blocks.yaml and deletes files', function () {
     $entryId = $entry->id();
 
     // Then delete
-    $this->artisan('delete:block', [
+    $this->artisan('delete:bedrock-block', [
         'group' => $group,
         'block' => $fieldset,
     ])
@@ -194,14 +194,14 @@ test('delete:block removes from blocks.yaml and deletes files', function () {
     expect($exists)->toBeFalse();
 });
 
-test('delete:block with --keep-files removes blocks.yaml but keeps files', function () {
+test('delete:bedrock-block with --keep-files removes blocks.yaml but keeps files', function () {
     $group = 'messaging';
     $name = 'Scaffold Test Block ' . Str::random(6);
     $locale = StatamicConfig::getShortLocale();
     $fieldset = Str::slug($name, '_', $locale);
     $view = Str::slug($name, '-', $locale);
 
-    $this->artisan('make:block', [
+    $this->artisan('make:bedrock-block', [
         'group' => $group,
         'name' => $name,
         '--instructions' => 'irrelevant',
@@ -213,7 +213,7 @@ test('delete:block with --keep-files removes blocks.yaml but keeps files', funct
     expect(is_file($fieldsetPath))->toBeTrue();
     expect(is_file($viewPath))->toBeTrue();
 
-    $this->artisan('delete:block', [
+    $this->artisan('delete:bedrock-block', [
         'group' => $group,
         'block' => $fieldset,
         '--keep-files' => true,
@@ -235,7 +235,7 @@ test('delete:block with --keep-files removes blocks.yaml but keeps files', funct
     @unlink($viewPath);
 });
 
-test('delete:set removes from article.yaml and deletes files', function () {
+test('delete:bedrock-set removes from article.yaml and deletes files', function () {
     $group = 'text_layout';
     $name = 'Scaffold Test Set ' . Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -243,7 +243,7 @@ test('delete:set removes from article.yaml and deletes files', function () {
     $view = Str::slug($name, '-', $locale);
 
     // Create first
-    $this->artisan('make:set', [
+    $this->artisan('make:bedrock-set', [
         'group' => $group,
         'name' => $name,
         '--instructions' => 'irrelevant',
@@ -274,7 +274,7 @@ test('delete:set removes from article.yaml and deletes files', function () {
     $entryId = $entry->id();
 
     // Then delete
-    $this->artisan('delete:set', [
+    $this->artisan('delete:bedrock-set', [
         'group' => $group,
         'set' => $fieldset,
     ])
@@ -307,14 +307,14 @@ test('delete:set removes from article.yaml and deletes files', function () {
     expect($exists)->toBeFalse();
 });
 
-test('delete:set with --keep-files removes from article.yaml but keeps files', function () {
+test('delete:bedrock-set with --keep-files removes from article.yaml but keeps files', function () {
     $group = 'text_layout';
     $name = 'Scaffold Test Set ' . Str::random(6);
     $locale = StatamicConfig::getShortLocale();
     $fieldset = Str::slug($name, '_', $locale);
     $view = Str::slug($name, '-', $locale);
 
-    $this->artisan('make:set', [
+    $this->artisan('make:bedrock-set', [
         'group' => $group,
         'name' => $name,
         '--instructions' => 'irrelevant',
@@ -326,7 +326,7 @@ test('delete:set with --keep-files removes from article.yaml but keeps files', f
     expect(is_file($fieldsetPath))->toBeTrue();
     expect(is_file($viewPath))->toBeTrue();
 
-    $this->artisan('delete:set', [
+    $this->artisan('delete:bedrock-set', [
         'group' => $group,
         'set' => $fieldset,
         '--keep-files' => true,
@@ -348,7 +348,7 @@ test('delete:set with --keep-files removes from article.yaml but keeps files', f
     @unlink($viewPath);
 });
 
-test('make:block without --force fails when files already exist', function () {
+test('make:bedrock-block without --force fails when files already exist', function () {
     $group = 'messaging';
     $name = 'Scaffold Test Block ' . Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -356,7 +356,7 @@ test('make:block without --force fails when files already exist', function () {
     $view = Str::slug($name, '-', $locale);
 
     // First creation succeeds
-    $this->artisan('make:block', [
+    $this->artisan('make:bedrock-block', [
         'group' => $group,
         'name' => $name,
         '--instructions' => 'irrelevant',
@@ -364,7 +364,7 @@ test('make:block without --force fails when files already exist', function () {
     ])->assertExitCode(Command::SUCCESS);
 
     // Second should fail due to existing files
-    $this->artisan('make:block', [
+    $this->artisan('make:bedrock-block', [
         'group' => $group,
         'name' => $name,
         '--instructions' => 'irrelevant',
@@ -375,7 +375,7 @@ test('make:block without --force fails when files already exist', function () {
     @unlink(base_path("resources/views/blocks/{$view}.blade.php"));
 });
 
-test('make:set without --force fails when files already exist', function () {
+test('make:bedrock-set without --force fails when files already exist', function () {
     $group = 'text_layout';
     $name = 'Scaffold Test Set ' . Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -383,7 +383,7 @@ test('make:set without --force fails when files already exist', function () {
     $view = Str::slug($name, '-', $locale);
 
     // First creation succeeds
-    $this->artisan('make:set', [
+    $this->artisan('make:bedrock-set', [
         'group' => $group,
         'name' => $name,
         '--instructions' => 'irrelevant',
@@ -391,7 +391,7 @@ test('make:set without --force fails when files already exist', function () {
     ])->assertExitCode(Command::SUCCESS);
 
     // Second should fail due to existing files
-    $this->artisan('make:set', [
+    $this->artisan('make:bedrock-set', [
         'group' => $group,
         'name' => $name,
         '--instructions' => 'irrelevant',

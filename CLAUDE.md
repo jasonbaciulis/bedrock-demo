@@ -54,12 +54,12 @@ php artisan route:clear
 ### Custom CLI Commands (Blocks & Sets)
 ```bash
 # Block management (page building components)
-php please make:block          # Create new block with fieldset and template
-php please delete:block        # Remove block and all associated files
+php please make:bedrock-block          # Create new block with fieldset and template
+php please delete:bedrock-block        # Remove block and all associated files
 
 # Set management (content composition for articles)
-php please make:set            # Create new set with fieldset and template
-php please delete:set          # Remove set and all associated files
+php please make:bedrock-set            # Create new set with fieldset and template
+php please delete:bedrock-set          # Remove set and all associated files
 ```
 
 ## Architecture & File Structure
@@ -108,10 +108,10 @@ resources/css/typography.css        # Prose class customization
 
 ```bash
 # For page building blocks
-php please make:block
+php please make:bedrock-block
 
 # For article content sets
-php please make:set
+php please make:bedrock-set
 ```
 
 These commands automatically:
