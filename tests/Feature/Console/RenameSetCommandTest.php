@@ -102,6 +102,10 @@ test('rename:bedrock-set renames files and updates article.yaml', function () {
     expect(isset($sets[$originalFieldset]))->toBeFalse();
     expect(isset($sets[$newFieldset]))->toBeTrue();
     expect($sets[$newFieldset])->toBe($newName);
+
+    // Fieldset title should be updated
+    $data = \Statamic\Facades\YAML::file($newFieldsetPath)->parse() ?? [];
+    expect($data['title'] ?? null)->toBe($newName);
 });
 
 test('rename:bedrock-set updates content entries', function () {
@@ -221,4 +225,3 @@ test('rename:bedrock-set fails when source set does not exist', function () {
         'new_name' => 'New Name',
     ])->assertExitCode(Command::FAILURE);
 });
-

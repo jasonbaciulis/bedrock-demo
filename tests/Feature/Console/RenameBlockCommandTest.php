@@ -102,6 +102,10 @@ test('rename:bedrock-block renames files and updates blocks.yaml', function () {
     expect(isset($sets[$originalFieldset]))->toBeFalse();
     expect(isset($sets[$newFieldset]))->toBeTrue();
     expect($sets[$newFieldset])->toBe($newName);
+
+    // Fieldset title should be updated
+    $data = \Statamic\Facades\YAML::file($newFieldsetPath)->parse() ?? [];
+    expect($data['title'] ?? null)->toBe($newName);
 });
 
 test('rename:bedrock-block updates content entries', function () {

@@ -113,4 +113,19 @@ trait ManagesFieldsetFiles
             $this->info("Note: View file not found at {$oldViewPath}");
         }
     }
+
+    /**
+     * Update the 'title' inside a fieldset YAML file for a given handle.
+     */
+    protected function updateFieldsetTitle(string $fieldsetHandle, string $newTitle): void
+    {
+        $path = base_path("resources/fieldsets/{$fieldsetHandle}.yaml");
+        if (!$this->files->exists($path)) {
+            return; // nothing to update
+        }
+
+        $data = \Statamic\Facades\YAML::file($path)->parse() ?? [];
+        $data['title'] = $newTitle;
+        $this->files->put($path, \Statamic\Facades\YAML::dump($data));
+    }
 }
