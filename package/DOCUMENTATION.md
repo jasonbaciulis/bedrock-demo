@@ -54,32 +54,16 @@ There is a nice list of custom scripts available in the command line to make a d
 ### Blocks
 Blocks are like LEGO bricks that provide you the maximum flexibility when building pages. Blocks are based on [Replicator Fieldtype](https://statamic.dev/fieldtypes/replicator).
 
-#### Make
-`php please make:bedrock-block`
-
-- Adds a set to the Blocks field in `resources/fieldsets/blocks.yaml`.
-- Creates a fieldset for a block in `resources/fieldsets/{file_name}.yaml`.
-- Creates a view with default markup in `resources/views/blocks/{file-name}.blade.php`.
-
-#### Delete
-`php please delete:bedrock-block`
-
-Removes a set from the Blocks field and all associated files.
+- `php please make:bedrock-block` - Adds a set to the Blocks field.
+- `php please delete:bedrock-block` - Removes a set from the Blocks field and all associated files.
+- `php please rename:bedrock-block` - Renames a set inside Blocks and optionally moves to another group.
 
 ### Sets
 Sets provide a powerful content creation experience with unparalleled flexibility for building entries i.e., Blog posts. Sets live in the the Article field which is based on [Bard Fieldtype](https://statamic.dev/fieldtypes/bard).
 
-#### Make
-`php please make:bedrock-set`
-
-- Adds a set to the Article in `resources/fieldsets/article.yaml`.
-- Creates a fieldset for a set in `resources/fieldsets/{file_name}.yaml`.
-- Creates a set view with default markup in `resources/views/sets/{file-name}.blade.php`.
-
-#### Delete
-`php please delete:bedrock-set`
-
-Removes a set from the Article and all associated files.
+- `php please make:bedrock-set` - adds a set to the Article.
+- `php please delete:bedrock-set` - removes a set from the Article and all associated files.
+- `php please rename:bedrock-set` - renames a set in the Article and optionally moves to another group.
 
 ## Production env file contents
 Dump your `.env` values here with sensitive data removed. The following is a production example that uses full static caching:
