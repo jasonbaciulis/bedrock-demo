@@ -1,0 +1,14 @@
+favorites: {  }
+nav:
+  settings:
+    'settings::preferences':
+      action: '@modify'
+      reorder:
+        - 'settings::preferences::general'
+      children:
+        'settings::preferences::toolbar':
+          action: '@create'
+          display: Toolbar
+          url: 'preferences/edit#toolbar'
+show_toolbar_local: true
+show_toolbar_staging: true
