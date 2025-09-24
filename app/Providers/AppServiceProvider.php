@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
-use Statamic\Statamic;
-use Statamic\Facades\Preference;
+use App\Protectors\AuthVerified;
 use Illuminate\Support\ServiceProvider;
+use Statamic\Auth\Protect\ProtectorManager;
+use Statamic\Facades\Preference;
+use Statamic\Statamic;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,19 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureStatamicVite();
         $this->configureStatamicPreference();
+        $this->configureStatamicProtectors();
+    }
+
+    /**
+     * Register custom Protector driver for Statamic.
+     *
+     * @see https://statamic.dev/protecting-content#registering-the-driver
+     */
+    private function configureStatamicProtectors(): void
+    {
+        app(ProtectorManager::class)->extend('auth_verified', function ($app) {
+            return new AuthVerified;
+        });
     }
 
     private function configureStatamicVite(): void
@@ -36,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
     private function configureStatamicPreference(): void
     {
         Preference::extend(
-            fn() => [
+            fn () => [
                 'toolbar' => [
                     'display' => __('Toolbar'),
                     'fields' => [

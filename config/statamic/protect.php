@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default (or site-wide) Scheme
@@ -29,7 +28,6 @@ return [
     */
 
     'schemes' => [
-
         'ip_address' => [
             'driver' => 'ip_address',
             'allowed' => ['127.0.0.1'],
@@ -41,13 +39,17 @@ return [
             'append_redirect' => true,
         ],
 
+        'logged_in_verified' => [
+            'driver' => 'auth_verified',
+            'login_url' => '/login',
+            'append_redirect' => true,
+        ],
+
         'password' => [
             'driver' => 'password',
             'allowed' => ['secret'],
             'field' => null,
             'form_url' => null,
         ],
-
     ],
-
 ];
