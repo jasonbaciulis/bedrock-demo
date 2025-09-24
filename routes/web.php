@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsletterController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+use Illuminate\Support\Facades\Route;
 
 // Route for handling newsletter subscriptions.
 Route::post('/newsletter', NewsletterController::class)
@@ -14,3 +14,9 @@ Route::statamic('/sitemap.xml', 'sitemap/sitemap', [
     'layout' => null,
     'content_type' => 'application/xml',
 ]);
+
+Route::view('dashboard', 'dashboard')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+require __DIR__.'/auth.php';
