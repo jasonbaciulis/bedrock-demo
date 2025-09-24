@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -40,6 +39,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'statamic' => [
+            'driver' => 'session',
+            'provider' => 'statamic',
+        ],
     ],
 
     /*
@@ -60,19 +64,14 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'statamic' => [
             'driver' => 'statamic',
         ],
 
-        // 'users' => [
-        //     'driver' => 'eloquent',
-        //     'model' => env('AUTH_MODEL', App\Models\User::class),
-        // ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
     ],
 
     /*
@@ -95,15 +94,22 @@ return [
     */
 
     'passwords' => [
-        'users' => [
+        'resets' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
         ],
 
-        'activations' => [
-            'provider' => 'users',
+        'statamic_resets' => [
+            'provider' => 'statamic',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'statamic_activations' => [
+            'provider' => 'statamic',
             'table' => env('AUTH_ACTIVATION_TOKEN_TABLE', 'password_activation_tokens'),
             'expire' => 4320,
             'throttle' => 60,
@@ -122,5 +128,4 @@ return [
     */
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
-
 ];

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | User Repository
@@ -18,7 +17,6 @@ return [
     'repository' => 'file',
 
     'repositories' => [
-
         'file' => [
             'driver' => 'file',
             'paths' => [
@@ -30,7 +28,6 @@ return [
         'eloquent' => [
             'driver' => 'eloquent',
         ],
-
     ],
 
     /*
@@ -113,8 +110,8 @@ return [
     */
 
     'passwords' => [
-        'resets' => 'users',
-        'activations' => 'activations',
+        'resets' => 'statamic_resets',
+        'activations' => 'statamic_activations',
     ],
 
     /*
@@ -148,7 +145,7 @@ return [
     */
 
     'guards' => [
-        'cp' => 'web',
+        'cp' => 'statamic',
         'web' => 'web',
     ],
 
@@ -178,5 +175,4 @@ return [
 
     'sort_field' => 'email',
     'sort_direction' => 'asc',
-
 ];
