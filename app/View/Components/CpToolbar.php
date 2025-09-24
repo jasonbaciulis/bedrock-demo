@@ -3,9 +3,10 @@
 namespace App\View\Components;
 
 use Closure;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 use Statamic\Facades\Preference;
-use Illuminate\Contracts\View\View;
 
 class CpToolbar extends Component
 {
@@ -19,6 +20,10 @@ class CpToolbar extends Component
 
     public function shouldRender(): bool
     {
+        if (Auth::guard('web')->check()) {
+            return false;
+        }
+
         return (Preference::get('show_toolbar_local') && config('app.env') === 'local') ||
             (Preference::get('show_toolbar_staging') && config('app.env') === 'staging') ||
             (Preference::get('show_toolbar_production') && config('app.env') === 'production');
