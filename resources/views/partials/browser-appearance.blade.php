@@ -1,28 +1,30 @@
-@if ($browser_appearance->disable_phone_detection)
-    <meta name="format-detection" content="telephone=no" />
-@endif
-
-@if ($browser_appearance->disable_email_detection)
-    <meta name="format-detection" content="email=no" />
-@endif
-
-@if ($browser_appearance->disable_address_detection)
-    <meta name="format-detection" content="address=no" />
-@endif
-
-@if ($browser_appearance->apple_mobile_web_app)
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    @if ($browser_appearance->apple_status_bar_black)
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+@isset($browser_appearance)
+    @if ($browser_appearance->disable_phone_detection)
+        <meta name="format-detection" content="telephone=no" />
     @endif
-@endif
 
-@if ($browser_appearance->android_mobile_web_app)
-    <meta name="mobile-web-app-capable" content="yes" />
-@endif
+    @if ($browser_appearance->disable_email_detection)
+        <meta name="format-detection" content="email=no" />
+    @endif
 
-@isset($browser_appearance->theme_color)
-    <meta name="theme-color" content="{{ $browser_appearance->theme_color }}" />
+    @if ($browser_appearance->disable_address_detection)
+        <meta name="format-detection" content="address=no" />
+    @endif
+
+    @if ($browser_appearance->apple_mobile_web_app)
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        @if ($browser_appearance->apple_status_bar_black)
+            <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        @endif
+    @endif
+
+    @if ($browser_appearance->android_mobile_web_app)
+        <meta name="mobile-web-app-capable" content="yes" />
+    @endif
+
+    @isset($browser_appearance->theme_color)
+        <meta name="theme-color" content="{{ $browser_appearance->theme_color }}" />
+    @endisset
 @endisset
 
 {{--

@@ -39,21 +39,24 @@
             @include('partials.nav-header-desktop')
 
             <div class="hidden items-center justify-end gap-x-2 lg:flex lg:w-0 lg:flex-1">
-                @foreach ($theme->header_buttons as $button)
-                    <x-ui.button
-                        :variant="$button->variant"
-                        :link_type="$button->link_type"
-                        :url="$button->url"
-                        :entry="$button->entry"
-                        :email="$button->email"
-                        :phone="$button->phone"
-                        :asset="$button->asset"
-                        :code="$button->code"
-                        :target_blank="$button->target_blank"
-                    >
-                        {!! $button->label !!}
-                    </x-ui.button>
-                @endforeach
+                <div class="hidden items-center justify-end gap-x-2 lg:flex lg:w-0 lg:flex-1">
+                    @if (auth()->guard('web')->check())
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn--ghost">
+                                {{ __('Log out') }}
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn--ghost">
+                            {{ __('Sign in') }}
+                        </a>
+                    @endif
+
+                    <a href="{{ route('register') }}" class="btn btn--primary">
+                        {{ __('Get started') }}
+                    </a>
+                </div>
             </div>
         </div>
     </div>
