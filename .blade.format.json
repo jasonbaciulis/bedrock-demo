@@ -1,5 +1,9 @@
 {
+  "useLaravelPint": true,
   "spacesAfterDirective": 0,
   "spacesAfterControlDirective": 1,
-  "echoStyle": "inline"
+  "echoStyle": "inline",
+  "phpOptions": {
+    "singleQuote": true
+  }
 }
