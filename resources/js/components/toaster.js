@@ -1,3 +1,5 @@
+// then ask to recreate from sonner github repo, just on alpinejs
+
 document.addEventListener('alpine:init', () => {
   Alpine.data('toaster', props => ({
     toasts: [],
@@ -12,32 +14,6 @@ document.addEventListener('alpine:init', () => {
           this.toasts.splice(i, 1)
           break
         }
-      }
-    },
-
-    burnToast(id) {
-      burnToast = this.getToastWithId(id)
-      burnToastElement = document.getElementById(burnToast.id)
-      if (burnToastElement) {
-        if (this.toasts.length == 1) {
-          this.expanded = false
-
-          burnToastElement.classList.remove('translate-y-0')
-          if (this.position.includes('bottom')) {
-            burnToastElement.classList.add('translate-y-full')
-          } else {
-            burnToastElement.classList.add('-translate-y-full')
-          }
-          burnToastElement.classList.add('-translate-y-full')
-        }
-        burnToastElement.classList.add('opacity-0')
-        let that = this
-        setTimeout(function () {
-          that.deleteToastWithId(id)
-          setTimeout(function () {
-            that.stackToasts()
-          }, 1)
-        }, 300)
       }
     },
 
@@ -221,26 +197,26 @@ document.addEventListener('alpine:init', () => {
 
     calculateHeightOfToastsContainer() {
       if (this.toasts.length == 0) {
-        $el.style.height = '0px'
+        this.$el.style.height = '0px'
         return
       }
 
-      lastToast = this.toasts[this.toasts.length - 1]
-      lastToastRectangle = document.getElementById(lastToast.id).getBoundingClientRect()
+      const lastToast = this.toasts[this.toasts.length - 1]
+      const lastToastRectangle = document.getElementById(lastToast.id).getBoundingClientRect()
 
-      firstToast = this.toasts[0]
-      firstToastRectangle = document.getElementById(firstToast.id).getBoundingClientRect()
+      const firstToast = this.toasts[0]
+      const firstToastRectangle = document.getElementById(firstToast.id).getBoundingClientRect()
 
       if (this.toastsHovered) {
         if (this.position.includes('bottom')) {
-          $el.style.height =
+          this.$el.style.height =
             firstToastRectangle.top + firstToastRectangle.height - lastToastRectangle.top + 'px'
         } else {
-          $el.style.height =
+          this.$el.style.height =
             lastToastRectangle.top + lastToastRectangle.height - firstToastRectangle.top + 'px'
         }
       } else {
-        $el.style.height = firstToastRectangle.height + 'px'
+        this.$el.style.height = firstToastRectangle.height + 'px'
       }
     },
   }))
