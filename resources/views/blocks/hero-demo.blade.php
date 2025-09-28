@@ -581,6 +581,22 @@
                         </button>
                     </nav>
                 </div>
+
+                <div class="card shadow-none">
+                    <div class="card__header">
+                        <p class="leading-none font-semibold">Toaster</p>
+                        <p class="text-muted-foreground text-sm">A toaster component.</p>
+                    </div>
+
+                    <x-ui.button
+                        x-data
+                        type="button"
+                        as="button"
+                        x-on:click="$dispatch('toast-show', { message: 'Hello, world!', type: 'success' })"
+                        label="Show toaster"
+                    />
+                    <x-ui.toaster />
+                </div>
             </div>
         </div>
     </div>
