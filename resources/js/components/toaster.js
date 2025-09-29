@@ -54,7 +54,7 @@ document.addEventListener('alpine:init', () => {
       middleToast.style.zIndex = 90
 
       if (this.expanded) {
-        middleToastPosition =
+        let middleToastPosition =
           topToast.getBoundingClientRect().height + this.paddingBetweenToasts + 'px'
 
         if (this.position.includes('bottom')) {
@@ -80,7 +80,7 @@ document.addEventListener('alpine:init', () => {
       let bottomToast = document.getElementById(this.toasts[2].id)
       bottomToast.style.zIndex = 80
       if (this.expanded) {
-        bottomToastPosition =
+        let bottomToastPosition =
           topToast.getBoundingClientRect().height +
           this.paddingBetweenToasts +
           middleToast.getBoundingClientRect().height +
