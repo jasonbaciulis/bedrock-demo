@@ -4,163 +4,51 @@
     @endpush
 @endonce
 
-<div x-data>
-    <template x-teleport="body">
-        {{-- TODO: if any toats are hovered, reset the timer, on hover away, restart --}}
-        <ul
-            x-cloak
-            x-data="toaster({
-                        position: 'bottom-right',
-                        paddingBetweenToasts: 15,
-                    })"
-            x-on:toast-show.window="
-                event.stopPropagation()
-                toasts.unshift({
-                    id: 'toast-' + Math.random().toString(16).slice(2),
-                    show: false,
-                    message: event.detail.message,
-                    description: event.detail.description,
-                    type: event.detail.type,
-                    html: event.detail.html,
-                })
-            "
-            x-on:mouseenter="toastsHovered = true"
-            x-on:mouseleave="toastsHovered = false"
-            x-init="
-                stackToasts()
-                $watch('toastsHovered', function (value) {
-                    if (position.includes('bottom')) {
-                        resetBottom()
-                    } else {
-                        resetTop()
-                    }
+<section
+    x-data="toaster()"
+    x-id="['toast']"
+    aria-live="polite"
+    aria-relevant="additions text"
+    aria-atomic="false"
+    tabindex="-1"
+    class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+    x-on:toast.window="enqueue($event.detail)"
+>
+    <ol role="list" class="flex w-full flex-col items-center gap-4 sm:items-end">
+        <template x-for="toast in toasts" :key="toast.id">
+            <li
+                class="border-border bg-background pointer-events-auto flex w-full max-w-sm translate-y-0 transform items-start gap-3 rounded-lg border p-4 opacity-100 shadow-[0_4px_12px_rgba(0,0,0,.1)] transition duration-300 ease-out sm:translate-x-0 starting:translate-y-4 starting:opacity-0 starting:sm:translate-x-4 starting:sm:translate-y-0"
+                role="status"
+            >
+                <template x-if="toast.type === 'success'">
+                    <x-lucide-circle-check class="mt-0.5 size-4 shrink-0" />
+                </template>
+                <template x-if="toast.type === 'warning'">
+                    <x-lucide-triangle-alert class="mt-0.5 size-4 shrink-0" />
+                </template>
+                <template x-if="toast.type === 'error'">
+                    <x-lucide-circle-x class="mt-0.5 size-4 shrink-0" />
+                </template>
+                <template x-if="toast.type === 'info'">
+                    <x-lucide-info class="mt-0.5 size-4 shrink-0" />
+                </template>
 
-                    if (value) {
-                        // calculate the new positions
-                        expanded = true
-                        stackToasts()
-                    } else {
-                        expanded = false
-                        //setTimeout(function(){
-                        stackToasts()
-                        //}, 10);
-                        setTimeout(function () {
-                            stackToasts()
-                        }, 10)
-                    }
-                })
-            "
-            class="group fixed z-[99] block w-full sm:max-w-xs"
-            x-bind:class="{
-                'right-0 top-0 sm:mt-6 sm:mr-6': position == 'top-right',
-                'left-0 top-0 sm:mt-6 sm:ml-6': position == 'top-left',
-                'left-1/2 -translate-x-1/2 top-0 sm:mt-6': position == 'top-center',
-                'right-0 bottom-0 sm:mr-6 sm:mb-6': position == 'bottom-right',
-                'left-0 bottom-0 sm:ml-6 sm:mb-6': position == 'bottom-left',
-                'left-1/2 -translate-x-1/2 bottom-0 sm:mb-6': position == 'bottom-center',
-            }"
-        >
-            <template x-for="(toast, index) in toasts" :key="toast.id">
-                <li
-                    x-bind:id="toast.id"
-                    x-data="{
-                        toastHovered: false,
-                    }"
-                    x-init="
-                        if (position.includes('bottom')) {
-                            $el.firstElementChild.classList.add('toast-bottom')
-                            $el.firstElementChild.classList.add('opacity-0', 'translate-y-full')
-                        } else {
-                            $el.firstElementChild.classList.add('opacity-0', '-translate-y-full')
-                        }
-                        setTimeout(function () {
-                            setTimeout(function () {
-                                if (position.includes('bottom')) {
-                                    $el.firstElementChild.classList.remove(
-                                        'opacity-0',
-                                        'translate-y-full',
-                                    )
-                                } else {
-                                    $el.firstElementChild.classList.remove(
-                                        'opacity-0',
-                                        '-translate-y-full',
-                                    )
-                                }
-                                $el.firstElementChild.classList.add('opacity-100', 'translate-y-0')
-
-                                setTimeout(function () {
-                                    stackToasts()
-                                }, 10)
-                            }, 5)
-                        }, 50)
-
-                        setTimeout(function () {
-                            setTimeout(function () {
-                                $el.firstElementChild.classList.remove('opacity-100')
-                                $el.firstElementChild.classList.add('opacity-0')
-                                if (toasts.length == 1) {
-                                    $el.firstElementChild.classList.remove('translate-y-0')
-                                    $el.firstElementChild.classList.add('-translate-y-full')
-                                }
-                                setTimeout(function () {
-                                    deleteToastWithId(toast.id)
-                                }, 300)
-                            }, 5)
-                        }, 4000)
-                    "
-                    x-on:mouseover="toastHovered = true"
-                    x-on:mouseout="toastHovered = false"
-                    class="absolute w-full duration-300 ease-out select-none sm:max-w-xs"
+                <div class="flex flex-1 flex-col gap-0.5">
+                    <p class="text-foreground text-sm font-medium" x-text="toast.message"></p>
+                    <template x-if="toast.description">
+                        <p class="text-muted-foreground text-sm" x-text="toast.description"></p>
+                    </template>
+                </div>
+                <button
+                    x-show="toast.dismissible"
+                    type="button"
+                    class="hover:text-foreground inline-flex shrink-0 p-1 text-neutral-800/70"
+                    aria-label="Dismiss toast"
+                    x-on:click="dismiss(toast.id)"
                 >
-                    <span
-                        class="group relative flex w-full flex-col items-start border border-gray-100 bg-white p-4 shadow-[0_5px_15px_-3px_rgb(0_0_0_/_0.08)] transition-all duration-300 ease-out sm:max-w-xs sm:rounded-md"
-                        x-bind:class="{ 'p-4': ! toast.html, 'p-0': toast.html }"
-                    >
-                        <template x-if="!toast.html">
-                            <div class="relative flex flex-col gap-y-0.5">
-                                <div
-                                    class="flex items-center gap-x-1.5"
-                                    x-bind:class="{
-                                        'text-green-500': toast.type == 'success',
-                                        'text-blue-500': toast.type == 'info',
-                                        'text-orange-400': toast.type == 'warning',
-                                        'text-red-500': toast.type == 'danger',
-                                        'text-gray-800': toast.type == 'default',
-                                    }"
-                                >
-                                    <template x-if="toast.type == 'success'">
-                                        <x-lucide-circle-check class="-ml-1 size-4" />
-                                    </template>
-                                    <template x-if="toast.type == 'info'">
-                                        <x-lucide-info class="-ml-1 size-4" />
-                                    </template>
-                                    <template x-if="toast.type == 'warning'">
-                                        <x-lucide-triangle-alert class="-ml-1 size-4" />
-                                    </template>
-                                    <template x-if="toast.type == 'danger'">
-                                        <x-lucide-circle-alert class="-ml-1 size-4" />
-                                    </template>
-
-                                    <p
-                                        class="text-foreground text-sm font-medium"
-                                        x-text="toast.message"
-                                    ></p>
-                                </div>
-                                <template x-if="toast.description">
-                                    <p
-                                        class="text-muted-foreground text-xs"
-                                        x-bind:class="{ 'pl-4.5': toast.type != 'default' }"
-                                        x-text="toast.description"
-                                    ></p>
-                                </template>
-                            </div>
-                        </template>
-                        <template x-if="toast.html">
-                            <div x-html="toast.html"></div>
-                        </template>
-                    </span>
-                </li>
-            </template>
-        </ul>
-    </template>
-</div>
+                    <x-lucide-x class="size-4" />
+                </button>
+            </li>
+        </template>
+    </ol>
+</section>
