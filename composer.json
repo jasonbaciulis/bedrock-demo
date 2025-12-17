@@ -85,12 +85,6 @@
       "pixelfear/composer-dist-plugin": true
     }
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:jasonbaciulis/statamic-starter-kit.git"
-    }
-  ],
   "minimum-stability": "dev",
   "prefer-stable": true
 }
