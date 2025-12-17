@@ -1,0 +1,12 @@
+{{#
+    @param image - The image path/URL
+    @param w - Width in pixels
+    @param h - Height in pixels
+    @param name - Person's name for alt text
+#}}
+
+<div class="shrink-0 rounded-full overflow-hidden bg-primary-foreground">
+    {{ glide :src="image" :width="w" :height="h" dpr="2" fit="crop_focal" }}
+        <img src="{{ url }}" alt="{{ name }}'s avatar" loading="lazy">
+    {{ /glide }}
+</div>

@@ -1,0 +1,45 @@
+{{#
+    @param model - Alpine.js model binding
+    @param options - Array of options (key => label format)
+    @param display - Field display name
+    @param handle - Input name/handle
+    @param id - Input ID
+    @param instructions - Help text
+#}}
+
+<fieldset
+    x-bind:aria-invalid="form.invalid('{{ handle }}')"
+    {{ if instructions }}
+        x-bind:aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
+    {{ else }}
+        x-bind:aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : false"
+    {{ /if }}
+>
+    <legend class="text-foreground block text-sm font-medium select-none">{{ display }}</legend>
+
+    {{ if instructions }}
+        {{ partial:components/ui/input-instructions :instructions="instructions" :id="id" }}
+    {{ /if }}
+
+    <div class="mt-3 space-y-4">
+        {{ options }}
+            <div class="flex items-center gap-3">
+                <input
+                    x-model="{{ model }}"
+                    id="{{ id }}-{{ key | slugify }}-option"
+                    type="checkbox"
+                    name="{{ handle }}[]"
+                    value="{{ key }}"
+                    x-bind:aria-invalid="form.invalid('{{ handle }}')"
+                    x-on:change="form.validate('{{ handle }}')"
+                />
+                <label
+                    for="{{ id }}-{{ key | slugify }}-option"
+                    class="text-foreground font-normal"
+                >
+                    {{ value }}
+                </label>
+            </div>
+        {{ /options }}
+    </div>
+</fieldset>

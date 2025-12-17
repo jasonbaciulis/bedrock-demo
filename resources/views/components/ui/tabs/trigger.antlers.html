@@ -1,0 +1,20 @@
+{{#
+    Tab trigger button component.
+
+    @param name - Tab identifier
+    @param alpine_property - Alpine property controlling active tab (default: activeTab)
+    @param class - Additional CSS classes
+#}}
+
+<button
+    id="tab-{{ name }}"
+    type="button"
+    role="tab"
+    x-bind:aria-selected="{{ alpine_property ?? 'activeTab' }} == '{{ name }}'"
+    aria-controls="tabpanel-{{ name }}"
+    x-on:click.prevent="{{ alpine_property ?? 'activeTab' }} = '{{ name }}'"
+    x-bind:tabindex="{{ alpine_property ?? 'activeTab' }} == '{{ name }}' ? 0 : -1"
+    class="{{ class }}"
+>
+    {{ slot }}
+</button>

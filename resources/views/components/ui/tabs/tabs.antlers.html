@@ -1,0 +1,15 @@
+{{#
+    Tabs container component.
+
+    @slot list - The tab triggers container
+    @slot panels - The tab panels container
+    @param class - Additional CSS classes
+#}}
+
+<div x-data="{ activeTab: 1 }" class="flex flex-col gap-2 {{ class }}">
+    <div role="tablist" aria-orientation="horizontal">
+        {{ slot:list }}
+    </div>
+
+    {{ slot:panels }}
+</div>

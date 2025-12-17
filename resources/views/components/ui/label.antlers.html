@@ -1,0 +1,14 @@
+{{#
+    @param id - The id for the label's `for` attribute
+    @param display - The label text
+    @param color - Text color class (default: text-foreground)
+    @param hide_display - Whether to visually hide the label (default: false)
+#}}
+
+<label
+    id="{{ id }}-label"
+    class="{{ ['block', 'sr-only' => hide_display, color ?? 'text-foreground'] | classes }}"
+    for="{{ id }}"
+>
+    {{ display }}
+</label>

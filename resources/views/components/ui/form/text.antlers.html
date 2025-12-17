@@ -1,0 +1,47 @@
+{{#
+    @param model - Alpine.js model binding
+    @param prepend - Text to prepend inside input
+    @param append - Text to append inside input
+    @param character_limit - Max character limit
+    @param autocomplete - Autocomplete attribute value
+    @param visibility - Set to "read_only" for readonly input
+    @param placeholder - Placeholder text
+    @param id - Input ID
+    @param handle - Input name/handle
+    @param input_type - Input type (default: text)
+    @param instructions - Help text
+    @param class - Additional CSS classes
+#}}
+
+<div class="relative w-full">
+    {{ if prepend }}
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
+            <span class="text-muted-foreground text-sm">{{ prepend }}</span>
+        </div>
+    {{ /if }}
+
+    <input
+        x-model="{{ model }}"
+        class="{{ ['pl-10' => prepend, 'pr-10' => append, class] | classes }}"
+        {{ if character_limit }}maxlength="{{ character_limit }}"{{ /if }}
+        {{ if autocomplete }}autocomplete="{{ autocomplete }}"{{ /if }}
+        {{ if visibility == 'read_only' }}readonly{{ /if }}
+        {{ if placeholder }}placeholder="{{ placeholder }}"{{ /if }}
+        id="{{ id }}"
+        name="{{ handle }}"
+        type="{{ input_type ?? 'text' }}"
+        x-bind:aria-invalid="form.invalid('{{ handle }}')"
+        {{ if instructions }}
+            x-bind:aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
+        {{ else }}
+            x-bind:aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : false"
+        {{ /if }}
+        x-on:change="form.validate('{{ handle }}')"
+    />
+
+    {{ if append }}
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pr-5">
+            <span class="text-muted-foreground text-sm">{{ append }}</span>
+        </div>
+    {{ /if }}
+</div>

@@ -1,0 +1,19 @@
+{{#
+    Honeypot field for spam protection.
+
+    @param model - Alpine.js model binding
+    @param handle - Input name/handle
+    @param formHandle - Form handle for ID generation
+#}}
+
+<div class="hidden">
+    <label for="{{ formHandle }}-{{ handle }}-field">{{ handle | title }}</label>
+    <input
+        x-model="{{ model }}"
+        id="{{ formHandle }}-{{ handle }}-field"
+        type="text"
+        name="{{ handle }}"
+        tabindex="-1"
+        autocomplete="off"
+    />
+</div>

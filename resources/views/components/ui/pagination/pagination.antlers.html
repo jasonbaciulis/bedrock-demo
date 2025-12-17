@@ -1,0 +1,84 @@
+{{#
+    Pagination component for Statamic collections.
+    Docs: https://statamic.dev/tags/collection#pagination
+
+    @param paginate - Pagination data object from Statamic
+    @param class - Additional CSS classes
+#}}
+
+{{ if paginate:total_pages > 1 }}
+    {{# Section that will be yielded in the <head> of documents for search engines. #}}
+    {{ section:pagination }}
+        {{ if paginate:prev_page }}
+            <link rel="prev" href="{{ paginate:prev_page }}" />
+        {{ /if }}
+
+        {{ if paginate:next_page }}
+            <link rel="next" href="{{ paginate:next_page }}" />
+        {{ /if }}
+    {{ /section:pagination }}
+
+    <div class="{{ class }}">
+        <nav class="flex items-center justify-center gap-1 md:items-start">
+            <a
+                href="{{ paginate:prev_page ?? 'javascript:void(0)' }}"
+                class="{{ [
+                    'btn btn--ghost shrink-0',
+                    'pointer-events-none opacity-50' => !paginate:prev_page,
+                ] | classes }}"
+            >
+                {{ blade_icon:lucide-chevron-left class="size-4" }}
+                <span class="sr-only md:not-sr-only">Previous</span>
+            </a>
+
+            <ul class="hidden flex-wrap gap-1 md:flex">
+                {{ paginate:links:segments:first }}
+                    {{ if page == paginate:current_page }}
+                        {{ partial:components/ui/pagination/item-current :url="url" :page="page" }}
+                    {{ else }}
+                        {{ partial:components/ui/pagination/item :url="url" :page="page" }}
+                    {{ /if }}
+                {{ /paginate:links:segments:first }}
+
+                {{ if paginate:links:segments:slider | count }}
+                    {{ partial:components/ui/pagination/item-slider }}
+                {{ /if }}
+
+                {{ paginate:links:segments:slider }}
+                    {{ if page == paginate:current_page }}
+                        {{ partial:components/ui/pagination/item-current :url="url" :page="page" }}
+                    {{ else }}
+                        {{ partial:components/ui/pagination/item :url="url" :page="page" }}
+                    {{ /if }}
+                {{ /paginate:links:segments:slider }}
+
+                {{ if (paginate:links:segments:slider | count) || (paginate:links:segments:last | count) }}
+                    {{ partial:components/ui/pagination/item-slider }}
+                {{ /if }}
+
+                {{ paginate:links:segments:last }}
+                    {{ if page == paginate:current_page }}
+                        {{ partial:components/ui/pagination/item-current :url="url" :page="page" }}
+                    {{ else }}
+                        {{ partial:components/ui/pagination/item :url="url" :page="page" }}
+                    {{ /if }}
+                {{ /paginate:links:segments:last }}
+            </ul>
+
+            <p class="content-sm shrink-0 leading-none font-semibold md:hidden">
+                {{ paginate:current_page }} of {{ paginate:total_pages }}
+            </p>
+
+            <a
+                href="{{ paginate:next_page ?? 'javascript:void(0)' }}"
+                class="{{ [
+                    'btn btn--ghost shrink-0',
+                    'pointer-events-none opacity-50' => !paginate:next_page,
+                ] | classes }}"
+            >
+                <span class="sr-only md:not-sr-only">Next</span>
+                {{ blade_icon:lucide-chevron-right class="size-4" }}
+            </a>
+        </nav>
+    </div>
+{{ /if }}

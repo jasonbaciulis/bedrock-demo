@@ -1,0 +1,45 @@
+{{#
+    @param model - Alpine.js model binding
+    @param options - Array of options (key => label format)
+    @param placeholder - Placeholder text (default: Select a value…)
+    @param multiple - Allow multiple selection (default: false)
+    @param handle - Input name/handle
+    @param id - Input ID
+    @param instructions - Help text
+    @param searchable - Use combobox instead (default: false)
+    @param class - Additional CSS classes
+#}}
+
+{{ if searchable }}
+    {{ partial:components/ui/form/combobox :model="model" :options="options" :placeholder="placeholder" :handle="handle" :id="id" :instructions="instructions" }}
+{{ else }}
+    <select
+        x-model="{{ model }}"
+        x-bind:class="{
+            'text-muted-foreground': ! {{ model }},
+        }"
+        class="{{ class }}"
+        {{ if multiple }}multiple{{ /if }}
+        id="{{ id }}"
+        name="{{ handle }}{{ if multiple }}[]{{ /if }}"
+        x-bind:aria-invalid="form.invalid('{{ handle }}')"
+        {{ if instructions }}
+            x-bind:aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
+        {{ else }}
+            x-bind:aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : false"
+        {{ /if }}
+        x-on:change="form.validate('{{ handle }}')"
+    >
+        {{ unless multiple }}
+            <option value x-bind:selected="! {{ model }} ? true : false" disabled>
+                Select {{ handle | title | deslugify }}…
+            </option>
+        {{ /unless }}
+
+        {{ options }}
+            <option value="{{ key }}">
+                {{ value }}
+            </option>
+        {{ /options }}
+    </select>
+{{ /if }}

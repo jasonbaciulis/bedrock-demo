@@ -1,0 +1,15 @@
+{{#
+    @param variant - Badge variant: primary, secondary, outline (default: primary)
+    @param as - HTML element to render (default: span)
+#}}
+
+<{{ as ?? 'span' }}
+    class="{{ [
+        'badge',
+        'badge--primary' => (variant ?? 'primary') == 'primary',
+        'badge--secondary' => variant == 'secondary',
+        'badge--outline' => variant == 'outline',
+    ] | classes }}"
+>
+    {{ slot }}
+</{{ as ?? 'span' }}>

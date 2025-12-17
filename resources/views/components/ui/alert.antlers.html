@@ -1,0 +1,50 @@
+{{#
+    @param style - Alert style: success, warning, error (default: success)
+    @param title - Alert title (required)
+    @param description - Optional description text
+    @param dismissible - Whether the alert can be dismissed (default: false)
+#}}
+
+<div
+    class="{{ [
+        'alert',
+        'alert--success' => (style ?? 'success') == 'success',
+        'alert--warning' => style == 'warning',
+        'alert--error' => style == 'error',
+    ] | classes }}"
+    {{ if dismissible }}
+        x-data="{ dismissed: false }"
+        x-show="!dismissed"
+    {{ /if }}
+>
+    <div class="alert__icon">
+        {{ if (style ?? 'success') == 'success' }}
+            {{ blade_icon:lucide-circle-check }}
+        {{ elseif style == 'warning' }}
+            {{ blade_icon:lucide-triangle-alert }}
+        {{ elseif style == 'error' }}
+            {{ blade_icon:lucide-circle-x }}
+        {{ /if }}
+    </div>
+    <div class="alert__content">
+        <p class="line-clamp-1 font-medium tracking-tight">{{ title }}</p>
+        {{ if description }}
+            <p class="text-muted-foreground text-sm">{{ description }}</p>
+        {{ /if }}
+    </div>
+
+    {{ if dismissible }}
+        <div class="ml-auto pl-2">
+            <div class="-m-2">
+                <button
+                    type="button"
+                    class="hover:text-foreground inline-flex translate-y-0.5 rounded-xs p-1.5 text-neutral-800/70"
+                    aria-label="Dismiss"
+                    x-on:click="dismissed = !dismissed"
+                >
+                    {{ blade_icon:lucide-x class="size-4" }}
+                </button>
+            </div>
+        </div>
+    {{ /if }}
+</div>

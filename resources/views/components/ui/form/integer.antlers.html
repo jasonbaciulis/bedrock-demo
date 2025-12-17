@@ -1,0 +1,8 @@
+{{#
+    Integer input field - wraps text component.
+
+    @param model - Alpine.js model binding
+    @param ... - All other params passed to text component
+#}}
+
+{{ partial:components/ui/form/text :model="model" input_type="number" :handle="handle" :id="id" :instructions="instructions" :placeholder="placeholder" :class="class" }}

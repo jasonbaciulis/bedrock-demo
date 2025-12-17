@@ -1,0 +1,8 @@
+{{#
+    Dictionary field - wraps combobox component.
+
+    @param model - Alpine.js model binding
+    @param ... - All other params passed to combobox component
+#}}
+
+{{ partial:components/ui/form/combobox :model="model" :options="options" :placeholder="placeholder" :handle="handle" :id="id" :instructions="instructions" :display="display" }}

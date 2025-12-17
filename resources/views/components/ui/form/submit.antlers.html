@@ -1,0 +1,13 @@
+{{#
+    @param label - Button label (default: Submit)
+    @param class - Additional CSS classes
+#}}
+
+<button
+    type="submit"
+    class="btn btn--primary w-full {{ class }}"
+    x-bind:disabled="form.processing || form.hasErrors"
+>
+    {{ blade_icon:lucide-loader-circle class="animate-spin" x-show="form.processing" }}
+    {{ label ?? 'Submit' }}
+</button>

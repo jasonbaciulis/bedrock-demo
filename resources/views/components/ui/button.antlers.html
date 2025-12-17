@@ -1,0 +1,59 @@
+{{#
+    @param label - Button label text
+    @param as - HTML element (default: a)
+    @param variant - Button variant: primary, secondary, link, ghost, outline, destructive (default: primary)
+    @param size - Button size: sm, md, lg, xl (default: md)
+    @param link_type - Link type: entry, url, email, tel, asset, code (default: url)
+    @param url - URL for link_type="url"
+    @param entry - Entry object for link_type="entry"
+    @param email - Email for link_type="email"
+    @param phone - Phone for link_type="tel"
+    @param asset - Asset URL for link_type="asset"
+    @param code - JS code for link_type="code"
+    @param target_blank - Open in new tab (default: false)
+#}}
+
+{{ if label || slot }}
+<{{ as ?? 'a' }}
+    class="{{ [
+        'btn',
+        'btn--primary' => (variant ?? 'primary') == 'primary',
+        'btn--secondary' => variant == 'secondary',
+        'btn--link' => variant == 'link',
+        'btn--ghost' => variant == 'ghost',
+        'btn--outline' => variant == 'outline',
+        'btn--destructive' => variant == 'destructive',
+        'btn--sm' => size == 'sm',
+        'btn--lg' => size == 'lg',
+        'btn--xl' => size == 'xl',
+    ] | classes }}"
+    {{ if (as ?? 'a') == 'a' }}
+        {{ if (link_type ?? 'url') == 'entry' }}
+            href="{{ entry:url }}"
+        {{ elseif (link_type ?? 'url') == 'url' }}
+            href="{{ url }}"
+        {{ elseif link_type == 'email' }}
+            href="mailto:{{ email | obfuscate_email }}"
+        {{ elseif link_type == 'phone' }}
+            href="tel:{{ phone }}"
+        {{ elseif link_type == 'asset' }}
+            href="{{ asset }}"
+            download
+        {{ elseif link_type == 'code' }}
+            href=""
+            x-data
+            x-on:click.prevent="{{ code }}"
+        {{ /if }}
+        {{ if target_blank }}
+            rel="noopener"
+            target="_blank"
+        {{ /if }}
+    {{ /if }}
+>
+    {{ if slot }}
+        {{ slot }}
+    {{ else }}
+        {{ label }}
+    {{ /if }}
+</{{ as ?? 'a' }}>
+{{ /if }}

@@ -1,0 +1,75 @@
+{{#
+    Lightweight picture component that uses Glide to generate images. It supports lazy loading and object-cover.
+    Notice that the component doesn't use sizes attribute, because in our view it's a waste of time.
+    Just pass the dimensions of the largest image size that needs rendered. Images are lazy loaded and saving a few kilobytes
+    on the initial load is not worth the extra complexity.
+
+    Docs: https://statamic.dev/tags/glide
+
+    @param image - Image asset path/URL
+    @param w - Width in pixels
+    @param h - Height in pixels
+    @param cover - Whether to use object-cover (default: false)
+    @param lazy - Whether to lazy load (default: true)
+    @param class - Additional CSS classes
+#}}
+
+{{ asset :src="image" }}
+    <picture>
+        {{ if extension == 'svg' || extension == 'gif' }}
+            <img
+                {{ if cover }}
+                    class="size-full object-cover {{ class }}"
+                    style="object-position: {{ focus | background_position }}"
+                {{ else }}
+                    {{ if class }}class="{{ class }}"{{ /if }}
+                {{ /if }}
+                src="{{ url }}"
+                alt="{{ alt }}"
+                {{ if lazy ?? true }}
+                    loading="lazy"
+                {{ /if }}
+                decoding="async"
+                width="{{ width }}"
+                height="{{ height }}"
+            />
+        {{ elseif w && h }}
+            {{ glide :src="url" :width="w" :height="h" fit="crop_focal" format="webp" }}
+                {{ assign webp_1x = url }}
+            {{ /glide }}
+            {{ glide :src="url" :width="w" :height="h" fit="crop_focal" format="webp" dpr="2" }}
+                {{ assign webp_2x = url }}
+            {{ /glide }}
+            {{ glide :src="url" :width="w" :height="h" fit="crop_focal" }}
+                {{ assign img_1x = url }}
+            {{ /glide }}
+            {{ glide :src="url" :width="w" :height="h" fit="crop_focal" dpr="2" }}
+                {{ assign img_2x = url }}
+            {{ /glide }}
+            <source
+                srcset="{{ webp_1x }} 1x, {{ webp_2x }} 2x"
+                type="image/webp"
+            />
+            <source
+                srcset="{{ img_1x }} 1x, {{ img_2x }} 2x"
+                type="{{ mime_type }}"
+            />
+            <img
+                {{ if cover }}
+                    class="size-full object-cover {{ class }}"
+                    style="object-position: {{ focus | background_position }}"
+                {{ else }}
+                    {{ if class }}class="{{ class }}"{{ /if }}
+                {{ /if }}
+                src="{{ url }}"
+                alt="{{ alt }}"
+                width="{{ w }}"
+                height="{{ h }}"
+                {{ if lazy ?? true }}
+                    loading="lazy"
+                {{ /if }}
+                decoding="async"
+            />
+        {{ /if }}
+    </picture>
+{{ /asset }}

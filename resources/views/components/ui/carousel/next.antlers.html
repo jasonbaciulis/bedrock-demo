@@ -1,0 +1,20 @@
+{{#
+    Carousel next button component.
+    Must be used inside carousel component.
+
+    @param class - Additional CSS classes
+#}}
+
+<button
+    class="btn absolute {{ class }}"
+    x-bind:class="{
+        'top-1/2 -right-12 -translate-y-1/2': orientation === 'horizontal',
+        '-bottom-12 left-1/2 -translate-x-1/2 rotate-90':
+            orientation === 'vertical',
+    }"
+    x-bind:disabled="!canScrollNext"
+    x-on:click="scrollNext()"
+    aria-label="Next slide"
+>
+    {{ blade_icon:lucide-arrow-right }}
+</button>

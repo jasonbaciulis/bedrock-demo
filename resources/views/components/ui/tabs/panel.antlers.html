@@ -1,0 +1,19 @@
+{{#
+    Tab panel component.
+
+    @param name - Tab identifier (must match trigger name)
+    @param alpine_property - Alpine property controlling active tab (default: activeTab)
+    @param class - Additional CSS classes
+#}}
+
+<div
+    x-cloak
+    x-show="{{ alpine_property ?? 'activeTab' }} == '{{ name }}'"
+    id="tabpanel-{{ name }}"
+    aria-labelledby="tab-{{ name }}"
+    role="tabpanel"
+    x-bind:tabindex="{{ alpine_property ?? 'activeTab' }} == '{{ name }}' ? 0 : -1"
+    class="{{ class }}"
+>
+    {{ slot }}
+</div>

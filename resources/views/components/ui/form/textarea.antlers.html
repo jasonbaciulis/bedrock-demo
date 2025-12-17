@@ -1,0 +1,28 @@
+{{#
+    @param model - Alpine.js model binding
+    @param rows - Number of rows (default: 5)
+    @param placeholder - Placeholder text
+    @param character_limit - Max character limit
+    @param handle - Input name/handle
+    @param id - Input ID
+    @param instructions - Help text
+    @param display - Field display name
+    @param class - Additional CSS classes
+#}}
+
+<textarea
+    x-model="{{ model }}"
+    class="{{ class }}"
+    {{ if placeholder }}placeholder="{{ placeholder }}"{{ /if }}
+    {{ if character_limit }}maxlength="{{ character_limit }}"{{ /if }}
+    id="{{ id }}"
+    name="{{ handle }}"
+    rows="{{ rows ?? 5 }}"
+    x-bind:aria-invalid="form.invalid('{{ handle }}')"
+    {{ if instructions }}
+        x-bind:aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : '{{ id }}-instructions'"
+    {{ else }}
+        x-bind:aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : false"
+    {{ /if }}
+    x-on:change="form.validate('{{ handle }}')"
+></textarea>
