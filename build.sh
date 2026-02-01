@@ -1,9 +1,15 @@
 #!/bin/sh
 
-# Install PHP & WGET
-dnf clean metadata
-dnf install -y php8.4 php8.4-{common,mbstring,gd,bcmath,xml,fpm,intl,zip}
+# Install WGET first (needed for Composer)
 dnf install -y wget
+
+# Install Remi repository for PHP 8.4
+dnf install -y https://rpms.remirepo.net/enterprise/remi-release-9.rpm
+dnf module reset php -y
+dnf module enable php:remi-8.4 -y
+
+# Install PHP 8.4 & extensions
+dnf install -y php php-{common,mbstring,gd,bcmath,xml,fpm,intl,zip}
 
 # INSTALL COMPOSER
 EXPECTED_CHECKSUM="$(wget -q -O - https://composer.github.io/installer.sig)"
