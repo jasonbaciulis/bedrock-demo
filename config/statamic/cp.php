@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Control Panel
@@ -52,9 +51,7 @@ return [
     |
     */
 
-    'widgets' => [
-        'getting_started',
-    ],
+    'widgets' => ['getting_started'],
 
     /*
     |--------------------------------------------------------------------------
@@ -135,7 +132,10 @@ return [
 
     'custom_cms_name' => env('STATAMIC_CUSTOM_CMS_NAME', 'Statamic'),
 
-    'custom_logo_url' => env('STATAMIC_CUSTOM_LOGO_URL', null),
+    'custom_logo_url' => [
+        'nav' => env('STATAMIC_CUSTOM_NAV_LOGO_URL', null),
+        'outside' => env('STATAMIC_CUSTOM_OUTSIDE_LOGO_URL', null),
+    ],
 
     'custom_dark_logo_url' => env('STATAMIC_CUSTOM_DARK_LOGO_URL', null),
 

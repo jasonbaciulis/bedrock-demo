@@ -9,6 +9,7 @@ preferences:
   collections:
     pages:
       after_save: continue_editing
+      view: tree
     posts:
       columns:
         - title
@@ -17,8 +18,13 @@ preferences:
         - date
         - status
       after_save: continue_editing
+      view: list
     testimonials:
       columns:
         - title
         - avatar
         - status
+      view: list
+    team:
+      view: list
+  theme: null
