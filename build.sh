@@ -1,20 +1,22 @@
 #!/bin/sh
 
-# Install WGET first (needed for Composer)
-dnf install -y wget
+# Install required tools
+dnf install -y wget unzip
 
-# Install Remi repository for PHP 8.4
-dnf install -y https://rpms.remirepo.net/enterprise/remi-release-9.rpm
-dnf module reset php -y
-dnf module enable php:remi-8.4 -y
+# Download static PHP 8.4 binary
+PHP_VERSION="8.4.4"
+wget -q https://github.com/crazywhalecc/static-php-cli/releases/download/${PHP_VERSION}/php-${PHP_VERSION}-cli-linux-x86_64.tar.gz
+tar -xzf php-${PHP_VERSION}-cli-linux-x86_64.tar.gz
+chmod +x php
+PHP_BIN="$(pwd)/php"
 
-# Install PHP 8.4 & extensions
-dnf install -y php php-{common,mbstring,gd,bcmath,xml,fpm,intl,zip}
+# Verify PHP version
+$PHP_BIN -v
 
 # INSTALL COMPOSER
 EXPECTED_CHECKSUM="$(wget -q -O - https://composer.github.io/installer.sig)"
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
+$PHP_BIN -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+ACTUAL_CHECKSUM="$($PHP_BIN -r "echo hash_file('sha384', 'composer-setup.php');")"
 
 if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]
 then
@@ -23,15 +25,15 @@ then
     exit 1
 fi
 
-php composer-setup.php --quiet
+$PHP_BIN composer-setup.php --quiet
 rm composer-setup.php
 
 # INSTALL COMPOSER DEPENDENCIES
-php composer.phar install
+$PHP_BIN composer.phar install
 
 # GENERATE APP KEY
-php artisan key:generate
+$PHP_BIN artisan key:generate
 
 # BUILD STATIC SITE
-php please stache:warm -n -q
-php please ssg:generate
+$PHP_BIN please stache:warm -n -q
+$PHP_BIN please ssg:generate
