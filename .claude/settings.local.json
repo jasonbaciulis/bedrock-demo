@@ -2,12 +2,17 @@
   "permissions": {
     "allow": [
       "Bash(vendor/bin/pint:*)",
-      "Bash(php artisan test:*)"
+      "Bash(php artisan test:*)",
+      "Bash(npx prettier:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "laravel-boost",
     "herd"
-  ]
+  ],
+  "enabledPlugins": {
+    "laravel-simplifier@laravel": true,
+    "frontend-design@claude-plugins-official": true
+  }
 }
