@@ -3,7 +3,9 @@
     "allow": [
       "Bash(vendor/bin/pint:*)",
       "Bash(php artisan test:*)",
-      "Bash(npx prettier:*)"
+      "Bash(npx prettier:*)",
+      "Bash(echo:*)",
+      "Bash(npm ls:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
