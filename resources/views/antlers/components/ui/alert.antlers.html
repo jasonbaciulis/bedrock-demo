@@ -1,0 +1,46 @@
+---
+style: 'success'
+title: ''
+description: ''
+dismissible: false
+class: ''
+---
+
+<div
+    class="bg-accent {{ ['alert--success' => style == 'success', 'alert--warning' => style == 'warning', 'alert--error' => style == 'error', ] | classes }} {{ class }} relative flex items-start gap-x-3 rounded-lg border px-4 py-3 text-sm"
+    {{ if view:dismissible }}
+        x-data="{ dismissed: false }"
+        x-show="!dismissed"
+    {{ /if }}
+>
+    <div class="size-4 shrink-0 translate-y-0.5">
+        {{ if view:style == 'success' }}
+            <s:svg src="heroicons/outline/check-circle" />
+        {{ elseif view:style == 'warning' }}
+            <s:svg src="heroicons/outline/exclamation-triangle" />
+        {{ elseif view:style == 'error' }}
+            <s:svg src="heroicons/outline/x-circle" />
+        {{ /if }}
+    </div>
+
+    <div class="min-h-4 space-y-0.5">
+        <p class="line-clamp-1 font-medium tracking-tight">{{ view:title }}</p>
+        {{ if view:description }}
+            <p class="text-muted-foreground text-sm">{{ view:description }}</p>
+        {{ /if }}
+    </div>
+    {{ if view:dismissible }}
+        <div class="ml-auto pl-2">
+            <div class="-m-2">
+                <button
+                    type="button"
+                    class="hover:text-foreground inline-flex translate-y-0.5 rounded-xs p-1.5 text-neutral-950/70"
+                    aria-label="Dismiss"
+                    x-on:click="dismissed = !dismissed"
+                >
+                    <s:svg src="heroicons/outline/x-mark" class="size-4" />
+                </button>
+            </div>
+        </div>
+    {{ /if }}
+</div>

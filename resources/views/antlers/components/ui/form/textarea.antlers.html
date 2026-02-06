@@ -1,0 +1,15 @@
+---
+model: ''
+---
+
+<textarea
+    x-model="{{ view:model }}"
+    id="{{ id }}"
+    name="{{ handle }}"
+    rows="{{ rows ?? 5 }}"
+    {{ placeholder | attribute:placeholder }}
+    {{ character_limit | attribute:maxlength }}
+    x-bind:aria-invalid="form.invalid('{{ handle }}')"
+    x-bind:aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : {{ if instructions }}'{{ id }}-instructions'{{ else }}false{{ /if }}"
+    x-on:change="form.validate('{{ handle }}')"
+></textarea>

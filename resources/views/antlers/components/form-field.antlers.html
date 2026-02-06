@@ -1,0 +1,37 @@
+{{#
+    Form field wrapper that renders the appropriate field type partial,
+    label, instructions, and validation error. Used within {{ fields }}
+    loop inside the form component.
+
+    Expects Statamic form field variables in scope:
+    type, handle, id, display, instructions, input_type, width, show_field, options, etc.
+#}}
+
+<template x-if="{{ show_field }}">
+    <div class="grid content-start gap-3
+        {{ [
+            'md:col-span-3' => width == '25',
+            'md:col-span-4' => width == '33',
+            'md:col-span-6' => width == '50',
+            'md:col-span-8' => width == '66',
+            'md:col-span-9' => width == '75',
+            'md:col-span-12' => width == '100',
+            'hidden' => input_type == 'hidden'
+        ] | classes }}
+    ">
+        {{ fields_without_labels = ['hidden', 'honeypot', 'checkboxes', 'radio'] }}
+        {{ unless fields_without_labels | contains(type) || input_type == 'hidden' }}
+            <s:partial:components/ui/label />
+        {{ /unless }}
+
+        <div class="grid gap-2">
+            {{ partial src="components/ui/form/{type}" model="form.{handle}" }}
+
+            {{ if instructions && !(fields_without_labels | contains(type) || input_type == 'hidden') }}
+                <s:partial:components/ui/input-instructions />
+            {{ /if }}
+
+            <s:partial:components/ui/input-error />
+        </div>
+    </div>
+</template>
