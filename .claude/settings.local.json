@@ -5,7 +5,9 @@
       "Bash(php artisan test:*)",
       "Bash(npx prettier:*)",
       "Bash(echo:*)",
-      "Bash(npm ls:*)"
+      "Bash(npm ls:*)",
+      "mcp__laravel-boost__search-docs",
+      "WebFetch(domain:statamic.dev)"
     ]
   },
   "enableAllProjectMcpServers": true,
