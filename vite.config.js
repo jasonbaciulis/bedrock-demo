@@ -31,10 +31,12 @@ export default defineConfig(({ command, mode }) => {
         detectTls: false,
       }),
       tailwindcss(),
-      // vue2(),
     ],
     server: {
       open: env.APP_URL,
+      watch: {
+        ignored: ['**/users/**'],
+      },
     },
     define: {
       appName: JSON.stringify(env.APP_NAME),
