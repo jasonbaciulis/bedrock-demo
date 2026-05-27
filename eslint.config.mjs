@@ -32,6 +32,9 @@ export default [
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
         Alpine: 'readonly',
+        Statamic: 'readonly',
+        appName: 'readonly',
+        gtag: 'readonly',
       },
     },
     rules: {
