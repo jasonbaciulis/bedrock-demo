@@ -4,7 +4,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "icons:heroicons": "sh scripts/icons-heroicons.sh"
+    "icons:heroicons": "sh scripts/icons-heroicons.sh",
+    "lint": "eslint \"resources/js\" --fix",
+    "format": "prettier \"resources/**/*.{js,css,scss,blade.php}\" --write",
+    "format:check": "prettier \"resources/**/*.{js,css,scss,blade.php}\" --check",
+    "lint:ci": "eslint \"resources/js\" --max-warnings=0",
+    "format:ci": "prettier \"resources/**/*.{js,css,scss,blade.php}\" --check",
+    "frontend:ci": "npm run lint:ci && npm run format:ci"
   },
   "devDependencies": {
     "@alpinejs/collapse": "^3.13.0",
@@ -12,6 +18,7 @@
     "@alpinejs/intersect": "^3.14.9",
     "@alpinejs/mask": "^3.14.9",
     "@alpinejs/persist": "^3.13.0",
+    "@eslint/js": "^10.0.1",
     "@prettier/plugin-php": "^0.22.4",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
@@ -19,6 +26,7 @@
     "alpinejs": "^3.14.0",
     "concurrently": "^9.2.0",
     "embla-carousel": "^8.6.0",
+    "eslint-config-prettier": "^10.1.8",
     "heroicons": "^2.2.0",
     "js-cookie": "^3.0.5",
     "laravel-precognition-alpine": "^0.7.2",
