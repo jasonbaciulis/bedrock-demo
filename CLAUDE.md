@@ -1,4 +1,34 @@
 <laravel-boost-guidelines>
+=== .ai/statamic rules ===
+
+# Bedrock Statamic Starter Kit Rules
+
+## CLI Commands
+
+- **ALWAYS** use `php please make:bedrock-block` for new blocks, never create manually
+- **ALWAYS** use `php please make:bedrock-set` for new sets, never create manually
+- **ALWAYS** use `php please delete:bedrock-block` and `php please delete:bedrock-set` for removal
+- These commands create fieldsets, Blade templates, and update parent YAML definitions automatically
+
+## Blueprints
+
+- Import `image` and `text` fields from common fields, instead of creating from sratch. E.g. `field: common.text_plain`
+- Import `buttons` fieldset when design requires buttons, instead of creating from sratch.
+- Use `group` field when it makes sense. E.g. instead of creating fields like: `input_placeholder`, `input_label`, `input_prefix`. You could create `group` field named `input` and place `placeholder`, `label`, `prefix` fields inside.
+
+## File Naming Conventions
+
+- Blade templates: `kebab-case.blade.php`
+- CSS/JS: `kebab-case.css`, `camelCase.js`
+
+## Component Architecture
+
+- Blocks go in `resources/views/blocks/` (page building)
+- Sets go in `resources/views/sets/` (content composition)
+- UI components (highly reusable, for any project) go in `resources/views/components/ui/`
+- Project specific reusable components go in `resources/views/components/`
+- Partials go in `resources/views/partials/` (template partials and fragments, things that aren't really reusable go here)
+
 === foundation rules ===
 
 # Laravel Boost Guidelines
@@ -9,7 +39,7 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
-- php - 8.4.17
+- php - 8.5.5
 - inertiajs/inertia-laravel (INERTIA) - v2
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
@@ -246,8 +276,8 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 # Laravel Pint Code Formatter
 
-- You must run `vendor/bin/pint --dirty` before finalizing changes to ensure your code matches the project's expected style.
-- Do not run `vendor/bin/pint --test`, simply run `vendor/bin/pint` to fix any formatting issues.
+- You must run `vendor/bin/pint --dirty --format agent` before finalizing changes to ensure your code matches the project's expected style.
+- Do not run `vendor/bin/pint --test --format agent`, simply run `vendor/bin/pint --format agent` to fix any formatting issues.
 
 === pest/core rules ===
 
