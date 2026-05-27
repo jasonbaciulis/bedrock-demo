@@ -1,26 +1,98 @@
-# Bedrock Statamic Starter Kit Rules
+## Templating Strategy
 
-## CLI Commands
+### Antlers Rules
 
-- **ALWAYS** use `php please make:bedrock-block` for new blocks, never create manually
-- **ALWAYS** use `php please make:bedrock-set` for new sets, never create manually
-- **ALWAYS** use `php please delete:bedrock-block` and `php please delete:bedrock-set` for removal
-- These commands create fieldsets, Blade templates, and update parent YAML definitions automatically
+- Use Statamic tags, not PHP
+- Prefer relationships over manual lookups
+- Handle missing data gracefully
 
-## Blueprints
-- Import `image` and `text` fields from common fields, instead of creating from sratch. E.g. `field: common.text_plain`
-- Import `buttons` fieldset when design requires buttons, instead of creating from sratch.
-- Use `group` field when it makes sense. E.g. instead of creating fields like: `input_placeholder`, `input_label`, `input_prefix`, create `group` field named `input` and place `placeholder`, `label`, `prefix` fields inside.
+#### Use view-matter inside components to declare props
 
-## File Naming Conventions
+```antlers
+---
+variant: 'dark'
+class: ''
+---
 
-- Blade templates: `kebab-case.blade.php`
-- CSS/JS: `kebab-case.css`, `camelCase.js`
+<div {{ class | attribute:class }}>
+    <div class="{{ view:variant }}">
+        {{ slot }}
+    </div>
+</div>
+```
 
-## Component Architecture
+#### Use view-matter to output variant styles
 
-- Blocks go in `resources/views/blocks/` (page building)
-- Sets go in `resources/views/sets/` (content composition)
-- UI components (highly reusable, for any project) go in `resources/views/components/ui/`
-- Project specific reusable components go in `resources/views/components/`
-- Partials go in `resources/views/partials/` (template partials and fragments, things that aren't really reusable go here)
+```antlers
+---
+variants:
+  white:
+    background: 'bg-white'
+    text: 'text-gray'
+  dark:
+    background: 'bg-black'
+    text: 'text-white'
+---
+<section class="{{ view:variants:{variant}:background }} {{ view:variants:{variant}:text }}">
+    ...
+</section>
+```
+
+#### Use `attribute` modifier to pass variables to partials
+
+```antlers
+---
+class: ''
+---
+
+<div {{ class | attribute:class }}>
+    ...
+</div>
+```
+
+#### Use modifiers for formatting
+
+Example:
+
+```antlers
+{{ title }}
+{{ content | markdown }}
+{{ if featured }}...{{ /if }}
+```
+
+#### Use component tag syntax for Antlers
+
+Examples:
+
+```antlers
+<s:collection:blog limit="5">
+    <a href="{{ url }}">{{ title }}</a>
+</s:collection:blog>
+
+<s:partial:components.ui.button variant="primary">
+    View all
+</s:partial:components.ui.button>
+```
+
+## Content Architecture
+
+- Blueprint-first: structure content before templating
+- Prefer relationships over duplication
+- Choose field types deliberately (entries, taxonomy, assets, users)
+- Validation rules should live in blueprints
+
+## Prohibited Practices
+
+- Inline PHP in templates
+- Direct facade usage in views
+- Hard-coded content assumptions
+- Bypassing blueprints or the design system
+
+## Error Handling
+
+Templates must:
+- Fail gracefully
+- Avoid fatal errors when content is missing
+- Provide sensible fallbacks
+
+Content editors should never be able to break the site.
