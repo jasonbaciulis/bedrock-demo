@@ -17,11 +17,23 @@ export default {
         parser: 'blade',
       },
     },
+    {
+      files: ['*.antlers.html'],
+      options: {
+        parser: 'antlers',
+        tabWidth: 4,
+      },
+    },
   ],
   semi: false,
   singleQuote: true,
   jsxSingleQuote: false,
   bracketSpacing: true,
   arrowParens: 'avoid',
-  plugins: ['@prettier/plugin-php', 'prettier-plugin-tailwindcss', 'prettier-plugin-blade'],
+  plugins: [
+    '@prettier/plugin-php',
+    'prettier-plugin-tailwindcss',
+    'prettier-plugin-blade',
+    'prettier-plugin-antlers',
+  ],
 }
