@@ -20,6 +20,7 @@
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.8.1",
     "fakerphp/faker": "^1.23",
+    "larastan/larastan": "^3.9",
     "laravel/boost": "^2.0",
     "laravel/pail": "^1.2",
     "laravel/pint": "^1.13",
@@ -27,7 +28,8 @@
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^8.1",
     "pestphp/pest": "^3.0",
-    "pestphp/pest-plugin-laravel": "^3.0"
+    "pestphp/pest-plugin-laravel": "^3.0",
+    "phpstan/phpstan": "^2.1"
   },
   "autoload": {
     "psr-4": {
@@ -62,11 +64,24 @@
     ],
     "dev": [
       "Composer\\Config::disableProcessTimeout",
-      "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0 --level=error\" \"npm run dev\" --names=server,queue,logs,vite"
+      "npx concurrently -c \"#c4b5fd,#fb7185,#fdba74\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=queue,logs,vite"
+    ],
+    "pint": "pint",
+    "pint:ci": "pint --test --parallel",
+    "phpstan": "phpstan analyse --configuration=phpstan.neon --no-progress",
+    "phpstan:ci": "phpstan analyse --configuration=phpstan.neon --no-progress --no-interaction",
+    "format": [
+        "npm run lint",
+        "npm run format",
+        "@pint",
+        "@phpstan"
+    ],
+    "format:ci": [
+        "@pint:ci",
+        "@phpstan:ci"
     ],
     "test": [
-      "@php artisan config:clear --ansi",
-      "@php artisan test"
+      "pest --parallel"
     ]
   },
   "extra": {

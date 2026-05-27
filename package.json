@@ -6,10 +6,10 @@
     "build": "vite build",
     "icons:heroicons": "sh scripts/icons-heroicons.sh",
     "lint": "eslint \"resources/js\" --fix",
-    "format": "prettier \"resources/**/*.{js,css,scss,blade.php}\" --write",
-    "format:check": "prettier \"resources/**/*.{js,css,scss,blade.php}\" --check",
+    "format": "prettier \"resources/**/*.{js,css,scss,html,antlers.html,blade.php}\" --write",
+    "format:check": "prettier \"resources/**/*.{js,css,scss,html,antlers.html,blade.php}\" --check",
     "lint:ci": "eslint \"resources/js\" --max-warnings=0",
-    "format:ci": "prettier \"resources/**/*.{js,css,scss,blade.php}\" --check",
+    "format:ci": "prettier \"resources/**/*.{js,css,scss,html,antlers.html,blade.php}\" --check",
     "frontend:ci": "npm run lint:ci && npm run format:ci"
   },
   "devDependencies": {
@@ -33,10 +33,10 @@
     "laravel-vite-plugin": "^1.2.0",
     "lite-youtube-embed": "^0.3.3",
     "prettier": "^3.5.3",
+    "prettier-plugin-antlers": "^2.0.5",
     "prettier-plugin-blade": "^2.1.21",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4.1.11",
-    "vite": "^6.3.5",
-    "vue-template-compiler": "^2.7.16"
+    "vite": "^6.3.5"
   }
 }
