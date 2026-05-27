@@ -7,7 +7,8 @@
       "Bash(echo:*)",
       "Bash(npm ls:*)",
       "mcp__laravel-boost__search-docs",
-      "WebFetch(domain:statamic.dev)"
+      "WebFetch(domain:statamic.dev)",
+      "Bash(composer show *)"
     ]
   },
   "enableAllProjectMcpServers": true,
