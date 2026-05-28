@@ -10,90 +10,65 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build_and_deploy:
+  deploy:
     name: Build SSG and deploy to Vercel
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.5'
           extensions: dom, curl, libxml, mbstring, zip, intl, gd, bcmath
           coverage: none
-          tools: composer
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
-          cache: 'npm'
+          cache: npm
 
-      - name: Prepare Laravel environment
+      - name: Prepare .env
         env:
           APP_URL: ${{ vars.APP_URL }}
         run: |
-          cp .env.example .env
-          sed -i "s|^APP_ENV=.*|APP_ENV=production|" .env
-          sed -i "s|^APP_DEBUG=.*|APP_DEBUG=false|" .env
-          sed -i "s|^APP_URL=.*|APP_URL=${APP_URL}|" .env
-          sed -i "s|^STATAMIC_PRO_ENABLED=.*|STATAMIC_PRO_ENABLED=false|" .env
-          APP_KEY="base64:$(openssl rand -base64 32)"
-          sed -i "s|^APP_KEY=.*|APP_KEY=${APP_KEY}|" .env
-
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v4
-        with:
-          dependency-versions: locked
-          composer-options: --no-progress --no-interaction --prefer-dist --optimize-autoloader
-
-      - name: Install NPM dependencies
-        run: npm ci
-
-      - name: Build frontend assets
-        run: npm run build
-
-      - name: Confirm SSG command is registered
-        run: |
-          php please list | grep -E '^\s*(ssg|stache):' || {
-            echo "::error::Statamic SSG command not found. Is statamic/ssg installed?"
-            exit 1
-          }
-
-      - name: Warm Statamic stache
-        run: php please stache:warm -n
-
-      - name: Generate static site
-        run: php please ssg:generate -v
-
-      - name: Verify SSG output exists
-        run: |
-          if [ ! -d storage/app/static ] || [ -z "$(ls -A storage/app/static)" ]; then
-            echo "::error::SSG produced no output at storage/app/static."
-            echo "Directory listing of storage/app:"
-            ls -la storage/app/ || true
+          if [ -z "$APP_URL" ]; then
+            echo "::error::Set the APP_URL repository variable (Settings → Variables → Actions)."
             exit 1
           fi
-          echo "SSG output OK ($(find storage/app/static -type f | wc -l) files)."
+          cp .env.example .env
+          sed -i \
+            -e "s|^APP_ENV=.*|APP_ENV=production|" \
+            -e "s|^APP_DEBUG=.*|APP_DEBUG=false|" \
+            -e "s|^APP_URL=.*|APP_URL=${APP_URL}|" \
+            -e "s|^APP_KEY=.*|APP_KEY=base64:$(openssl rand -base64 32)|" \
+            -e "s|^STATAMIC_PRO_ENABLED=.*|STATAMIC_PRO_ENABLED=false|" \
+            .env
 
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
+      - uses: ramsey/composer-install@v4
+        with:
+          dependency-versions: locked
+          composer-options: --no-progress --prefer-dist --no-dev --optimize-autoloader
 
-      - name: Assemble Vercel Build Output
+      - run: npm ci
+      - run: npm run build
+
+      - name: Generate static site
         run: |
-          rm -rf .vercel/output
+          php please stache:warm -n -q
+          php please ssg:generate -n
+          [ -d storage/app/static ] && [ -n "$(ls -A storage/app/static)" ] \
+            || { echo "::error::SSG produced no output"; exit 1; }
+
+      - name: Deploy to Vercel
+        run: |
+          npm install --global vercel@latest
           mkdir -p .vercel/output/static
           cp -R storage/app/static/. .vercel/output/static/
-          printf '{ "version": 3 }\n' > .vercel/output/config.json
-
-      - name: Pull Vercel project settings
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Deploy prebuilt output to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+          printf '{"version":3}\n' > .vercel/output/config.json
+          vercel pull --yes --environment=production
+          vercel deploy --prebuilt --prod
