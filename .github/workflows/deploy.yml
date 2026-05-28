@@ -35,6 +35,17 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
+      - name: Prepare Laravel environment
+        env:
+          APP_URL: ${{ vars.APP_URL }}
+        run: |
+          cp .env.example .env
+          sed -i "s|^APP_ENV=.*|APP_ENV=production|" .env
+          sed -i "s|^APP_DEBUG=.*|APP_DEBUG=false|" .env
+          sed -i "s|^APP_URL=.*|APP_URL=${APP_URL}|" .env
+          APP_KEY="base64:$(openssl rand -base64 32)"
+          sed -i "s|^APP_KEY=.*|APP_KEY=${APP_KEY}|" .env
+
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v4
         with:
@@ -44,16 +55,6 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Prepare Laravel environment
-        env:
-          APP_URL: ${{ vars.APP_URL }}
-        run: |
-          cp .env.example .env
-          sed -i "s|^APP_ENV=.*|APP_ENV=production|" .env
-          sed -i "s|^APP_DEBUG=.*|APP_DEBUG=false|" .env
-          sed -i "s|^APP_URL=.*|APP_URL=${APP_URL}|" .env
-          php artisan key:generate
-
       - name: Build frontend assets
         run: npm run build
 
@@ -62,6 +63,16 @@ jobs:
 
       - name: Generate static site
         run: php please ssg:generate
+
+      - name: Verify SSG output exists
+        run: |
+          if [ ! -d storage/app/static ] || [ -z "$(ls -A storage/app/static)" ]; then
+            echo "::error::SSG produced no output at storage/app/static."
+            echo "Directory listing of storage/app:"
+            ls -la storage/app/ || true
+            exit 1
+          fi
+          echo "SSG output OK ($(find storage/app/static -type f | wc -l) files)."
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
