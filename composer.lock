@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9701a9c562ea1aa4483f9b8ea820c454",
+    "content-hash": "f06da9d4ef3093771405ba04aa89481f",
     "packages": [
         {
             "name": "ajthinking/archetype",
@@ -207,23 +207,22 @@
         },
         {
             "name": "brick/math",
-            "version": "0.14.8",
+            "version": "0.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "63422359a44b7f06cae63c3b429b59e8efcc0629"
+                "reference": "a62af7ab2e3cee9f9bf4cf77a5d1e6ba408a44ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/63422359a44b7f06cae63c3b429b59e8efcc0629",
-                "reference": "63422359a44b7f06cae63c3b429b59e8efcc0629",
+                "url": "https://api.github.com/repos/brick/math/zipball/a62af7ab2e3cee9f9bf4cf77a5d1e6ba408a44ee",
+                "reference": "a62af7ab2e3cee9f9bf4cf77a5d1e6ba408a44ee",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.2"
             },
             "require-dev": {
-                "php-coveralls/php-coveralls": "^2.2",
                 "phpstan/phpstan": "2.1.22",
                 "phpunit/phpunit": "^11.5"
             },
@@ -255,7 +254,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.14.8"
+                "source": "https://github.com/brick/math/tree/0.17.0"
             },
             "funding": [
                 {
@@ -263,7 +262,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-10T14:33:43+00:00"
+            "time": "2026-03-17T12:54:54+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -4681,20 +4680,20 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "4.9.2",
+            "version": "4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "8429c78ca35a09f27565311b98101e2826affde0"
+                "reference": "1a1f98b037d664d9093a620cfa85305c7e50b244"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/8429c78ca35a09f27565311b98101e2826affde0",
-                "reference": "8429c78ca35a09f27565311b98101e2826affde0",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/1a1f98b037d664d9093a620cfa85305c7e50b244",
+                "reference": "1a1f98b037d664d9093a620cfa85305c7e50b244",
                 "shasum": ""
             },
             "require": {
-                "brick/math": "^0.8.16 || ^0.9 || ^0.10 || ^0.11 || ^0.12 || ^0.13 || ^0.14",
+                "brick/math": ">=0.8.16 <=0.17",
                 "php": "^8.0",
                 "ramsey/collection": "^1.2 || ^2.0"
             },
@@ -4727,6 +4726,7 @@
                 "paragonie/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
                 "ramsey/uuid-doctrine": "Allows the use of Ramsey\\Uuid\\Uuid as Doctrine field type."
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "captainhook": {
@@ -4753,9 +4753,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid/issues",
-                "source": "https://github.com/ramsey/uuid/tree/4.9.2"
+                "source": "https://github.com/ramsey/uuid/tree/4.x"
             },
-            "time": "2025-12-14T04:43:48+00:00"
+            "time": "2026-04-27T22:11:13+00:00"
         },
         {
             "name": "rebing/graphql-laravel",
@@ -9784,6 +9784,75 @@
             "time": "2026-03-29T15:46:14+00:00"
         },
         {
+            "name": "cboxdk/statamic-mcp",
+            "version": "v2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cboxdk/statamic-mcp.git",
+                "reference": "e79a3fbf7b64741d6d9f0839dd717a5bab8b079d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cboxdk/statamic-mcp/zipball/e79a3fbf7b64741d6d9f0839dd717a5bab8b079d",
+                "reference": "e79a3fbf7b64741d6d9f0839dd717a5bab8b079d",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/mcp": "^0.6",
+                "php": "^8.3",
+                "statamic/cms": "^6.6",
+                "symfony/yaml": "^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.17",
+                "orchestra/testbench": "^10.0|^11.0",
+                "pestphp/pest": "^4.1",
+                "pestphp/pest-plugin-laravel": "^4.0"
+            },
+            "suggest": {
+                "laravel/boost": "Enhances the development experience when working with this Statamic MCP server by providing powerful Laravel-specific tools and debugging capabilities"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Cboxdk\\StatamicMcp\\ServiceProvider"
+                    ]
+                },
+                "statamic": {
+                    "name": "Statamic MCP Server",
+                    "description": "MCP server for Statamic CMS v6 — gives AI assistants structured access to content, blueprints, assets, and more."
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cboxdk\\StatamicMcp\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "MCP (Model Context Protocol) server for Statamic CMS v6 — gives AI assistants structured access to content, blueprints, assets, and more.",
+            "homepage": "https://github.com/cboxdk/statamic-mcp",
+            "keywords": [
+                "ai",
+                "claude",
+                "cursor",
+                "development",
+                "laravel",
+                "mcp",
+                "statamic",
+                "tools"
+            ],
+            "support": {
+                "issues": "https://github.com/cboxdk/statamic-mcp/issues",
+                "source": "https://github.com/cboxdk/statamic-mcp/tree/v2.5.0"
+            },
+            "time": "2026-05-06T16:25:44+00:00"
+        },
+        {
             "name": "composer/pcre",
             "version": "3.3.2",
             "source": {
@@ -10433,16 +10502,16 @@
         },
         {
             "name": "laravel/mcp",
-            "version": "v0.7.0",
+            "version": "v0.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/mcp.git",
-                "reference": "3513b4feca5f1678be4d2261dcfa8e456436d02a"
+                "reference": "c3775e57b95d7eadb580d543689d9971ec8721f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/mcp/zipball/3513b4feca5f1678be4d2261dcfa8e456436d02a",
-                "reference": "3513b4feca5f1678be4d2261dcfa8e456436d02a",
+                "url": "https://api.github.com/repos/laravel/mcp/zipball/c3775e57b95d7eadb580d543689d9971ec8721f2",
+                "reference": "c3775e57b95d7eadb580d543689d9971ec8721f2",
                 "shasum": ""
             },
             "require": {
@@ -10502,7 +10571,7 @@
                 "issues": "https://github.com/laravel/mcp/issues",
                 "source": "https://github.com/laravel/mcp"
             },
-            "time": "2026-04-21T10:23:03+00:00"
+            "time": "2026-04-15T08:30:42+00:00"
         },
         {
             "name": "laravel/pail",

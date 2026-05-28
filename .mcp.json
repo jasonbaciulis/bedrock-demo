@@ -10,10 +10,21 @@
         "herd": {
             "command": "php",
             "args": [
-                "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
+                "\/Applications\/Herd.app\/Contents\/Resources\/herd-mcp.phar"
             ],
             "env": {
-                "SITE_PATH": "/Users/jasonbaciulis/Dev/bedrock-demo"
+                "SITE_PATH": "\/Users\/jasonbaciulis\/Dev\/bedrock-demo"
+            }
+        },
+        "statamic": {
+            "command": "php",
+            "args": [
+                "artisan",
+                "mcp:start",
+                "statamic"
+            ],
+            "env": {
+                "APP_ENV": "local"
             }
         }
     }

@@ -19,6 +19,7 @@
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "dev-master",
+    "cboxdk/statamic-mcp": "^2.5",
     "fakerphp/faker": "^1.23",
     "larastan/larastan": "^3.9",
     "laravel/boost": "^2.0",
