@@ -1,0 +1,80 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  build_and_deploy:
+    name: Build SSG and deploy to Vercel
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: dom, curl, libxml, mbstring, zip, intl, gd, bcmath
+          coverage: none
+          tools: composer
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v4
+        with:
+          dependency-versions: locked
+          composer-options: --no-progress --no-interaction --prefer-dist --no-dev --optimize-autoloader
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Prepare Laravel environment
+        env:
+          APP_URL: ${{ vars.APP_URL }}
+        run: |
+          cp .env.example .env
+          sed -i "s|^APP_ENV=.*|APP_ENV=production|" .env
+          sed -i "s|^APP_DEBUG=.*|APP_DEBUG=false|" .env
+          sed -i "s|^APP_URL=.*|APP_URL=${APP_URL}|" .env
+          php artisan key:generate
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Warm Statamic stache
+        run: php please stache:warm -n -q
+
+      - name: Generate static site
+        run: php please ssg:generate
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Assemble Vercel Build Output
+        run: |
+          rm -rf .vercel/output
+          mkdir -p .vercel/output/static
+          cp -R storage/app/static/. .vercel/output/static/
+          printf '{ "version": 3 }\n' > .vercel/output/config.json
+
+      - name: Pull Vercel project settings
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy prebuilt output to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
