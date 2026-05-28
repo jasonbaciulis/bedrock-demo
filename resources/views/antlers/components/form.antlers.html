@@ -56,12 +56,12 @@
         }"
     >
         <template x-if="success">
-            <s:partial:components/ui/alert style="success" :title="success_message" class="mb-8" />
+            <s:partial:components.ui.alert variant="success" :title="success_message" class="mb-8" />
         </template>
 
         <input type="hidden" name="_token" value="{{ csrf_token }}">
 
-        <s:partial:components/ui/form/honeypot model="form.{{ honeypot }}" :handle="honeypot" :form_handle="form:handle" />
+        <s:partial:components.ui.form.honeypot model="form.{honeypot}" :handle="honeypot" :form_handle="form:handle" />
 
         <div class="space-y-12 divide-y divide-gray-300">
             {{ sections }}
@@ -72,7 +72,7 @@
 
                     <div class="grid gap-x-8 gap-y-6 md:grid-cols-12">
                         {{ fields }}
-                            <s:partial:components/form-field />
+                            <s:partial:components.form-field />
                         {{ /fields }}
                     </div>
                 </div>
@@ -80,7 +80,7 @@
         </div>
 
         <div class="pt-8">
-            <s:partial:components/ui/form/submit :label="submit_label ?? 'Submit'" />
+            <s:partial:components.ui.form.submit :label="submit_label ?? 'Submit'" />
         </div>
     </div>
 </s:form:create>

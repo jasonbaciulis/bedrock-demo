@@ -1,5 +1,5 @@
 ---
-style: 'success'
+variant: 'success'
 title: ''
 description: ''
 dismissible: false
@@ -7,18 +7,18 @@ class: ''
 ---
 
 <div
-    class="bg-accent {{ ['alert--success' => style == 'success', 'alert--warning' => style == 'warning', 'alert--error' => style == 'error', ] | classes }} {{ class }} relative flex items-start gap-x-3 rounded-lg border px-4 py-3 text-sm"
+    class="bg-accent {{ ['alert--success' => variant == 'success', 'alert--warning' => variant == 'warning', 'alert--error' => variant == 'error', ] | classes }} {{ class }} relative flex items-start gap-x-3 rounded-lg border px-4 py-3 text-sm"
     {{ if view:dismissible }}
         x-data="{ dismissed: false }"
         x-show="!dismissed"
     {{ /if }}
 >
     <div class="size-4 shrink-0 translate-y-0.5">
-        {{ if view:style == 'success' }}
+        {{ if view:variant == 'success' }}
             <s:svg src="heroicons/outline/check-circle" />
-        {{ elseif view:style == 'warning' }}
+        {{ elseif view:variant == 'warning' }}
             <s:svg src="heroicons/outline/exclamation-triangle" />
-        {{ elseif view:style == 'error' }}
+        {{ elseif view:variant == 'error' }}
             <s:svg src="heroicons/outline/x-circle" />
         {{ /if }}
     </div>

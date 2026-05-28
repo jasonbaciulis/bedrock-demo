@@ -19,9 +19,9 @@ model: ''
         {{ old | attribute:value }}
         {{ autocomplete | attribute:autocomplete }}
         {{ visibility === 'read_only' ?= 'readonly' }}
-        x-bind:aria-invalid="form.invalid('{{ handle }}')"
-        x-bind:aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : {{ if instructions }}'{{ id }}-instructions'{{ else }}false{{ /if }}"
-        x-on:change="form.validate('{{ handle }}')"
+        :aria-invalid="form.invalid('{{ handle }}')"
+        :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : {{ if instructions }}'{{ id }}-instructions'{{ else }}false{{ /if }}"
+        @change="form.validate('{{ handle }}')"
     />
     {{ if append }}
         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-5">
