@@ -1,3 +1,5 @@
-@props(['model'])
+@props ([
+    'model',
+])
 
-@include('components.ui.form.combobox', ['model' => $model, ...$attributes])
+@include ('components.ui.form.combobox', ['model' => $model, ...$attributes])

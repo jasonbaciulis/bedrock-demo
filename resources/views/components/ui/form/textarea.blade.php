@@ -1,4 +1,4 @@
-@props([
+@props ([
     'model',
     'rows' => 5,
     'placeholder' => null,

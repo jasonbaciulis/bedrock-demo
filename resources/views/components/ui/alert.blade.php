@@ -1,5 +1,5 @@
-@props([
-    'style' => 'success', // success, warning, error
+@props ([
+    'variant' => 'success', // success, warning, error
     'title',
     'description' => null,
     'dismissible' => false,
@@ -8,9 +8,9 @@
 <div
     {{ $attributes->class([
         'alert',
-        'alert--success' => $style === 'success',
-        'alert--warning' => $style === 'warning',
-        'alert--error' => $style === 'error',
+        'alert--success' => $variant === 'success',
+        'alert--warning' => $variant === 'warning',
+        'alert--error' => $variant === 'error',
     ]) }}
     @if ($dismissible)
         x-data="{ dismissed: false }"
@@ -18,17 +18,17 @@
     @endif
 >
     <div class="alert__icon">
-        @if ($style === 'success')
+        @if ($variant === 'success')
             <x-lucide-circle-check />
-        @elseif ($style === 'warning')
+        @elseif ($variant === 'warning')
             <x-lucide-triangle-alert />
-        @elseif ($style === 'error')
+        @elseif ($variant === 'error')
             <x-lucide-circle-x />
         @endif
     </div>
     <div class="alert__content">
         <p class="line-clamp-1 font-medium tracking-tight">{!! $title !!}</p>
-        @isset($description)
+        @isset ($description)
             <p class="text-muted-foreground text-sm">{!! $description !!}</p>
         @endisset
     </div>

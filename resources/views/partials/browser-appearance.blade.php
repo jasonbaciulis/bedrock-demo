@@ -21,7 +21,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
 @endif
 
-@isset($browser_appearance->theme_color)
+@isset ($browser_appearance->theme_color)
     <meta name="theme-color" content="{{ $browser_appearance->theme_color }}" />
 @endisset
 

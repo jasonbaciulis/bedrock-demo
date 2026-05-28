@@ -15,7 +15,7 @@
             <div
                 class="mt-12 grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4 xl:col-span-8 xl:mt-0"
             >
-                @include('partials.nav-footer')
+                @include ('partials.nav-footer')
             </div>
         </div>
         <hr />
@@ -23,15 +23,15 @@
             <div
                 class="flex-row-reverse justify-between space-y-8 md:flex md:space-y-0 lg:items-center"
             >
-                @include('partials.nav-social')
+                @include ('partials.nav-social')
 
                 <div
                     class="flex-row-reverse items-center space-y-8 lg:flex lg:space-y-0 lg:gap-x-16"
                 >
-                    @include('partials.nav-bottom-footer')
+                    @include ('partials.nav-bottom-footer')
 
                     <div class="text-muted-foreground prose text-xs">
-                        {!! str_replace(':copyright_year', '&copy; '.now()->format('Y'), $theme->copyright_text) !!}
+                        {!! str_replace(':copyright_year', '&copy; ' . now()->format('Y'), $theme->copyright_text) !!}
                     </div>
                 </div>
             </div>

@@ -22,4 +22,3 @@ prose-pre:my-0
 prose-strong:text-neutral-900
 prose-code:text-rose
 max-w-none
-

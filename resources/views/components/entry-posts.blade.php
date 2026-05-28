@@ -1,4 +1,11 @@
-@props(['image', 'url', 'title', 'excerpt', 'date', 'categories'])
+@props ([
+    'image',
+    'url',
+    'title',
+    'excerpt',
+    'date',
+    'categories',
+])
 
 <article {{ $attributes }}>
     <div
@@ -11,8 +18,6 @@
 
     <a href="{{ $url }}" class="group mt-3 block">
         <h3 class="h5 text-pretty underline-offset-4 group-hover:underline">{!! $title !!}</h3>
-        <p class="text-muted-foreground mt-5 line-clamp-3 text-sm/6">
-            {!! $excerpt !!}
-        </p>
+        <p class="text-muted-foreground mt-5 line-clamp-3 text-sm/6">{!! $excerpt !!}</p>
     </a>
 </article>

@@ -1,4 +1,7 @@
-@props(['date', 'categories'])
+@props ([
+    'date',
+    'categories',
+])
 
 <div {{ $attributes->class(['flex items-center gap-4']) }}>
     <time
@@ -7,7 +10,7 @@
     >
         {{ Statamic::modify($date)->format('M j, Y') }}
     </time>
-    @isset($categories->title)
+    @isset ($categories->title)
         <span class="badge badge--outline">{!! $categories->title !!}</span>
     @endisset
 </div>

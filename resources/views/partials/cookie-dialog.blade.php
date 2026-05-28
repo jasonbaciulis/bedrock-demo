@@ -3,14 +3,14 @@
 --}}
 
 @once
-    @push('scripts')
-        @vite('resources/js/components/cookieDialog.js')
+    @push ('scripts')
+        @vite ('resources/js/components/cookieDialog.js')
     @endpush
 @endonce
 
 <div
     x-cloak
-    x-show="! $store.cookieDialog.getConsent()"
+    x-show="!$store.cookieDialog.getConsent()"
     x-transition:enter="ease duration-200"
     x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
     x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
@@ -73,7 +73,7 @@
                         <label
                             x-bind:for="type.name"
                             x-bind:class="{
-                                'cursor-not-allowed text-muted-foreground': ! type.consent_api,
+                                'cursor-not-allowed text-muted-foreground': !type.consent_api,
                             }"
                             x-text="type.label"
                         ></label>
@@ -130,7 +130,7 @@
 </div>
 
 {{-- Yield this section in `partials/nav-bottom-footer.blade.php` so users can reset their consent. --}}
-@section('reset_cookie_consent')
+@section ('reset_cookie_consent')
     @if ($seo->use_cookie_dialog)
         <a
             x-cloak

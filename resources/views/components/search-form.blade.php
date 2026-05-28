@@ -3,18 +3,14 @@
     Docs: https://statamic.dev/search#forms
 --}}
 
-@props([
+@props ([
     'action',
     'query' => request()->get('q'),
     'total_results' => null,
     'placeholder' => 'Search…',
 ])
 
-<form
-    class="flex items-center gap-6"
-    action="{{ $action }}"
-    x-data="{ search: '{{ $query }}' }"
->
+<form class="flex items-center gap-6" action="{{ $action }}" x-data="{ search: '{{ $query }}' }">
     <div class="text-foreground relative flex-1">
         <input
             x-model="search"
@@ -39,7 +35,7 @@
             <x-lucide-x class="opacity-50" />
         </button>
     </div>
-    @isset($query)
+    @isset ($query)
         <span class="shrink-0 font-semibold">
             {{ $total_results }} {{ Statamic::modify('result')->plural($total_results) }}
         </span>

@@ -29,7 +29,7 @@
                             @foreach ($items as $item)
                                 @if ($item['children'] && $item['two_col_menu'])
                                     @foreach ($item['children'] as $child)
-                                        @include('partials.nav-header-item', [...$child])
+                                        @include ('partials.nav-header-item', [...$child])
                                     @endforeach
                                 @endif
                             @endforeach

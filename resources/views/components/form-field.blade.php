@@ -7,11 +7,14 @@
         @endunless
 
         <div class="grid gap-2">
-            @component('components.ui.form.'.$type, [
-                'model' => 'form.'.$handle,
-                ...$field,
-            ])
-                
+            @component (
+                'components.ui.form.' . $type,
+                [
+                    'model' => 'form.' . $handle,
+                    ...$field,
+                ]
+            )
+
             @endcomponent
 
             @if ($instructions && ! in_array($type, $fieldsWithoutLabels()))

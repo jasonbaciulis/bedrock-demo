@@ -4,13 +4,12 @@
         mobileNavOpen: false,
         scrollbarWidth: 0,
         init() {
-            this.scrollbarWidth =
-                window.innerWidth - document.documentElement.clientWidth
+            this.scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
         },
         preventBodyScroll() {
             document.documentElement.style.setProperty(
                 '--scrollbar-width',
-                this.scrollbarWidth + 'px',
+                this.scrollbarWidth + 'px'
             )
             document.body.classList.add('no-scroll')
         },
@@ -36,7 +35,7 @@
                 </button>
             </div>
 
-            @include('partials.nav-header-desktop')
+            @include ('partials.nav-header-desktop')
 
             <div class="hidden items-center justify-end gap-x-2 lg:flex lg:w-0 lg:flex-1">
                 @foreach ($theme->header_buttons as $button)
@@ -59,5 +58,5 @@
     </div>
 
     {{-- Hidden from lg and up --}}
-    @include('partials.nav-header-mob')
+    @include ('partials.nav-header-mob')
 </div>

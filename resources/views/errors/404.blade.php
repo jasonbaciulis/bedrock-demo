@@ -1,6 +1,6 @@
-@extends('layout')
+@extends ('layout')
 
-@section('body')
+@section ('body')
     <main id="content">
         <section class="m-section">
             <div class="site-grid container">

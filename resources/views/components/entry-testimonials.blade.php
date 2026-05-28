@@ -1,4 +1,4 @@
-@props([
+@props ([
     'entry',
     'fetched_from_rest_api' => false,
 ])

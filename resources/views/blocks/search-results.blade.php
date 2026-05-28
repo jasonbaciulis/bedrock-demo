@@ -13,7 +13,7 @@
             on_each_side="1"
             as="results"
         >
-            @isset($results)
+            @isset ($results)
                 <div class="site-grid gap-y-20 md:gap-y-12">
                     <div class="max-w-md sm:col-span-12">
                         <x-search-form
@@ -40,7 +40,7 @@
                 </div>
             @endisset
 
-            @isset($paginate)
+            @isset ($paginate)
                 <x-ui.pagination class="mt-20" :$paginate />
             @endisset
         </s:search:results>

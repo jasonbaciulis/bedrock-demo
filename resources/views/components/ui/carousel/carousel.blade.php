@@ -1,27 +1,26 @@
 {{--
     Carousel component similar to shadcn/ui carousel
     Uses Embla Carousel with Alpine.js state management
+    Available options: https://www.embla-carousel.com/api/options/
 --}}
 
-@props([
+@props ([
     'orientation' => 'horizontal',
-    'opts' => '', // Available options: https://www.embla-carousel.com/api/options/
+    'opts' => '',
     'content',
     'nav',
 ])
 
 @once
-    @push('scripts')
-        @vite('resources/js/embla.js')
+    @push ('scripts')
+        @vite ('resources/js/embla.js')
     @endpush
 @endonce
 
 <div
-    {{
-        $attributes->class([
-            'relative outline-none',
-        ])
-    }}
+    {{ $attributes->class([
+        'relative outline-none',
+    ]) }}
     role="region"
     aria-roledescription="carousel"
     x-data="{

@@ -1,4 +1,4 @@
-@props([
+@props ([
     'model',
     'min' => 0,
     'max' => 9999,
@@ -13,8 +13,8 @@
 ])
 
 @once
-    @push('scripts')
-        @vite('resources/js/components/stepper.js')
+    @push ('scripts')
+        @vite ('resources/js/components/stepper.js')
     @endpush
 @endonce
 
@@ -43,7 +43,7 @@
                 x-model="{{ $model }}"
                 x-modelable="count"
                 id="{{ $id }}"
-                class="size-8 border-none px-0 text-center shadow-none [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                class="[&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none size-8 border-none px-0 text-center shadow-none [-moz-appearance:textfield]"
                 name="{{ $handle }}"
                 inputmode="numeric"
                 type="number"

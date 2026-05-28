@@ -1,4 +1,4 @@
-@props([
+@props ([
     'model',
     'max_files' => 1,
     'handle',

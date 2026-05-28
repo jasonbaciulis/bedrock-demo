@@ -1,6 +1,6 @@
 @once
-    @push('scripts')
-        @vite('resources/js/components/toaster.js')
+    @push ('scripts')
+        @vite ('resources/js/components/toaster.js')
     @endpush
 @endonce
 

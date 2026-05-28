@@ -1,4 +1,4 @@
-@props([
+@props ([
     'model',
     'options',
     'placeholder' => 'Select a value…',
@@ -9,8 +9,8 @@
 ])
 
 @once
-    @push('scripts')
-        @vite('resources/js/components/combobox.js')
+    @push ('scripts')
+        @vite ('resources/js/components/combobox.js')
     @endpush
 @endonce
 
@@ -40,7 +40,7 @@
         <span
             class="block truncate"
             x-text="buttonLabel"
-            x-bind:class="{ 'text-muted-foreground': ! value }"
+            x-bind:class="{ 'text-muted-foreground': !value }"
         ></span>
         <x-lucide-chevrons-up-down class="opacity-50" />
     </button>
@@ -117,7 +117,7 @@
                 </li>
 
                 <li
-                    x-show="! itemsFiltered.length && comboboxSearch.length > 0"
+                    x-show="!itemsFiltered.length && comboboxSearch.length > 0"
                     class="py-6 text-center text-sm"
                 >
                     No results match your search.

@@ -1,4 +1,9 @@
-@props(['id', 'display', 'color' => 'text-foreground', 'hide_display' => false])
+@props ([
+    'id',
+    'display',
+    'color' => 'text-foreground',
+    'hide_display' => false,
+])
 
 <label
     id="{{ $id }}-label"

@@ -17,26 +17,26 @@
 --}}
 {{-- format-ignore-end --}}
 
-    <div class="container">
-        <x-section-header :title="$block->title" :text="$block->text ?? null" />
+<div class="container">
+    <x-section-header :title="$block->title" :text="$block->text ?? null" />
 
-        @if ($block->query->value() === 'custom')
-            @php($entries = $block->entries)
-        @elseif ($block->query->value() === 'latest')
-            @php($entries = Statamic::tag('collection:testimonials')->limit($block->limit)->sort('date:desc')->fetch())
-        @elseif ($block->query->value() === 'featured')
-            @php($entries = Statamic::tag('collection:testimonials')->limit($block->limit)->featured()->sort('order')->fetch())
-        @endif
+    @if ($block->query->value() === 'custom')
+        @php ($entries = $block->entries)
+    @elseif ($block->query->value() === 'latest')
+        @php ($entries = Statamic::tag('collection:testimonials')->limit($block->limit)->sort('date:desc')->fetch())
+    @elseif ($block->query->value() === 'featured')
+        @php ($entries = Statamic::tag('collection:testimonials')->limit($block->limit)->featured()->sort('order')->fetch())
+    @endif
 
-        <div class="site-grid">
-            @foreach ($entries as $entry)
-                <div class="sm:col-span-6 lg:col-span-4">
-                    <x-entry-testimonials :$entry />
-                </div>
-            @endforeach
+    <div class="site-grid">
+        @foreach ($entries as $entry)
+            <div class="sm:col-span-6 lg:col-span-4">
+                <x-entry-testimonials :$entry />
+            </div>
+        @endforeach
 
-            {{-- Example how to output entries returned from REST API request --}}
-            {{-- format-ignore-start --}}
+        {{-- Example how to output entries returned from REST API request --}}
+        {{-- format-ignore-start --}}
             {{-- <template x-for="(entry, index) in entries">
                 <div class="sm:col-span-6 lg:col-span-4">
                     <x-alpine.entry-testimonials :$entry />
@@ -53,4 +53,4 @@
         </div> --}}
         {{-- format-ignore-end --}}
     </div>
-</section>
+    </section>

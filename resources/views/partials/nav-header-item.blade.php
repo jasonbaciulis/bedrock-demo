@@ -11,19 +11,13 @@
     @endunless
 
     <div>
-        <span class="text-foreground font-medium">
-            {!! $title !!}
-        </span>
+        <span class="text-foreground font-medium"> {!! $title !!} </span>
         @unless (empty($badge->value()))
-            <span class="badge badge--outline relative -top-px ml-1.5">
-                {!! $badge !!}
-            </span>
+            <span class="badge badge--outline relative -top-px ml-1.5"> {!! $badge !!} </span>
         @endunless
 
-        @isset($description)
-            <p class="text-muted-foreground hidden text-pretty lg:block">
-                {!! $description !!}
-            </p>
+        @isset ($description)
+            <p class="text-muted-foreground hidden text-pretty lg:block">{!! $description !!}</p>
         @endisset
     </div>
 </a>

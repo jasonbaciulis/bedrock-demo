@@ -4,8 +4,8 @@
 --}}
 
 @once
-    @push('scripts')
-        @vite('resources/js/components/newsletter.js')
+    @push ('scripts')
+        @vite ('resources/js/components/newsletter.js')
     @endpush
 @endonce
 

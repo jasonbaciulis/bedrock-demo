@@ -1,4 +1,4 @@
-@props([
+@props ([
     'name',
     'alpine_property' => 'activeTab', // Alpine property of the parent component that controls the active tab.
 ])

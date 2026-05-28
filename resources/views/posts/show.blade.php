@@ -1,6 +1,6 @@
-@extends('layout')
+@extends ('layout')
 
-@section('body')
+@section ('body')
     <main id="content" class="my-16 sm:my-24 lg:my-28">
         <div class="site-grid container mb-12">
             <div class="col-span-full md:col-span-11 md:col-start-2 xl:col-span-9 xl:col-start-3">
@@ -16,14 +16,14 @@
                 </div>
                 <h1 class="h1 mt-em">{{ $page->title }}</h1>
                 <x-entry-meta :date="$page->date" :categories="$page->categories" class="mt-6" />
-                @include('partials.social-sharing', ['class' => 'mt-6'])
+                @include ('partials.social-sharing', ['class' => 'mt-6'])
             </div>
         </div>
 
-        @include('blocks.article', ['block' => $page])
+        @include ('blocks.article', ['block' => $page])
 
         @if ($page->show_related_posts)
-            @include('partials.related-posts')
+            @include ('partials.related-posts')
         @endif
     </main>
 @endsection

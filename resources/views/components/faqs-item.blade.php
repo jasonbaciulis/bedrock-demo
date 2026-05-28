@@ -1,4 +1,7 @@
-@props(['title', 'text'])
+@props ([
+    'title',
+    'text',
+])
 
 <x-ui.collapsible {{ $attributes->merge(['class' => 'group']) }}>
     <x-slot:trigger
@@ -9,11 +12,11 @@
             <x-lucide-plus x-show="!open" />
             <x-lucide-minus x-show="open" />
         </span>
-    </x-slot>
+    </x-slot:trigger>
 
     <x-slot:content class="-top-2 pr-12">
         <div class="content-sm prose text-muted-foreground max-w-none pb-4 text-pretty">
             {!! $text !!}
         </div>
-    </x-slot>
+    </x-slot:content>
 </x-ui.collapsible>

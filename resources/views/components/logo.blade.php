@@ -2,7 +2,7 @@
     Set the logo inside Control Panel in /cp/globals/theme
 --}}
 
-@props([
+@props ([
     'logo',
     'url' => config('app.url'),
     'aria_label' => config('app.name').' logo',

@@ -1,9 +1,9 @@
-@props([
+@props ([
     'buttons' => [],
     'size' => null,
 ])
 
-@isset($buttons)
+@isset ($buttons)
     <div {{ $attributes->class(['flex flex-wrap gap-4' => count($buttons) > 1]) }}>
         @foreach ($buttons as $button)
             <x-ui.button

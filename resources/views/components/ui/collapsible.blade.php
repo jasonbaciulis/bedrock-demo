@@ -1,4 +1,4 @@
-@props([
+@props ([
     'trigger',
     'content',
     'name' => Str::random(8),
@@ -8,7 +8,7 @@
     x-data="{
         open: false,
         toggle() {
-            this.open = ! this.open
+            this.open = !this.open
         },
         close() {
             this.open = false

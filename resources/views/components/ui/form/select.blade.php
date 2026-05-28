@@ -1,4 +1,4 @@
-@props([
+@props ([
     'model',
     'options',
     'placeholder' => 'Select a value…',
@@ -10,7 +10,7 @@
 ])
 
 @if ($searchable)
-    @include('components.ui.form.combobox', [...$attributes, 'model' => $model])
+    @include ('components.ui.form.combobox', [...$attributes, 'model' => $model])
 @else
     <select
         x-model="{{ $model }}"
@@ -33,9 +33,7 @@
         @endunless
 
         @foreach ($options as $option => $label)
-            <option value="{!! $option !!}">
-                {!! $label !!}
-            </option>
+            <option value="{!! $option !!}">{!! $label !!}</option>
         @endforeach
     </select>
 @endif

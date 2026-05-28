@@ -1,11 +1,11 @@
 @once
-    @push('scripts')
-        @vite('resources/css/lite-yt-embed.css')
-        @vite('resources/js/lite-yt-embed.js')
+    @push ('scripts')
+        @vite ('resources/css/lite-yt-embed.css')
+        @vite ('resources/js/lite-yt-embed.js')
     @endpush
 @endonce
 
-@php($youtube_id = Statamic::tag('youtube_id')->youtubeUrl($youtube_url)->fetch())
+@php ($youtube_id = Statamic::tag('youtube_id')->youtubeUrl($youtube_url)->fetch())
 
 <figure class="not-prose my-0">
     <lite-youtube
@@ -18,9 +18,7 @@
         </a>
     </lite-youtube>
 
-    @isset($caption)
-        <figcaption class="text-muted-foreground mt-2 block text-sm">
-            {!! $caption !!}
-        </figcaption>
+    @isset ($caption)
+        <figcaption class="text-muted-foreground mt-2 block text-sm">{!! $caption !!}</figcaption>
     @endisset
 </figure>

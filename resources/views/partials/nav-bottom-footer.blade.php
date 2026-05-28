@@ -11,6 +11,6 @@
         @endforeach
 
         {{-- Let's users reset their cookies consent when using the cookie banner. --}}
-        @yield('reset_cookie_consent')
+        @yield ('reset_cookie_consent')
     </nav>
 </s:nav>

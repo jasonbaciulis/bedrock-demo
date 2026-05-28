@@ -1,4 +1,4 @@
-@props([
+@props ([
     'model',
     'options',
     'display',
@@ -14,7 +14,7 @@
 >
     <legend class="text-foreground block text-sm font-medium select-none">{!! $display !!}</legend>
 
-    @isset($instructions)
+    @isset ($instructions)
         <x-ui.input-instructions :$instructions :$id />
     @endisset
 

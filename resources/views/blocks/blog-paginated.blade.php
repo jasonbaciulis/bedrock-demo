@@ -9,7 +9,7 @@
             on_each_side="1"
             as="posts"
         >
-            @isset($posts)
+            @isset ($posts)
                 <div class="site-grid gap-y-20 md:gap-y-12">
                     @foreach ($posts as $post)
                         <x-entry-posts
@@ -25,7 +25,7 @@
                 </div>
             @endisset
 
-            @isset($paginate)
+            @isset ($paginate)
                 <x-ui.pagination class="mt-20" :$paginate />
             @endisset
         </s:collection>

@@ -1,4 +1,4 @@
-@props([
+@props ([
     'label' => null,
     'as' => 'a', // The HTML element to render as a button
     'variant' => 'primary',

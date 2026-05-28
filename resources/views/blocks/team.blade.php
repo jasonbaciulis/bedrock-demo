@@ -3,11 +3,11 @@
         <x-section-header :title="$block->title" :text="$block->text ?? null" />
 
         @if ($block->query->value() === 'custom')
-            @php($entries = $block->entries)
+            @php ($entries = $block->entries)
         @elseif ($block->query->value() === 'ordered')
-            @php($entries = Statamic::tag('collection:team')->limit($block->limit)->sort('order')->fetch())
+            @php ($entries = Statamic::tag('collection:team')->limit($block->limit)->sort('order')->fetch())
         @elseif ($block->query->value() === 'featured')
-            @php($entries = Statamic::tag('collection:team')->limit($block->limit)->featured()->sort('order')->fetch())
+            @php ($entries = Statamic::tag('collection:team')->limit($block->limit)->featured()->sort('order')->fetch())
         @endif
 
         <div class="site-grid gap-y-20">

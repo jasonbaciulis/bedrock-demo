@@ -1,5 +1,5 @@
 @once
-    @push('scripts')
+    @push ('scripts')
         <script src="/vendor/statamic/frontend/js/helpers.js" defer></script>
     @endpush
 @endonce
@@ -37,9 +37,7 @@
                     <div class="card shadow-none">
                         <div class="card__header">
                             <p class="leading-none font-semibold">Contact us</p>
-                            <p class="text-muted-foreground text-sm">
-                                Get in touch and we'll respond within 24 hours.
-                            </p>
+                            <p class="text-muted-foreground text-sm">Get in touch and we'll respond within 24 hours.</p>
                         </div>
                         <div class="flex flex-1 flex-col gap-4">
                             <div class="grid gap-3">
@@ -99,9 +97,7 @@
                     <div class="card shadow-none">
                         <div class="card__header">
                             <p class="leading-none font-semibold">Newsletter</p>
-                            <p class="text-muted-foreground text-sm">
-                                Stay updated with our latest insights and tips.
-                            </p>
+                            <p class="text-muted-foreground text-sm">Stay updated with our latest insights and tips.</p>
                         </div>
                         <div class="flex flex-1 flex-col gap-4">
                             <div class="grid gap-3">
@@ -158,9 +154,7 @@
                     <div class="card shadow-none">
                         <div class="card__header">
                             <p class="leading-none font-semibold">Featured posts</p>
-                            <p class="text-muted-foreground text-sm">
-                                Browse our most popular posts.
-                            </p>
+                            <p class="text-muted-foreground text-sm">Browse our most popular posts.</p>
                         </div>
 
                         <div class="flex flex-1 items-center px-8">
@@ -182,12 +176,12 @@
                                             </div>
                                         </x-ui.carousel.slide>
                                     @endfor
-                                </x-slot>
+                                </x-slot:content>
 
                                 <x-slot:nav>
                                     <x-ui.carousel.previous class="btn--outline btn--round" />
                                     <x-ui.carousel.next class="btn--outline btn--round" />
-                                </x-slot>
+                                </x-slot:nav>
                             </x-ui.carousel>
                         </div>
                     </div>
@@ -321,7 +315,7 @@
                                 {{ $tab->title }}
                             </x-ui.tabs.trigger>
                         @endforeach
-                    </x-slot>
+                    </x-slot:list>
 
                     <x-slot:panels>
                         @foreach ($services_tabs as $tab)
@@ -349,16 +343,14 @@
                                 </div>
                             </x-ui.tabs.panel>
                         @endforeach
-                    </x-slot>
+                    </x-slot:panels>
                 </x-ui.tabs>
 
                 <div x-data="{ form: { steps: 5000 } }">
                     <div class="card shadow-none">
                         <div class="card__header">
                             <p class="leading-none font-semibold">Move goal</p>
-                            <p class="text-muted-foreground text-sm">
-                                Set your daily activity goal.
-                            </p>
+                            <p class="text-muted-foreground text-sm">Set your daily activity goal.</p>
                         </div>
                         <div class="flex flex-1 flex-col items-center gap-4">
                             <x-ui.form.stepper
@@ -406,9 +398,7 @@
                 <div class="card shadow-none">
                     <div class="card__header">
                         <p class="text-xl font-semibold">FAQs</p>
-                        <p class="text-muted-foreground text-sm">
-                            Here are some of the most frequently asked questions.
-                        </p>
+                        <p class="text-muted-foreground text-sm">Here are some of the most frequently asked questions.</p>
                     </div>
 
                     @php
@@ -439,10 +429,10 @@
                                         class="size-4 transition-transform"
                                         x-bind:class="open && 'rotate-180'"
                                     />
-                                </x-slot>
+                                </x-slot:trigger>
                                 <x-slot:content class="text-muted-foreground text-sm">
                                     <p>{{ $faq->answer }}</p>
-                                </x-slot>
+                                </x-slot:content>
                             </x-ui.collapsible>
                         @endforeach
                     </dl>
@@ -459,25 +449,19 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium">Share bedrock</p>
-                            <p class="text-muted-foreground text-sm">
-                                Share this starter-kit with your followers
-                            </p>
+                            <p class="text-muted-foreground text-sm">Share this starter-kit with your followers</p>
                         </div>
                         <x-ui.dialog size="sm">
                             <x-slot:trigger class="btn--outline btn--sm">
                                 Share
-                            </x-slot>
+                            </x-slot:trigger>
                             <x-slot:content>
                                 <div class="flex flex-col gap-4">
                                     <div class="flex flex-col gap-2 text-center sm:text-left">
                                         <p
                                             class="text-lg leading-none font-semibold text-neutral-800"
-                                        >
-                                            Share link
-                                        </p>
-                                        <p class="text-muted-foreground text-sm">
-                                            Anyone who has this link will be able to view this.
-                                        </p>
+                                        >Share link</p>
+                                        <p class="text-muted-foreground text-sm">Anyone who has this link will be able to view this.</p>
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <label for="link" class="sr-only">Link</label>
@@ -492,7 +476,11 @@
                                             variant="outline"
                                             as="button"
                                             type="button"
-                                            x-on:click="navigator.clipboard.writeText('https://bedrock.remarkable.dev')"
+                                            x-on:click="
+                                                navigator.clipboard.writeText(
+                                                    'https://bedrock.remarkable.dev'
+                                                )
+                                            "
                                         >
                                             Copy link
                                         </x-ui.button>
@@ -508,7 +496,7 @@
                                         </x-ui.button>
                                     </div>
                                 </div>
-                            </x-slot>
+                            </x-slot:content>
                         </x-ui.dialog>
                     </div>
 
@@ -522,7 +510,7 @@
                             <x-slot:toggle class="btn--outline btn--sm">
                                 Actions
                                 <x-lucide-chevron-down class="mt-px -mr-1 size-4 opacity-50" />
-                            </x-slot>
+                            </x-slot:toggle>
 
                             @php
                                 $actions = [
@@ -548,11 +536,10 @@
                             <x-slot:content>
                                 @foreach ($actions as $action)
                                     <x-ui.dropdown.item href="/" x-on:click.prevent="close()">
-                                        {{ svg($action->icon) }}
-                                        {!! $action->label !!}
+                                        {{ svg($action->icon) }} {!! $action->label !!}
                                     </x-ui.dropdown.item>
                                 @endforeach
-                            </x-slot>
+                            </x-slot:content>
                         </x-ui.dropdown>
                     </div>
                 </div>
@@ -594,7 +581,14 @@
                             type="button"
                             variant="outline"
                             as="button"
-                            x-on:click="$dispatch('toast', { message: 'Saved!', description: 'Anyone with a link can now view this file.', type: 'success', dismissible: true })"
+                            x-on:click="
+                                $dispatch('toast', {
+                                    message: 'Saved!',
+                                    description: 'Anyone with a link can now view this file.',
+                                    type: 'success',
+                                    dismissible: true,
+                                })
+                            "
                             label="Success"
                         />
                         <x-ui.button
@@ -602,7 +596,12 @@
                             type="button"
                             variant="outline"
                             as="button"
-                            x-on:click="$dispatch('toast', { message: 'There was an error!', type: 'error' })"
+                            x-on:click="
+                                $dispatch('toast', {
+                                    message: 'There was an error!',
+                                    type: 'error',
+                                })
+                            "
                             label="Error"
                         />
                         <x-ui.button
@@ -610,7 +609,12 @@
                             type="button"
                             variant="outline"
                             as="button"
-                            x-on:click="$dispatch('toast', { message: 'This is a warning', type: 'warning' })"
+                            x-on:click="
+                                $dispatch('toast', {
+                                    message: 'This is a warning',
+                                    type: 'warning',
+                                })
+                            "
                             label="Warning"
                         />
                         <x-ui.button
@@ -618,7 +622,12 @@
                             type="button"
                             variant="outline"
                             as="button"
-                            x-on:click="$dispatch('toast', { message: 'This is an info message', type: 'info' })"
+                            x-on:click="
+                                $dispatch('toast', {
+                                    message: 'This is an info message',
+                                    type: 'info',
+                                })
+                            "
                             label="Info"
                         />
                         <x-ui.button

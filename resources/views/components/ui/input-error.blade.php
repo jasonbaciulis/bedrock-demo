@@ -4,7 +4,10 @@
     https://laravel.com/docs/12.x/precognition#using-alpine
 --}}
 
-@props(['handle', 'id'])
+@props ([
+    'handle',
+    'id',
+])
 
 <template x-if="form.invalid('{{ $handle }}')">
     <p

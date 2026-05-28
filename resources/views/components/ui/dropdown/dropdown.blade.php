@@ -1,4 +1,4 @@
-@props([
+@props ([
     'alignment' => 'left',
     'width' => 'w-56',
     'toggle',
@@ -16,13 +16,13 @@
             this.open = true
         },
         close(focusAfter) {
-            if (! this.open) return
+            if (!this.open) return
             this.open = false
             focusAfter && focusAfter.focus()
         },
     }"
     x-on:keydown.escape.prevent.stop="close($refs.button)"
-    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+    x-on:focusin.window="!$refs.panel.contains($event.target) && close()"
     x-id="['dropdown-menu']"
     {{ $attributes->class(['relative']) }}
 >
@@ -51,14 +51,12 @@
         x-bind:id="$id('dropdown-menu')"
         x-bind:aria-labelledby="$id('dropdown-button')"
         tabindex="-1"
-        {{
-            $content->attributes->class([
-                'bg-popover text-popover-foreground absolute z-10 mt-1 max-h-60 overflow-x-hidden overflow-y-auto rounded-lg border p-1 shadow-md',
-                'left-0 origin-top-left' => $alignment === 'left',
-                'right-0 origin-top-right' => $alignment === 'right',
-                $width,
-            ])
-        }}
+        {{ $content->attributes->class([
+            'bg-popover text-popover-foreground absolute z-10 mt-1 max-h-60 overflow-x-hidden overflow-y-auto rounded-lg border p-1 shadow-md',
+            'left-0 origin-top-left' => $alignment === 'left',
+            'right-0 origin-top-right' => $alignment === 'right',
+            $width,
+        ]) }}
     >
         {{ $content }}
     </div>

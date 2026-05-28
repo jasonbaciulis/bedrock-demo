@@ -3,11 +3,11 @@
     Notice that the component doesn't use sizes attribute, because in our view it's a waste of time.
     Just pass the dimensions of the largest image size that needs rendered. Images are lazy loaded and saving a few kilobytes
     on the initial load is not worth the extra complexity.
-    
+
     Docs: https://statamic.dev/tags/glide
 --}}
 
-@props([
+@props ([
     'image' => null,
     'w' => null,
     'h' => null,

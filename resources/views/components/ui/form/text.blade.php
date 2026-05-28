@@ -1,4 +1,4 @@
-@props([
+@props ([
     'model',
     'prepend' => null,
     'append' => null,
@@ -13,7 +13,7 @@
 ])
 
 <div class="relative w-full">
-    @isset($prepend)
+    @isset ($prepend)
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
             <span class="text-muted-foreground text-sm">{!! $prepend !!}</span>
         </div>
@@ -34,7 +34,7 @@
         x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : {{ isset($instructions) ? "'{$id}-instructions'" : 'false' }}"
         x-on:change="form.validate('{{ $handle }}')"
     />
-    @isset($append)
+    @isset ($append)
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pr-5">
             <span class="text-muted-foreground text-sm">{!! $append !!}</span>
         </div>

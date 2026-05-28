@@ -2,7 +2,7 @@
     <ol
         vocab="https://schema.org/"
         typeof="BreadcrumbList"
-        class="flex gap-1.5 sm:gap-2.5 text-sm text-muted-foreground"
+        class="text-muted-foreground flex gap-1.5 text-sm sm:gap-2.5"
     >
         <s:nav:breadcrumbs>
             <li
@@ -15,21 +15,17 @@
                         href="{{ $url }}"
                         property="item"
                         typeof="WebPage"
-                        class="whitespace-nowrap hover:text-foreground"
+                        class="hover:text-foreground whitespace-nowrap"
                     >
                         <span property="name">{!! $title !!}</span>
                     </a>
-                    <meta property="position" content="{{ $loop->iteration }}">
+                    <meta property="position" content="{{ $loop->iteration }}" />
                     <x-lucide-chevron-right class="size-3.5 shrink-0" />
                 @else
-                    <span
-                        property="name"
-                        class="truncate text-primary"
-                        aria-current="page"
-                    >
+                    <span property="name" class="text-primary truncate" aria-current="page">
                         <span property="name">{!! $title !!}</span>
                     </span>
-                    <meta property="position" content="{{ $loop->iteration }}">
+                    <meta property="position" content="{{ $loop->iteration }}" />
                 @endunless
             </li>
         </s:nav:breadcrumbs>

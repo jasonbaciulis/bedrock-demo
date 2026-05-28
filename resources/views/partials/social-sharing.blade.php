@@ -7,7 +7,7 @@
             return win.open(
                 url,
                 windowName,
-                `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=${w}, height=${h}, top=${y}, left=${x}`,
+                `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=${w}, height=${h}, top=${y}, left=${x}`
             )
         },
     }"

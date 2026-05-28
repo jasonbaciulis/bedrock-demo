@@ -1,4 +1,4 @@
-@props([
+@props ([
     'name' => 'dialog',
     'size' => 'md',
     'trigger',
@@ -83,7 +83,7 @@
             aria-label="Dialog"
             role="dialog"
             x-bind:aria-modal="open"
-            x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+            x-on:focusin.window="!$refs.panel.contains($event.target) && close()"
         >
             {{-- Background backdrop --}}
             <div
@@ -116,14 +116,12 @@
                         x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
                         x-on:click.outside="close($refs.button)"
                         x-bind:id="id"
-                        {{
-                            $content->attributes->class([
-                                'bg-background relative transform overflow-hidden rounded-[0.625rem] border text-left shadow-lg transition-all sm:my-8 sm:w-full',
-                                'px-4 pt-5 pb-4 sm:max-w-md sm:p-6' => $size === 'sm',
-                                'px-4 pt-5 pb-4 sm:max-w-xl sm:p-6' => $size === 'md',
-                                'px-4 pt-5 pb-4 sm:max-w-(--breakpoint-xl) sm:p-6 md:p-12 xl:px-16 xl:py-20' => $size === 'xl',
-                            ])
-                        }}
+                        {{ $content->attributes->class([
+                            'bg-background relative transform overflow-hidden rounded-[0.625rem] border text-left shadow-lg transition-all sm:my-8 sm:w-full',
+                            'px-4 pt-5 pb-4 sm:max-w-md sm:p-6' => $size === 'sm',
+                            'px-4 pt-5 pb-4 sm:max-w-xl sm:p-6' => $size === 'md',
+                            'px-4 pt-5 pb-4 sm:max-w-(--breakpoint-xl) sm:p-6 md:p-12 xl:px-16 xl:py-20' => $size === 'xl',
+                        ]) }}
                     >
                         {{ $content }}
 

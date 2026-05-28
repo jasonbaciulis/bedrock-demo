@@ -33,7 +33,7 @@
                     x-transition:leave-start="translate-y-0 opacity-100"
                     x-transition:leave-end="translate-y-1 opacity-0"
                     x-on:click.outside="subnavOpen = false"
-                    @class([
+                    @class ([
                         'absolute z-10 mt-5 w-screen transform',
                         'left-1/2 flex max-w-max -translate-x-1/2 px-4' => $two_col_menu->value(),
                         'left-1/2 max-w-xs -translate-x-1/2 px-2' => ! $two_col_menu->value(),
@@ -43,10 +43,10 @@
                         class="flex-auto overflow-hidden rounded-lg border bg-white text-sm/6 shadow lg:max-w-3xl"
                     >
                         <div
-                            @class(['relative grid grid-cols-1 gap-x-5 gap-y-1 p-3', 'lg:grid-cols-2' => $two_col_menu->value()])
+                            @class (['relative grid grid-cols-1 gap-x-5 gap-y-1 p-3', 'lg:grid-cols-2' => $two_col_menu->value()])
                         >
                             @foreach ($children as $child)
-                                @include('partials.nav-header-item', [...$child])
+                                @include ('partials.nav-header-item', [...$child])
                             @endforeach
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-@props([
+@props ([
     'model',
     'handle',
     'id',
@@ -24,7 +24,7 @@
         id="{{ $id }}"
         type="button"
         class="peer focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50"
-        x-bind:class="{ 'bg-primary': on, 'bg-input dark:bg-input/80': ! on }"
+        x-bind:class="{ 'bg-primary': on, 'bg-input dark:bg-input/80': !on }"
         role="switch"
         aria-labelledby="{{ $id }}-label"
         x-bind:aria-describedby="form.invalid('{{ $handle }}') ? '{{ $id }}-error' : {{ isset($instructions) ? "'{$id}-instructions'" : 'false' }}"
@@ -36,7 +36,7 @@
             class="bg-background pointer-events-none block size-4 rounded-full ring-0 transition-transform"
             x-bind:class="{
                 'translate-x-[calc(100%-2px)] dark:bg-primary-foreground': on,
-                'translate-x-0 dark:bg-foreground': ! on,
+                'translate-x-0 dark:bg-foreground': !on,
             }"
         ></span>
         <span class="sr-only">Toggle {{ Str::headline($handle) }}</span>
