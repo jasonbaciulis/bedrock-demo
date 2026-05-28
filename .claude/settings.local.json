@@ -9,7 +9,10 @@
       "mcp__laravel-boost__search-docs",
       "WebFetch(domain:statamic.dev)",
       "Bash(composer show *)",
-      "Bash(composer require *)"
+      "Bash(composer require *)",
+      "Bash(composer update *)",
+      "Bash(php artisan *)",
+      "Bash(composer run *)"
     ]
   },
   "enableAllProjectMcpServers": true,
