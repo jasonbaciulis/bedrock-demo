@@ -34,5 +34,6 @@ dependencies:
   - blade-ui-kit/blade-icons
   - mallardduck/blade-lucide-icons
   - laravel/boost
+  - cboxdk/statamic-mcp
   - larastan/larastan
   - phpstan/phpstan
