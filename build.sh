@@ -3,12 +3,12 @@
 # Install WGET first (needed for Composer)
 dnf install -y wget
 
-# Install Remi repository for PHP 8.2
+# Install Remi repository for PHP 8.5
 dnf install -y https://rpms.remirepo.net/enterprise/remi-release-9.rpm
 dnf module reset php -y
-dnf module enable php:remi-8.2 -y
+dnf module enable php:remi-8.5 -y
 
-# Install PHP 8.4 & extensions
+# Install PHP 8.5 & extensions
 dnf install -y php php-{common,mbstring,gd,bcmath,xml,fpm,intl,zip}
 
 # INSTALL COMPOSER
