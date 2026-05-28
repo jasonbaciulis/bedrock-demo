@@ -50,7 +50,7 @@ jobs:
         uses: ramsey/composer-install@v4
         with:
           dependency-versions: locked
-          composer-options: --no-progress --no-interaction --prefer-dist --no-dev --optimize-autoloader
+          composer-options: --no-progress --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Install NPM dependencies
         run: npm ci
@@ -58,11 +58,18 @@ jobs:
       - name: Build frontend assets
         run: npm run build
 
+      - name: Confirm SSG command is registered
+        run: |
+          php please list | grep -E '^\s*(ssg|stache):' || {
+            echo "::error::Statamic SSG command not found. Is statamic/ssg installed?"
+            exit 1
+          }
+
       - name: Warm Statamic stache
-        run: php please stache:warm -n -q
+        run: php please stache:warm -n
 
       - name: Generate static site
-        run: php please ssg:generate
+        run: php please ssg:generate -v
 
       - name: Verify SSG output exists
         run: |
