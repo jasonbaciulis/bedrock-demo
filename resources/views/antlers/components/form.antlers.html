@@ -1,75 +1,56 @@
-{{#
-    Component for outputting Statamic form fields grouped in sections. We keep
-    the form field components inside the views/partials/components/ui/form folder
-    instead of publishing and customizing a vendor folder like the docs suggest:
-    https://statamic.dev/tags/form-create#prerendered-field-html
-    This gives us more control over the form fields and allows us to reuse the
-    same form fields outside of the Statamic form. We also use Laravel Precognition
-    to handle the form submission and validation.
+---
+form_handle: ''
+submit_label: 'Submit'
+success_title: 'Success!'
+success_description: 'Thank you for your submission.'
+---
 
-    Docs:
-    https://statamic.dev/forms
-    https://statamic.dev/tags/form-create
-    https://statamic.dev/forms#precognition
-    https://laravel.com/docs/12.x/precognition#using-alpine
+{{#
+    Component for outputting Statamic form fields grouped in sections. We keep the form field components
+    inside the views/partials/components/ui/form folder instead of publishing and customizing a vendor
+    folder like the docs suggest: https://statamic.dev/tags/form-create#prerendered-field-html This
+    gives us more control over the form fields and allows us to reuse the same form fields outside of
+    the Statamic form. Docs: https://statamic.dev/forms https://statamic.dev/tags/form-create
 #}}
 
 {{ once }}
     {{ push:scripts }}
         <script src="/vendor/statamic/frontend/js/helpers.js" defer></script>
+        <s:vite src="resources/js/components/statamicForm.js" />
     {{ /push:scripts }}
 {{ /once }}
-
 <s:form:create
-    :in="form:handle"
-    id="form-{form:handle}"
+    :in="view:form_handle"
+    id="form-{view:form_handle}"
     csrf="false"
     x-ref="form"
     js="alpine"
 >
-    <div
-        x-data="{
-            form: $form(
-                'post',
-                $refs.form.action,
-                JSON.parse($refs.form.getAttribute('x-data')),
-            ),
-            success: false,
-            init() {
-                this.form.setValidationTimeout(100)
-                $refs.form.addEventListener('submit', e => {
-                    e.preventDefault()
-                    this.form
-                        .submit()
-                        .then(response => {
-                            if (response?.data?.success) {
-                                this.success = true
-                                this.form.reset()
-                            }
-                            this.$refs.form.scrollIntoView({ behavior: 'smooth' })
-                        })
-                        .catch(error => {
-                            console.log(error)
-                        })
-                })
-            },
-        }"
-    >
+    <div x-data="statamicForm">
         <template x-if="success">
-            <s:partial:components.ui.alert variant="success" :title="success_message" class="mb-8" />
+            <s:partial:components.ui.alert
+                variant="success"
+                :title="success_title"
+                :description="success_description"
+                class="mb-8"
+            />
         </template>
 
-        <input type="hidden" name="_token" value="{{ csrf_token }}">
+        <input type="hidden" name="_token" value="{{ csrf_token }}" />
 
-        <s:partial:components.ui.form.honeypot model="form.{honeypot}" :handle="honeypot" :form_handle="form:handle" />
+        <s:partial:components.ui.form.honeypot
+            model="form.{honeypot}"
+            :handle="honeypot"
+            :form_handle="form:handle"
+        />
 
+        {{ slot }}
         <div class="space-y-12 divide-y divide-gray-300">
             {{ sections }}
-                <div{{ unless last }} class="pb-12"{{ /unless }}>
+                <div {{ !last ?= 'class="pb-12"' }}>
                     {{ if display }}
                         <h3 class="h6 mb-8">{{ display }}</h3>
                     {{ /if }}
-
                     <div class="grid gap-x-8 gap-y-6 md:grid-cols-12">
                         {{ fields }}
                             <s:partial:components.form-field />
@@ -80,7 +61,7 @@
         </div>
 
         <div class="pt-8">
-            <s:partial:components.ui.form.submit :label="submit_label ?? 'Submit'" />
+            <s:partial:components.ui.form.submit :label="submit_label" />
         </div>
     </div>
 </s:form:create>
