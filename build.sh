@@ -3,13 +3,9 @@
 # Install WGET first (needed for Composer)
 dnf install -y wget
 
-# Install Remi repository for PHP 8.5
-dnf install -y https://rpms.remirepo.net/enterprise/remi-release-9.rpm
-dnf module reset php -y
-dnf module enable php:remi-8.5 -y
-
-# Install PHP 8.5 & extensions
-dnf install -y php php-{common,mbstring,gd,bcmath,xml,fpm,intl,zip}
+# Install PHP 8.4 & extensions from Amazon Linux 2023 repos.
+# Note: Remi RPM is not compatible with AL2023 (requires RHEL/CentOS-Stream 9).
+dnf install -y php8.4 php8.4-{cli,common,mbstring,gd,bcmath,xml,fpm,intl,zip}
 
 # INSTALL COMPOSER
 EXPECTED_CHECKSUM="$(wget -q -O - https://composer.github.io/installer.sig)"
