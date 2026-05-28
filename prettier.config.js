@@ -1,6 +1,5 @@
 export default {
   trailingComma: 'es5',
-  trailingCommaPHP: true,
   printWidth: 100,
   tabWidth: 2,
   overrides: [
@@ -31,7 +30,6 @@ export default {
   bracketSpacing: true,
   arrowParens: 'avoid',
   plugins: [
-    '@prettier/plugin-php',
     'prettier-plugin-tailwindcss',
     'prettier-plugin-blade',
     'prettier-plugin-antlers',
