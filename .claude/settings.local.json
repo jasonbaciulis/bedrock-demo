@@ -15,7 +15,8 @@
       "Bash(composer run *)",
       "Bash(curl -s -o /tmp/home.html -w \"HTTP %{http_code} %{size_download}b\\\\n\" https://bedrock-demo.test/)",
       "Read(//tmp/**)",
-      "Bash(php *)"
+      "Bash(php *)",
+      "Bash(composer test *)"
     ]
   },
   "enableAllProjectMcpServers": true,
