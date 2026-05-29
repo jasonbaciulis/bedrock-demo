@@ -23,12 +23,14 @@ export_paths:
   - .env.example
   - .gitignore
   - package.json
+  - phpstan.neon
   - prettier.config.js
   - CLAUDE.md
   - .claude
   - .ai
   - .github/workflows/ci.yml
   - vite.config.js
+  - tests
 dependencies:
   - blade-ui-kit/blade-icons
   - mallardduck/blade-lucide-icons
