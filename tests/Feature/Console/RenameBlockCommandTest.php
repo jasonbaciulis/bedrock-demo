@@ -41,8 +41,8 @@ afterEach(function () {
     $globPaths = [
         base_path('resources/fieldsets/scaffold_test_*.yaml'),
         base_path('resources/fieldsets/scaffold_renamed_*.yaml'),
-        base_path('resources/views/blocks/scaffold-test-*.blade.php'),
-        base_path('resources/views/blocks/scaffold-renamed-*.blade.php'),
+        base_path('resources/views/blocks/scaffold-test-*.antlers.html'),
+        base_path('resources/views/blocks/scaffold-renamed-*.antlers.html'),
         base_path('content/collections/pages/test-page*.md'),
     ];
 
@@ -73,9 +73,9 @@ test('rename:bedrock-block renames files and updates blocks.yaml', function () {
     ])->assertExitCode(Command::SUCCESS);
 
     $originalFieldsetPath = base_path("resources/fieldsets/{$originalFieldset}.yaml");
-    $originalViewPath = base_path("resources/views/blocks/{$originalView}.blade.php");
+    $originalViewPath = base_path("resources/views/blocks/{$originalView}.antlers.html");
     $newFieldsetPath = base_path("resources/fieldsets/{$newFieldset}.yaml");
-    $newViewPath = base_path("resources/views/blocks/{$newView}.blade.php");
+    $newViewPath = base_path("resources/views/blocks/{$newView}.antlers.html");
 
     // Verify original files exist
     expect(is_file($originalFieldsetPath))->toBeTrue();
@@ -197,9 +197,9 @@ test('rename:bedrock-block fails when target files exist without --force', funct
 
     // Cleanup created files
     @unlink(base_path("resources/fieldsets/{$originalFieldset}.yaml"));
-    @unlink(base_path("resources/views/blocks/{$originalFieldset}.blade.php"));
+    @unlink(base_path("resources/views/blocks/{$originalFieldset}.antlers.html"));
     @unlink(base_path("resources/fieldsets/{$newFieldset}.yaml"));
-    @unlink(base_path("resources/views/blocks/{$newFieldset}.blade.php"));
+    @unlink(base_path("resources/views/blocks/{$newFieldset}.antlers.html"));
 });
 
 test('rename:bedrock-block fails when source block does not exist', function () {

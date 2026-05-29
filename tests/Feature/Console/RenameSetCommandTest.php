@@ -41,8 +41,8 @@ afterEach(function () {
     $globPaths = [
         base_path('resources/fieldsets/scaffold_test_*.yaml'),
         base_path('resources/fieldsets/scaffold_renamed_*.yaml'),
-        base_path('resources/views/sets/scaffold-test-*.blade.php'),
-        base_path('resources/views/sets/scaffold-renamed-*.blade.php'),
+        base_path('resources/views/sets/scaffold-test-*.antlers.html'),
+        base_path('resources/views/sets/scaffold-renamed-*.antlers.html'),
         base_path('content/collections/posts/test-post*.md'),
     ];
 
@@ -73,9 +73,9 @@ test('rename:bedrock-set renames files and updates article.yaml', function () {
     ])->assertExitCode(Command::SUCCESS);
 
     $originalFieldsetPath = base_path("resources/fieldsets/{$originalFieldset}.yaml");
-    $originalViewPath = base_path("resources/views/sets/{$originalView}.blade.php");
+    $originalViewPath = base_path("resources/views/sets/{$originalView}.antlers.html");
     $newFieldsetPath = base_path("resources/fieldsets/{$newFieldset}.yaml");
-    $newViewPath = base_path("resources/views/sets/{$newView}.blade.php");
+    $newViewPath = base_path("resources/views/sets/{$newView}.antlers.html");
 
     // Verify original files exist
     expect(is_file($originalFieldsetPath))->toBeTrue();
@@ -213,9 +213,9 @@ test('rename:bedrock-set fails when target files exist without --force', functio
 
     // Cleanup created files
     @unlink(base_path("resources/fieldsets/{$originalFieldset}.yaml"));
-    @unlink(base_path("resources/views/sets/" . str_replace('_', '-', $originalFieldset) . ".blade.php"));
+    @unlink(base_path("resources/views/sets/" . str_replace('_', '-', $originalFieldset) . ".antlers.html"));
     @unlink(base_path("resources/fieldsets/{$newFieldset}.yaml"));
-    @unlink(base_path("resources/views/sets/" . str_replace('_', '-', $newFieldset) . ".blade.php"));
+    @unlink(base_path("resources/views/sets/" . str_replace('_', '-', $newFieldset) . ".antlers.html"));
 });
 
 test('rename:bedrock-set fails when source set does not exist', function () {

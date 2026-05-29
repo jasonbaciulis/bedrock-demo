@@ -40,8 +40,8 @@ afterEach(function () {
     // Remove any scaffolding files created by tests.
     $globPaths = [
         base_path('resources/fieldsets/scaffold_test_*.yaml'),
-        base_path('resources/views/blocks/scaffold-test-*.blade.php'),
-        base_path('resources/views/sets/scaffold-test-*.blade.php'),
+        base_path('resources/views/blocks/scaffold-test-*.antlers.html'),
+        base_path('resources/views/sets/scaffold-test-*.antlers.html'),
         base_path('content/collections/pages/test-page*.md'),
         base_path('content/collections/posts/test-post*.md'),
     ];
@@ -86,7 +86,7 @@ test('make:bedrock-block creates files and updates blocks.yaml', function () {
     ])->assertExitCode(Command::SUCCESS);
 
     $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/blocks/{$view}.blade.php");
+    $viewPath = base_path("resources/views/blocks/{$view}.antlers.html");
 
     expect(is_file($fieldsetPath))->toBeTrue();
     expect(is_file($viewPath))->toBeTrue();
@@ -119,7 +119,7 @@ test('make:bedrock-set creates files and updates article.yaml', function () {
     ])->assertExitCode(Command::SUCCESS);
 
     $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/sets/{$view}.blade.php");
+    $viewPath = base_path("resources/views/sets/{$view}.antlers.html");
 
     expect(is_file($fieldsetPath))->toBeTrue();
     expect(is_file($viewPath))->toBeTrue();
@@ -182,7 +182,7 @@ test('delete:bedrock-block removes from blocks.yaml and deletes files', function
     expect($hasBlock)->toBeFalse();
 
     $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/blocks/{$view}.blade.php");
+    $viewPath = base_path("resources/views/blocks/{$view}.antlers.html");
 
     expect(is_file($fieldsetPath))->toBeFalse();
     expect(is_file($viewPath))->toBeFalse();
@@ -209,7 +209,7 @@ test('delete:bedrock-block with --keep-files removes blocks.yaml but keeps files
     ])->assertExitCode(Command::SUCCESS);
 
     $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/blocks/{$view}.blade.php");
+    $viewPath = base_path("resources/views/blocks/{$view}.antlers.html");
     expect(is_file($fieldsetPath))->toBeTrue();
     expect(is_file($viewPath))->toBeTrue();
 
@@ -295,7 +295,7 @@ test('delete:bedrock-set removes from article.yaml and deletes files', function 
     expect($hasSet)->toBeFalse();
 
     $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/sets/{$view}.blade.php");
+    $viewPath = base_path("resources/views/sets/{$view}.antlers.html");
 
     expect(is_file($fieldsetPath))->toBeFalse();
     expect(is_file($viewPath))->toBeFalse();
@@ -322,7 +322,7 @@ test('delete:bedrock-set with --keep-files removes from article.yaml but keeps f
     ])->assertExitCode(Command::SUCCESS);
 
     $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/sets/{$view}.blade.php");
+    $viewPath = base_path("resources/views/sets/{$view}.antlers.html");
     expect(is_file($fieldsetPath))->toBeTrue();
     expect(is_file($viewPath))->toBeTrue();
 
@@ -372,7 +372,7 @@ test('make:bedrock-block without --force fails when files already exist', functi
 
     // Cleanup created files
     @unlink(base_path("resources/fieldsets/{$fieldset}.yaml"));
-    @unlink(base_path("resources/views/blocks/{$view}.blade.php"));
+    @unlink(base_path("resources/views/blocks/{$view}.antlers.html"));
 });
 
 test('make:bedrock-set without --force fails when files already exist', function () {
@@ -399,5 +399,5 @@ test('make:bedrock-set without --force fails when files already exist', function
 
     // Cleanup created files
     @unlink(base_path("resources/fieldsets/{$fieldset}.yaml"));
-    @unlink(base_path("resources/views/sets/{$view}.blade.php"));
+    @unlink(base_path("resources/views/sets/{$view}.antlers.html"));
 });
