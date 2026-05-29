@@ -6,9 +6,9 @@
 
 echo "🚀 Starting starter kit export…"
 
-# Navigate to ../bedrock and clean it (preserving .git and .github)
+# Navigate to ../bedrock and clean it (preserving .git .claude and .github)
 echo "📁 Cleaning ../bedrock directory…"
-cd ../bedrock && ls -A | grep -v '^\.git$' | grep -v '^\.github$' | xargs rm -rf
+cd ../bedrock && ls -A | grep -v '^\.git$' | grep -v '^\.claude$' | grep -v '^\.github$' | xargs rm -rf
 
 # Return to the original directory
 cd -
