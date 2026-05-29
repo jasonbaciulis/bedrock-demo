@@ -36,3 +36,5 @@ dependencies:
   - cboxdk/statamic-mcp
   - larastan/larastan
   - phpstan/phpstan
+  - pestphp/pest
+  - pestphp/pest-plugin-laravel
