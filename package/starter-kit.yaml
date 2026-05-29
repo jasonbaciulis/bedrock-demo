@@ -35,9 +35,11 @@ export_paths:
 dependencies:
   - blade-ui-kit/blade-icons
   - mallardduck/blade-lucide-icons
-  - laravel/boost
+dependencies_dev:
   - cboxdk/statamic-mcp
   - larastan/larastan
-  - phpstan/phpstan
+  - laravel/boost
+  - phpunit/phpunit
   - pestphp/pest
   - pestphp/pest-plugin-laravel
+  - phpstan/phpstan
