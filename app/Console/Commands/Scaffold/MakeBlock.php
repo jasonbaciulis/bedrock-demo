@@ -85,7 +85,7 @@ class MakeBlock extends Command
             app_path('Console/Commands/Scaffold/stubs/fieldset_block.yaml.stub')
         );
         $this->files->put(
-            base_path("resources/fieldsets/{$fieldset}.yaml"),
+            $this->fieldsetPathFor($fieldset),
             Str::of($stub)->replace('{{ name }}', $name)
         );
     }
@@ -94,7 +94,7 @@ class MakeBlock extends Command
     {
         $stub = $this->files->get(app_path('Console/Commands/Scaffold/stubs/block.antlers.html.stub'));
         $this->files->put(
-            base_path("resources/views/blocks/{$view}.antlers.html"),
+            $this->viewPathFor($view, 'blocks'),
             Str::of($stub)->replace('{{ name }}', $name)
         );
     }

@@ -25,33 +25,15 @@ beforeAll(function () {
 });
 
 beforeEach(function () {
-    // Snapshot YAMLs so we can restore after each test.
-    $this->blocksYamlPath = base_path('resources/fieldsets/blocks.yaml');
-
-    $this->originalBlocksYaml = is_file($this->blocksYamlPath)
-        ? file_get_contents($this->blocksYamlPath)
-        : '';
+    setUpBedrockScaffoldPaths();
 });
 
 afterEach(function () {
-    // Restore YAMLs
-    if ($this->originalBlocksYaml !== '') {
-        file_put_contents($this->blocksYamlPath, $this->originalBlocksYaml);
-    }
+    tearDownBedrockScaffoldPaths();
 
-    // Remove any scaffolding files created by tests.
-    $globPaths = [
-        base_path('resources/fieldsets/scaffold_test_*.yaml'),
-        base_path('resources/fieldsets/scaffold_renamed_*.yaml'),
-        base_path('resources/views/blocks/scaffold-test-*.antlers.html'),
-        base_path('resources/views/blocks/scaffold-renamed-*.antlers.html'),
-        base_path('content/collections/pages/test-page*.md'),
-    ];
-
-    foreach ($globPaths as $pattern) {
-        foreach (glob($pattern) ?: [] as $file) {
-            @unlink($file);
-        }
+    $worker = bedrockTestWorkerToken();
+    foreach (glob(base_path("content/collections/pages/test-page-w{$worker}-*.md")) ?: [] as $file) {
+        @unlink($file);
     }
 });
 
@@ -74,10 +56,10 @@ test('rename:bedrock-block renames files and updates blocks.yaml', function () {
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    $originalFieldsetPath = base_path("resources/fieldsets/{$originalFieldset}.yaml");
-    $originalViewPath = base_path("resources/views/blocks/{$originalView}.antlers.html");
-    $newFieldsetPath = base_path("resources/fieldsets/{$newFieldset}.yaml");
-    $newViewPath = base_path("resources/views/blocks/{$newView}.antlers.html");
+    $originalFieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$originalFieldset}.yaml";
+    $originalViewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$originalView}.antlers.html";
+    $newFieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$newFieldset}.yaml";
+    $newViewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$newView}.antlers.html";
 
     // Verify original files exist
     expect(is_file($originalFieldsetPath))->toBeTrue();
@@ -131,14 +113,13 @@ test('rename:bedrock-block updates content entries', function () {
     /** @var Statamic\Entries\Entry $entry */
     $entry = Entry::make();
     $entry->collection('pages');
-    $entry->id('test-page-'.Str::random(6));
-    $entry->slug('test-page');
+    $entry->id($entryId = bedrockTestEntryId('test-page'));
+    $entry->slug($entryId);
     $entry->data([
         'title' => 'Test Page',
         'blocks' => [['type' => $originalFieldset, 'enabled' => true]],
     ]);
     $entry->save();
-    $entryId = $entry->id();
 
     // Now rename the block
     $this->artisan('rename:bedrock-block', [
@@ -196,12 +177,6 @@ test('rename:bedrock-block fails when target files exist without --force', funct
         'current_name' => $originalFieldset,
         'new_name' => $newName,
     ])->assertExitCode(Command::FAILURE);
-
-    // Cleanup created files
-    @unlink(base_path("resources/fieldsets/{$originalFieldset}.yaml"));
-    @unlink(base_path("resources/views/blocks/{$originalFieldset}.antlers.html"));
-    @unlink(base_path("resources/fieldsets/{$newFieldset}.yaml"));
-    @unlink(base_path("resources/views/blocks/{$newFieldset}.antlers.html"));
 });
 
 test('rename:bedrock-block fails when source block does not exist', function () {

@@ -24,8 +24,8 @@ trait ManagesFieldsetFiles
         bool $force,
         string $viewDir
     ): void {
-        $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-        $viewPath = base_path("resources/views/{$viewDir}/{$view}.antlers.html");
+        $fieldsetPath = $this->fieldsetPathFor($fieldset);
+        $viewPath = $this->viewPathFor($view, $viewDir);
 
         foreach ([$fieldsetPath, $viewPath] as $path) {
             if ($this->files->exists($path) && ! $force) {
@@ -45,9 +45,9 @@ trait ManagesFieldsetFiles
      */
     protected function deleteFilesFor(string $fieldset, bool $force, string $viewDir): void
     {
-        $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
+        $fieldsetPath = $this->fieldsetPathFor($fieldset);
         $view = str_replace('_', '-', $fieldset);
-        $viewPath = base_path("resources/views/{$viewDir}/{$view}.antlers.html");
+        $viewPath = $this->viewPathFor($view, $viewDir);
 
         $missing = [];
 
@@ -90,8 +90,8 @@ trait ManagesFieldsetFiles
         string $viewDir
     ): void {
         // Rename fieldset file
-        $oldFieldsetPath = base_path("resources/fieldsets/{$currentHandle}.yaml");
-        $newFieldsetPath = base_path("resources/fieldsets/{$newFieldset}.yaml");
+        $oldFieldsetPath = $this->fieldsetPathFor($currentHandle);
+        $newFieldsetPath = $this->fieldsetPathFor($newFieldset);
 
         if ($this->files->exists($oldFieldsetPath)) {
             if ($this->files->exists($newFieldsetPath)) {
@@ -103,8 +103,8 @@ trait ManagesFieldsetFiles
         }
 
         // Rename view file
-        $oldViewPath = base_path("resources/views/{$viewDir}/{$originalView}.antlers.html");
-        $newViewPath = base_path("resources/views/{$viewDir}/{$newView}.antlers.html");
+        $oldViewPath = $this->viewPathFor($originalView, $viewDir);
+        $newViewPath = $this->viewPathFor($newView, $viewDir);
 
         if ($this->files->exists($oldViewPath)) {
             if ($this->files->exists($newViewPath)) {
@@ -121,7 +121,7 @@ trait ManagesFieldsetFiles
      */
     protected function updateFieldsetTitle(string $fieldsetHandle, string $newTitle): void
     {
-        $path = base_path("resources/fieldsets/{$fieldsetHandle}.yaml");
+        $path = $this->fieldsetPathFor($fieldsetHandle);
         if (! $this->files->exists($path)) {
             return; // nothing to update
         }
@@ -129,5 +129,21 @@ trait ManagesFieldsetFiles
         $data = YAML::file($path)->parse();
         $data['title'] = $newTitle;
         $this->files->put($path, YAML::dump($data));
+    }
+
+    protected function fieldsetPathFor(string $handle): string
+    {
+        return config('statamic.bedrock.scaffold.fieldsets_path')."/{$handle}.yaml";
+    }
+
+    protected function viewPathFor(string $view, string $viewDir): string
+    {
+        $base = match ($viewDir) {
+            'blocks' => config('statamic.bedrock.scaffold.blocks_views_path'),
+            'sets' => config('statamic.bedrock.scaffold.sets_views_path'),
+            default => throw new \InvalidArgumentException("Unknown view dir: {$viewDir}"),
+        };
+
+        return "{$base}/{$view}.antlers.html";
     }
 }

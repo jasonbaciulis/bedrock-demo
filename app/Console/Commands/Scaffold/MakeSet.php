@@ -84,7 +84,7 @@ class MakeSet extends Command
             app_path('Console/Commands/Scaffold/stubs/fieldset_set.yaml.stub')
         );
         $this->files->put(
-            base_path("resources/fieldsets/{$fieldset}.yaml"),
+            $this->fieldsetPathFor($fieldset),
             Str::of($stub)->replace('{{ name }}', $name)
         );
     }
@@ -93,7 +93,7 @@ class MakeSet extends Command
     {
         $stub = $this->files->get(app_path('Console/Commands/Scaffold/stubs/set.antlers.html.stub'));
         $this->files->put(
-            base_path("resources/views/sets/{$view}.antlers.html"),
+            $this->viewPathFor($view, 'sets'),
             Str::of($stub)->replace('{{ name }}', $name)
         );
     }

@@ -137,16 +137,15 @@ class GroupedSetsYaml
 
     private function read(): array
     {
-        $full = base_path($this->path);
-        if (! $this->files->exists($full)) {
+        if (! $this->files->exists($this->path)) {
             throw new \RuntimeException("Missing fieldset file: {$this->path}");
         }
 
-        return YAML::file($full)->parse();
+        return YAML::file($this->path)->parse();
     }
 
     private function write(array $data): void
     {
-        $this->files->put(base_path($this->path), YAML::dump($data));
+        $this->files->put($this->path, YAML::dump($data));
     }
 }

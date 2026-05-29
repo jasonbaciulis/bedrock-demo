@@ -15,34 +15,20 @@ beforeAll(function () {
 });
 
 beforeEach(function () {
-    // Snapshot YAMLs so we can restore after each test.
-    $this->blocksYamlPath = base_path('resources/fieldsets/blocks.yaml');
-    $this->articleYamlPath = base_path('resources/fieldsets/article.yaml');
+    setUpBedrockScaffoldPaths();
 
-    $this->originalBlocksYaml = is_file($this->blocksYamlPath)
-        ? file_get_contents($this->blocksYamlPath)
-        : '';
-    $this->originalArticleYaml = is_file($this->articleYamlPath)
-        ? file_get_contents($this->articleYamlPath)
-        : '';
+    $this->blocksYamlPath = config('statamic.bedrock.scaffold.fieldsets_path').'/blocks.yaml';
+    $this->articleYamlPath = config('statamic.bedrock.scaffold.fieldsets_path').'/article.yaml';
 });
 
 afterEach(function () {
-    // Restore YAMLs
-    if ($this->originalBlocksYaml !== '') {
-        file_put_contents($this->blocksYamlPath, $this->originalBlocksYaml);
-    }
-    if ($this->originalArticleYaml !== '') {
-        file_put_contents($this->articleYamlPath, $this->originalArticleYaml);
-    }
+    tearDownBedrockScaffoldPaths();
 
-    // Remove any scaffolding files created by tests.
+    // Entries live in the shared Statamic content tree; clean only this worker's.
+    $worker = bedrockTestWorkerToken();
     $globPaths = [
-        base_path('resources/fieldsets/scaffold_test_*.yaml'),
-        base_path('resources/views/blocks/scaffold-test-*.antlers.html'),
-        base_path('resources/views/sets/scaffold-test-*.antlers.html'),
-        base_path('content/collections/pages/test-page*.md'),
-        base_path('content/collections/posts/test-post*.md'),
+        base_path("content/collections/pages/test-page-w{$worker}-*.md"),
+        base_path("content/collections/posts/test-post-w{$worker}-*.md"),
     ];
 
     foreach ($globPaths as $pattern) {
@@ -84,8 +70,8 @@ test('make:bedrock-block creates files and updates blocks.yaml', function () {
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/blocks/{$view}.antlers.html");
+    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $viewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$view}.antlers.html";
 
     expect(is_file($fieldsetPath))->toBeTrue();
     expect(is_file($viewPath))->toBeTrue();
@@ -117,8 +103,8 @@ test('make:bedrock-set creates files and updates article.yaml', function () {
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/sets/{$view}.antlers.html");
+    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $viewPath = config('statamic.bedrock.scaffold.sets_views_path')."/{$view}.antlers.html";
 
     expect(is_file($fieldsetPath))->toBeTrue();
     expect(is_file($viewPath))->toBeTrue();
@@ -153,14 +139,13 @@ test('delete:bedrock-block removes from blocks.yaml and deletes files', function
     /** @var Statamic\Entries\Entry $entry */
     $entry = Entry::make();
     $entry->collection('pages');
-    $entry->id('test-page-'.Str::random(6));
-    $entry->slug('test-page');
+    $entry->id($entryId = bedrockTestEntryId('test-page'));
+    $entry->slug($entryId);
     $entry->data([
         'title' => 'Test Page',
         'blocks' => [['type' => $fieldset, 'enabled' => true]],
     ]);
     $entry->save();
-    $entryId = $entry->id();
 
     // Then delete
     $this->artisan('delete:bedrock-block', [
@@ -180,8 +165,8 @@ test('delete:bedrock-block removes from blocks.yaml and deletes files', function
     );
     expect($hasBlock)->toBeFalse();
 
-    $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/blocks/{$view}.antlers.html");
+    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $viewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$view}.antlers.html";
 
     expect(is_file($fieldsetPath))->toBeFalse();
     expect(is_file($viewPath))->toBeFalse();
@@ -207,8 +192,8 @@ test('delete:bedrock-block with --keep-files removes blocks.yaml but keeps files
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/blocks/{$view}.antlers.html");
+    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $viewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$view}.antlers.html";
     expect(is_file($fieldsetPath))->toBeTrue();
     expect(is_file($viewPath))->toBeTrue();
 
@@ -228,10 +213,6 @@ test('delete:bedrock-block with --keep-files removes blocks.yaml but keeps files
     expect($idx)->toBeGreaterThan(-1);
     $exists = isset($data['fields'][$idx]['field']['sets'][$group]['sets'][$fieldset]);
     expect($exists)->toBeFalse();
-
-    // Cleanup leftover files explicitly
-    @unlink($fieldsetPath);
-    @unlink($viewPath);
 });
 
 test('delete:bedrock-set removes from article.yaml and deletes files', function () {
@@ -253,8 +234,8 @@ test('delete:bedrock-set removes from article.yaml and deletes files', function 
     /** @var Statamic\Entries\Entry $entry */
     $entry = Entry::make();
     $entry->collection('posts');
-    $entry->id('test-post-'.Str::random(6));
-    $entry->slug('test-post');
+    $entry->id($entryId = bedrockTestEntryId('test-post'));
+    $entry->slug($entryId);
     $entry->data([
         'title' => 'Test Post',
         'article' => [
@@ -270,7 +251,6 @@ test('delete:bedrock-set removes from article.yaml and deletes files', function 
         ],
     ]);
     $entry->save();
-    $entryId = $entry->id();
 
     // Then delete
     $this->artisan('delete:bedrock-set', [
@@ -294,8 +274,8 @@ test('delete:bedrock-set removes from article.yaml and deletes files', function 
     });
     expect($hasSet)->toBeFalse();
 
-    $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/sets/{$view}.antlers.html");
+    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $viewPath = config('statamic.bedrock.scaffold.sets_views_path')."/{$view}.antlers.html";
 
     expect(is_file($fieldsetPath))->toBeFalse();
     expect(is_file($viewPath))->toBeFalse();
@@ -321,8 +301,8 @@ test('delete:bedrock-set with --keep-files removes from article.yaml but keeps f
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    $fieldsetPath = base_path("resources/fieldsets/{$fieldset}.yaml");
-    $viewPath = base_path("resources/views/sets/{$view}.antlers.html");
+    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $viewPath = config('statamic.bedrock.scaffold.sets_views_path')."/{$view}.antlers.html";
     expect(is_file($fieldsetPath))->toBeTrue();
     expect(is_file($viewPath))->toBeTrue();
 
@@ -342,10 +322,6 @@ test('delete:bedrock-set with --keep-files removes from article.yaml but keeps f
     expect($idx)->toBeGreaterThan(-1);
     $exists = isset($data['fields'][$idx]['field']['sets'][$group]['sets'][$fieldset]);
     expect($exists)->toBeFalse();
-
-    // Cleanup leftover files explicitly
-    @unlink($fieldsetPath);
-    @unlink($viewPath);
 });
 
 test('make:bedrock-block without --force fails when files already exist', function () {
@@ -369,10 +345,6 @@ test('make:bedrock-block without --force fails when files already exist', functi
         'name' => $name,
         '--instructions' => 'irrelevant',
     ])->assertExitCode(Command::FAILURE);
-
-    // Cleanup created files
-    @unlink(base_path("resources/fieldsets/{$fieldset}.yaml"));
-    @unlink(base_path("resources/views/blocks/{$view}.antlers.html"));
 });
 
 test('make:bedrock-set without --force fails when files already exist', function () {
@@ -396,8 +368,4 @@ test('make:bedrock-set without --force fails when files already exist', function
         'name' => $name,
         '--instructions' => 'irrelevant',
     ])->assertExitCode(Command::FAILURE);
-
-    // Cleanup created files
-    @unlink(base_path("resources/fieldsets/{$fieldset}.yaml"));
-    @unlink(base_path("resources/views/sets/{$view}.antlers.html"));
 });
