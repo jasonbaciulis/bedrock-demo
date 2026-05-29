@@ -33,7 +33,9 @@
     {{ yield:seo_body }}
 
     {{# Banner global #}}
-    <s:partial:components.ui.banner :banner="banner" />
+    {{ if banner:show }}
+        <s:partial:components.ui.banner />
+    {{ /if }}
 
     <s:partial:partials.header />
     {{ template_content }}

@@ -1,7 +1,0 @@
-{{#
-    Display error when there is a validation error with the named field.
-#}}
-
-<template x-if="form.invalid('{{ handle }}')">
-    <p id="{{ id }}-error" class="text-destructive text-sm" x-text="form.errors.{{ handle }}"></p>
-</template>

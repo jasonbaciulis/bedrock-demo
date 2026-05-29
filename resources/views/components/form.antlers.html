@@ -1,16 +1,19 @@
 ---
 form_handle: ''
+success_message: 'Thank you for your submission.'
 submit_label: 'Submit'
-success_title: 'Success!'
-success_description: 'Thank you for your submission.'
 ---
 
 {{#
-    Component for outputting Statamic form fields grouped in sections. We keep the form field components
-    inside the views/partials/components/ui/form folder instead of publishing and customizing a vendor
-    folder like the docs suggest: https://statamic.dev/tags/form-create#prerendered-field-html This
-    gives us more control over the form fields and allows us to reuse the same form fields outside of
-    the Statamic form. Docs: https://statamic.dev/forms https://statamic.dev/tags/form-create
+    Component for outputting Statamic form fields grouped in sections. We keep the form field
+    components inside the views/components/ui/form folder instead of publishing and customizing a
+    vendor folder like the docs suggest: https://statamic.dev/tags/form-create#prerendered-field-html
+    This gives us more control over the form fields and allows us to reuse the same form fields
+    outside of the Statamic form.
+
+    Docs:
+    https://statamic.dev/forms
+    https://statamic.dev/tags/form-create
 #}}
 
 {{ once }}
@@ -19,6 +22,7 @@ success_description: 'Thank you for your submission.'
         <s:vite src="resources/js/components/statamicForm.js" />
     {{ /push:scripts }}
 {{ /once }}
+
 <s:form:create
     :in="view:form_handle"
     id="form-{view:form_handle}"
@@ -30,8 +34,7 @@ success_description: 'Thank you for your submission.'
         <template x-if="success">
             <s:partial:components.ui.alert
                 variant="success"
-                :title="success_title"
-                :description="success_description"
+                :title="view:success_message"
                 class="mb-8"
             />
         </template>
@@ -41,10 +44,9 @@ success_description: 'Thank you for your submission.'
         <s:partial:components.ui.form.honeypot
             model="form.{honeypot}"
             :handle="honeypot"
-            :form_handle="form:handle"
+            :form_handle="view:form_handle"
         />
 
-        {{ slot }}
         <div class="space-y-12 divide-y divide-gray-300">
             {{ sections }}
                 <div {{ !last ?= 'class="pb-12"' }}>
@@ -61,7 +63,7 @@ success_description: 'Thank you for your submission.'
         </div>
 
         <div class="pt-8">
-            <s:partial:components.ui.form.submit :label="submit_label" />
+            <s:partial:components.ui.form.submit :label="view:submit_label" />
         </div>
     </div>
 </s:form:create>
