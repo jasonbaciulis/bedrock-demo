@@ -29,9 +29,9 @@
             date: null,
             consent_api: {{ seo:tracker_type == 'gtag' || seo:tracker_type == 'gtm' ? 'true' : 'false' }},
             {{ if seo:tracker_type == 'gtag' }}
-                types: {{ seo:cookie:consent_types | where('name', 'functionalCookies', 'analyticsStorage') | to_json }},
+                types: {{ seo:cookie:consent_types | where('name', 'functionalCookies', 'analyticsStorage') | to_json | entities }},
             {{ elseif seo:tracker_type == 'gtm' }}
-                types: {{ seo:cookie:consent_types | to_json }},
+                types: {{ seo:cookie:consent_types | to_json | entities }},
             {{ /if }}
         }
     })"

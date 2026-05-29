@@ -12,8 +12,8 @@ class: ''
 
 <div
     x-data="combobox({
-                id: {{ id | to_json }},
-                items: {{ options | macro('to_js') }},
+                id: '{{ id }}',
+                items: {{ options | to_json | entities }},
                 placeholder: '{{ view:placeholder }}',
             })"
     x-modelable="value"
