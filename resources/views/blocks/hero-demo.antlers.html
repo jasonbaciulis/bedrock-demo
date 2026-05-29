@@ -256,7 +256,7 @@
                             <s:partial:components.ui.tabs.trigger
                                 :name="count"
                                 class="btn text-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 border border-transparent px-2 py-1"
-                                :class="activeTab == '{{ count }}' ? 'bg-background shadow-sm' : ''"
+                                x_class="activeTab == '{{ count }}' ? 'bg-background shadow-sm' : ''"
                             >
                                 {{ title }}
                             </s:partial:components.ui.tabs.trigger>

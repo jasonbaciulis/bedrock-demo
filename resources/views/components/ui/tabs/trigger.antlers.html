@@ -2,6 +2,7 @@
 name: ''
 alpine_property: 'activeTab'
 class: ''
+x_class: ''
 ---
 
 <button
@@ -13,6 +14,7 @@ class: ''
     @click.prevent="{{ view:alpine_property }} = '{{ view:name }}'"
     :tabindex="{{ view:alpine_property }} == '{{ view:name }}' ? 0 : -1"
     {{ view:class | attribute:class }}
+    {{ view:x_class | attribute::class }}
 >
     {{ slot }}
 </button>
