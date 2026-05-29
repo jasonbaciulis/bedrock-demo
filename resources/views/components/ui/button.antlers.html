@@ -38,7 +38,7 @@ type: 'button'
 ---
 
 {{ if view:label or slot }}
-    <{{ view:as }}>
+    <{{ view:as }}
         {{ if view:as == 'a' }}
             {{ switch(
                 (view:link_type == 'entry') => 'href="{{ view:entry:url }}"',
