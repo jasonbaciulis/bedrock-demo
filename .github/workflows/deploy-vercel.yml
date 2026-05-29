@@ -63,6 +63,8 @@ jobs:
           php please ssg:generate -n
           [ -d storage/app/static ] && [ -n "$(ls -A storage/app/static)" ] \
             || { echo "::error::SSG produced no output"; exit 1; }
+          find storage/app/static -name '*.html' -print0 \
+            | xargs -0 sed -i -E 's|<span class="nocache" data-nocache="[^"]*">NOCACHE_PLACEHOLDER</span>||g'
 
       - name: Deploy to Vercel
         run: |
