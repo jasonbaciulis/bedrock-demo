@@ -4,23 +4,25 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Laravel\Prompts\ConfirmPrompt;
 use Laravel\Prompts\Prompt;
+use Statamic\Entries\Entry;
+use Statamic\Facades\Asset;
+use Statamic\Facades\AssetContainer;
 use Statamic\Facades\Entry as EntryFacade;
+use Statamic\Facades\GlobalSet;
 use Statamic\Facades\GlobalVariables;
 use Statamic\Facades\Nav;
 use Statamic\Facades\Site;
 use Statamic\Facades\Term;
-use Statamic\Facades\Asset;
-use Statamic\Facades\AssetContainer;
 
 beforeAll(function () {
     // Auto-confirm prompts for destructive actions.
     Prompt::fallbackWhen(true);
-    ConfirmPrompt::fallbackUsing(fn() => true);
+    ConfirmPrompt::fallbackUsing(fn () => true);
 });
 
 beforeEach(function () {
     // Backup the entire content directory so we can restore it after the test.
-    $this->fs = new Filesystem();
+    $this->fs = new Filesystem;
     $this->contentPath = base_path('content');
     $this->backupPath = base_path('content_backup_for_tests');
 
@@ -61,9 +63,9 @@ afterEach(function () {
 
 test('bedrock:clear removes demo content while preserving home entry', function () {
     // Ensure home exists; if not, create it.
-    $home = EntryFacade::whereCollection('pages')->first(fn($entry) => $entry->slug() === 'home');
-    if (!$home) {
-        /** @var \Statamic\Entries\Entry $newHome */
+    $home = EntryFacade::whereCollection('pages')->first(fn ($entry) => $entry->slug() === 'home');
+    if (! $home) {
+        /** @var Entry $newHome */
         $newHome = EntryFacade::make();
         $newHome
             ->collection('pages')
@@ -75,7 +77,7 @@ test('bedrock:clear removes demo content while preserving home entry', function 
 
     // Ensure there's at least one other entry to delete
     if (EntryFacade::all()->count() <= 1) {
-        /** @var \Statamic\Entries\Entry $tempPost */
+        /** @var Entry $tempPost */
         $tempPost = EntryFacade::make();
         $tempPost
             ->collection('posts')
@@ -86,8 +88,8 @@ test('bedrock:clear removes demo content while preserving home entry', function 
 
     // Ensure at least one term exists in categories
     if (Term::whereTaxonomy('categories')->count() === 0) {
-        /** @var \Statamic\Taxonomies\Term $tempTerm */
-        $tempTerm = \Statamic\Facades\Term::make('temp-category');
+        /** @var Statamic\Taxonomies\Term $tempTerm */
+        $tempTerm = Term::make('temp-category');
         $tempTerm->taxonomy('categories')->set('title', 'Temp Category');
         $tempTerm->save();
     }
@@ -95,7 +97,7 @@ test('bedrock:clear removes demo content while preserving home entry', function 
     // Ensure globals exist for specified sets across default site
     foreach (['banner', 'browser_appearance', 'newsletter', 'social_media', 'theme'] as $handle) {
         if (GlobalVariables::whereSet($handle)->count() === 0) {
-            $vars = \Statamic\Facades\GlobalSet::findByHandle($handle)?->inDefaultSite();
+            $vars = GlobalSet::findByHandle($handle)?->inDefaultSite();
             if ($vars) {
                 $vars->set('seeded', true)->save();
             }
@@ -114,18 +116,18 @@ test('bedrock:clear removes demo content while preserving home entry', function 
     }
 
     // Create test assets by copying existing files and creating new Statamic asset entries
-    $fs = new Filesystem();
+    $fs = new Filesystem;
     $container = AssetContainer::findByHandle('assets');
     $assetsPath = public_path('assets');
 
     // Create simple test files in the filesystem first
-    $fs->ensureDirectoryExists($assetsPath . '/images');
-    $fs->ensureDirectoryExists($assetsPath . '/avatars');
-    $fs->ensureDirectoryExists($assetsPath . '/logos');
+    $fs->ensureDirectoryExists($assetsPath.'/images');
+    $fs->ensureDirectoryExists($assetsPath.'/avatars');
+    $fs->ensureDirectoryExists($assetsPath.'/logos');
 
-    $fs->put($assetsPath . '/images/test-demo-image.txt', 'test image content');
-    $fs->put($assetsPath . '/avatars/test-demo-avatar.txt', 'test avatar content');
-    $fs->put($assetsPath . '/logos/test-demo-logo.txt', 'test logo content');
+    $fs->put($assetsPath.'/images/test-demo-image.txt', 'test image content');
+    $fs->put($assetsPath.'/avatars/test-demo-avatar.txt', 'test avatar content');
+    $fs->put($assetsPath.'/logos/test-demo-logo.txt', 'test logo content');
 
     // Create Statamic asset entries for these files
     $testImageAsset = Asset::make()
@@ -157,11 +159,11 @@ test('bedrock:clear removes demo content while preserving home entry', function 
     // 1) Entries: only home page should remain in pages; other collections should be empty
     $entries = EntryFacade::all();
     // Keep everything that is the home entry
-    $nonHome = $entries->reject(fn($entry) => $entry->id() === $home->id());
+    $nonHome = $entries->reject(fn ($entry) => $entry->id() === $home->id());
     expect($nonHome->count())->toBe(0);
 
     // Home must have fields cleared
-    /** @var \Statamic\Entries\Entry $freshHome */
+    /** @var Entry $freshHome */
     $freshHome = EntryFacade::find($home->id());
     expect($freshHome->data()->get('blocks'))->toBeNull();
     expect($freshHome->data()->get('seo_title'))->toBeNull();
@@ -199,6 +201,6 @@ test('bedrock:clear removes demo content while preserving home entry', function 
     expect($remainingLogoAssets->count())->toBeGreaterThan(0);
 
     // .gitkeep should be preserved
-    $fs = new Filesystem();
+    $fs = new Filesystem;
     expect($fs->exists(public_path('assets/.gitkeep')))->toBeTrue();
 });

@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands\Scaffold\Concerns;
 
+use Statamic\Facades\YAML;
+
 trait ManagesFieldsetFiles
 {
     /**
@@ -9,10 +11,10 @@ trait ManagesFieldsetFiles
      *
      * Checks for existing files and throws unless overwriting is allowed via $force.
      *
-     * @param string $fieldset New/target fieldset handle (snake_case)
-     * @param string $view     New/target view name (kebab-case)
-     * @param bool   $force    Allow overwriting existing files
-     * @param string $viewDir  Subdirectory under resources/views (e.g. 'blocks' or 'sets')
+     * @param  string  $fieldset  New/target fieldset handle (snake_case)
+     * @param  string  $view  New/target view name (kebab-case)
+     * @param  bool  $force  Allow overwriting existing files
+     * @param  string  $viewDir  Subdirectory under resources/views (e.g. 'blocks' or 'sets')
      *
      * @throws \RuntimeException When a file exists and $force is false
      */
@@ -26,7 +28,7 @@ trait ManagesFieldsetFiles
         $viewPath = base_path("resources/views/{$viewDir}/{$view}.antlers.html");
 
         foreach ([$fieldsetPath, $viewPath] as $path) {
-            if ($this->files->exists($path) && !$force) {
+            if ($this->files->exists($path) && ! $force) {
                 throw new \RuntimeException("File exists: {$path} (use --force to overwrite)");
             }
         }
@@ -35,9 +37,9 @@ trait ManagesFieldsetFiles
     /**
      * Delete fieldset and view files for a given handle.
      *
-     * @param string $fieldset Fieldset handle (snake_case)
-     * @param bool   $force    Ignore missing files when deleting
-     * @param string $viewDir  Subdirectory under resources/views (e.g. 'blocks' or 'sets')
+     * @param  string  $fieldset  Fieldset handle (snake_case)
+     * @param  bool  $force  Ignore missing files when deleting
+     * @param  string  $viewDir  Subdirectory under resources/views (e.g. 'blocks' or 'sets')
      *
      * @throws \RuntimeException When files are missing and $force is false
      */
@@ -61,7 +63,7 @@ trait ManagesFieldsetFiles
             $missing[] = $viewPath;
         }
 
-        if ($missing && !$force) {
+        if ($missing && ! $force) {
             $list = implode("\n - ", $missing);
             throw new \RuntimeException(
                 "Some files were not found to delete:\n - {$list}\n(Use --force to ignore.)"
@@ -74,11 +76,11 @@ trait ManagesFieldsetFiles
      *
      * Replaces destination files if they already exist.
      *
-     * @param string $currentHandle Current fieldset handle (snake_case)
-     * @param string $originalView  Current view name (kebab-case)
-     * @param string $newFieldset   New fieldset handle (snake_case)
-     * @param string $newView       New view name (kebab-case)
-     * @param string $viewDir       Subdirectory under resources/views (e.g. 'blocks' or 'sets')
+     * @param  string  $currentHandle  Current fieldset handle (snake_case)
+     * @param  string  $originalView  Current view name (kebab-case)
+     * @param  string  $newFieldset  New fieldset handle (snake_case)
+     * @param  string  $newView  New view name (kebab-case)
+     * @param  string  $viewDir  Subdirectory under resources/views (e.g. 'blocks' or 'sets')
      */
     protected function moveFilesFor(
         string $currentHandle,
@@ -120,12 +122,12 @@ trait ManagesFieldsetFiles
     protected function updateFieldsetTitle(string $fieldsetHandle, string $newTitle): void
     {
         $path = base_path("resources/fieldsets/{$fieldsetHandle}.yaml");
-        if (!$this->files->exists($path)) {
+        if (! $this->files->exists($path)) {
             return; // nothing to update
         }
 
-        $data = \Statamic\Facades\YAML::file($path)->parse() ?? [];
+        $data = YAML::file($path)->parse();
         $data['title'] = $newTitle;
-        $this->files->put($path, \Statamic\Facades\YAML::dump($data));
+        $this->files->put($path, YAML::dump($data));
     }
 }

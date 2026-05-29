@@ -7,6 +7,7 @@ use Laravel\Prompts\ConfirmPrompt;
 use Laravel\Prompts\Prompt;
 use Statamic\Facades\Config as StatamicConfig;
 use Statamic\Facades\Entry;
+use Statamic\Facades\YAML;
 
 beforeAll(function () {
     // Always auto-confirm prompts in tests, except for optional group move.
@@ -17,6 +18,7 @@ beforeAll(function () {
         if (str_contains(strtolower($label), 'move this set to a different group')) {
             return false;
         }
+
         // Default to yes for other confirmations (e.g. rename confirmation).
         return true;
     });
@@ -55,8 +57,8 @@ afterEach(function () {
 
 test('rename:bedrock-set renames files and updates article.yaml', function () {
     $group = 'text_layout';
-    $originalName = 'Scaffold Test Set ' . Str::random(6);
-    $newName = 'Scaffold Renamed Set ' . Str::random(6);
+    $originalName = 'Scaffold Test Set '.Str::random(6);
+    $newName = 'Scaffold Renamed Set '.Str::random(6);
 
     $locale = StatamicConfig::getShortLocale();
     $originalFieldset = Str::slug($originalName, '_', $locale);
@@ -104,14 +106,14 @@ test('rename:bedrock-set renames files and updates article.yaml', function () {
     expect($sets[$newFieldset])->toBe($newName);
 
     // Fieldset title should be updated
-    $data = \Statamic\Facades\YAML::file($newFieldsetPath)->parse() ?? [];
+    $data = YAML::file($newFieldsetPath)->parse() ?? [];
     expect($data['title'] ?? null)->toBe($newName);
 });
 
 test('rename:bedrock-set updates content entries', function () {
     $group = 'text_layout';
-    $originalName = 'Scaffold Test Set ' . Str::random(6);
-    $newName = 'Scaffold Renamed Set ' . Str::random(6);
+    $originalName = 'Scaffold Test Set '.Str::random(6);
+    $newName = 'Scaffold Renamed Set '.Str::random(6);
 
     $locale = StatamicConfig::getShortLocale();
     $originalFieldset = Str::slug($originalName, '_', $locale);
@@ -126,10 +128,10 @@ test('rename:bedrock-set updates content entries', function () {
     ])->assertExitCode(Command::SUCCESS);
 
     // Create a post entry that uses the set in Bard
-    /** @var \Statamic\Entries\Entry $entry */
+    /** @var Statamic\Entries\Entry $entry */
     $entry = Entry::make();
     $entry->collection('posts');
-    $entry->id('test-post-' . Str::random(6));
+    $entry->id('test-post-'.Str::random(6));
     $entry->slug('test-post');
     $entry->data([
         'title' => 'Test Post',
@@ -157,21 +159,23 @@ test('rename:bedrock-set updates content entries', function () {
     ])->assertExitCode(Command::SUCCESS);
 
     // Verify entry is updated with new set type
-    /** @var \Statamic\Entries\Entry|null $updated */
+    /** @var Statamic\Entries\Entry|null $updated */
     $updated = Entry::find($entryId);
     expect($updated)->not->toBeNull();
 
     $article = (array) $updated->data()->get('article');
     $hasOldSet = collect($article)->contains(function ($node) use ($originalFieldset) {
-        if (!is_array($node) || ($node['type'] ?? null) !== 'set') {
+        if (! is_array($node) || ($node['type'] ?? null) !== 'set') {
             return false;
         }
+
         return ($node['attrs']['values']['type'] ?? null) === $originalFieldset;
     });
     $hasNewSet = collect($article)->contains(function ($node) use ($newFieldset) {
-        if (!is_array($node) || ($node['type'] ?? null) !== 'set') {
+        if (! is_array($node) || ($node['type'] ?? null) !== 'set') {
             return false;
         }
+
         return ($node['attrs']['values']['type'] ?? null) === $newFieldset;
     });
 
@@ -181,8 +185,8 @@ test('rename:bedrock-set updates content entries', function () {
 
 test('rename:bedrock-set fails when target files exist without --force', function () {
     $group = 'text_layout';
-    $originalName = 'Scaffold Test Set ' . Str::random(6);
-    $newName = 'Scaffold Renamed Set ' . Str::random(6);
+    $originalName = 'Scaffold Test Set '.Str::random(6);
+    $newName = 'Scaffold Renamed Set '.Str::random(6);
 
     $locale = StatamicConfig::getShortLocale();
     $originalFieldset = Str::slug($originalName, '_', $locale);
@@ -213,9 +217,9 @@ test('rename:bedrock-set fails when target files exist without --force', functio
 
     // Cleanup created files
     @unlink(base_path("resources/fieldsets/{$originalFieldset}.yaml"));
-    @unlink(base_path("resources/views/sets/" . str_replace('_', '-', $originalFieldset) . ".antlers.html"));
+    @unlink(base_path('resources/views/sets/'.str_replace('_', '-', $originalFieldset).'.antlers.html'));
     @unlink(base_path("resources/fieldsets/{$newFieldset}.yaml"));
-    @unlink(base_path("resources/views/sets/" . str_replace('_', '-', $newFieldset) . ".antlers.html"));
+    @unlink(base_path('resources/views/sets/'.str_replace('_', '-', $newFieldset).'.antlers.html'));
 });
 
 test('rename:bedrock-set fails when source set does not exist', function () {

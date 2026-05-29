@@ -1,6 +1,7 @@
 <?php
 
-use function Laravel\Prompts\{confirm, info};
+use function Laravel\Prompts\confirm;
+use function Laravel\Prompts\info;
 
 class StarterKitPostInstall
 {
@@ -61,7 +62,7 @@ class StarterKitPostInstall
 
     protected function starRepo(): void
     {
-        if (!confirm('Would you like to star the Bedrock repo?')) {
+        if (! confirm('Would you like to star the Bedrock repo?')) {
             return;
         }
 

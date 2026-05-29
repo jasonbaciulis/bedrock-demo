@@ -2,13 +2,16 @@
 
 namespace App\Console\Commands\Scaffold;
 
+use App\Console\Commands\Scaffold\Concerns\ManagesFieldsetFiles;
+use App\Support\Yaml\ArticleYaml;
+use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Statamic\Facades\Config;
-use Illuminate\Console\Command;
-use App\Support\Yaml\ArticleYaml;
-use Illuminate\Filesystem\Filesystem;
-use App\Console\Commands\Scaffold\Concerns\ManagesFieldsetFiles;
-use function Laravel\Prompts\{select, text, info};
+
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\select;
+use function Laravel\Prompts\text;
 
 class MakeSet extends Command
 {
@@ -66,10 +69,12 @@ class MakeSet extends Command
             $this->updateArticleFieldset($group, $fieldset, $name, $instructions);
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
+
             return self::FAILURE;
         }
 
         info("Created '{$name}' set in '{$groups[$group]}' group.");
+
         return self::SUCCESS;
     }
 

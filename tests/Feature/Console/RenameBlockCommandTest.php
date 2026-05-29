@@ -7,6 +7,7 @@ use Laravel\Prompts\ConfirmPrompt;
 use Laravel\Prompts\Prompt;
 use Statamic\Facades\Config as StatamicConfig;
 use Statamic\Facades\Entry;
+use Statamic\Facades\YAML;
 
 beforeAll(function () {
     // Always auto-confirm prompts in tests, except for optional group move.
@@ -17,6 +18,7 @@ beforeAll(function () {
         if (str_contains(strtolower($label), 'move this block to a different group')) {
             return false;
         }
+
         // Default to yes for other confirmations (e.g. rename confirmation).
         return true;
     });
@@ -55,8 +57,8 @@ afterEach(function () {
 
 test('rename:bedrock-block renames files and updates blocks.yaml', function () {
     $group = 'messaging';
-    $originalName = 'Scaffold Test Block ' . Str::random(6);
-    $newName = 'Scaffold Renamed Block ' . Str::random(6);
+    $originalName = 'Scaffold Test Block '.Str::random(6);
+    $newName = 'Scaffold Renamed Block '.Str::random(6);
 
     $locale = StatamicConfig::getShortLocale();
     $originalFieldset = Str::slug($originalName, '_', $locale);
@@ -104,14 +106,14 @@ test('rename:bedrock-block renames files and updates blocks.yaml', function () {
     expect($sets[$newFieldset])->toBe($newName);
 
     // Fieldset title should be updated
-    $data = \Statamic\Facades\YAML::file($newFieldsetPath)->parse() ?? [];
+    $data = YAML::file($newFieldsetPath)->parse() ?? [];
     expect($data['title'] ?? null)->toBe($newName);
 });
 
 test('rename:bedrock-block updates content entries', function () {
     $group = 'messaging';
-    $originalName = 'Scaffold Test Block ' . Str::random(6);
-    $newName = 'Scaffold Renamed Block ' . Str::random(6);
+    $originalName = 'Scaffold Test Block '.Str::random(6);
+    $newName = 'Scaffold Renamed Block '.Str::random(6);
 
     $locale = StatamicConfig::getShortLocale();
     $originalFieldset = Str::slug($originalName, '_', $locale);
@@ -126,10 +128,10 @@ test('rename:bedrock-block updates content entries', function () {
     ])->assertExitCode(Command::SUCCESS);
 
     // Create a page entry that uses the block
-    /** @var \Statamic\Entries\Entry $entry */
+    /** @var Statamic\Entries\Entry $entry */
     $entry = Entry::make();
     $entry->collection('pages');
-    $entry->id('test-page-' . Str::random(6));
+    $entry->id('test-page-'.Str::random(6));
     $entry->slug('test-page');
     $entry->data([
         'title' => 'Test Page',
@@ -147,16 +149,16 @@ test('rename:bedrock-block updates content entries', function () {
     ])->assertExitCode(Command::SUCCESS);
 
     // Verify entry is updated with new block type
-    /** @var \Statamic\Entries\Entry|null $updated */
+    /** @var Statamic\Entries\Entry|null $updated */
     $updated = Entry::find($entryId);
     expect($updated)->not->toBeNull();
 
     $blocks = (array) $updated->data()->get('blocks');
     $hasOldBlock = collect($blocks)->contains(
-        fn($i) => is_array($i) && ($i['type'] ?? null) === $originalFieldset
+        fn ($i) => is_array($i) && ($i['type'] ?? null) === $originalFieldset
     );
     $hasNewBlock = collect($blocks)->contains(
-        fn($i) => is_array($i) && ($i['type'] ?? null) === $newFieldset
+        fn ($i) => is_array($i) && ($i['type'] ?? null) === $newFieldset
     );
 
     expect($hasOldBlock)->toBeFalse();
@@ -165,8 +167,8 @@ test('rename:bedrock-block updates content entries', function () {
 
 test('rename:bedrock-block fails when target files exist without --force', function () {
     $group = 'messaging';
-    $originalName = 'Scaffold Test Block ' . Str::random(6);
-    $newName = 'Scaffold Renamed Block ' . Str::random(6);
+    $originalName = 'Scaffold Test Block '.Str::random(6);
+    $newName = 'Scaffold Renamed Block '.Str::random(6);
 
     $locale = StatamicConfig::getShortLocale();
     $originalFieldset = Str::slug($originalName, '_', $locale);
