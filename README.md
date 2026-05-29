@@ -53,7 +53,7 @@ Blocks are like LEGO bricks that provide you the maximum flexibility when buildi
 
 - Adds a set to the Blocks field in `resources/fieldsets/blocks.yaml`.
 - Creates a fieldset for a block in `resources/fieldsets/{file_name}.yaml`.
-- Creates a view with default markup in `resources/views/blocks/{file-name}.blade.php`.
+- Creates a view with default markup in `resources/views/blocks/{file-name}.antlers.html`.
 
 #### Delete
 `php please delete:bedrock-block`
@@ -68,7 +68,7 @@ Sets provide a powerful content creation experience with unparalleled flexibilit
 
 - Adds a set to the Article in `resources/fieldsets/article.yaml`.
 - Creates a fieldset for a set in `resources/fieldsets/{file_name}.yaml`.
-- Creates a set view with default markup in `resources/views/sets/{file-name}.blade.php`.
+- Creates a set view with default markup in `resources/views/sets/{file-name}.antlers.html`.
 
 #### Delete
 `php please delete:bedrock-set`
