@@ -8,11 +8,15 @@
 
 #### Use view-matter inside components to declare props
 
+Note that props have to be declared at the very top even before any comments
+
 ```antlers
 ---
 variant: 'dark'
 class: ''
 ---
+
+{{# Comment #}}
 
 <div {{ class | attribute:class }}>
     <div class="{{ view:variant }}">
