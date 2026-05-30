@@ -2,6 +2,8 @@ import js from '@eslint/js'
 import prettier from 'eslint-config-prettier'
 
 export default [
+  js.configs.recommended,
+  prettier,
   {
     ignores: [
       'node_modules/**',
@@ -12,10 +14,6 @@ export default [
       'resources/dist/**',
     ],
   },
-
-  js.configs.recommended,
-  prettier,
-
   {
     files: ['resources/js/**/*.{js,mjs,cjs}'],
     languageOptions: {
@@ -42,7 +40,6 @@ export default [
       'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     },
   },
-
   {
     files: ['vite.config.*', 'eslint.config.*'],
     languageOptions: {
