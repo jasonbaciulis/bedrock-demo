@@ -1,4 +1,5 @@
 import js from '@eslint/js'
+import globals from 'globals'
 import prettier from 'eslint-config-prettier'
 
 export default [
@@ -17,18 +18,10 @@ export default [
   {
     files: ['resources/js/**/*.{js,mjs,cjs}'],
     languageOptions: {
-      ecmaVersion: 2023,
+      ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
-        window: 'readonly',
-        document: 'readonly',
-        console: 'readonly',
-        fetch: 'readonly',
-        structuredClone: 'readonly',
-        FormData: 'readonly',
-        URLSearchParams: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
+        ...globals.browser,
         Alpine: 'readonly',
         Statamic: 'readonly',
         appName: 'readonly',
@@ -37,15 +30,15 @@ export default [
     },
     rules: {
       'no-console': 'off',
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+      'no-debugger': 'error',
     },
   },
   {
     files: ['vite.config.*', 'eslint.config.*'],
     languageOptions: {
-      ecmaVersion: 2023,
+      ecmaVersion: 'latest',
       sourceType: 'module',
-      globals: { process: 'readonly' },
+      globals: { ...globals.node },
     },
   },
 ]
