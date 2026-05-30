@@ -44,7 +44,7 @@ export default [
   },
 
   {
-    files: ['vite.config.*', 'tailwind.config.*', 'postcss.config.*', 'eslint.config.*'],
+    files: ['vite.config.*', 'eslint.config.*'],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: 'module',
