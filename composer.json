@@ -70,7 +70,8 @@
       "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\""
     ],
     "post-update-cmd": [
-      "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+      "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+      "@php artisan boost:update --ansi"
     ],
     "dev": [
       "Composer\\Config::disableProcessTimeout",
