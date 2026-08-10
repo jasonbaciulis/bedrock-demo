@@ -43,23 +43,26 @@ class StarterKitPostInstall
             'post-update-cmd' => [
                 '@php artisan vendor:publish --tag=laravel-assets --ansi --force',
                 '@php artisan boost:update --ansi',
+                '@update:requirements',
             ],
-            'pint' => 'pint',
-            'pint:ci' => 'pint --test --parallel',
-            'phpstan' => 'phpstan analyse --configuration=phpstan.neon --no-progress',
-            'phpstan:ci' => 'phpstan analyse --configuration=phpstan.neon --no-progress --no-interaction',
-            'format' => [
+            'update:requirements' => [
+                'composer bump',
+                'bunx npm-check-updates -u',
+            ],
+            'lint' => [
+                'pint --parallel',
                 'bun run lint',
-                'bun run format',
-                '@pint',
-                '@phpstan',
             ],
-            'format:ci' => [
-                '@pint:ci',
-                '@phpstan:ci',
+            'test:lint' => [
+                'pint --parallel --test',
+                'bun run test:lint',
             ],
+            'test:types' => 'phpstan',
+            'test:unit' => 'pest --parallel',
             'test' => [
-                'pest --parallel',
+                '@test:lint',
+                '@test:types',
+                '@test:unit',
             ],
         ];
     }

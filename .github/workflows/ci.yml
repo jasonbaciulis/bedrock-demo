@@ -10,9 +10,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  php_coding_standards:
-    name: PHP (Pint & PHPStan)
+  ci:
+    name: Lint, Types & Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
@@ -22,61 +23,18 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.5'
-          extensions: mbstring, intl
+          extensions: dom, curl, libxml, mbstring, intl, zip, pcntl, pdo, sqlite3, pdo_sqlite
           coverage: none
-          tools: composer
-
-      - name: Install dependencies (cached)
-        uses: ramsey/composer-install@v4
-        with:
-          dependency-versions: locked
-          composer-options: --no-progress --no-interaction --prefer-dist
-
-      - name: Run PHP coding standards (CI)
-        run: composer format:ci
-
-  frontend_coding_standards:
-    name: Frontend (Prettier & ESLint)
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-
-      - name: Cache Bun dependencies
-        uses: actions/cache@v6
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
-          restore-keys: ${{ runner.os }}-bun-
-
-      - name: Install Bun dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Run frontend coding standards (CI)
-        run: bun run frontend:ci
-
-  test:
-    name: Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.5'
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite3, pdo_sqlite
-          coverage: none
+          tools: composer:v2
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v4
+        with:
+          dependency-versions: locked
+          composer-options: --no-progress --no-interaction --prefer-dist
 
       - name: Cache Bun dependencies
         uses: actions/cache@v6
@@ -96,5 +54,11 @@ jobs:
       - name: Build frontend assets
         run: bun run build
 
-      - name: Run tests
-        run: composer test
+      - name: Run linters
+        run: composer test:lint
+
+      - name: Run PHPStan
+        run: composer test:types
+
+      - name: Run unit tests
+        run: composer test:unit

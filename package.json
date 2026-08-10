@@ -7,12 +7,8 @@
     "icons:heroicons": "sh scripts/icons-heroicons.sh",
     "icons:lucide": "sh scripts/icons-lucide.sh",
     "postinstall": "bun run icons:heroicons && bun run icons:lucide",
-    "lint": "eslint \"resources/js\" --fix",
-    "format": "prettier \"resources/**/*.{js,css,scss,html,antlers.html,blade.php}\" --write",
-    "format:check": "prettier \"resources/**/*.{js,css,scss,html,antlers.html,blade.php}\" --check",
-    "lint:ci": "eslint \"resources/js\" --max-warnings=0",
-    "format:ci": "prettier \"resources/**/*.{js,css,scss,html,antlers.html,blade.php}\" --check",
-    "frontend:ci": "bun run lint:ci && bun run format:ci"
+    "lint": "prettier \"resources/**/*.{js,css,scss,html,antlers.html,blade.php}\" --write && eslint \"resources/js\" --fix",
+    "test:lint": "prettier \"resources/**/*.{js,css,scss,html,antlers.html,blade.php}\" --check && eslint \"resources/js\" --max-warnings=0"
   },
   "devDependencies": {
     "@alpinejs/anchor": "^3.15.12",

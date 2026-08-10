@@ -51,7 +51,7 @@
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
       "@php artisan key:generate",
       "@php artisan migrate --force",
-      "bun install --ignore-scripts",
+      "bun install",
       "bun run build"
     ],
     "pre-update-cmd": [
@@ -71,28 +71,31 @@
     ],
     "post-update-cmd": [
       "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-      "@php artisan boost:update --ansi"
+      "@php artisan boost:update --ansi",
+      "@update:requirements"
+    ],
+    "update:requirements": [
+      "composer bump",
+      "bunx npm-check-updates -u"
     ],
     "dev": [
       "Composer\\Config::disableProcessTimeout",
       "bunx concurrently -c \"#c4b5fd,#fb7185,#fdba74\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"bun run dev\" --names=queue,logs,vite"
     ],
-    "pint": "pint",
-    "pint:ci": "pint --test --parallel",
-    "phpstan": "phpstan analyse --configuration=phpstan.neon --no-progress",
-    "phpstan:ci": "phpstan analyse --configuration=phpstan.neon --no-progress --no-interaction",
-    "format": [
-        "bun run lint",
-        "bun run format",
-        "@pint",
-        "@phpstan"
+    "lint": [
+      "pint --parallel",
+      "bun run lint"
     ],
-    "format:ci": [
-        "@pint:ci",
-        "@phpstan:ci"
+    "test:lint": [
+      "pint --parallel --test",
+      "bun run test:lint"
     ],
+    "test:types": "phpstan",
+    "test:unit": "pest --parallel",
     "test": [
-      "pest --parallel"
+      "@test:lint",
+      "@test:types",
+      "@test:unit"
     ]
   },
   "extra": {
