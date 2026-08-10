@@ -12,11 +12,9 @@ use Statamic\Facades\YAML;
 beforeAll(function (): void {
     // Always auto-confirm prompts in tests, except for optional group move.
     Prompt::fallbackWhen(true);
-    ConfirmPrompt::fallbackUsing(function ($prompt = null): bool {
-        $label = method_exists($prompt, 'label') ? (string) $prompt->label() : '';
-
-        return ! Str::contains(strtolower($label), 'move this set to a different group');
-    });
+    ConfirmPrompt::fallbackUsing(
+        fn (ConfirmPrompt $prompt): bool => ! Str::contains(strtolower($prompt->label()), 'move this set to a different group')
+    );
 });
 
 beforeEach(function (): void {
@@ -83,7 +81,7 @@ test('rename:bedrock-set renames files and updates article.yaml', function (): v
         ->and($sets[$newFieldset])->toBe($newName);
 
     // Fieldset title should be updated
-    $data = YAML::file($newFieldsetPath)->parse() ?? [];
+    $data = YAML::file($newFieldsetPath)->parse();
     expect($data['title'] ?? null)->toBe($newName);
 });
 

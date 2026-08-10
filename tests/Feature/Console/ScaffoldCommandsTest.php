@@ -40,7 +40,7 @@ afterEach(function (): void {
 
 function parseYaml(string $path): array
 {
-    return YAML::file($path)->parse() ?? [];
+    return YAML::file($path)->parse();
 }
 
 function findFieldIndexByHandle(array $data, string $handle): int

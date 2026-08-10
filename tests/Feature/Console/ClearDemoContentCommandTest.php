@@ -47,14 +47,14 @@ beforeEach(function (): void {
 
 afterEach(function (): void {
     // Restore content directory from backup
-    if (property_exists($this, 'fs') && $this->fs !== null && $this->fs->exists($this->backupPath)) {
+    if ($this->fs->exists($this->backupPath)) {
         $this->fs->deleteDirectory($this->contentPath);
         $this->fs->copyDirectory($this->backupPath, $this->contentPath);
         $this->fs->deleteDirectory($this->backupPath);
     }
 
     // Restore assets directory from backup
-    if (property_exists($this, 'fs') && $this->fs !== null && $this->fs->exists($this->assetsBackupPath)) {
+    if ($this->fs->exists($this->assetsBackupPath)) {
         if ($this->fs->exists($this->assetsPath)) {
             $this->fs->deleteDirectory($this->assetsPath);
         }
