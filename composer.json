@@ -51,8 +51,8 @@
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
       "@php artisan key:generate",
       "@php artisan migrate --force",
-      "npm install --ignore-scripts",
-      "npm run build"
+      "bun install --ignore-scripts",
+      "bun run build"
     ],
     "pre-update-cmd": [
       "Statamic\\Console\\Composer\\Scripts::preUpdateCmd"
@@ -75,15 +75,15 @@
     ],
     "dev": [
       "Composer\\Config::disableProcessTimeout",
-      "npx concurrently -c \"#c4b5fd,#fb7185,#fdba74\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=queue,logs,vite"
+      "bunx concurrently -c \"#c4b5fd,#fb7185,#fdba74\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"bun run dev\" --names=queue,logs,vite"
     ],
     "pint": "pint",
     "pint:ci": "pint --test --parallel",
     "phpstan": "phpstan analyse --configuration=phpstan.neon --no-progress",
     "phpstan:ci": "phpstan analyse --configuration=phpstan.neon --no-progress --no-interaction",
     "format": [
-        "npm run lint",
-        "npm run format",
+        "bun run lint",
+        "bun run format",
         "@pint",
         "@phpstan"
     ],

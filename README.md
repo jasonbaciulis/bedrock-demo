@@ -2,16 +2,16 @@
 
 ## Requirements
 
-Before running Statamic, you should ensure that your local machine has PHP and [Composer](https://getcomposer.org/) installed. If you are developing on macOS, PHP and Composer can be installed via [Homebrew](https://brew.sh/). In addition, we recommend [installing Node and NPM](https://nodejs.org/en/).
+Before running Statamic, you should ensure that your local machine has PHP and [Composer](https://getcomposer.org/) installed. If you are developing on macOS, PHP and Composer can be installed via [Homebrew](https://brew.sh/). In addition, we recommend [installing Bun](https://bun.sh/) for frontend dependencies.
 
 
 ## Installation instructions
 
 1. Install composer dependencies: `composer install`
-2. Install NPM dependencies: `npm install`
+2. Install frontend dependencies: `bun install`
 3. Create a Statamic user: `php please make:user`
 4. Next, install the MCP server and coding guidelines: `php artisan boost:install`
-5. Start Laravel's local dev server, npm run dev, start queue: `composer run dev`
+5. Start Laravel's local dev server, bun run dev, start queue: `composer run dev`
 6. Clear demo content: `php artisan bedrock:clear`
 
 Once you have started the Artisan development server, the website will be accessible in your web browser at [http://localhost:8000](http://localhost:8000). Head to [http://localhost:8000/cp](http://localhost:8000/cp) and use your email address and password to sign into the Statamic control panel.
@@ -170,8 +170,8 @@ cd $FORGE_SITE_PATH
 git pull origin $FORGE_SITE_BRANCH
 $FORGE_COMPOSER install --no-interaction --optimize-autoloader --no-dev
 
-npm ci
-npm run build
+bun install --frozen-lockfile
+bun run build
 $FORGE_PHP artisan cache:clear
 $FORGE_PHP artisan config:cache
 $FORGE_PHP artisan route:cache
@@ -198,8 +198,8 @@ cd {SITE_DIRECTORY}
 git pull origin {BRANCH}
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
-npm ci
-npm run build
+bun install --frozen-lockfile
+bun run build
 
 {RELOAD_PHP_FPM}
 

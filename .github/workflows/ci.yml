@@ -43,17 +43,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: "22"
-          cache: "npm"
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
-      - name: Install Node dependencies
-        run: npm ci
+      - name: Cache Bun dependencies
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: ${{ runner.os }}-bun-
+
+      - name: Install Bun dependencies
+        run: bun install --frozen-lockfile
 
       - name: Run frontend coding standards (CI)
-        run: npm run frontend:ci
+        run: bun run frontend:ci
 
   test:
     name: Tests
@@ -68,17 +72,21 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite3, pdo_sqlite
           coverage: none
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: npm
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v4
 
-      - name: Install NPM dependencies
-        run: npm ci
+      - name: Cache Bun dependencies
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: ${{ runner.os }}-bun-
+
+      - name: Install Bun dependencies
+        run: bun install --frozen-lockfile
 
       - name: Prepare Laravel
         run: |
@@ -86,7 +94,7 @@ jobs:
           php artisan key:generate
 
       - name: Build frontend assets
-        run: npm run build
+        run: bun run build
 
       - name: Run tests
         run: composer test

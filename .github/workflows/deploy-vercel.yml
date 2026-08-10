@@ -27,10 +27,14 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, intl, gd, bcmath
           coverage: none
 
-      - uses: actions/setup-node@v6
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v6
         with:
-          node-version: '22'
-          cache: npm
+          path: node_modules
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: ${{ runner.os }}-bun-
 
       - name: Prepare .env
         env:
@@ -54,8 +58,8 @@ jobs:
           dependency-versions: locked
           composer-options: --no-progress --prefer-dist --no-dev --optimize-autoloader
 
-      - run: npm ci
-      - run: npm run build
+      - run: bun install --frozen-lockfile
+      - run: bun run build
 
       - name: Generate static site
         run: |
@@ -68,7 +72,7 @@ jobs:
 
       - name: Deploy to Vercel
         run: |
-          npm install --global vercel@latest
+          bun install --global vercel@latest
           mkdir -p .vercel/output/static
           cp -R storage/app/static/. .vercel/output/static/
           printf '{"version":3}\n' > .vercel/output/config.json

@@ -2,7 +2,7 @@
 
 ## Requirements
 
-Before running Statamic, you should ensure that your local machine has PHP and [Composer](https://getcomposer.org/) installed. If you are developing on macOS, PHP and Composer can be installed via [Homebrew](https://brew.sh/). In addition, I recommend [installing Node and NPM](https://nodejs.org/en/).
+Before running Statamic, you should ensure that your local machine has PHP and [Composer](https://getcomposer.org/) installed. If you are developing on macOS, PHP and Composer can be installed via [Homebrew](https://brew.sh/). In addition, I recommend [installing Bun](https://bun.sh/) for frontend dependencies.
 
 ## Installation
 
@@ -13,10 +13,10 @@ statamic new project_name jasonbaciulis/bedrock
 ```
 
 1. Navigate to the installed project folder: `cd project_name`
-2. Install NPM dependencies: `npm install`
+2. Install frontend dependencies: `bun install`
 3. Create a Statamic user: `php please make:user`
 4. (Optional) install the MCP server and AI coding guidelines: `php artisan boost:install`
-5. Start Laravel's local dev server, npm run dev, start queue: `composer run dev`
+5. Start Laravel's local dev server, bun run dev, start queue: `composer run dev`
 6. (Optional) Clear demo content: `php artisan bedrock:clear`
 
 Recommended to use [Herd](https://laravel.com/docs/12.x/installation#installation-using-herd) for local dev.
@@ -161,8 +161,8 @@ cd $FORGE_SITE_PATH
 git pull origin $FORGE_SITE_BRANCH
 $FORGE_COMPOSER install --no-interaction --optimize-autoloader --no-dev
 
-npm ci
-npm run build
+bun install --frozen-lockfile
+bun run build
 $FORGE_PHP artisan cache:clear
 $FORGE_PHP artisan config:cache
 $FORGE_PHP artisan route:cache
@@ -202,8 +202,8 @@ if [ -f artisan ]; then
 fi
 
 # Frontend Build
-npm ci
-npm run build
+bun install --frozen-lockfile
+bun run build
 
 # Laravel Optimization
 # We group these to minimize the window where the app is "naked"

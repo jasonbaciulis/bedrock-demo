@@ -6,13 +6,13 @@
     "build": "vite build",
     "icons:heroicons": "sh scripts/icons-heroicons.sh",
     "icons:lucide": "sh scripts/icons-lucide.sh",
-    "postinstall": "npm run icons:heroicons && npm run icons:lucide",
+    "postinstall": "bun run icons:heroicons && bun run icons:lucide",
     "lint": "eslint \"resources/js\" --fix",
     "format": "prettier \"resources/**/*.{js,css,scss,html,antlers.html,blade.php}\" --write",
     "format:check": "prettier \"resources/**/*.{js,css,scss,html,antlers.html,blade.php}\" --check",
     "lint:ci": "eslint \"resources/js\" --max-warnings=0",
     "format:ci": "prettier \"resources/**/*.{js,css,scss,html,antlers.html,blade.php}\" --check",
-    "frontend:ci": "npm run lint:ci && npm run format:ci"
+    "frontend:ci": "bun run lint:ci && bun run format:ci"
   },
   "devDependencies": {
     "@alpinejs/anchor": "^3.15.12",

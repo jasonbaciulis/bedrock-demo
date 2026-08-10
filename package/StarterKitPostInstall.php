@@ -38,7 +38,7 @@ class StarterKitPostInstall
         return [
             'dev' => [
                 'Composer\\Config::disableProcessTimeout',
-                'npx concurrently -c "#c4b5fd,#fb7185,#fdba74" "php artisan queue:listen --tries=1" "php artisan pail --timeout=0" "npm run dev" --names=queue,logs,vite',
+                'bunx concurrently -c "#c4b5fd,#fb7185,#fdba74" "php artisan queue:listen --tries=1" "php artisan pail --timeout=0" "bun run dev" --names=queue,logs,vite',
             ],
             'post-update-cmd' => [
                 '@php artisan vendor:publish --tag=laravel-assets --ansi --force',
@@ -49,8 +49,8 @@ class StarterKitPostInstall
             'phpstan' => 'phpstan analyse --configuration=phpstan.neon --no-progress',
             'phpstan:ci' => 'phpstan analyse --configuration=phpstan.neon --no-progress --no-interaction',
             'format' => [
-                'npm run lint',
-                'npm run format',
+                'bun run lint',
+                'bun run format',
                 '@pint',
                 '@phpstan',
             ],
