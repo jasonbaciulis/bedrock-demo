@@ -9,26 +9,21 @@ use Statamic\Facades\Config as StatamicConfig;
 use Statamic\Facades\Entry;
 use Statamic\Facades\YAML;
 
-beforeAll(function () {
+beforeAll(function (): void {
     // Always auto-confirm prompts in tests, except for optional group move.
     Prompt::fallbackWhen(true);
-    ConfirmPrompt::fallbackUsing(function ($prompt = null) {
+    ConfirmPrompt::fallbackUsing(function ($prompt = null): bool {
         $label = method_exists($prompt, 'label') ? (string) $prompt->label() : '';
-        // Say "no" to optional group move to avoid extra select prompts.
-        if (str_contains(strtolower($label), 'move this block to a different group')) {
-            return false;
-        }
 
-        // Default to yes for other confirmations (e.g. rename confirmation).
-        return true;
+        return ! Str::contains(strtolower($label), 'move this block to a different group');
     });
 });
 
-beforeEach(function () {
+beforeEach(function (): void {
     setUpBedrockScaffoldPaths();
 });
 
-afterEach(function () {
+afterEach(function (): void {
     tearDownBedrockScaffoldPaths();
 
     $worker = bedrockTestWorkerToken();
@@ -37,7 +32,7 @@ afterEach(function () {
     }
 });
 
-test('rename:bedrock-block renames files and updates blocks.yaml', function () {
+test('rename:bedrock-block renames files and updates blocks.yaml', function (): void {
     $group = 'messaging';
     $originalName = 'Scaffold Test Block '.Str::random(6);
     $newName = 'Scaffold Renamed Block '.Str::random(6);
@@ -80,7 +75,7 @@ test('rename:bedrock-block renames files and updates blocks.yaml', function () {
     expect(is_file($newViewPath))->toBeTrue();
 
     // Verify blocks.yaml is updated using BlocksYaml class
-    $blocks = app(BlocksYaml::class);
+    $blocks = resolve(BlocksYaml::class);
     $sets = $blocks->sets($group);
 
     expect(isset($sets[$originalFieldset]))->toBeFalse();
@@ -92,7 +87,7 @@ test('rename:bedrock-block renames files and updates blocks.yaml', function () {
     expect($data['title'] ?? null)->toBe($newName);
 });
 
-test('rename:bedrock-block updates content entries', function () {
+test('rename:bedrock-block updates content entries', function (): void {
     $group = 'messaging';
     $originalName = 'Scaffold Test Block '.Str::random(6);
     $newName = 'Scaffold Renamed Block '.Str::random(6);
@@ -136,17 +131,17 @@ test('rename:bedrock-block updates content entries', function () {
 
     $blocks = (array) $updated->data()->get('blocks');
     $hasOldBlock = collect($blocks)->contains(
-        fn ($i) => is_array($i) && ($i['type'] ?? null) === $originalFieldset
+        fn ($i): bool => is_array($i) && ($i['type'] ?? null) === $originalFieldset
     );
     $hasNewBlock = collect($blocks)->contains(
-        fn ($i) => is_array($i) && ($i['type'] ?? null) === $newFieldset
+        fn ($i): bool => is_array($i) && ($i['type'] ?? null) === $newFieldset
     );
 
     expect($hasOldBlock)->toBeFalse();
     expect($hasNewBlock)->toBeTrue();
 });
 
-test('rename:bedrock-block fails when target files exist without --force', function () {
+test('rename:bedrock-block fails when target files exist without --force', function (): void {
     $group = 'messaging';
     $originalName = 'Scaffold Test Block '.Str::random(6);
     $newName = 'Scaffold Renamed Block '.Str::random(6);
@@ -179,7 +174,7 @@ test('rename:bedrock-block fails when target files exist without --force', funct
     ])->assertExitCode(Command::FAILURE);
 });
 
-test('rename:bedrock-block fails when source block does not exist', function () {
+test('rename:bedrock-block fails when source block does not exist', function (): void {
     $this->artisan('rename:bedrock-block', [
         'group' => 'messaging',
         'current_name' => 'nonexistent_block',

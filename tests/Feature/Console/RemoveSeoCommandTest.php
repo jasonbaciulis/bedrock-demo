@@ -7,13 +7,13 @@ use Laravel\Prompts\Prompt;
 use Statamic\Facades\Entry;
 use Statamic\Facades\YAML;
 
-beforeAll(function () {
+beforeAll(function (): void {
     // Always auto-confirm destructive prompts in tests.
     Prompt::fallbackWhen(true);
-    ConfirmPrompt::fallbackUsing(fn () => true);
+    ConfirmPrompt::fallbackUsing(fn (): true => true);
 });
 
-beforeEach(function () {
+beforeEach(function (): void {
     setUpSeoRemovalScratch();
 
     $this->base = bedrockSeoScratchBase();
@@ -43,7 +43,7 @@ beforeEach(function () {
     $entry->save();
 });
 
-afterEach(function () {
+afterEach(function (): void {
     File::deleteDirectory(bedrockTestScratchPath());
 
     $worker = bedrockTestWorkerToken();
@@ -65,7 +65,7 @@ function writeSeoFieldset(string $dir, string $handle, array $fieldHandles): voi
     ]));
 }
 
-test('bedrock:remove-seo deletes seo files and fieldsets', function () {
+test('bedrock:remove-seo deletes seo files and fieldsets', function (): void {
     $this->artisan('bedrock:remove-seo', ['--force' => true])
         ->assertExitCode(Command::SUCCESS);
 
@@ -89,7 +89,7 @@ test('bedrock:remove-seo deletes seo files and fieldsets', function () {
     }
 });
 
-test('bedrock:remove-seo removes the seo tab from collection blueprints', function () {
+test('bedrock:remove-seo removes the seo tab from collection blueprints', function (): void {
     $this->artisan('bedrock:remove-seo', ['--force' => true])
         ->assertExitCode(Command::SUCCESS);
 
@@ -99,7 +99,7 @@ test('bedrock:remove-seo removes the seo tab from collection blueprints', functi
     }
 });
 
-test('bedrock:remove-seo cleans template and build references', function () {
+test('bedrock:remove-seo cleans template and build references', function (): void {
     $this->artisan('bedrock:remove-seo', ['--force' => true])
         ->assertExitCode(Command::SUCCESS);
 
@@ -117,7 +117,7 @@ test('bedrock:remove-seo cleans template and build references', function () {
     expect($vite)->not->toContain('cookieDialog.js');
 });
 
-test('bedrock:remove-seo strips seo keys from existing entries', function () {
+test('bedrock:remove-seo strips seo keys from existing entries', function (): void {
     $this->artisan('bedrock:remove-seo', ['--force' => true])
         ->assertExitCode(Command::SUCCESS);
 

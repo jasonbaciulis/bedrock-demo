@@ -14,13 +14,13 @@ use Statamic\Facades\Nav;
 use Statamic\Facades\Site;
 use Statamic\Facades\Term;
 
-beforeAll(function () {
+beforeAll(function (): void {
     // Auto-confirm prompts for destructive actions.
     Prompt::fallbackWhen(true);
-    ConfirmPrompt::fallbackUsing(fn () => true);
+    ConfirmPrompt::fallbackUsing(fn (): true => true);
 });
 
-beforeEach(function () {
+beforeEach(function (): void {
     // Backup the entire content directory so we can restore it after the test.
     $this->fs = new Filesystem;
     $this->contentPath = base_path('content');
@@ -29,6 +29,7 @@ beforeEach(function () {
     if ($this->fs->exists($this->backupPath)) {
         $this->fs->deleteDirectory($this->backupPath);
     }
+
     $this->fs->copyDirectory($this->contentPath, $this->backupPath);
 
     // Backup the assets directory so we can restore it after the test.
@@ -38,32 +39,34 @@ beforeEach(function () {
     if ($this->fs->exists($this->assetsBackupPath)) {
         $this->fs->deleteDirectory($this->assetsBackupPath);
     }
+
     if ($this->fs->exists($this->assetsPath)) {
         $this->fs->copyDirectory($this->assetsPath, $this->assetsBackupPath);
     }
 });
 
-afterEach(function () {
+afterEach(function (): void {
     // Restore content directory from backup
-    if (isset($this->fs) && $this->fs->exists($this->backupPath)) {
+    if (property_exists($this, 'fs') && $this->fs !== null && $this->fs->exists($this->backupPath)) {
         $this->fs->deleteDirectory($this->contentPath);
         $this->fs->copyDirectory($this->backupPath, $this->contentPath);
         $this->fs->deleteDirectory($this->backupPath);
     }
 
     // Restore assets directory from backup
-    if (isset($this->fs) && $this->fs->exists($this->assetsBackupPath)) {
+    if (property_exists($this, 'fs') && $this->fs !== null && $this->fs->exists($this->assetsBackupPath)) {
         if ($this->fs->exists($this->assetsPath)) {
             $this->fs->deleteDirectory($this->assetsPath);
         }
+
         $this->fs->copyDirectory($this->assetsBackupPath, $this->assetsPath);
         $this->fs->deleteDirectory($this->assetsBackupPath);
     }
 });
 
-test('bedrock:clear removes demo content while preserving home entry', function () {
+test('bedrock:clear removes demo content while preserving home entry', function (): void {
     // Ensure home exists; if not, create it.
-    $home = EntryFacade::whereCollection('pages')->first(fn ($entry) => $entry->slug() === 'home');
+    $home = EntryFacade::whereCollection('pages')->first(fn ($entry): bool => $entry->slug() === 'home');
     if (! $home) {
         /** @var Entry $newHome */
         $newHome = EntryFacade::make();
@@ -159,7 +162,7 @@ test('bedrock:clear removes demo content while preserving home entry', function 
     // 1) Entries: only home page should remain in pages; other collections should be empty
     $entries = EntryFacade::all();
     // Keep everything that is the home entry
-    $nonHome = $entries->reject(fn ($entry) => $entry->id() === $home->id());
+    $nonHome = $entries->reject(fn ($entry): bool => $entry->id() === $home->id());
     expect($nonHome->count())->toBe(0);
 
     // Home must have fields cleared

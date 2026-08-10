@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -180,5 +182,5 @@ return [
     |
     */
 
-    'locale' => env('STATAMIC_GIT_LOCALE', null),
+    'locale' => env('STATAMIC_GIT_LOCALE'),
 ];

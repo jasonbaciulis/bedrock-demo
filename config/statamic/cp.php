@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -133,17 +135,17 @@ return [
     'custom_cms_name' => env('STATAMIC_CUSTOM_CMS_NAME', 'Statamic'),
 
     'custom_logo_url' => [
-        'nav' => env('STATAMIC_CUSTOM_NAV_LOGO_URL', null),
-        'outside' => env('STATAMIC_CUSTOM_OUTSIDE_LOGO_URL', null),
+        'nav' => env('STATAMIC_CUSTOM_NAV_LOGO_URL'),
+        'outside' => env('STATAMIC_CUSTOM_OUTSIDE_LOGO_URL'),
     ],
 
-    'custom_dark_logo_url' => env('STATAMIC_CUSTOM_DARK_LOGO_URL', null),
+    'custom_dark_logo_url' => env('STATAMIC_CUSTOM_DARK_LOGO_URL'),
 
-    'custom_logo_text' => env('STATAMIC_CUSTOM_LOGO_TEXT', null),
+    'custom_logo_text' => env('STATAMIC_CUSTOM_LOGO_TEXT'),
 
-    'custom_favicon_url' => env('STATAMIC_CUSTOM_FAVICON_URL', null),
+    'custom_favicon_url' => env('STATAMIC_CUSTOM_FAVICON_URL'),
 
-    'custom_css_url' => env('STATAMIC_CUSTOM_CSS_URL', null),
+    'custom_css_url' => env('STATAMIC_CUSTOM_CSS_URL'),
 
     /*
     |--------------------------------------------------------------------------

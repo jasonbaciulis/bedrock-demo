@@ -5,27 +5,29 @@ namespace App\Console\Commands\Scaffold;
 use App\Console\Commands\Scaffold\Concerns\ManagesFieldsetFiles;
 use App\Console\Commands\Scaffold\Concerns\UpdatesEntryContent;
 use App\Support\Yaml\ArticleYaml;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Statamic\Facades\Config;
+use Throwable;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
-class RenameSet extends Command
-{
-    use ManagesFieldsetFiles, UpdatesEntryContent;
-
-    protected $signature = 'rename:bedrock-set
+#[Description('Rename a Statamic Article set')]
+#[Signature('rename:bedrock-set
         {group? : The group handle in Article}
         {current_name? : The current set handle to rename}
         {new_name? : The new set display name}
-        {--force : Overwrite existing files}';
-
-    protected $description = 'Rename a Statamic Article set';
+        {--force : Overwrite existing files}')]
+class RenameSet extends Command
+{
+    use ManagesFieldsetFiles;
+    use UpdatesEntryContent;
 
     public function __construct(
         private readonly Filesystem $files,
@@ -38,7 +40,7 @@ class RenameSet extends Command
     {
         // 1) Pick group first
         $groups = $this->article->groups();
-        if (empty($groups)) {
+        if ($groups === []) {
             $this->error('No groups found in article.yaml.');
 
             return self::FAILURE;
@@ -50,7 +52,7 @@ class RenameSet extends Command
 
         // 2) Then pick the set within the selected group
         $sets = $this->article->sets($currentGroup);
-        if (empty($sets)) {
+        if ($sets === []) {
             info("The '{$groups[$currentGroup]}' group has no sets.");
 
             return self::SUCCESS;
@@ -120,8 +122,8 @@ class RenameSet extends Command
                     "Updated {$updatedEntries} content {$this->entriesLabel($updatedEntries)}"
                 );
             }
-        } catch (\Throwable $e) {
-            $this->error($e->getMessage());
+        } catch (Throwable $throwable) {
+            $this->error($throwable->getMessage());
 
             return self::FAILURE;
         }

@@ -8,20 +8,20 @@ use Statamic\Facades\Config as StatamicConfig;
 use Statamic\Facades\Entry;
 use Statamic\Facades\YAML;
 
-beforeAll(function () {
+beforeAll(function (): void {
     // Always auto-confirm destructive prompts in tests.
     Prompt::fallbackWhen(true);
-    ConfirmPrompt::fallbackUsing(fn () => true);
+    ConfirmPrompt::fallbackUsing(fn (): true => true);
 });
 
-beforeEach(function () {
+beforeEach(function (): void {
     setUpBedrockScaffoldPaths();
 
     $this->blocksYamlPath = config('statamic.bedrock.scaffold.fieldsets_path').'/blocks.yaml';
     $this->articleYamlPath = config('statamic.bedrock.scaffold.fieldsets_path').'/article.yaml';
 });
 
-afterEach(function () {
+afterEach(function (): void {
     tearDownBedrockScaffoldPaths();
 
     // Entries live in the shared Statamic content tree; clean only this worker's.
@@ -54,7 +54,7 @@ function findFieldIndexByHandle(array $data, string $handle): int
     return -1;
 }
 
-test('make:bedrock-block creates files and updates blocks.yaml', function () {
+test('make:bedrock-block creates files and updates blocks.yaml', function (): void {
     $group = 'messaging';
     $name = 'Scaffold Test Block '.Str::random(6);
     $instructions = 'Test instructions';
@@ -87,7 +87,7 @@ test('make:bedrock-block creates files and updates blocks.yaml', function () {
     expect($config['fields'][0]['import'] ?? null)->toBe($fieldset);
 });
 
-test('make:bedrock-set creates files and updates article.yaml', function () {
+test('make:bedrock-set creates files and updates article.yaml', function (): void {
     $group = 'text_layout';
     $name = 'Scaffold Test Set '.Str::random(6);
     $instructions = 'Test instructions';
@@ -120,7 +120,7 @@ test('make:bedrock-set creates files and updates article.yaml', function () {
     expect($config['fields'][0]['import'] ?? null)->toBe($fieldset);
 });
 
-test('delete:bedrock-block removes from blocks.yaml and deletes files', function () {
+test('delete:bedrock-block removes from blocks.yaml and deletes files', function (): void {
     $group = 'messaging';
     $name = 'Scaffold Test Block '.Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -161,7 +161,7 @@ test('delete:bedrock-block removes from blocks.yaml and deletes files', function
     expect($updated)->not->toBeNull();
     $blocks = (array) $updated->data()->get('blocks');
     $hasBlock = collect($blocks)->contains(
-        fn ($i) => is_array($i) && ($i['type'] ?? null) === $fieldset
+        fn ($i): bool => is_array($i) && ($i['type'] ?? null) === $fieldset
     );
     expect($hasBlock)->toBeFalse();
 
@@ -178,7 +178,7 @@ test('delete:bedrock-block removes from blocks.yaml and deletes files', function
     expect($exists)->toBeFalse();
 });
 
-test('delete:bedrock-block with --keep-files removes blocks.yaml but keeps files', function () {
+test('delete:bedrock-block with --keep-files removes blocks.yaml but keeps files', function (): void {
     $group = 'messaging';
     $name = 'Scaffold Test Block '.Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -215,7 +215,7 @@ test('delete:bedrock-block with --keep-files removes blocks.yaml but keeps files
     expect($exists)->toBeFalse();
 });
 
-test('delete:bedrock-set removes from article.yaml and deletes files', function () {
+test('delete:bedrock-set removes from article.yaml and deletes files', function (): void {
     $group = 'text_layout';
     $name = 'Scaffold Test Set '.Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -265,7 +265,7 @@ test('delete:bedrock-set removes from article.yaml and deletes files', function 
     $updated = Entry::find($entryId);
     expect($updated)->not->toBeNull();
     $article = (array) $updated->data()->get('article');
-    $hasSet = collect($article)->contains(function ($node) use ($fieldset) {
+    $hasSet = collect($article)->contains(function ($node) use ($fieldset): bool {
         if (! is_array($node) || ($node['type'] ?? null) !== 'set') {
             return false;
         }
@@ -287,7 +287,7 @@ test('delete:bedrock-set removes from article.yaml and deletes files', function 
     expect($exists)->toBeFalse();
 });
 
-test('delete:bedrock-set with --keep-files removes from article.yaml but keeps files', function () {
+test('delete:bedrock-set with --keep-files removes from article.yaml but keeps files', function (): void {
     $group = 'text_layout';
     $name = 'Scaffold Test Set '.Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -324,7 +324,7 @@ test('delete:bedrock-set with --keep-files removes from article.yaml but keeps f
     expect($exists)->toBeFalse();
 });
 
-test('make:bedrock-block without --force fails when files already exist', function () {
+test('make:bedrock-block without --force fails when files already exist', function (): void {
     $group = 'messaging';
     $name = 'Scaffold Test Block '.Str::random(6);
     $locale = StatamicConfig::getShortLocale();
@@ -347,7 +347,7 @@ test('make:bedrock-block without --force fails when files already exist', functi
     ])->assertExitCode(Command::FAILURE);
 });
 
-test('make:bedrock-set without --force fails when files already exist', function () {
+test('make:bedrock-set without --force fails when files already exist', function (): void {
     $group = 'text_layout';
     $name = 'Scaffold Test Set '.Str::random(6);
     $locale = StatamicConfig::getShortLocale();

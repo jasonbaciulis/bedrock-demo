@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'scaffold' => [
         'fieldsets_path' => resource_path('fieldsets'),

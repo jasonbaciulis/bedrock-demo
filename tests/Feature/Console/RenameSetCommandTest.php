@@ -9,26 +9,21 @@ use Statamic\Facades\Config as StatamicConfig;
 use Statamic\Facades\Entry;
 use Statamic\Facades\YAML;
 
-beforeAll(function () {
+beforeAll(function (): void {
     // Always auto-confirm prompts in tests, except for optional group move.
     Prompt::fallbackWhen(true);
-    ConfirmPrompt::fallbackUsing(function ($prompt = null) {
+    ConfirmPrompt::fallbackUsing(function ($prompt = null): bool {
         $label = method_exists($prompt, 'label') ? (string) $prompt->label() : '';
-        // Say "no" to optional group move to avoid extra select prompts.
-        if (str_contains(strtolower($label), 'move this set to a different group')) {
-            return false;
-        }
 
-        // Default to yes for other confirmations (e.g. rename confirmation).
-        return true;
+        return ! Str::contains(strtolower($label), 'move this set to a different group');
     });
 });
 
-beforeEach(function () {
+beforeEach(function (): void {
     setUpBedrockScaffoldPaths();
 });
 
-afterEach(function () {
+afterEach(function (): void {
     tearDownBedrockScaffoldPaths();
 
     $worker = bedrockTestWorkerToken();
@@ -37,7 +32,7 @@ afterEach(function () {
     }
 });
 
-test('rename:bedrock-set renames files and updates article.yaml', function () {
+test('rename:bedrock-set renames files and updates article.yaml', function (): void {
     $group = 'text_layout';
     $originalName = 'Scaffold Test Set '.Str::random(6);
     $newName = 'Scaffold Renamed Set '.Str::random(6);
@@ -80,7 +75,7 @@ test('rename:bedrock-set renames files and updates article.yaml', function () {
     expect(is_file($newViewPath))->toBeTrue();
 
     // Verify article.yaml is updated using ArticleYaml class
-    $article = app(ArticleYaml::class);
+    $article = resolve(ArticleYaml::class);
     $sets = $article->sets($group);
 
     expect(isset($sets[$originalFieldset]))->toBeFalse();
@@ -92,7 +87,7 @@ test('rename:bedrock-set renames files and updates article.yaml', function () {
     expect($data['title'] ?? null)->toBe($newName);
 });
 
-test('rename:bedrock-set updates content entries', function () {
+test('rename:bedrock-set updates content entries', function (): void {
     $group = 'text_layout';
     $originalName = 'Scaffold Test Set '.Str::random(6);
     $newName = 'Scaffold Renamed Set '.Str::random(6);
@@ -145,14 +140,14 @@ test('rename:bedrock-set updates content entries', function () {
     expect($updated)->not->toBeNull();
 
     $article = (array) $updated->data()->get('article');
-    $hasOldSet = collect($article)->contains(function ($node) use ($originalFieldset) {
+    $hasOldSet = collect($article)->contains(function ($node) use ($originalFieldset): bool {
         if (! is_array($node) || ($node['type'] ?? null) !== 'set') {
             return false;
         }
 
         return ($node['attrs']['values']['type'] ?? null) === $originalFieldset;
     });
-    $hasNewSet = collect($article)->contains(function ($node) use ($newFieldset) {
+    $hasNewSet = collect($article)->contains(function ($node) use ($newFieldset): bool {
         if (! is_array($node) || ($node['type'] ?? null) !== 'set') {
             return false;
         }
@@ -164,7 +159,7 @@ test('rename:bedrock-set updates content entries', function () {
     expect($hasNewSet)->toBeTrue();
 });
 
-test('rename:bedrock-set fails when target files exist without --force', function () {
+test('rename:bedrock-set fails when target files exist without --force', function (): void {
     $group = 'text_layout';
     $originalName = 'Scaffold Test Set '.Str::random(6);
     $newName = 'Scaffold Renamed Set '.Str::random(6);
@@ -197,7 +192,7 @@ test('rename:bedrock-set fails when target files exist without --force', functio
     ])->assertExitCode(Command::FAILURE);
 });
 
-test('rename:bedrock-set fails when source set does not exist', function () {
+test('rename:bedrock-set fails when source set does not exist', function (): void {
     $this->artisan('rename:bedrock-set', [
         'group' => 'text_layout',
         'current_name' => 'nonexistent_set',

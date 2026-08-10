@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
@@ -16,18 +18,16 @@ use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\warning;
 
+#[Description('Remove the built-in SEO implementation so an SEO addon (e.g. seo-pro) can be installed on a blank slate.')]
+#[Signature('bedrock:remove-seo {--force : Run without confirmation}')]
 class RemoveSeo extends Command
 {
-    protected $signature = 'bedrock:remove-seo {--force : Run without confirmation}';
-
-    protected $description = 'Remove the built-in SEO implementation so an SEO addon (e.g. seo-pro) can be installed on a blank slate.';
-
     /**
      * The SEO fieldsets imported into collection blueprints.
      *
      * @var list<string>
      */
-    private const SEO_FIELDSETS = [
+    private const array SEO_FIELDSETS = [
         'seo_basic',
         'seo_advanced',
         'seo_open_graph',
@@ -96,7 +96,7 @@ class RemoveSeo extends Command
      */
     private function stripSeoFieldsFromEntries(array $handles): void
     {
-        if (empty($handles)) {
+        if ($handles === []) {
             return;
         }
 
@@ -235,7 +235,7 @@ class RemoveSeo extends Command
      */
     private function basePath(): string
     {
-        return config('statamic.bedrock.seo_removal.base_path') ?? base_path();
+        return config('statamic.bedrock.seo_removal.base_path', base_path());
     }
 
     private function resourcePath(string $relative): string

@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Asset;
@@ -14,18 +16,10 @@ use Statamic\Facades\Term;
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 
+#[Description('Clear demo content (entries, nav items, taxonomy terms, globals, assets) while preserving the home page and logos.')]
+#[Signature('bedrock:clear {--force : Run without confirmation}')]
 class ClearDemoContent extends Command
 {
-    /**
-     * The name and signature of the console command.
-     */
-    protected $signature = 'bedrock:clear {--force : Run without confirmation}';
-
-    /**
-     * The console command description.
-     */
-    protected $description = 'Clear demo content (entries, nav items, taxonomy terms, globals, assets) while preserving the home page and logos.';
-
     public function handle(): int
     {
         if (! $this->option('force')) {
@@ -47,6 +41,7 @@ class ClearDemoContent extends Command
         if ($home) {
             $this->cleanHomeEntryFields($home);
         }
+
         $this->clearAllNavigationTrees();
         $this->deleteAllCategoryTerms();
         $this->deleteSelectedGlobalVariables([
@@ -66,14 +61,14 @@ class ClearDemoContent extends Command
     private function findHomeEntry(): ?Entry
     {
         return EntryFacade::whereCollection('pages')
-            ->filter(fn ($entry) => $entry->slug() === 'home')
+            ->filter(fn ($entry): bool => $entry->slug() === 'home')
             ->first();
     }
 
     private function deleteEntries(?string $homeId): void
     {
         EntryFacade::all()
-            ->reject(fn ($entry) => $entry->id() === $homeId) // Keep the home page
+            ->reject(fn ($entry): bool => $entry->id() === $homeId) // Keep the home page
             ->each(fn ($entry) => $entry->delete());
 
         info('Deleted all entries except home page.');
@@ -129,7 +124,7 @@ class ClearDemoContent extends Command
     private function deleteAssets(): void
     {
         Asset::whereContainer('assets')
-            ->reject(fn ($asset) => $asset->folder() === 'logos')
+            ->reject(fn ($asset): bool => $asset->folder() === 'logos')
             ->each(fn ($asset) => $asset->delete());
 
         info('Deleted demo assets (preserved logos).');

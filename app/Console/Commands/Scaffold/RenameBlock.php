@@ -5,27 +5,29 @@ namespace App\Console\Commands\Scaffold;
 use App\Console\Commands\Scaffold\Concerns\ManagesFieldsetFiles;
 use App\Console\Commands\Scaffold\Concerns\UpdatesEntryContent;
 use App\Support\Yaml\BlocksYaml;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Statamic\Facades\Config;
+use Throwable;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
-class RenameBlock extends Command
-{
-    use ManagesFieldsetFiles, UpdatesEntryContent;
-
-    protected $signature = 'rename:bedrock-block
+#[Description('Rename a Statamic page builder block')]
+#[Signature('rename:bedrock-block
         {group? : The group handle (e.g. hero)}
         {current_name? : The current block handle to rename}
         {new_name? : The new block display name}
-        {--force : Overwrite existing files}';
-
-    protected $description = 'Rename a Statamic page builder block';
+        {--force : Overwrite existing files}')]
+class RenameBlock extends Command
+{
+    use ManagesFieldsetFiles;
+    use UpdatesEntryContent;
 
     public function __construct(
         private readonly Filesystem $files,
@@ -38,7 +40,7 @@ class RenameBlock extends Command
     {
         // 1) Pick group first
         $groups = $this->blocks->groups();
-        if (empty($groups)) {
+        if ($groups === []) {
             $this->error('No groups found in blocks.yaml.');
 
             return self::FAILURE;
@@ -50,7 +52,7 @@ class RenameBlock extends Command
 
         // 2) Then pick the block within the selected group
         $sets = $this->blocks->sets($currentGroup);
-        if (empty($sets)) {
+        if ($sets === []) {
             info("The '{$groups[$currentGroup]}' group has no blocks.");
 
             return self::SUCCESS;
@@ -121,8 +123,8 @@ class RenameBlock extends Command
                     "Updated {$updatedEntries} content {$this->entriesLabel($updatedEntries)}"
                 );
             }
-        } catch (\Throwable $e) {
-            $this->error($e->getMessage());
+        } catch (Throwable $throwable) {
+            $this->error($throwable->getMessage());
 
             return self::FAILURE;
         }

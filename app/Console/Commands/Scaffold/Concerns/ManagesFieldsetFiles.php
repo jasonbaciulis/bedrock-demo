@@ -2,6 +2,9 @@
 
 namespace App\Console\Commands\Scaffold\Concerns;
 
+use Illuminate\Support\Str;
+use InvalidArgumentException;
+use RuntimeException;
 use Statamic\Facades\YAML;
 
 trait ManagesFieldsetFiles
@@ -16,7 +19,7 @@ trait ManagesFieldsetFiles
      * @param  bool  $force  Allow overwriting existing files
      * @param  string  $viewDir  Subdirectory under resources/views (e.g. 'blocks' or 'sets')
      *
-     * @throws \RuntimeException When a file exists and $force is false
+     * @throws RuntimeException When a file exists and $force is false
      */
     protected function assertFilesWritable(
         string $fieldset,
@@ -28,9 +31,7 @@ trait ManagesFieldsetFiles
         $viewPath = $this->viewPathFor($view, $viewDir);
 
         foreach ([$fieldsetPath, $viewPath] as $path) {
-            if ($this->files->exists($path) && ! $force) {
-                throw new \RuntimeException("File exists: {$path} (use --force to overwrite)");
-            }
+            throw_if($this->files->exists($path) && ! $force, RuntimeException::class, "File exists: {$path} (use --force to overwrite)");
         }
     }
 
@@ -41,12 +42,12 @@ trait ManagesFieldsetFiles
      * @param  bool  $force  Ignore missing files when deleting
      * @param  string  $viewDir  Subdirectory under resources/views (e.g. 'blocks' or 'sets')
      *
-     * @throws \RuntimeException When files are missing and $force is false
+     * @throws RuntimeException When files are missing and $force is false
      */
     protected function deleteFilesFor(string $fieldset, bool $force, string $viewDir): void
     {
         $fieldsetPath = $this->fieldsetPathFor($fieldset);
-        $view = str_replace('_', '-', $fieldset);
+        $view = Str::replace('_', '-', $fieldset);
         $viewPath = $this->viewPathFor($view, $viewDir);
 
         $missing = [];
@@ -65,7 +66,7 @@ trait ManagesFieldsetFiles
 
         if ($missing && ! $force) {
             $list = implode("\n - ", $missing);
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 "Some files were not found to delete:\n - {$list}\n(Use --force to ignore.)"
             );
         }
@@ -97,6 +98,7 @@ trait ManagesFieldsetFiles
             if ($this->files->exists($newFieldsetPath)) {
                 $this->files->delete($newFieldsetPath);
             }
+
             $this->files->move($oldFieldsetPath, $newFieldsetPath);
         } else {
             $this->info("Note: Fieldset file not found at {$oldFieldsetPath}");
@@ -110,6 +112,7 @@ trait ManagesFieldsetFiles
             if ($this->files->exists($newViewPath)) {
                 $this->files->delete($newViewPath);
             }
+
             $this->files->move($oldViewPath, $newViewPath);
         } else {
             $this->info("Note: View file not found at {$oldViewPath}");
@@ -141,7 +144,7 @@ trait ManagesFieldsetFiles
         $base = match ($viewDir) {
             'blocks' => config('statamic.bedrock.scaffold.blocks_views_path'),
             'sets' => config('statamic.bedrock.scaffold.sets_views_path'),
-            default => throw new \InvalidArgumentException("Unknown view dir: {$viewDir}"),
+            default => throw new InvalidArgumentException("Unknown view dir: {$viewDir}"),
         };
 
         return "{$base}/{$view}.antlers.html";

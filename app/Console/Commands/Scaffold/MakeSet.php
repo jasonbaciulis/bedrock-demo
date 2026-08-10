@@ -4,26 +4,27 @@ namespace App\Console\Commands\Scaffold;
 
 use App\Console\Commands\Scaffold\Concerns\ManagesFieldsetFiles;
 use App\Support\Yaml\ArticleYaml;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Statamic\Facades\Config;
+use Throwable;
 
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
-class MakeSet extends Command
-{
-    use ManagesFieldsetFiles;
-
-    protected $signature = 'make:bedrock-set
+#[Description('Create a new Statamic Article set.')]
+#[Signature('make:bedrock-set
         {group? : Group handle in Article}
         {name?  : Set display name}
         {--instructions= : Editor instructions}
-        {--force : Overwrite existing files}';
-
-    protected $description = 'Create a new Statamic Article set.';
+        {--force : Overwrite existing files}')]
+class MakeSet extends Command
+{
+    use ManagesFieldsetFiles;
 
     public function __construct(
         private readonly Filesystem $files,
@@ -47,8 +48,8 @@ class MakeSet extends Command
             $this->argument('name') ?:
             text(
                 label: 'What should be the name for this set?',
-                required: true,
-                placeholder: 'e.g. Gallery'
+                placeholder: 'e.g. Gallery',
+                required: true
             );
 
         $instructions =
@@ -67,8 +68,8 @@ class MakeSet extends Command
             $this->createFieldset($fieldset, $name);
             $this->createPartial($view, $name);
             $this->updateArticleFieldset($group, $fieldset, $name, $instructions);
-        } catch (\Throwable $e) {
-            $this->error($e->getMessage());
+        } catch (Throwable $throwable) {
+            $this->error($throwable->getMessage());
 
             return self::FAILURE;
         }

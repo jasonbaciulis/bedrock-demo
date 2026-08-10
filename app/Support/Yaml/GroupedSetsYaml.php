@@ -3,6 +3,7 @@
 namespace App\Support\Yaml;
 
 use Illuminate\Filesystem\Filesystem;
+use RuntimeException;
 use Statamic\Facades\YAML;
 use Statamic\Support\Arr;
 use Stringy\StaticStringy as Stringy;
@@ -29,7 +30,7 @@ class GroupedSetsYaml
         $root = $this->groupsRoot($data);
 
         if (! array_key_exists($groupHandle, $root)) {
-            throw new \RuntimeException("Group '{$groupHandle}' not found in {$this->path}.");
+            throw new RuntimeException("Group '{$groupHandle}' not found in {$this->path}.");
         }
 
         return $this->labelsFromConfig(Arr::get($root[$groupHandle], 'sets', []));
@@ -40,13 +41,11 @@ class GroupedSetsYaml
         $data = $this->read();
         $root = $this->groupsRoot($data);
 
-        if (! isset($root[$groupHandle])) {
-            throw new \RuntimeException("Group '{$groupHandle}' not found.");
-        }
+        throw_unless(isset($root[$groupHandle]), RuntimeException::class, "Group '{$groupHandle}' not found.");
 
         $sets = collect(Arr::get($root[$groupHandle], 'sets', []))
             ->put($setHandle, $set)
-            ->pipe(fn ($collection) => $this->sortKeysNaturally($collection->all()));
+            ->pipe(fn ($collection): array => $this->sortKeysNaturally($collection->all()));
 
         $data = $this->updateGroupSets($data, $groupHandle, $sets);
 
@@ -58,13 +57,11 @@ class GroupedSetsYaml
         $data = $this->read();
         $root = $this->groupsRoot($data);
 
-        if (! isset($root[$groupHandle]['sets'][$setHandle])) {
-            throw new \RuntimeException("Set '{$setHandle}' not found in group '{$groupHandle}'.");
-        }
+        throw_unless(isset($root[$groupHandle]['sets'][$setHandle]), RuntimeException::class, "Set '{$setHandle}' not found in group '{$groupHandle}'.");
 
         $sets = collect($root[$groupHandle]['sets'] ?? [])
             ->except($setHandle)
-            ->pipe(fn ($collection) => $this->sortKeysNaturally($collection->all()));
+            ->pipe(fn ($collection): array => $this->sortKeysNaturally($collection->all()));
 
         $data = $this->updateGroupSets($data, $groupHandle, $sets);
 
@@ -101,7 +98,7 @@ class GroupedSetsYaml
     private function groupFieldIndexOrFail(array $data): int
     {
         if (! isset($data['fields']) || ! is_array($data['fields'])) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 "Invalid YAML structure in {$this->path}: missing 'fields'."
             );
         }
@@ -112,7 +109,7 @@ class GroupedSetsYaml
             }
         }
 
-        throw new \RuntimeException(
+        throw new RuntimeException(
             "Field handle '{$this->fieldHandle}' not found in {$this->path}."
         );
     }
@@ -128,7 +125,7 @@ class GroupedSetsYaml
     {
         return collect($items)
             ->mapWithKeys(
-                fn (array $config, string $handle) => [
+                fn (array $config, string $handle): array => [
                     $handle => (string) ($config['display'] ?? Stringy::humanize($handle)),
                 ]
             )
@@ -138,7 +135,7 @@ class GroupedSetsYaml
     private function read(): array
     {
         if (! $this->files->exists($this->path)) {
-            throw new \RuntimeException("Missing fieldset file: {$this->path}");
+            throw new RuntimeException("Missing fieldset file: {$this->path}");
         }
 
         return YAML::file($this->path)->parse();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Statamic\StaticCaching\Replacers\CsrfTokenReplacer;
 use Statamic\StaticCaching\Replacers\NoCacheReplacer;
 
@@ -14,7 +16,7 @@ return [
     |
     */
 
-    'strategy' => env('STATAMIC_STATIC_CACHING_STRATEGY', null),
+    'strategy' => env('STATAMIC_STATIC_CACHING_STRATEGY'),
 
     /*
     |--------------------------------------------------------------------------

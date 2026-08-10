@@ -5,26 +5,28 @@ namespace App\Console\Commands\Scaffold;
 use App\Console\Commands\Scaffold\Concerns\ManagesFieldsetFiles;
 use App\Console\Commands\Scaffold\Concerns\UpdatesEntryContent;
 use App\Support\Yaml\ArticleYaml;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Statamic\Facades\Entry;
+use Throwable;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\warning;
 
-class DeleteSet extends Command
-{
-    use ManagesFieldsetFiles, UpdatesEntryContent;
-
-    protected $signature = 'delete:bedrock-set
+#[Description('Delete a Statamic Article set.')]
+#[Signature('delete:bedrock-set
         {group? : Group handle in Article}
         {set?   : Set (fieldset) handle to delete}
         {--keep-files : Only remove from article.yaml; keep fieldset/view files}
-        {--force : Ignore missing files when deleting}';
-
-    protected $description = 'Delete a Statamic Article set.';
+        {--force : Ignore missing files when deleting}')]
+class DeleteSet extends Command
+{
+    use ManagesFieldsetFiles;
+    use UpdatesEntryContent;
 
     public function __construct(
         private readonly Filesystem $files,
@@ -36,7 +38,7 @@ class DeleteSet extends Command
     public function handle(): int
     {
         $groups = $this->article->groups();
-        if (empty($groups)) {
+        if ($groups === []) {
             warning('No groups found in article.yaml.');
 
             return self::FAILURE;
@@ -51,7 +53,7 @@ class DeleteSet extends Command
             );
 
         $sets = $this->article->sets($group);
-        if (empty($sets)) {
+        if ($sets === []) {
             info("The '{$groups[$group]}' group has no sets.");
 
             return self::SUCCESS;
@@ -75,10 +77,10 @@ class DeleteSet extends Command
         if (
             ! confirm(
                 label: "Delete '{$setLabel}' from '{$groups[$group]}' group?",
+                default: false,
                 hint: (bool) $this->option('keep-files')
                     ? 'Only remove from article.yaml (files will be kept).'
-                    : 'This will also delete the fieldset and set view file.',
-                default: false
+                    : 'This will also delete the fieldset and set view file.'
             )
         ) {
             info('Aborted.');
@@ -103,8 +105,8 @@ class DeleteSet extends Command
                 $removedLabel = $this->entriesLabel($removedCount);
                 info("Removed from {$removedCount} {$removedLabel}.");
             }
-        } catch (\Throwable $e) {
-            $this->error($e->getMessage());
+        } catch (Throwable $throwable) {
+            $this->error($throwable->getMessage());
 
             return self::FAILURE;
         }

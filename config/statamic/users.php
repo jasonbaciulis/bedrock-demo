@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -164,7 +166,7 @@ return [
 
     'impersonate' => [
         'enabled' => env('STATAMIC_IMPERSONATE_ENABLED', true),
-        'redirect' => env('STATAMIC_IMPERSONATE_REDIRECT', null),
+        'redirect' => env('STATAMIC_IMPERSONATE_REDIRECT'),
     ],
 
     /*

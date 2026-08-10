@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Statamic\Forms\Exporters\CsvExporter;
 use Statamic\Forms\Exporters\JsonExporter;
 use Statamic\Forms\SendEmail;

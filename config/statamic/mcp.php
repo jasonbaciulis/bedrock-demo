@@ -123,7 +123,7 @@ return [
     |
     */
     'confirmation' => [
-        'enabled' => env('STATAMIC_MCP_CONFIRMATION_ENABLED', null),
+        'enabled' => env('STATAMIC_MCP_CONFIRMATION_ENABLED'),
         'ttl' => (int) env('STATAMIC_MCP_CONFIRMATION_TTL', 300),
 
         /*
