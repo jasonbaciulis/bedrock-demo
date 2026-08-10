@@ -60,11 +60,13 @@ class StarterKitPostInstall
                 'bun run test:lint',
             ],
             'test:types' => 'phpstan',
-            'test:unit' => 'pest --parallel',
+            'test:unit' => 'pest --parallel --exclude-testsuite=Browser',
+            'test:browser' => 'pest --testsuite=Browser',
             'test' => [
                 '@test:lint',
                 '@test:types',
                 '@test:unit',
+                '@test:browser',
             ],
         ];
     }
