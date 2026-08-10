@@ -42,6 +42,7 @@ dependencies_dev:
   - pestphp/pest
   - pestphp/pest-plugin-laravel
   - pestphp/pest-plugin-rector
+  - pestphp/pest-plugin-phpstan
   - phpstan/phpstan
   - rector/rector
   - driftingly/rector-laravel
