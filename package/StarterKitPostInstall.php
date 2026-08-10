@@ -50,11 +50,13 @@ class StarterKitPostInstall
                 'bunx npm-check-updates -u',
             ],
             'lint' => [
+                'rector',
                 'pint --parallel',
                 'bun run lint',
             ],
             'test:lint' => [
                 'pint --parallel --test',
+                'rector --dry-run',
                 'bun run test:lint',
             ],
             'test:types' => 'phpstan',

@@ -25,6 +25,7 @@ export_paths:
   - .gitignore
   - package.json
   - phpstan.neon
+  - rector.php
   - prettier.config.js
   - eslint.config.mjs
   - CLAUDE.md
@@ -44,3 +45,5 @@ dependencies_dev:
   - pestphp/pest
   - pestphp/pest-plugin-laravel
   - phpstan/phpstan
+  - rector/rector
+  - driftingly/rector-laravel

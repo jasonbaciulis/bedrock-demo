@@ -5,6 +5,8 @@ includes:
 parameters:
     level: 5
 
+    tmpDir: /tmp/phpstan
+
     paths:
         - app
         - config

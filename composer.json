@@ -10,28 +10,30 @@
   ],
   "require": {
     "php": "^8.4",
-    "blade-ui-kit/blade-icons": "^1.8",
-    "laravel/framework": "^13.0",
-    "laravel/tinker": "^3.0",
-    "mallardduck/blade-lucide-icons": "^1.23",
-    "statamic/cms": "^6.0",
-    "statamic/ssg": "^4.0"
+    "blade-ui-kit/blade-icons": "^1.10",
+    "laravel/framework": "^13.24",
+    "laravel/tinker": "^3.0.2",
+    "mallardduck/blade-lucide-icons": "^1.26.20",
+    "statamic/cms": "^6.20",
+    "statamic/ssg": "^4.1"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "dev-master",
     "cboxdk/statamic-mcp": "^2.5",
-    "fakerphp/faker": "^1.23",
-    "larastan/larastan": "^3.9",
-    "laravel/boost": "^2.0",
-    "laravel/pail": "^1.2",
-    "laravel/pint": "^1.13",
-    "laravel/sail": "^1.26",
-    "mockery/mockery": "^1.6",
-    "nunomaduro/collision": "^8.1",
-    "pestphp/pest": "^4.0",
-    "pestphp/pest-plugin-laravel": "^4.0",
-    "phpstan/phpstan": "^2.1",
-    "phpunit/phpunit": "^12.5"
+    "driftingly/rector-laravel": "^2.5",
+    "fakerphp/faker": "^1.24.1",
+    "larastan/larastan": "^3.9.6",
+    "laravel/boost": "^2.4.8",
+    "laravel/pail": "^1.2.7",
+    "laravel/pint": "^1.29.1",
+    "laravel/sail": "^1.61",
+    "mockery/mockery": "^1.6.12",
+    "nunomaduro/collision": "^8.9.4",
+    "pestphp/pest": "^4.7",
+    "pestphp/pest-plugin-laravel": "^4.1",
+    "phpstan/phpstan": "^2.2.8",
+    "phpunit/phpunit": "^12.5.24",
+    "rector/rector": "^2.6"
   },
   "autoload": {
     "psr-4": {
@@ -83,11 +85,13 @@
       "bunx concurrently -c \"#c4b5fd,#fb7185,#fdba74\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"bun run dev\" --names=queue,logs,vite"
     ],
     "lint": [
+      "rector",
       "pint --parallel",
       "bun run lint"
     ],
     "test:lint": [
       "pint --parallel --test",
+      "rector --dry-run",
       "bun run test:lint"
     ],
     "test:types": "phpstan",

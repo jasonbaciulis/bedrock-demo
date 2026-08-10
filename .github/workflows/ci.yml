@@ -54,6 +54,23 @@ jobs:
       - name: Build frontend assets
         run: bun run build
 
+      - name: Create cache directories
+        run: mkdir -p /tmp/rector /tmp/phpstan
+
+      - name: Cache Rector
+        uses: actions/cache@v6
+        with:
+          path: /tmp/rector
+          key: ${{ runner.os }}-rector-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-rector-
+
+      - name: Cache PHPStan
+        uses: actions/cache@v6
+        with:
+          path: /tmp/phpstan
+          key: ${{ runner.os }}-phpstan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-phpstan-
+
       - name: Run linters
         run: composer test:lint
 
