@@ -34,9 +34,6 @@ export_paths:
   - .github/workflows/ci.yml
   - vite.config.js
   - tests
-dependencies:
-  - blade-ui-kit/blade-icons
-  - mallardduck/blade-lucide-icons
 dependencies_dev:
   - cboxdk/statamic-mcp
   - larastan/larastan

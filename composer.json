@@ -10,10 +10,8 @@
   ],
   "require": {
     "php": "^8.4",
-    "blade-ui-kit/blade-icons": "^1.10",
     "laravel/framework": "^13.24",
     "laravel/tinker": "^3.0.2",
-    "mallardduck/blade-lucide-icons": "^1.26.20",
     "statamic/cms": "^6.20",
     "statamic/ssg": "^4.1"
   },
@@ -33,7 +31,7 @@
     "pestphp/pest-plugin-laravel": "^4.1",
     "phpstan/phpstan": "^2.2.8",
     "phpunit/phpunit": "^12.5.24",
-    "rector/rector": "^2.6"
+    "rector/rector": "^2.6.1"
   },
   "autoload": {
     "psr-4": {
