@@ -24,8 +24,7 @@ beforeEach(function (): void {
 afterEach(function (): void {
     tearDownBedrockScaffoldPaths();
 
-    $worker = bedrockTestWorkerToken();
-    foreach (glob(base_path("content/collections/pages/test-page-w{$worker}-*.md")) ?: [] as $file) {
+    foreach (glob(base_path('content/collections/pages/test-page-*.md')) ?: [] as $file) {
         @unlink($file);
     }
 });

@@ -24,11 +24,10 @@ beforeEach(function (): void {
 afterEach(function (): void {
     tearDownBedrockScaffoldPaths();
 
-    // Entries live in the shared Statamic content tree; clean only this worker's.
-    $worker = bedrockTestWorkerToken();
+    // Entries live in the shared Statamic content tree; clean up the test ones.
     $globPaths = [
-        base_path("content/collections/pages/test-page-w{$worker}-*.md"),
-        base_path("content/collections/posts/test-post-w{$worker}-*.md"),
+        base_path('content/collections/pages/test-page-*.md'),
+        base_path('content/collections/posts/test-post-*.md'),
     ];
 
     foreach ($globPaths as $pattern) {

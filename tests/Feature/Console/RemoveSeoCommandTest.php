@@ -19,11 +19,10 @@ beforeEach(function (): void {
     $this->base = bedrockSeoScratchBase();
     $this->fieldsetsPath = config('statamic.bedrock.scaffold.fieldsets_path');
 
-    // Worker-unique handles so entry stripping only touches the seeded entry,
-    // never real demo content (keeps the suite parallel-safe).
-    $token = bedrockTestWorkerToken();
-    $this->seoTitleHandle = "seo_title_{$token}";
-    $this->ogImageHandle = "og_image_{$token}";
+    // Test-only handles so entry stripping only touches the seeded entry,
+    // never real demo content.
+    $this->seoTitleHandle = 'seo_title_test';
+    $this->ogImageHandle = 'og_image_test';
 
     writeSeoFieldset($this->fieldsetsPath, 'seo_basic', [$this->seoTitleHandle]);
     writeSeoFieldset($this->fieldsetsPath, 'seo_open_graph', [$this->ogImageHandle]);
@@ -46,11 +45,65 @@ beforeEach(function (): void {
 afterEach(function (): void {
     File::deleteDirectory(bedrockTestScratchPath());
 
-    $worker = bedrockTestWorkerToken();
-    foreach (glob(base_path("content/collections/pages/test-page-w{$worker}-*.md")) ?: [] as $file) {
+    foreach (glob(base_path('content/collections/pages/test-page-*.md')) ?: [] as $file) {
         @unlink($file);
     }
 });
+
+/**
+ * Scratch root the bedrock:remove-seo command is pointed at so it mutates an
+ * isolated copy of the kit files instead of the real repo.
+ */
+function bedrockSeoScratchBase(): string
+{
+    return bedrockTestScratchPath().'/seo-root';
+}
+
+/**
+ * Copy the files bedrock:remove-seo edits/deletes into the scratch root and
+ * rebind config so the command operates there. The SEO fieldsets are seeded
+ * separately in beforeEach with test-only handles.
+ */
+function setUpSeoRemovalScratch(): void
+{
+    $base = bedrockSeoScratchBase();
+
+    $files = [
+        'resources/blueprints/globals/seo.yaml',
+        'resources/blueprints/collections/pages/page.yaml',
+        'resources/blueprints/collections/posts/post.yaml',
+        'resources/views/layout.antlers.html',
+        'resources/views/partials/seo.antlers.html',
+        'resources/views/partials/fallback-description.antlers.html',
+        'resources/views/partials/cookie-dialog.antlers.html',
+        'resources/views/partials/nav-bottom-footer.antlers.html',
+        'resources/views/partials/social-sharing.antlers.html',
+        'resources/js/components/cookieDialog.js',
+        'content/seo.yaml',
+        'content/globals/seo.yaml',
+        'content/globals/default/seo.yaml',
+        'vite.config.js',
+    ];
+
+    foreach ($files as $relative) {
+        $source = base_path($relative);
+
+        if (! is_file($source)) {
+            continue;
+        }
+
+        $destination = "{$base}/{$relative}";
+        File::ensureDirectoryExists(dirname($destination));
+        File::copy($source, $destination);
+    }
+
+    File::ensureDirectoryExists("{$base}/resources/fieldsets");
+
+    config([
+        'statamic.bedrock.seo_removal.base_path' => $base,
+        'statamic.bedrock.scaffold.fieldsets_path' => "{$base}/resources/fieldsets",
+    ]);
+}
 
 function writeSeoFieldset(string $dir, string $handle, array $fieldHandles): void
 {

@@ -96,7 +96,10 @@
       "bun run test:lint"
     ],
     "test:types": "phpstan",
-    "test:unit": "pest --parallel --exclude-testsuite=Browser",
+    "test:unit": [
+      "pest --parallel --exclude-testsuite=Browser --exclude-group=console",
+      "pest --group=console"
+    ],
     "test:browser": "pest --testsuite=Browser",
     "test": [
       "@test:lint",
