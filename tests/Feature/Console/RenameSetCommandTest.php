@@ -57,8 +57,8 @@ test('rename:bedrock-set renames files and updates article.yaml', function (): v
     $newViewPath = config('statamic.bedrock.scaffold.sets_views_path')."/{$newView}.antlers.html";
 
     // Verify original files exist
-    expect(is_file($originalFieldsetPath))->toBeTrue();
-    expect(is_file($originalViewPath))->toBeTrue();
+    expect($originalFieldsetPath)->toBeFile();
+    expect($originalViewPath)->toBeFile();
 
     // Now rename the set
     $this->artisan('rename:bedrock-set', [
@@ -69,18 +69,18 @@ test('rename:bedrock-set renames files and updates article.yaml', function (): v
     ])->assertExitCode(Command::SUCCESS);
 
     // Verify old files are gone and new files exist
-    expect(is_file($originalFieldsetPath))->toBeFalse();
-    expect(is_file($originalViewPath))->toBeFalse();
-    expect(is_file($newFieldsetPath))->toBeTrue();
-    expect(is_file($newViewPath))->toBeTrue();
+    expect($originalFieldsetPath)->not->toBeFile();
+    expect($originalViewPath)->not->toBeFile()
+        ->and($newFieldsetPath)->toBeFile()
+        ->and($newViewPath)->toBeFile();
 
     // Verify article.yaml is updated using ArticleYaml class
     $article = resolve(ArticleYaml::class);
     $sets = $article->sets($group);
 
-    expect(isset($sets[$originalFieldset]))->toBeFalse();
-    expect(isset($sets[$newFieldset]))->toBeTrue();
-    expect($sets[$newFieldset])->toBe($newName);
+    expect(isset($sets[$originalFieldset]))->toBeFalse()
+        ->and(isset($sets[$newFieldset]))->toBeTrue()
+        ->and($sets[$newFieldset])->toBe($newName);
 
     // Fieldset title should be updated
     $data = YAML::file($newFieldsetPath)->parse() ?? [];
@@ -155,8 +155,8 @@ test('rename:bedrock-set updates content entries', function (): void {
         return ($node['attrs']['values']['type'] ?? null) === $newFieldset;
     });
 
-    expect($hasOldSet)->toBeFalse();
-    expect($hasNewSet)->toBeTrue();
+    expect($hasOldSet)->toBeFalse()
+        ->and($hasNewSet)->toBeTrue();
 });
 
 test('rename:bedrock-set fails when target files exist without --force', function (): void {

@@ -73,18 +73,18 @@ test('make:bedrock-block creates files and updates blocks.yaml', function (): vo
     $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$view}.antlers.html";
 
-    expect(is_file($fieldsetPath))->toBeTrue();
-    expect(is_file($viewPath))->toBeTrue();
+    expect($fieldsetPath)->toBeFile()
+        ->and($viewPath)->toBeFile();
 
     $data = parseYaml($this->blocksYamlPath);
     $idx = findFieldIndexByHandle($data, 'blocks');
     expect($idx)->toBeGreaterThan(-1);
 
     $config = $data['fields'][$idx]['field']['sets'][$group]['sets'][$fieldset] ?? null;
-    expect($config)->not->toBeNull();
-    expect($config['display'] ?? null)->toBe($name);
-    expect($config['instructions'] ?? null)->toBe($instructions);
-    expect($config['fields'][0]['import'] ?? null)->toBe($fieldset);
+    expect($config)->not->toBeNull()
+        ->and($config['display'] ?? null)->toBe($name)
+        ->and($config['instructions'] ?? null)->toBe($instructions)
+        ->and($config['fields'][0]['import'] ?? null)->toBe($fieldset);
 });
 
 test('make:bedrock-set creates files and updates article.yaml', function (): void {
@@ -106,18 +106,18 @@ test('make:bedrock-set creates files and updates article.yaml', function (): voi
     $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.sets_views_path')."/{$view}.antlers.html";
 
-    expect(is_file($fieldsetPath))->toBeTrue();
-    expect(is_file($viewPath))->toBeTrue();
+    expect($fieldsetPath)->toBeFile()
+        ->and($viewPath)->toBeFile();
 
     $data = parseYaml($this->articleYamlPath);
     $idx = findFieldIndexByHandle($data, 'article');
     expect($idx)->toBeGreaterThan(-1);
 
     $config = $data['fields'][$idx]['field']['sets'][$group]['sets'][$fieldset] ?? null;
-    expect($config)->not->toBeNull();
-    expect($config['display'] ?? null)->toBe($name);
-    expect($config['instructions'] ?? null)->toBe($instructions);
-    expect($config['fields'][0]['import'] ?? null)->toBe($fieldset);
+    expect($config)->not->toBeNull()
+        ->and($config['display'] ?? null)->toBe($name)
+        ->and($config['instructions'] ?? null)->toBe($instructions)
+        ->and($config['fields'][0]['import'] ?? null)->toBe($fieldset);
 });
 
 test('delete:bedrock-block removes from blocks.yaml and deletes files', function (): void {
@@ -168,8 +168,8 @@ test('delete:bedrock-block removes from blocks.yaml and deletes files', function
     $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$view}.antlers.html";
 
-    expect(is_file($fieldsetPath))->toBeFalse();
-    expect(is_file($viewPath))->toBeFalse();
+    expect($fieldsetPath)->not->toBeFile()
+        ->and($viewPath)->not->toBeFile();
 
     $data = parseYaml($this->blocksYamlPath);
     $idx = findFieldIndexByHandle($data, 'blocks');
@@ -194,8 +194,8 @@ test('delete:bedrock-block with --keep-files removes blocks.yaml but keeps files
 
     $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$view}.antlers.html";
-    expect(is_file($fieldsetPath))->toBeTrue();
-    expect(is_file($viewPath))->toBeTrue();
+    expect($fieldsetPath)->toBeFile()
+        ->and($viewPath)->toBeFile();
 
     $this->artisan('delete:bedrock-block', [
         'group' => $group,
@@ -205,8 +205,8 @@ test('delete:bedrock-block with --keep-files removes blocks.yaml but keeps files
         ->expectsConfirmation("Delete '{$name}' from 'Messaging' group?", 'yes')
         ->assertExitCode(Command::SUCCESS);
 
-    expect(is_file($fieldsetPath))->toBeTrue();
-    expect(is_file($viewPath))->toBeTrue();
+    expect($fieldsetPath)->toBeFile()
+        ->and($viewPath)->toBeFile();
 
     $data = parseYaml($this->blocksYamlPath);
     $idx = findFieldIndexByHandle($data, 'blocks');
@@ -277,8 +277,8 @@ test('delete:bedrock-set removes from article.yaml and deletes files', function 
     $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.sets_views_path')."/{$view}.antlers.html";
 
-    expect(is_file($fieldsetPath))->toBeFalse();
-    expect(is_file($viewPath))->toBeFalse();
+    expect($fieldsetPath)->not->toBeFile()
+        ->and($viewPath)->not->toBeFile();
 
     $data = parseYaml($this->articleYamlPath);
     $idx = findFieldIndexByHandle($data, 'article');
@@ -303,8 +303,8 @@ test('delete:bedrock-set with --keep-files removes from article.yaml but keeps f
 
     $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.sets_views_path')."/{$view}.antlers.html";
-    expect(is_file($fieldsetPath))->toBeTrue();
-    expect(is_file($viewPath))->toBeTrue();
+    expect($fieldsetPath)->toBeFile()
+        ->and($viewPath)->toBeFile();
 
     $this->artisan('delete:bedrock-set', [
         'group' => $group,
@@ -314,8 +314,8 @@ test('delete:bedrock-set with --keep-files removes from article.yaml but keeps f
         ->expectsConfirmation("Delete '{$name}' from 'Text & Layout' group?", 'yes')
         ->assertExitCode(Command::SUCCESS);
 
-    expect(is_file($fieldsetPath))->toBeTrue();
-    expect(is_file($viewPath))->toBeTrue();
+    expect($fieldsetPath)->toBeFile()
+        ->and($viewPath)->toBeFile();
 
     $data = parseYaml($this->articleYamlPath);
     $idx = findFieldIndexByHandle($data, 'article');

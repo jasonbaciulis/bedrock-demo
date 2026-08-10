@@ -81,11 +81,11 @@ test('bedrock:remove-seo deletes seo files and fieldsets', function (): void {
     ];
 
     foreach ($deleted as $relative) {
-        expect(is_file("{$this->base}/{$relative}"))->toBeFalse();
+        expect("{$this->base}/{$relative}")->not->toBeFile();
     }
 
     foreach (['seo_basic', 'seo_advanced', 'seo_open_graph', 'seo_json-ld_schema', 'seo_sitemap'] as $fieldset) {
-        expect(is_file("{$this->fieldsetsPath}/{$fieldset}.yaml"))->toBeFalse();
+        expect("{$this->fieldsetsPath}/{$fieldset}.yaml")->not->toBeFile();
     }
 });
 

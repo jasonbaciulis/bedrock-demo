@@ -57,8 +57,8 @@ test('rename:bedrock-block renames files and updates blocks.yaml', function (): 
     $newViewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$newView}.antlers.html";
 
     // Verify original files exist
-    expect(is_file($originalFieldsetPath))->toBeTrue();
-    expect(is_file($originalViewPath))->toBeTrue();
+    expect($originalFieldsetPath)->toBeFile();
+    expect($originalViewPath)->toBeFile();
 
     // Now rename the block
     $this->artisan('rename:bedrock-block', [
@@ -69,18 +69,18 @@ test('rename:bedrock-block renames files and updates blocks.yaml', function (): 
     ])->assertExitCode(Command::SUCCESS);
 
     // Verify old files are gone and new files exist
-    expect(is_file($originalFieldsetPath))->toBeFalse();
-    expect(is_file($originalViewPath))->toBeFalse();
-    expect(is_file($newFieldsetPath))->toBeTrue();
-    expect(is_file($newViewPath))->toBeTrue();
+    expect($originalFieldsetPath)->not->toBeFile();
+    expect($originalViewPath)->not->toBeFile()
+        ->and($newFieldsetPath)->toBeFile()
+        ->and($newViewPath)->toBeFile();
 
     // Verify blocks.yaml is updated using BlocksYaml class
     $blocks = resolve(BlocksYaml::class);
     $sets = $blocks->sets($group);
 
-    expect(isset($sets[$originalFieldset]))->toBeFalse();
-    expect(isset($sets[$newFieldset]))->toBeTrue();
-    expect($sets[$newFieldset])->toBe($newName);
+    expect(isset($sets[$originalFieldset]))->toBeFalse()
+        ->and(isset($sets[$newFieldset]))->toBeTrue()
+        ->and($sets[$newFieldset])->toBe($newName);
 
     // Fieldset title should be updated
     $data = YAML::file($newFieldsetPath)->parse() ?? [];
@@ -137,8 +137,8 @@ test('rename:bedrock-block updates content entries', function (): void {
         fn ($i): bool => is_array($i) && ($i['type'] ?? null) === $newFieldset
     );
 
-    expect($hasOldBlock)->toBeFalse();
-    expect($hasNewBlock)->toBeTrue();
+    expect($hasOldBlock)->toBeFalse()
+        ->and($hasNewBlock)->toBeTrue();
 });
 
 test('rename:bedrock-block fails when target files exist without --force', function (): void {
