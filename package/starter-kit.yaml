@@ -41,6 +41,7 @@ dependencies_dev:
   - phpunit/phpunit
   - pestphp/pest
   - pestphp/pest-plugin-laravel
+  - pestphp/pest-plugin-rector
   - phpstan/phpstan
   - rector/rector
   - driftingly/rector-laravel
