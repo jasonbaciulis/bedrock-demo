@@ -2,9 +2,9 @@
 
 ## CLI Commands
 
-- **ALWAYS** use `php please make:bedrock-block` for new blocks, never create manually
-- **ALWAYS** use `php please make:bedrock-set` for new sets, never create manually
-- **ALWAYS** use `php please delete:bedrock-block` and `php please delete:bedrock-set` for removal
+- Use `php please make:bedrock-block` for new blocks, never create manually
+- Use `php please make:bedrock-set` for new sets, never create manually
+- Use `php please delete:bedrock-block` and `php please delete:bedrock-set` for removal
 - These commands create fieldsets, Antlers templates, and update parent YAML definitions automatically
 
 ## Blueprints
