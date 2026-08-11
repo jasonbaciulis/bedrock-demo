@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Sleep;
 use Illuminate\Support\Str;
 use Statamic\Facades\Fieldset;
 use Tests\TestCase;
@@ -18,7 +21,15 @@ use Tests\TestCase;
 |
 */
 
-pest()->extend(TestCase::class)->in('Feature', 'Browser');
+pest()->extend(TestCase::class)
+    ->beforeEach(function (): void {
+        Str::createRandomStringsNormally();
+        Str::createUuidsNormally();
+        Http::preventStrayRequests();
+        Process::preventStrayProcesses();
+        Sleep::fake();
+    })
+    ->in('Browser', 'Feature', 'Unit');
 
 // Console tests mutate the shared content/ tree, so they run in their own
 // serial pass (see composer.json test:unit) instead of the parallel one.

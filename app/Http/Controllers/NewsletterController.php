@@ -6,7 +6,7 @@ use App\Http\Requests\NewsletterRequest;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class NewsletterController extends Controller
+class NewsletterController
 {
     public function __invoke(NewsletterRequest $request): JsonResponse
     {
