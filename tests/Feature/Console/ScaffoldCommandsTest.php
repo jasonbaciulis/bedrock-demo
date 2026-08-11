@@ -360,6 +360,35 @@ test('make:bedrock-block fails when blocks.yaml has no groups', function (): voi
         ->assertExitCode(Command::FAILURE);
 });
 
+test('make:bedrock-block with an unknown group fails before it creates files', function (): void {
+    $name = 'Scaffold Test Block '.Str::random(6);
+    $locale = StatamicConfig::getShortLocale();
+    $fieldset = Str::slug($name, '_', $locale);
+    $view = Str::slug($name, '-', $locale);
+
+    $this->artisan('make:bedrock-block', [
+        'group' => 'does_not_exist',
+        'name' => $name,
+        '--instructions' => 'irrelevant',
+        '--force' => true,
+    ])
+        ->expectsOutputToContain("Group 'does_not_exist' not found")
+        ->assertExitCode(Command::FAILURE);
+
+    expect(bedrockTestFieldsetsPath()."/{$fieldset}.yaml")->not->toBeFile()
+        ->and(config('statamic.bedrock.scaffold.blocks_views_path')."/{$view}.antlers.html")->not->toBeFile();
+});
+
+test('delete:bedrock-block with an unknown group fails with an error', function (): void {
+    $this->artisan('delete:bedrock-block', [
+        'group' => 'does_not_exist',
+        'block' => 'whatever',
+        '--force' => true,
+    ])
+        ->expectsOutputToContain("Group 'does_not_exist' not found")
+        ->assertExitCode(Command::FAILURE);
+});
+
 test('make:bedrock-block without --force fails when files already exist', function (): void {
     $group = 'messaging';
     $name = 'Scaffold Test Block '.Str::random(6);

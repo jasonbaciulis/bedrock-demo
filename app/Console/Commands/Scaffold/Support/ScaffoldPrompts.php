@@ -34,11 +34,11 @@ final readonly class ScaffoldPrompts
         return select(label: "Which group contains the {$this->type->noun()}?", options: $groups, required: true);
     }
 
-    public function name(string $group, string $placeholder): string
+    public function name(string $groupHandle, string $placeholder): string
     {
         return suggest(
             label: "What should the {$this->type->noun()} be named?",
-            options: $this->type->nameSuggestions($group),
+            options: $this->type->nameSuggestions($groupHandle),
             placeholder: $placeholder,
             required: true,
         );

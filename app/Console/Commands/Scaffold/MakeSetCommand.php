@@ -20,7 +20,7 @@ use function Laravel\Prompts\info;
 #[Description('Create a new Statamic Article set.')]
 #[Signature('make:bedrock-set
         {group? : Group handle in Article}
-        {name?  : Set display name}
+        {name? : Set display name}
         {--instructions= : Editor instructions}
         {--force : Overwrite existing files}')]
 final class MakeSetCommand extends Command
@@ -43,20 +43,27 @@ final class MakeSetCommand extends Command
             return self::FAILURE;
         }
 
-        $group = $this->resolveGroup($groups);
-        $name = ScaffoldName::fromDisplay($this->resolveName($group));
+        $groupHandle = $this->resolveGroup($groups);
+        // Only the group argument can name an unknown group; failing here keeps
+        // ScaffoldRegistry::add() from throwing after the files are already created.
+        if (! array_key_exists($groupHandle, $groups)) {
+            error("Group '{$groupHandle}' not found in {$this->scaffoldRegistry->fileName()}.");
+
+            return self::FAILURE;
+        }
+
+        $name = ScaffoldName::fromDisplay($this->resolveName($groupHandle));
         $instructions = $this->resolveInstructions();
 
         try {
-            $createScaffoldFiles->handle(self::TYPE, $name, (bool) $this->option('force'));
-            $this->registerInGroup($group, $name, $instructions);
+            $this->createSet($createScaffoldFiles, $groupHandle, $name, $instructions);
         } catch (RuntimeException $runtimeException) {
             error($runtimeException->getMessage());
 
             return self::FAILURE;
         }
 
-        info("Created '{$name->display}' set in '{$groups[$group]}' group.");
+        $this->reportCreation($name, $groups[$groupHandle]);
 
         return self::SUCCESS;
     }
@@ -69,9 +76,9 @@ final class MakeSetCommand extends Command
         return $this->argument('group') ?: $this->prompts->newGroup($groups);
     }
 
-    private function resolveName(string $group): string
+    private function resolveName(string $groupHandle): string
     {
-        return $this->argument('name') ?: $this->prompts->name($group, placeholder: 'e.g. Gallery');
+        return $this->argument('name') ?: $this->prompts->name($groupHandle, placeholder: 'e.g. Gallery');
     }
 
     private function resolveInstructions(): string
@@ -79,12 +86,23 @@ final class MakeSetCommand extends Command
         return $this->option('instructions') ?? $this->prompts->instructions();
     }
 
-    private function registerInGroup(string $group, ScaffoldName $name, string $instructions): void
-    {
-        $this->scaffoldRegistry->add($group, $name->fieldset, [
+    private function createSet(
+        CreateScaffoldFiles $createScaffoldFiles,
+        string $groupHandle,
+        ScaffoldName $name,
+        string $instructions,
+    ): void {
+        $createScaffoldFiles->handle(self::TYPE, $name, (bool) $this->option('force'));
+
+        $this->scaffoldRegistry->add($groupHandle, $name->fieldset, [
             'display' => $name->display,
             'instructions' => $instructions,
             'fields' => [['import' => $name->fieldset]],
         ]);
+    }
+
+    private function reportCreation(ScaffoldName $name, string $groupLabel): void
+    {
+        info("Created '{$name->display}' set in '{$groupLabel}' group.");
     }
 }

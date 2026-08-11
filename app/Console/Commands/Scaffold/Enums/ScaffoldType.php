@@ -161,10 +161,10 @@ enum ScaffoldType
     /**
      * @return list<string>
      */
-    public function nameSuggestions(string $group): array
+    public function nameSuggestions(string $groupHandle): array
     {
         return match ($this) {
-            self::Block => self::SUGGESTED_BLOCKS[$group] ?? [],
+            self::Block => self::SUGGESTED_BLOCKS[$groupHandle] ?? [],
             self::ArticleSet => [],
         };
     }

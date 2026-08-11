@@ -48,6 +48,11 @@ final class RenameSetCommand extends Command
         }
 
         $currentGroup = $this->resolveGroup($groups);
+        if (! array_key_exists($currentGroup, $groups)) {
+            error("Group '{$currentGroup}' not found in {$this->scaffoldRegistry->fileName()}.");
+
+            return self::FAILURE;
+        }
 
         $sets = $this->scaffoldRegistry->setsIn($currentGroup);
         if ($sets === []) {
@@ -56,33 +61,33 @@ final class RenameSetCommand extends Command
             return self::SUCCESS;
         }
 
-        $currentHandle = $this->resolveSet($sets);
+        $fieldsetHandle = $this->resolveSet($sets);
 
-        $currentName = $sets[$currentHandle] ?? null;
+        $currentName = $sets[$fieldsetHandle] ?? null;
         if ($currentName === null) {
-            error("The '{$currentHandle}' set was not found in the '{$groups[$currentGroup]}' group.");
+            error("The '{$fieldsetHandle}' set was not found in the '{$groups[$currentGroup]}' group.");
 
             return self::FAILURE;
         }
 
-        $new = ScaffoldName::fromDisplay($this->resolveNewName());
+        $newName = ScaffoldName::fromDisplay($this->resolveNewName());
         $targetGroup = $this->resolveTargetGroup($currentGroup, $groups);
 
+        if (! $this->confirmsRename($currentName, $newName->display)) {
+            info('Rename aborted.');
+
+            return self::SUCCESS;
+        }
+
         try {
-            if (! $this->confirmsRename($currentName, $new->display)) {
-                info('Rename cancelled.');
-
-                return self::SUCCESS;
-            }
-
-            $updatedEntries = $this->renameSet($moveScaffoldFiles, $renameSetUsages, $currentGroup, $targetGroup, $currentHandle, $currentName, $new);
+            $updatedEntries = $this->renameSet($moveScaffoldFiles, $renameSetUsages, $currentGroup, $targetGroup, $fieldsetHandle, $currentName, $newName);
         } catch (RuntimeException $runtimeException) {
             error($runtimeException->getMessage());
 
             return self::FAILURE;
         }
 
-        $this->reportRename($updatedEntries, $currentName, $new->display);
+        $this->reportRename($updatedEntries, $currentName, $newName->display);
 
         return self::SUCCESS;
     }
@@ -130,19 +135,19 @@ final class RenameSetCommand extends Command
         RenameSetUsages $renameSetUsages,
         string $currentGroup,
         string $targetGroup,
-        string $currentHandle,
+        string $fieldsetHandle,
         string $currentName,
-        ScaffoldName $new,
+        ScaffoldName $newName,
     ): int {
         $currentView = ScaffoldName::fromDisplay($currentName)->view;
 
-        foreach ($moveScaffoldFiles->handle(self::TYPE, $currentHandle, $currentView, $new, (bool) $this->option('force')) as $note) {
+        foreach ($moveScaffoldFiles->handle(self::TYPE, $fieldsetHandle, $currentView, $newName, (bool) $this->option('force')) as $note) {
             info($note);
         }
 
-        $this->scaffoldRegistry->rename($currentGroup, $targetGroup, $currentHandle, $new->fieldset, $new->display);
+        $this->scaffoldRegistry->rename($currentGroup, $targetGroup, $fieldsetHandle, $newName->fieldset, $newName->display);
 
-        return $renameSetUsages->handle(self::TYPE, $currentHandle, $new->fieldset);
+        return $renameSetUsages->handle(self::TYPE, $fieldsetHandle, $newName->fieldset);
     }
 
     private function reportRename(int $updatedEntries, string $currentName, string $newName): void

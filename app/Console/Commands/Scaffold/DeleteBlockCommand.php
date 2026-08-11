@@ -49,29 +49,34 @@ final class DeleteBlockCommand extends Command
             return self::FAILURE;
         }
 
-        $group = $this->resolveGroup($groups);
+        $groupHandle = $this->resolveGroup($groups);
+        if (! array_key_exists($groupHandle, $groups)) {
+            error("Group '{$groupHandle}' not found in {$this->scaffoldRegistry->fileName()}.");
 
-        $sets = $this->scaffoldRegistry->setsIn($group);
+            return self::FAILURE;
+        }
+
+        $sets = $this->scaffoldRegistry->setsIn($groupHandle);
         if ($sets === []) {
-            info("The '{$groups[$group]}' group has no blocks.");
+            info("The '{$groups[$groupHandle]}' group has no blocks.");
 
             return self::SUCCESS;
         }
 
-        $fieldset = $this->resolveBlock($sets);
-        $label = $sets[$fieldset] ?? $fieldset;
+        $fieldsetHandle = $this->resolveBlock($sets);
+        $label = $sets[$fieldsetHandle] ?? $fieldsetHandle;
 
-        $entriesUsing = self::TYPE->entriesUsing($fieldset);
+        $entriesUsing = self::TYPE->entriesUsing($fieldsetHandle);
         $this->warnWhenEntriesUseBlock($entriesUsing, $label);
 
-        if (! $this->confirmsDeletion($label, $groups[$group])) {
-            info('Aborted.');
+        if (! $this->confirmsDeletion($label, $groups[$groupHandle])) {
+            info('Deletion aborted.');
 
             return self::SUCCESS;
         }
 
         try {
-            $removedCount = $this->deleteBlock($deleteScaffoldFiles, $removeSetUsages, $group, $fieldset, $entriesUsing);
+            $removedCount = $this->deleteBlock($deleteScaffoldFiles, $removeSetUsages, $groupHandle, $fieldsetHandle, $entriesUsing);
         } catch (RuntimeException $runtimeException) {
             error($runtimeException->getMessage());
 
@@ -131,17 +136,17 @@ final class DeleteBlockCommand extends Command
     private function deleteBlock(
         DeleteScaffoldFiles $deleteScaffoldFiles,
         RemoveSetUsages $removeSetUsages,
-        string $group,
-        string $fieldset,
+        string $groupHandle,
+        string $fieldsetHandle,
         Collection $entriesUsing,
     ): int {
-        $this->scaffoldRegistry->remove($group, $fieldset);
+        $this->scaffoldRegistry->remove($groupHandle, $fieldsetHandle);
 
         if (! $this->option('keep-files')) {
-            $deleteScaffoldFiles->handle(self::TYPE, $fieldset, (bool) $this->option('force'));
+            $deleteScaffoldFiles->handle(self::TYPE, $fieldsetHandle, (bool) $this->option('force'));
         }
 
-        return $removeSetUsages->handle(self::TYPE, $entriesUsing, $fieldset);
+        return $removeSetUsages->handle(self::TYPE, $entriesUsing, $fieldsetHandle);
     }
 
     private function reportRemoval(int $removedCount, string $label): void
