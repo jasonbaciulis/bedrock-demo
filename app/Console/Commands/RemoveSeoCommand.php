@@ -140,7 +140,6 @@ final class RemoveSeoCommand extends Command
         $paths = collect([
             $this->resourcePath('blueprints/globals/seo.yaml'),
             $this->contentPath('globals/seo.yaml'),
-            $this->contentPath('seo.yaml'),
             $this->resourcePath('views/partials/seo.antlers.html'),
             $this->resourcePath('views/partials/fallback-description.antlers.html'),
             $this->resourcePath('views/partials/cookie-dialog.antlers.html'),
