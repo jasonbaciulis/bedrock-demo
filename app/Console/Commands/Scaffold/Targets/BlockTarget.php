@@ -97,7 +97,7 @@ final readonly class BlockTarget implements ScaffoldTarget
 
     public function usageMatcher(string $fieldset): Closure
     {
-        return static fn ($item): bool => is_array($item) && Arr::get($item, 'type') === $fieldset;
+        return static fn (mixed $item): bool => is_array($item) && Arr::get($item, 'type') === $fieldset;
     }
 
     public function usageRenamer(string $newHandle): Closure

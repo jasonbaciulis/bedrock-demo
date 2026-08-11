@@ -60,7 +60,7 @@ class Stepper extends Fieldtype
         ];
     }
 
-    public function preProcess($value)
+    public function preProcess(mixed $value): int
     {
         if ($value === null) {
             return (int) $this->config('default', 0);

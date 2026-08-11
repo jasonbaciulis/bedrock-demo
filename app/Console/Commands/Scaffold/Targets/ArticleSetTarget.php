@@ -30,7 +30,7 @@ final readonly class ArticleSetTarget implements ScaffoldTarget
 
     public function usageMatcher(string $fieldset): Closure
     {
-        return static fn ($node): bool => is_array($node)
+        return static fn (mixed $node): bool => is_array($node)
             && Arr::get($node, 'type') === 'set'
             && Arr::get($node, 'attrs.values.type') === $fieldset;
     }
