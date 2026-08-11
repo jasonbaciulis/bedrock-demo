@@ -99,10 +99,7 @@
     ],
     "test:type-coverage": "pest --type-coverage --min=100",
     "test:types": "phpstan",
-    "test:unit": [
-      "pest --parallel --exclude-testsuite=Browser --exclude-group=console",
-      "pest --group=console"
-    ],
+    "test:unit": "pest --parallel --exclude-testsuite=Browser",
     "test:browser": "pest --testsuite=Browser",
     "test": [
       "@test:lint",

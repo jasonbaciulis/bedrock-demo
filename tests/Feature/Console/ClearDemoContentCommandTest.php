@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Contracts\Entries\Entry;
@@ -12,15 +12,17 @@ use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Facades\Term;
 use Statamic\Stache\Stores\Store;
+use Symfony\Component\Finder\SplFileInfo;
+use Tests\Feature\Console\Support\Scratch;
 
 beforeEach(function (): void {
     $this->realContentPath = base_path('content');
     $this->realAssetsPath = public_path('assets');
-    $this->scratchPath = bedrockTestScratchPath();
+    $this->scratchPath = Scratch::path();
     $this->contentPath = $this->scratchPath.'/content-root/content';
     $this->assetsPath = $this->scratchPath.'/content-root/public/assets';
 
-    File::copyDirectory($this->realContentPath, $this->contentPath);
+    copyDemoContent($this->realContentPath, $this->contentPath);
     File::ensureDirectoryExists($this->assetsPath);
     File::put($this->assetsPath.'/.gitkeep', '');
 
@@ -31,8 +33,31 @@ beforeEach(function (): void {
 });
 
 afterEach(function (): void {
-    File::deleteDirectory($this->scratchPath);
+    Scratch::delete();
 });
+
+/**
+ * Copy the demo content, minus the entries other parallel processes seed into
+ * the same tree. Those files appear and vanish while this copy runs.
+ */
+function copyDemoContent(string $source, string $destination): void
+{
+    demoFilesIn($source)->each(function (SplFileInfo $file) use ($destination): void {
+        $target = $destination.'/'.$file->getRelativePathname();
+
+        File::ensureDirectoryExists(dirname($target));
+        File::copy($file->getPathname(), $target);
+    });
+}
+
+/**
+ * @return Collection<int, SplFileInfo>
+ */
+function demoFilesIn(string $path): Collection
+{
+    return collect(File::allFiles($path))
+        ->reject(fn (SplFileInfo $file): bool => Str::startsWith($file->getFilename(), 'test-'));
+}
 
 /**
  * Repoint every Stache store under content/ and the assets disk at a scratch
@@ -49,11 +74,6 @@ function pointStatamicAtScratchContent(string $contentPath, string $assetsPath):
         ));
 
     config(['filesystems.disks.assets.root' => $assetsPath]);
-
-    // The suite shares the real file cache, so give the Stache its own store.
-    // Otherwise the emptied scratch index persists into the next test and into
-    // the developer's site.
-    config(['statamic.stache.cache_store' => 'array']);
 
     Stache::clear();
 }
@@ -110,9 +130,9 @@ function seedDemoAssets(string $assetsPath): array
     })->all();
 }
 
-function countFilesIn(string $path): int
+function countDemoFilesIn(string $path): int
 {
-    return count(File::allFiles($path));
+    return demoFilesIn($path)->count();
 }
 
 /**
@@ -120,7 +140,7 @@ function countFilesIn(string $path): int
  * clear, then seed the home entry fields. A missing fixture fails here instead
  * of turning a later assertion into a false pass.
  */
-function seededDemoState(string $assetsPath): Entry
+function seededDemoState(): Entry
 {
     expect(EntryFacade::all()->count())->toBeGreaterThan(1)
         ->and(Term::whereTaxonomy('categories')->count())->toBeGreaterThan(0);
@@ -137,9 +157,9 @@ function seededDemoState(string $assetsPath): Entry
 }
 
 test('bedrock:clear removes demo content while preserving the home entry', function (): void {
-    $home = seededDemoState($this->assetsPath);
+    $home = seededDemoState();
 
-    $this->artisan('bedrock:clear', ['--force' => true])->assertExitCode(Command::SUCCESS);
+    $this->artisan('bedrock:clear', ['--force' => true])->assertSuccessful();
 
     $remaining = EntryFacade::all();
     expect($remaining->count())->toBe(1)
@@ -155,9 +175,9 @@ test('bedrock:clear removes demo content while preserving the home entry', funct
 });
 
 test('bedrock:clear empties navigation trees, category terms and selected globals', function (): void {
-    seededDemoState($this->assetsPath);
+    seededDemoState();
 
-    $this->artisan('bedrock:clear', ['--force' => true])->assertExitCode(Command::SUCCESS);
+    $this->artisan('bedrock:clear', ['--force' => true])->assertSuccessful();
 
     foreach (Nav::all() as $nav) {
         foreach (Site::all()->map->handle() as $siteHandle) {
@@ -173,10 +193,10 @@ test('bedrock:clear empties navigation trees, category terms and selected global
 });
 
 test('bedrock:clear deletes demo assets but keeps logos', function (): void {
-    seededDemoState($this->assetsPath);
+    seededDemoState();
     $assetIds = seedDemoAssets($this->assetsPath);
 
-    $this->artisan('bedrock:clear', ['--force' => true])->assertExitCode(Command::SUCCESS);
+    $this->artisan('bedrock:clear', ['--force' => true])->assertSuccessful();
 
     expect(Asset::find($assetIds['image']))->toBeNull()
         ->and(Asset::find($assetIds['avatar']))->toBeNull()
@@ -186,14 +206,14 @@ test('bedrock:clear deletes demo assets but keeps logos', function (): void {
 });
 
 test('bedrock:clear leaves the real content and assets untouched', function (): void {
-    seededDemoState($this->assetsPath);
+    seededDemoState();
 
-    $contentFiles = countFilesIn($this->realContentPath);
-    $assetFiles = countFilesIn($this->realAssetsPath);
+    $contentFiles = countDemoFilesIn($this->realContentPath);
+    $assetFiles = countDemoFilesIn($this->realAssetsPath);
 
-    $this->artisan('bedrock:clear', ['--force' => true])->assertExitCode(Command::SUCCESS);
+    $this->artisan('bedrock:clear', ['--force' => true])->assertSuccessful();
 
-    expect(countFilesIn($this->realContentPath))->toBe($contentFiles)
-        ->and(countFilesIn($this->realAssetsPath))->toBe($assetFiles)
+    expect(countDemoFilesIn($this->realContentPath))->toBe($contentFiles)
+        ->and(countDemoFilesIn($this->realAssetsPath))->toBe($assetFiles)
         ->and($this->realContentPath.'/collections/pages/home.md')->toBeFile();
 });
