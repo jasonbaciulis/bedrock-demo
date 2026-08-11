@@ -1,17 +1,21 @@
 <?php
 
-namespace App\Support\Scaffold;
+declare(strict_types=1);
 
+namespace App\Console\Commands\Scaffold\Support;
+
+use App\Console\Commands\Scaffold\Contracts\ScaffoldTarget;
 use Closure;
 use Illuminate\Support\Collection;
+use Statamic\Entries\Entry as EntryInstance;
 use Statamic\Facades\Entry;
 
 /**
  * Renames, deletes, and counts usages of a scaffold target's sets inside entry content.
  */
-final class EntryContentUpdater
+final readonly class EntryContentUpdater
 {
-    public function __construct(private readonly ScaffoldTarget $target) {}
+    public function __construct(private ScaffoldTarget $target) {}
 
     /**
      * @return Collection<int, \Statamic\Contracts\Entries\Entry>
@@ -21,7 +25,7 @@ final class EntryContentUpdater
         $matches = $this->target->usageMatcher($fieldset);
 
         return Entry::all()
-            ->filter(fn ($entry): bool => $this->fieldItems($entry)->contains($matches))
+            ->filter(fn (EntryInstance $entry): bool => $this->fieldItems($entry)->contains($matches))
             ->values();
     }
 
@@ -36,7 +40,7 @@ final class EntryContentUpdater
         return $this->updateEntries(
             $this->entriesUsing($oldHandle),
             fn (Collection $items): Collection => $items->map(
-                fn ($item) => $matches($item) ? $rename($item) : $item
+                fn (mixed $item): mixed => $matches($item) ? $rename($item) : $item
             )
         );
     }
@@ -58,14 +62,14 @@ final class EntryContentUpdater
     private function updateEntries(Collection $entries, Closure $transform): int
     {
         return $entries
-            ->each(function ($entry) use ($transform): void {
+            ->each(function (EntryInstance $entry) use ($transform): void {
                 $entry->set($this->target->entryField(), $transform($this->fieldItems($entry))->all());
                 $entry->save();
             })
             ->count();
     }
 
-    private function fieldItems($entry): Collection
+    private function fieldItems(EntryInstance $entry): Collection
     {
         return collect((array) $entry->get($this->target->entryField()));
     }

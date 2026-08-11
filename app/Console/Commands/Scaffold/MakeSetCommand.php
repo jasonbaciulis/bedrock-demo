@@ -1,24 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands\Scaffold;
 
-use App\Support\Scaffold\BlockTarget;
+use App\Console\Commands\Scaffold\Actions\MakeScaffold;
+use App\Console\Commands\Scaffold\Targets\ArticleSetTarget;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-#[Description('Create a new Statamic page builder block')]
-#[Signature('make:bedrock-block
-        {group? : The group handle (e.g. hero)}
-        {name? : The block display name}
+#[Description('Create a new Statamic Article set.')]
+#[Signature('make:bedrock-set
+        {group? : Group handle in Article}
+        {name?  : Set display name}
         {--instructions= : Editor instructions}
         {--force : Overwrite existing files}')]
-final class MakeBlock extends Command
+final class MakeSetCommand extends Command
 {
-    public function handle(Filesystem $files, BlockTarget $target): int
+    public function handle(Filesystem $files, ArticleSetTarget $target): int
     {
-        return new MakeScaffold($files, $target, namePlaceholder: 'e.g. Hero Simple')->run(
+        return new MakeScaffold($files, $target, namePlaceholder: 'e.g. Gallery')->handle(
             group: $this->argument('group'),
             name: $this->argument('name'),
             instructions: $this->option('instructions'),

@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Support\Scaffold;
+declare(strict_types=1);
 
-use App\Support\Yaml\BlocksYaml;
-use App\Support\Yaml\GroupedSetsYaml;
+namespace App\Console\Commands\Scaffold\Targets;
+
+use App\Console\Commands\Scaffold\Contracts\ScaffoldTarget;
+use App\Console\Commands\Scaffold\Yaml\BlocksYaml;
 use Closure;
 use Illuminate\Support\Arr;
 
-final class BlockTarget implements ScaffoldTarget
+final readonly class BlockTarget implements ScaffoldTarget
 {
     /**
      * Name suggestions per group handle in blocks.yaml.
@@ -76,12 +78,7 @@ final class BlockTarget implements ScaffoldTarget
         'special' => ['Google Map', 'Style Guide'],
     ];
 
-    public readonly GroupedSetsYaml $yaml;
-
-    public function __construct(BlocksYaml $yaml)
-    {
-        $this->yaml = $yaml;
-    }
+    public function __construct(public BlocksYaml $yaml) {}
 
     public function noun(): string
     {

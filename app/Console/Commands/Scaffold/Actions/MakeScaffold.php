@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Console\Commands\Scaffold;
+declare(strict_types=1);
 
-use App\Support\Scaffold\FieldsetFiles;
-use App\Support\Scaffold\ScaffoldTarget;
+namespace App\Console\Commands\Scaffold\Actions;
+
+use App\Console\Commands\Scaffold\Contracts\ScaffoldTarget;
+use App\Console\Commands\Scaffold\Support\FieldsetFiles;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Throwable;
+use RuntimeException;
 
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
@@ -14,31 +16,37 @@ use function Laravel\Prompts\select;
 use function Laravel\Prompts\suggest;
 use function Laravel\Prompts\text;
 
-final class MakeScaffold
+final readonly class MakeScaffold
 {
-    private readonly FieldsetFiles $fieldsetFiles;
+    private FieldsetFiles $fieldsetFiles;
 
     public function __construct(
         Filesystem $files,
-        private readonly ScaffoldTarget $target,
-        private readonly string $namePlaceholder,
+        private ScaffoldTarget $target,
+        private string $namePlaceholder,
     ) {
         $this->fieldsetFiles = new FieldsetFiles($files, $target);
     }
 
-    public function run(?string $group, ?string $name, ?string $instructions, bool $force): int
+    public function handle(?string $group, ?string $name, ?string $instructions, bool $force): int
     {
         $noun = $this->target->noun();
 
         $groups = $this->target->yaml->groups();
+        if ($groups === []) {
+            error("No groups found in {$this->target->yaml->fileName()}.");
+
+            return Command::FAILURE;
+        }
+
         $group = $group ?: select(label: "Which group should this {$noun} belong to?", options: $groups, required: true);
 
         $name = $name ?: $this->promptForName($group);
 
-        $instructions = (string) ($instructions ?? text(
+        $instructions ??= text(
             label: 'What should be the instructions?',
             placeholder: '(Optional) Short guidance to editors'
-        ));
+        );
 
         $view = $this->fieldsetFiles->viewSlugFor($name);
         $fieldset = $this->fieldsetFiles->fieldsetSlugFor($name);
@@ -52,8 +60,8 @@ final class MakeScaffold
                 'instructions' => $instructions,
                 'fields' => [['import' => $fieldset]],
             ]);
-        } catch (Throwable $throwable) {
-            error($throwable->getMessage());
+        } catch (RuntimeException $exception) {
+            error($exception->getMessage());
 
             return Command::FAILURE;
         }

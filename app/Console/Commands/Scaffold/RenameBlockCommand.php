@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands\Scaffold;
 
-use App\Support\Scaffold\BlockTarget;
+use App\Console\Commands\Scaffold\Actions\RenameScaffold;
+use App\Console\Commands\Scaffold\Targets\BlockTarget;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -13,12 +16,12 @@ use Illuminate\Filesystem\Filesystem;
         {group? : The group handle (e.g. hero)}
         {current_name? : The current block handle to rename}
         {new_name? : The new block display name}
-        {--force : Overwrite existing files}')]
-final class RenameBlock extends Command
+        {--force : Skip confirmation and overwrite existing files}')]
+final class RenameBlockCommand extends Command
 {
     public function handle(Filesystem $files, BlockTarget $target): int
     {
-        return new RenameScaffold($files, $target, namePlaceholder: 'e.g. Hero Screenshot')->run(
+        return new RenameScaffold($files, $target, namePlaceholder: 'e.g. Hero Screenshot')->handle(
             group: $this->argument('group'),
             currentHandle: $this->argument('current_name'),
             newName: $this->argument('new_name'),

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Attributes\Description;
@@ -19,7 +21,7 @@ use function Laravel\Prompts\warning;
 
 #[Description('Remove the built-in SEO implementation so an SEO addon (e.g. seo-pro) can be installed on a blank slate.')]
 #[Signature('bedrock:remove-seo {--force : Run without confirmation}')]
-class RemoveSeo extends Command
+final class RemoveSeoCommand extends Command
 {
     /**
      * The SEO fieldsets imported into collection blueprints.
@@ -100,8 +102,11 @@ class RemoveSeo extends Command
         }
 
         $stripped = EntryFacade::all()
-            ->filter(fn (Entry $entry): bool => $this->stripHandlesFromEntry($entry, $handles))
-            ->each(fn (Entry $entry) => $entry->save())
+            ->filter(fn (Entry $entry): bool => $this->hasAnyHandle($entry, $handles))
+            ->each(function (Entry $entry) use ($handles): void {
+                $this->stripHandlesFromEntry($entry, $handles);
+                $entry->save();
+            })
             ->count();
 
         if ($stripped > 0) {
@@ -112,13 +117,19 @@ class RemoveSeo extends Command
     /**
      * @param  list<string>  $handles
      */
-    private function stripHandlesFromEntry(Entry $entry, array $handles): bool
+    private function hasAnyHandle(Entry $entry, array $handles): bool
     {
-        $present = collect($handles)->filter(fn (string $handle): bool => $entry->has($handle));
+        return collect($handles)->contains(fn (string $handle): bool => $entry->has($handle));
+    }
 
-        $present->each(fn (string $handle) => $entry->remove($handle));
-
-        return $present->isNotEmpty();
+    /**
+     * @param  list<string>  $handles
+     */
+    private function stripHandlesFromEntry(Entry $entry, array $handles): void
+    {
+        collect($handles)
+            ->filter(fn (string $handle): bool => $entry->has($handle))
+            ->each(fn (string $handle) => $entry->remove($handle));
     }
 
     private function deleteSeoFiles(): void

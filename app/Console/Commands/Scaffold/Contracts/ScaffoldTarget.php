@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Support\Scaffold;
+declare(strict_types=1);
 
-use App\Support\Yaml\GroupedSetsYaml;
+namespace App\Console\Commands\Scaffold\Contracts;
+
+use App\Console\Commands\Scaffold\Yaml\GroupedSetsYaml;
 use Closure;
 
 /**

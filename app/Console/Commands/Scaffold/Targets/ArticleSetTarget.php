@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Support\Scaffold;
+declare(strict_types=1);
 
-use App\Support\Yaml\ArticleYaml;
-use App\Support\Yaml\GroupedSetsYaml;
+namespace App\Console\Commands\Scaffold\Targets;
+
+use App\Console\Commands\Scaffold\Contracts\ScaffoldTarget;
+use App\Console\Commands\Scaffold\Yaml\ArticleYaml;
 use Closure;
 use Illuminate\Support\Arr;
 
-final class ArticleSetTarget implements ScaffoldTarget
+final readonly class ArticleSetTarget implements ScaffoldTarget
 {
-    public readonly GroupedSetsYaml $yaml;
-
-    public function __construct(ArticleYaml $yaml)
-    {
-        $this->yaml = $yaml;
-    }
+    public function __construct(public ArticleYaml $yaml) {}
 
     public function noun(): string
     {

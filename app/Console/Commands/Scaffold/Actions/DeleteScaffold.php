@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Console\Commands\Scaffold;
+declare(strict_types=1);
 
-use App\Support\Scaffold\EntryContentUpdater;
-use App\Support\Scaffold\FieldsetFiles;
-use App\Support\Scaffold\ScaffoldTarget;
+namespace App\Console\Commands\Scaffold\Actions;
+
+use App\Console\Commands\Scaffold\Contracts\ScaffoldTarget;
+use App\Console\Commands\Scaffold\Support\EntryContentUpdater;
+use App\Console\Commands\Scaffold\Support\FieldsetFiles;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use Throwable;
+use RuntimeException;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\error;
@@ -16,19 +18,19 @@ use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\warning;
 
-final class DeleteScaffold
+final readonly class DeleteScaffold
 {
-    private readonly FieldsetFiles $fieldsetFiles;
+    private FieldsetFiles $fieldsetFiles;
 
-    private readonly EntryContentUpdater $entryContent;
+    private EntryContentUpdater $entryContent;
 
-    public function __construct(Filesystem $files, private readonly ScaffoldTarget $target)
+    public function __construct(Filesystem $files, private ScaffoldTarget $target)
     {
         $this->fieldsetFiles = new FieldsetFiles($files, $target);
         $this->entryContent = new EntryContentUpdater($target);
     }
 
-    public function run(?string $group, ?string $handle, bool $keepFiles, bool $force): int
+    public function handle(?string $group, ?string $fieldset, bool $keepFiles, bool $force): int
     {
         $noun = $this->target->noun();
 
@@ -48,7 +50,7 @@ final class DeleteScaffold
             return Command::SUCCESS;
         }
 
-        $fieldset = $handle ?: select(label: "Which {$noun} would you like to delete?", options: $sets, required: true);
+        $fieldset = $fieldset ?: select(label: "Which {$noun} would you like to delete?", options: $sets, required: true);
 
         $label = $sets[$fieldset] ?? $fieldset;
 
@@ -61,7 +63,8 @@ final class DeleteScaffold
         }
 
         if (
-            ! confirm(
+            ! $force
+            && ! confirm(
                 label: "Delete '{$label}' from '{$groups[$group]}' group?",
                 default: false,
                 hint: $keepFiles
@@ -85,8 +88,8 @@ final class DeleteScaffold
             if ($removedCount > 0) {
                 info("Removed from {$removedCount} ".Str::plural('entry', $removedCount).'.');
             }
-        } catch (Throwable $throwable) {
-            error($throwable->getMessage());
+        } catch (RuntimeException $exception) {
+            error($exception->getMessage());
 
             return Command::FAILURE;
         }

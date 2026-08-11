@@ -323,6 +323,57 @@ test('delete:bedrock-set with --keep-files removes from article.yaml but keeps f
     expect($exists)->toBeFalse();
 });
 
+test('delete:bedrock-block with --force skips the confirmation prompt', function (): void {
+    $group = 'messaging';
+    $name = 'Scaffold Test Block '.Str::random(6);
+    $locale = StatamicConfig::getShortLocale();
+    $fieldset = Str::slug($name, '_', $locale);
+
+    $this->artisan('make:bedrock-block', [
+        'group' => $group,
+        'name' => $name,
+        '--instructions' => 'irrelevant',
+        '--force' => true,
+    ])->assertExitCode(Command::SUCCESS);
+
+    // A shown prompt would answer "no" and abort, so success proves the prompt was skipped.
+    ConfirmPrompt::fallbackUsing(fn (): bool => false);
+
+    try {
+        $this->artisan('delete:bedrock-block', [
+            'group' => $group,
+            'block' => $fieldset,
+            '--force' => true,
+        ])->assertExitCode(Command::SUCCESS);
+    } finally {
+        ConfirmPrompt::fallbackUsing(fn (): true => true);
+    }
+
+    $data = parseYaml($this->blocksYamlPath);
+    $idx = findFieldIndexByHandle($data, 'blocks');
+    expect($idx)->toBeGreaterThan(-1);
+    $exists = isset($data['fields'][$idx]['field']['sets'][$group]['sets'][$fieldset]);
+    expect($exists)->toBeFalse();
+});
+
+test('make:bedrock-block fails when blocks.yaml has no groups', function (): void {
+    file_put_contents($this->blocksYamlPath, YAML::dump([
+        'title' => 'Blocks',
+        'fields' => [
+            ['handle' => 'blocks', 'field' => ['type' => 'replicator', 'sets' => []]],
+        ],
+    ]));
+
+    $this->artisan('make:bedrock-block', [
+        'group' => 'messaging',
+        'name' => 'Scaffold Test Block '.Str::random(6),
+        '--instructions' => 'irrelevant',
+        '--force' => true,
+    ])
+        ->expectsOutputToContain('No groups found')
+        ->assertExitCode(Command::FAILURE);
+});
+
 test('make:bedrock-block without --force fails when files already exist', function (): void {
     $group = 'messaging';
     $name = 'Scaffold Test Block '.Str::random(6);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Support\Yaml;
+namespace App\Console\Commands\Scaffold\Yaml;
 
 use Illuminate\Filesystem\Filesystem;
 

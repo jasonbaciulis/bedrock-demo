@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Support\Yaml;
+declare(strict_types=1);
+
+namespace App\Console\Commands\Scaffold\Yaml;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 use RuntimeException;
 use Statamic\Facades\YAML;
-use Statamic\Support\Arr;
 use Stringy\StaticStringy as Stringy;
 
 class GroupedSetsYaml
@@ -16,6 +18,9 @@ class GroupedSetsYaml
         private readonly string $fieldHandle
     ) {}
 
+    /**
+     * @return array<string, string> Group handle to display label
+     */
     public function groups(): array
     {
         $data = $this->read();
@@ -24,6 +29,9 @@ class GroupedSetsYaml
         return $this->labelsFromConfig($root);
     }
 
+    /**
+     * @return array<string, string> Set handle to display label
+     */
     public function sets(string $groupHandle): array
     {
         $data = $this->read();
@@ -36,6 +44,9 @@ class GroupedSetsYaml
         return $this->labelsFromConfig(Arr::get($root[$groupHandle], 'sets', []));
     }
 
+    /**
+     * @param  array<string, mixed>  $set
+     */
     public function addSet(string $groupHandle, string $setHandle, array $set): void
     {
         $data = $this->read();
@@ -140,7 +151,7 @@ class GroupedSetsYaml
     private function sortKeysNaturally(array $items): array
     {
         return collect($items)
-            ->sortKeysUsing(static fn (string $a, string $b): int => strnatcasecmp($a, $b))
+            ->sortKeysUsing(static fn (string $firstKey, string $secondKey): int => strnatcasecmp($firstKey, $secondKey))
             ->all();
     }
 

@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Support\Scaffold;
+declare(strict_types=1);
 
+namespace App\Console\Commands\Scaffold\Support;
+
+use App\Console\Commands\Scaffold\Contracts\ScaffoldTarget;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -12,11 +15,11 @@ use Statamic\Facades\YAML;
  * Owns the fieldset/view file conventions for a scaffold target: slugs, paths,
  * and the create/delete/move operations on both files.
  */
-final class FieldsetFiles
+final readonly class FieldsetFiles
 {
     public function __construct(
-        private readonly Filesystem $files,
-        private readonly ScaffoldTarget $target
+        private Filesystem $files,
+        private ScaffoldTarget $target
     ) {}
 
     /**
@@ -37,13 +40,11 @@ final class FieldsetFiles
     }
 
     /**
-     * Delete fieldset and view files for a given handle.
-     *
      * @throws RuntimeException When files are missing and $force is false
      */
     public function deleteFor(string $fieldset, bool $force): void
     {
-        $view = Str::replace('_', '-', $fieldset);
+        $view = $this->viewSlugFromFieldsetHandle($fieldset);
 
         [$existing, $missing] = collect([$this->fieldsetPathFor($fieldset), $this->viewPathFor($view)])
             ->partition(fn (string $path): bool => $this->files->exists($path));
@@ -75,9 +76,6 @@ final class FieldsetFiles
         ])->filter()->values()->all();
     }
 
-    /**
-     * Update the 'title' inside a fieldset YAML file for a given handle.
-     */
     public function updateFieldsetTitle(string $fieldsetHandle, string $newTitle): void
     {
         $path = $this->fieldsetPathFor($fieldsetHandle);
@@ -98,6 +96,11 @@ final class FieldsetFiles
     public function fieldsetSlugFor(string $name): string
     {
         return Str::slug($name, '_', Config::getShortLocale());
+    }
+
+    private function viewSlugFromFieldsetHandle(string $fieldsetHandle): string
+    {
+        return Str::replace('_', '-', $fieldsetHandle);
     }
 
     public function fieldsetPathFor(string $handle): string

@@ -1,6 +1,6 @@
 <?php
 
-use App\Support\Yaml\BlocksYaml;
+use App\Console\Commands\Scaffold\Yaml\BlocksYaml;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Laravel\Prompts\ConfirmPrompt;

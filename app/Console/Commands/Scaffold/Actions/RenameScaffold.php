@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Console\Commands\Scaffold;
+declare(strict_types=1);
 
-use App\Support\Scaffold\EntryContentUpdater;
-use App\Support\Scaffold\FieldsetFiles;
-use App\Support\Scaffold\ScaffoldTarget;
+namespace App\Console\Commands\Scaffold\Actions;
+
+use App\Console\Commands\Scaffold\Contracts\ScaffoldTarget;
+use App\Console\Commands\Scaffold\Support\EntryContentUpdater;
+use App\Console\Commands\Scaffold\Support\FieldsetFiles;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use Throwable;
+use RuntimeException;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\error;
@@ -16,22 +18,22 @@ use function Laravel\Prompts\info;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
-final class RenameScaffold
+final readonly class RenameScaffold
 {
-    private readonly FieldsetFiles $fieldsetFiles;
+    private FieldsetFiles $fieldsetFiles;
 
-    private readonly EntryContentUpdater $entryContent;
+    private EntryContentUpdater $entryContent;
 
     public function __construct(
         Filesystem $files,
-        private readonly ScaffoldTarget $target,
-        private readonly string $namePlaceholder,
+        private ScaffoldTarget $target,
+        private string $namePlaceholder,
     ) {
         $this->fieldsetFiles = new FieldsetFiles($files, $target);
         $this->entryContent = new EntryContentUpdater($target);
     }
 
-    public function run(?string $group, ?string $currentHandle, ?string $newName, bool $force): int
+    public function handle(?string $group, ?string $currentHandle, ?string $newName, bool $force): int
     {
         $noun = $this->target->noun();
 
@@ -55,6 +57,13 @@ final class RenameScaffold
 
         $currentHandle = $currentHandle ?: select(label: "Which {$noun} would you like to rename?", options: $sets, required: true);
 
+        $currentName = $sets[$currentHandle] ?? null;
+        if ($currentName === null) {
+            error("The '{$currentHandle}' {$noun} was not found in the '{$groups[$currentGroup]}' group.");
+
+            return Command::FAILURE;
+        }
+
         $newName = $newName ?: text(
             label: "What should the new {$noun} name be?",
             placeholder: $this->namePlaceholder,
@@ -72,8 +81,6 @@ final class RenameScaffold
         try {
             $this->fieldsetFiles->assertWritable($newFieldset, $newView, $force);
 
-            $currentName = $sets[$currentHandle] ?? null;
-
             if (
                 ! $force &&
                 ! confirm(
@@ -85,7 +92,7 @@ final class RenameScaffold
                 return Command::SUCCESS;
             }
 
-            $originalView = $currentName ? $this->fieldsetFiles->viewSlugFor($currentName) : $currentHandle;
+            $originalView = $this->fieldsetFiles->viewSlugFor($currentName);
 
             foreach ($this->fieldsetFiles->moveFor($currentHandle, $originalView, $newFieldset, $newView) as $note) {
                 info($note);
@@ -96,15 +103,15 @@ final class RenameScaffold
 
             $updatedEntries = $this->entryContent->renameUsages($currentHandle, $newFieldset);
             if ($updatedEntries > 0) {
-                info("Updated {$updatedEntries} content ".Str::plural('entry', $updatedEntries));
+                info("Updated {$updatedEntries} content ".Str::plural('entry', $updatedEntries).'.');
             }
-        } catch (Throwable $throwable) {
-            error($throwable->getMessage());
+        } catch (RuntimeException $exception) {
+            error($exception->getMessage());
 
             return Command::FAILURE;
         }
 
-        info("Successfully renamed {$noun} '{$currentName}' to '{$newName}'");
+        info("Renamed '{$currentName}' {$noun} to '{$newName}'.");
 
         return Command::SUCCESS;
     }

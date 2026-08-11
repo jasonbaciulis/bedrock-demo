@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
+use Statamic\Contracts\Assets\Asset as AssetContract;
+use Statamic\Contracts\Globals\Variables as VariablesContract;
+use Statamic\Contracts\Structures\Nav as NavContract;
+use Statamic\Contracts\Taxonomies\Term as TermContract;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Asset;
 use Statamic\Facades\Entry as EntryFacade;
@@ -18,7 +24,7 @@ use function Laravel\Prompts\info;
 
 #[Description('Clear demo content (entries, nav items, taxonomy terms, globals, assets) while preserving the home page and logos.')]
 #[Signature('bedrock:clear {--force : Run without confirmation}')]
-class ClearDemoContent extends Command
+final class ClearDemoContentCommand extends Command
 {
     public function handle(): int
     {
@@ -51,7 +57,7 @@ class ClearDemoContent extends Command
             'social_media',
             'theme',
         ]);
-        $this->deleteAssets();
+        $this->deleteAssetsExceptLogos();
 
         info('Demo content cleared.');
 
@@ -69,8 +75,8 @@ class ClearDemoContent extends Command
     private function deleteEntries(?string $homeId): void
     {
         EntryFacade::all()
-            ->reject(fn ($entry): bool => $entry->id() === $homeId)
-            ->each(fn ($entry) => $entry->delete());
+            ->reject(fn (Entry $entry): bool => $entry->id() === $homeId)
+            ->each(fn (Entry $entry) => $entry->delete());
 
         info('Deleted all entries except home page.');
     }
@@ -94,7 +100,7 @@ class ClearDemoContent extends Command
         $siteHandles = Site::all()->map->handle();
 
         Nav::all()->each(
-            fn ($nav) => $siteHandles->each(fn ($site) => $nav->in($site)->tree([])->save())
+            fn (NavContract $nav) => $siteHandles->each(fn (string $siteHandle) => $nav->in($siteHandle)->tree([])->save())
         );
 
         info('Cleared all navigation trees.');
@@ -102,31 +108,28 @@ class ClearDemoContent extends Command
 
     private function deleteAllCategoryTerms(): void
     {
-        Term::whereTaxonomy('categories')->each(fn ($term) => $term->delete());
+        Term::whereTaxonomy('categories')->each(fn (TermContract $term) => $term->delete());
 
         info("Deleted 'categories' taxonomy terms.");
     }
 
     /**
-     * Delete the variables files (content) for the specified global sets across all sites.
+     * @param  list<string>  $handles
      */
     private function deleteSelectedGlobalVariables(array $handles): void
     {
         foreach ($handles as $handle) {
-            GlobalVariables::whereSet($handle)->each(fn ($vars) => $vars->delete());
+            GlobalVariables::whereSet($handle)->each(fn (VariablesContract $variables) => $variables->delete());
         }
 
         info('Deleted global variables for sets: '.implode(', ', $handles));
     }
 
-    /**
-     * Delete all assets except those in the logos folder.
-     */
-    private function deleteAssets(): void
+    private function deleteAssetsExceptLogos(): void
     {
         Asset::whereContainer('assets')
-            ->reject(fn ($asset): bool => $asset->folder() === 'logos')
-            ->each(fn ($asset) => $asset->delete());
+            ->reject(fn (AssetContract $asset): bool => $asset->folder() === 'logos')
+            ->each(fn (AssetContract $asset) => $asset->delete());
 
         info('Deleted demo assets (preserved logos).');
     }
