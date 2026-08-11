@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Statamic\Facades\Fieldset;
 use Tests\TestCase;
 
 /*
@@ -58,15 +59,24 @@ function bedrockTestScratchPath(): string
 }
 
 /**
- * Provision an isolated scaffold workspace (fieldsets + views) and rebind the
- * statamic.bedrock.scaffold.* config so the commands under test write into it. The real
- * `blocks.yaml` / `article.yaml` are copied in as seeds so commands have the
- * usual group structure to operate against.
+ * Fieldsets directory the Statamic fieldset repository points at during
+ * scaffold tests.
+ */
+function bedrockTestFieldsetsPath(): string
+{
+    return bedrockTestScratchPath().'/fieldsets';
+}
+
+/**
+ * Provision an isolated scaffold workspace (fieldsets + views), point the
+ * Statamic fieldset repository at it, and rebind the statamic.bedrock.scaffold.*
+ * config so the commands under test write into it. The real fieldsets are
+ * copied in as seeds so fieldset imports keep resolving.
  */
 function setUpBedrockScaffoldPaths(): void
 {
     $scratch = bedrockTestScratchPath();
-    $fieldsets = "{$scratch}/fieldsets";
+    $fieldsets = bedrockTestFieldsetsPath();
     $blocksViews = "{$scratch}/views/blocks";
     $setsViews = "{$scratch}/views/sets";
 
@@ -76,11 +86,11 @@ function setUpBedrockScaffoldPaths(): void
         }
     }
 
-    copy(resource_path('fieldsets/blocks.yaml'), "{$fieldsets}/blocks.yaml");
-    copy(resource_path('fieldsets/article.yaml'), "{$fieldsets}/article.yaml");
+    File::copyDirectory(resource_path('fieldsets'), $fieldsets);
+
+    Fieldset::setDirectory($fieldsets);
 
     config([
-        'statamic.bedrock.scaffold.fieldsets_path' => $fieldsets,
         'statamic.bedrock.scaffold.blocks_views_path' => $blocksViews,
         'statamic.bedrock.scaffold.sets_views_path' => $setsViews,
     ]);

@@ -9,11 +9,14 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Entry as EntryFacade;
+use Statamic\Facades\Fieldset;
 use Statamic\Facades\Stache;
 use Statamic\Facades\YAML;
+use Statamic\Fields\Fieldset as FieldsetInstance;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
@@ -82,10 +85,8 @@ final class RemoveSeoCommand extends Command
      */
     private function seoFieldHandles(): array
     {
-        return collect(self::SEO_FIELDSETS)
-            ->map(fn (string $fieldset): string => $this->fieldsetPath($fieldset))
-            ->filter(fn (string $path): bool => $this->files->exists($path))
-            ->flatMap(fn (string $path): array => Arr::get(YAML::file($path)->parse(), 'fields', []))
+        return $this->seoFieldsets()
+            ->flatMap(fn (FieldsetInstance $fieldset): array => Arr::get($fieldset->contents(), 'fields', []))
             ->pluck('handle')
             ->filter()
             ->values()
@@ -134,20 +135,30 @@ final class RemoveSeoCommand extends Command
 
     private function deleteSeoFiles(): void
     {
-        $paths = collect(self::SEO_FIELDSETS)
-            ->map(fn (string $fieldset): string => $this->fieldsetPath($fieldset))
-            ->push(
-                $this->resourcePath('blueprints/globals/seo.yaml'),
-                $this->contentPath('globals/seo.yaml'),
-                $this->contentPath('seo.yaml'),
-                $this->resourcePath('views/partials/seo.antlers.html'),
-                $this->resourcePath('views/partials/fallback-description.antlers.html'),
-                $this->resourcePath('views/partials/cookie-dialog.antlers.html'),
-                $this->resourcePath('js/components/cookieDialog.js'),
-            )
-            ->merge($this->files->glob($this->contentPath('globals/*/seo.yaml')));
+        $this->seoFieldsets()->each(fn (FieldsetInstance $fieldset) => $fieldset->deleteQuietly());
+
+        $paths = collect([
+            $this->resourcePath('blueprints/globals/seo.yaml'),
+            $this->contentPath('globals/seo.yaml'),
+            $this->contentPath('seo.yaml'),
+            $this->resourcePath('views/partials/seo.antlers.html'),
+            $this->resourcePath('views/partials/fallback-description.antlers.html'),
+            $this->resourcePath('views/partials/cookie-dialog.antlers.html'),
+            $this->resourcePath('js/components/cookieDialog.js'),
+        ])->merge($this->files->glob($this->contentPath('globals/*/seo.yaml')));
 
         $this->files->delete($paths->all());
+    }
+
+    /**
+     * @return Collection<int, FieldsetInstance>
+     */
+    private function seoFieldsets(): Collection
+    {
+        return collect(self::SEO_FIELDSETS)
+            ->map(fn (string $handle): ?FieldsetInstance => Fieldset::find($handle))
+            ->filter()
+            ->values();
     }
 
     private function removeSeoTabFromBlueprints(): void
@@ -240,11 +251,6 @@ final class RemoveSeoCommand extends Command
     {
         warning('The cookie-consent dialog and analytics trackers were removed; re-add them separately if needed.');
         info('Next: install your SEO addon (e.g. `composer require statamic/seo-pro`) and add its meta tag in layout.antlers.html where the SEO partial used to be.');
-    }
-
-    private function fieldsetPath(string $handle): string
-    {
-        return config('statamic.bedrock.scaffold.fieldsets_path')."/{$handle}.yaml";
     }
 
     private function basePath(): string

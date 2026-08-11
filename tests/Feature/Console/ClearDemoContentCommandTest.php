@@ -2,8 +2,6 @@
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Laravel\Prompts\ConfirmPrompt;
-use Laravel\Prompts\Prompt;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Asset;
 use Statamic\Facades\AssetContainer;
@@ -13,12 +11,6 @@ use Statamic\Facades\GlobalVariables;
 use Statamic\Facades\Nav;
 use Statamic\Facades\Site;
 use Statamic\Facades\Term;
-
-beforeAll(function (): void {
-    // Auto-confirm prompts for destructive actions.
-    Prompt::fallbackWhen(true);
-    ConfirmPrompt::fallbackUsing(fn (): true => true);
-});
 
 beforeEach(function (): void {
     // Backup the entire content directory so we can restore it after the test.

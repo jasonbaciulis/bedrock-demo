@@ -1,21 +1,10 @@
 <?php
 
-use App\Console\Commands\Scaffold\Yaml\BlocksYaml;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use Laravel\Prompts\ConfirmPrompt;
-use Laravel\Prompts\Prompt;
 use Statamic\Facades\Config as StatamicConfig;
 use Statamic\Facades\Entry;
 use Statamic\Facades\YAML;
-
-beforeAll(function (): void {
-    // Always auto-confirm prompts in tests, except for optional group move.
-    Prompt::fallbackWhen(true);
-    ConfirmPrompt::fallbackUsing(
-        fn (ConfirmPrompt $prompt): bool => ! Str::contains(strtolower($prompt->label()), 'move this block to a different group')
-    );
-});
 
 beforeEach(function (): void {
     setUpBedrockScaffoldPaths();
@@ -48,9 +37,9 @@ test('rename:bedrock-block renames files and updates blocks.yaml', function (): 
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    $originalFieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$originalFieldset}.yaml";
+    $originalFieldsetPath = bedrockTestFieldsetsPath()."/{$originalFieldset}.yaml";
     $originalViewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$originalView}.antlers.html";
-    $newFieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$newFieldset}.yaml";
+    $newFieldsetPath = bedrockTestFieldsetsPath()."/{$newFieldset}.yaml";
     $newViewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$newView}.antlers.html";
 
     // Verify original files exist
@@ -71,13 +60,13 @@ test('rename:bedrock-block renames files and updates blocks.yaml', function (): 
         ->and($newFieldsetPath)->toBeFile()
         ->and($newViewPath)->toBeFile();
 
-    // Verify blocks.yaml is updated using BlocksYaml class
-    $blocks = resolve(BlocksYaml::class);
-    $sets = $blocks->sets($group);
+    // Verify blocks.yaml is updated
+    $blocksYaml = YAML::file(bedrockTestFieldsetsPath().'/blocks.yaml')->parse();
+    $sets = collect($blocksYaml['fields'])->firstWhere('handle', 'blocks')['field']['sets'][$group]['sets'];
 
     expect(isset($sets[$originalFieldset]))->toBeFalse()
         ->and(isset($sets[$newFieldset]))->toBeTrue()
-        ->and($sets[$newFieldset])->toBe($newName);
+        ->and($sets[$newFieldset]['display'])->toBe($newName);
 
     // Fieldset title should be updated
     $data = YAML::file($newFieldsetPath)->parse();
@@ -163,12 +152,14 @@ test('rename:bedrock-block fails when target files exist without --force', funct
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    // Rename should fail without --force
+    // Rename should fail without --force, after the confirmation
     $this->artisan('rename:bedrock-block', [
         'group' => $group,
         'current_name' => $originalFieldset,
         'new_name' => $newName,
-    ])->assertExitCode(Command::FAILURE);
+    ])
+        ->expectsConfirmation("Rename block '{$originalName}' to '{$newName}'? This will update all content entries.", 'yes')
+        ->assertExitCode(Command::FAILURE);
 });
 
 test('rename:bedrock-block fails when source block does not exist', function (): void {

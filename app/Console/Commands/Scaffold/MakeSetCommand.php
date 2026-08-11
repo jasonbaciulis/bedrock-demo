@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Scaffold;
 
-use App\Console\Commands\Scaffold\Actions\MakeScaffold;
-use App\Console\Commands\Scaffold\Targets\ArticleSetTarget;
+use App\Console\Commands\Scaffold\Actions\CreateScaffoldFiles;
+use App\Console\Commands\Scaffold\Enums\ScaffoldType;
+use App\Console\Commands\Scaffold\Support\ScaffoldName;
+use App\Console\Commands\Scaffold\Support\ScaffoldPrompts;
+use App\Console\Commands\Scaffold\Support\ScaffoldRegistry;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
+use RuntimeException;
+
+use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
 
 #[Description('Create a new Statamic Article set.')]
 #[Signature('make:bedrock-set
@@ -19,13 +25,66 @@ use Illuminate\Filesystem\Filesystem;
         {--force : Overwrite existing files}')]
 final class MakeSetCommand extends Command
 {
-    public function handle(Filesystem $files, ArticleSetTarget $target): int
+    private const ScaffoldType TYPE = ScaffoldType::ArticleSet;
+
+    private ScaffoldRegistry $scaffoldRegistry;
+
+    private ScaffoldPrompts $prompts;
+
+    public function handle(CreateScaffoldFiles $createScaffoldFiles): int
     {
-        return new MakeScaffold($files, $target, namePlaceholder: 'e.g. Gallery')->handle(
-            group: $this->argument('group'),
-            name: $this->argument('name'),
-            instructions: $this->option('instructions'),
-            force: (bool) $this->option('force'),
-        );
+        $this->scaffoldRegistry = new ScaffoldRegistry(self::TYPE);
+        $this->prompts = new ScaffoldPrompts(self::TYPE);
+
+        $groups = $this->scaffoldRegistry->groups();
+        if ($groups === []) {
+            error("No groups found in {$this->scaffoldRegistry->fileName()}.");
+
+            return self::FAILURE;
+        }
+
+        $group = $this->resolveGroup($groups);
+        $name = ScaffoldName::fromDisplay($this->resolveName($group));
+        $instructions = $this->resolveInstructions();
+
+        try {
+            $createScaffoldFiles->handle(self::TYPE, $name, (bool) $this->option('force'));
+            $this->registerInGroup($group, $name, $instructions);
+        } catch (RuntimeException $runtimeException) {
+            error($runtimeException->getMessage());
+
+            return self::FAILURE;
+        }
+
+        info("Created '{$name->display}' set in '{$groups[$group]}' group.");
+
+        return self::SUCCESS;
+    }
+
+    /**
+     * @param  array<string, string>  $groups
+     */
+    private function resolveGroup(array $groups): string
+    {
+        return $this->argument('group') ?: $this->prompts->newGroup($groups);
+    }
+
+    private function resolveName(string $group): string
+    {
+        return $this->argument('name') ?: $this->prompts->name($group, placeholder: 'e.g. Gallery');
+    }
+
+    private function resolveInstructions(): string
+    {
+        return $this->option('instructions') ?? $this->prompts->instructions();
+    }
+
+    private function registerInGroup(string $group, ScaffoldName $name, string $instructions): void
+    {
+        $this->scaffoldRegistry->add($group, $name->fieldset, [
+            'display' => $name->display,
+            'instructions' => $instructions,
+            'fields' => [['import' => $name->fieldset]],
+        ]);
     }
 }

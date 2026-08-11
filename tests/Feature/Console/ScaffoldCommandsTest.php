@@ -2,23 +2,15 @@
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use Laravel\Prompts\ConfirmPrompt;
-use Laravel\Prompts\Prompt;
 use Statamic\Facades\Config as StatamicConfig;
 use Statamic\Facades\Entry;
 use Statamic\Facades\YAML;
 
-beforeAll(function (): void {
-    // Always auto-confirm destructive prompts in tests.
-    Prompt::fallbackWhen(true);
-    ConfirmPrompt::fallbackUsing(fn (): true => true);
-});
-
 beforeEach(function (): void {
     setUpBedrockScaffoldPaths();
 
-    $this->blocksYamlPath = config('statamic.bedrock.scaffold.fieldsets_path').'/blocks.yaml';
-    $this->articleYamlPath = config('statamic.bedrock.scaffold.fieldsets_path').'/article.yaml';
+    $this->blocksYamlPath = bedrockTestFieldsetsPath().'/blocks.yaml';
+    $this->articleYamlPath = bedrockTestFieldsetsPath().'/article.yaml';
 });
 
 afterEach(function (): void {
@@ -69,7 +61,7 @@ test('make:bedrock-block creates files and updates blocks.yaml', function (): vo
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $fieldsetPath = bedrockTestFieldsetsPath()."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$view}.antlers.html";
 
     expect($fieldsetPath)->toBeFile()
@@ -102,7 +94,7 @@ test('make:bedrock-set creates files and updates article.yaml', function (): voi
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $fieldsetPath = bedrockTestFieldsetsPath()."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.sets_views_path')."/{$view}.antlers.html";
 
     expect($fieldsetPath)->toBeFile()
@@ -164,7 +156,7 @@ test('delete:bedrock-block removes from blocks.yaml and deletes files', function
     );
     expect($hasBlock)->toBeFalse();
 
-    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $fieldsetPath = bedrockTestFieldsetsPath()."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$view}.antlers.html";
 
     expect($fieldsetPath)->not->toBeFile()
@@ -191,7 +183,7 @@ test('delete:bedrock-block with --keep-files removes blocks.yaml but keeps files
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $fieldsetPath = bedrockTestFieldsetsPath()."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.blocks_views_path')."/{$view}.antlers.html";
     expect($fieldsetPath)->toBeFile()
         ->and($viewPath)->toBeFile();
@@ -273,7 +265,7 @@ test('delete:bedrock-set removes from article.yaml and deletes files', function 
     });
     expect($hasSet)->toBeFalse();
 
-    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $fieldsetPath = bedrockTestFieldsetsPath()."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.sets_views_path')."/{$view}.antlers.html";
 
     expect($fieldsetPath)->not->toBeFile()
@@ -300,7 +292,7 @@ test('delete:bedrock-set with --keep-files removes from article.yaml but keeps f
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    $fieldsetPath = config('statamic.bedrock.scaffold.fieldsets_path')."/{$fieldset}.yaml";
+    $fieldsetPath = bedrockTestFieldsetsPath()."/{$fieldset}.yaml";
     $viewPath = config('statamic.bedrock.scaffold.sets_views_path')."/{$view}.antlers.html";
     expect($fieldsetPath)->toBeFile()
         ->and($viewPath)->toBeFile();
@@ -336,18 +328,12 @@ test('delete:bedrock-block with --force skips the confirmation prompt', function
         '--force' => true,
     ])->assertExitCode(Command::SUCCESS);
 
-    // A shown prompt would answer "no" and abort, so success proves the prompt was skipped.
-    ConfirmPrompt::fallbackUsing(fn (): bool => false);
-
-    try {
-        $this->artisan('delete:bedrock-block', [
-            'group' => $group,
-            'block' => $fieldset,
-            '--force' => true,
-        ])->assertExitCode(Command::SUCCESS);
-    } finally {
-        ConfirmPrompt::fallbackUsing(fn (): true => true);
-    }
+    // A shown prompt would hit the output mock without an expectation and fail the test.
+    $this->artisan('delete:bedrock-block', [
+        'group' => $group,
+        'block' => $fieldset,
+        '--force' => true,
+    ])->assertExitCode(Command::SUCCESS);
 
     $data = parseYaml($this->blocksYamlPath);
     $idx = findFieldIndexByHandle($data, 'blocks');

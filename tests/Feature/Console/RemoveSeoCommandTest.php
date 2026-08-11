@@ -2,22 +2,15 @@
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Laravel\Prompts\ConfirmPrompt;
-use Laravel\Prompts\Prompt;
 use Statamic\Facades\Entry;
+use Statamic\Facades\Fieldset;
 use Statamic\Facades\YAML;
-
-beforeAll(function (): void {
-    // Always auto-confirm destructive prompts in tests.
-    Prompt::fallbackWhen(true);
-    ConfirmPrompt::fallbackUsing(fn (): true => true);
-});
 
 beforeEach(function (): void {
     setUpSeoRemovalScratch();
 
     $this->base = bedrockSeoScratchBase();
-    $this->fieldsetsPath = config('statamic.bedrock.scaffold.fieldsets_path');
+    $this->fieldsetsPath = bedrockSeoScratchBase().'/resources/fieldsets';
 
     // Test-only handles so entry stripping only touches the seeded entry,
     // never real demo content.
@@ -97,11 +90,13 @@ function setUpSeoRemovalScratch(): void
         File::copy($source, $destination);
     }
 
-    File::ensureDirectoryExists("{$base}/resources/fieldsets");
+    // The command deletes fieldsets through the Fieldset facade, so point the
+    // repository at a full scratch copy to keep fieldset imports resolving.
+    File::copyDirectory(base_path('resources/fieldsets'), "{$base}/resources/fieldsets");
+    Fieldset::setDirectory("{$base}/resources/fieldsets");
 
     config([
         'statamic.bedrock.seo_removal.base_path' => $base,
-        'statamic.bedrock.scaffold.fieldsets_path' => "{$base}/resources/fieldsets",
     ]);
 }
 
