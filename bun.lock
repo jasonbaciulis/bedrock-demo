@@ -4,17 +4,17 @@
   "workspaces": {
     "": {
       "devDependencies": {
-        "@alpinejs/anchor": "^3.15.12",
-        "@alpinejs/collapse": "^3.15.12",
-        "@alpinejs/focus": "^3.15.12",
-        "@alpinejs/intersect": "^3.15.12",
-        "@alpinejs/mask": "^3.15.12",
-        "@alpinejs/persist": "^3.15.12",
+        "@alpinejs/anchor": "^3.16.0",
+        "@alpinejs/collapse": "^3.16.0",
+        "@alpinejs/focus": "^3.16.0",
+        "@alpinejs/intersect": "^3.16.0",
+        "@alpinejs/mask": "^3.16.0",
+        "@alpinejs/persist": "^3.16.0",
         "@eslint/js": "^10.0.1",
         "@tailwindcss/forms": "^0.5.11",
         "@tailwindcss/typography": "^0.5.20",
         "@tailwindcss/vite": "^4.3.3",
-        "alpinejs": "^3.15.12",
+        "alpinejs": "^3.16.0",
         "concurrently": "^10.0.4",
         "embla-carousel": "^8.6.0",
         "eslint-config-prettier": "^10.1.8",
@@ -35,17 +35,17 @@
     },
   },
   "packages": {
-    "@alpinejs/anchor": ["@alpinejs/anchor@3.15.12", "", { "dependencies": { "@floating-ui/dom": "^1.5.3" } }, "sha512-8G9QGvWo9N+J16dEgbaXYIlxe8lWo25uNHhoAONZSDj1av+1VfIgU9FB4q+h6me0D/+7NqY+dw9OlIAAHQv4wg=="],
+    "@alpinejs/anchor": ["@alpinejs/anchor@3.16.0", "", { "dependencies": { "@floating-ui/dom": "^1.5.3" } }, "sha512-q4CcSaWCTzQRRyoXQgIEeR158Qqw1UgF8orxpw3oFcVLGgyEdUUGggFVZInKK5+0GHlbHswyV4baSl5kWMnoBA=="],
 
-    "@alpinejs/collapse": ["@alpinejs/collapse@3.15.12", "", {}, "sha512-BKNANLtNXuWYOSAnajSKLPjTsmHRNrv0ALFTbpmqt2/klHFooPhctSwkhFVPQb7rZ8BjEKHmNaBwnSbgtpk6xg=="],
+    "@alpinejs/collapse": ["@alpinejs/collapse@3.16.0", "", {}, "sha512-qXgeb99MhITdjd46SIDU0UuiArYGzpEyyr5t0XJlrqvBgURO/U16yxHN+x/L2AJnHGxfHfiBl4Fy77xPdJ08Ww=="],
 
-    "@alpinejs/focus": ["@alpinejs/focus@3.15.12", "", { "dependencies": { "focus-trap": "^8.0.0", "tabbable": "^6.4.0" } }, "sha512-lmqbFTlbQGywDgsW4dY0pv18CKhuHJrq8mffU1OO14J34uUk+lCQElmSgJdRGHYv9qBezE6zdvmhN6n2tg0A1A=="],
+    "@alpinejs/focus": ["@alpinejs/focus@3.16.0", "", { "dependencies": { "focus-trap": "^8.0.0", "tabbable": "^6.4.0" } }, "sha512-vzvavboGOgXt7pD4xzEZVc+mJevdOxGYGTbE9ymne1BONKoKo0QZGwFHz1Nc45q9igZ2LF1rabk8o62zERfQxg=="],
 
-    "@alpinejs/intersect": ["@alpinejs/intersect@3.15.12", "", {}, "sha512-B2AlMDgx4xlRQjpDHO9SZrYur5cZkPZK0K6uY4Se+MmdePhIQ8m36gHGe0UKIYkFQkBGhVhPICGVoMYpSSYMWg=="],
+    "@alpinejs/intersect": ["@alpinejs/intersect@3.16.0", "", {}, "sha512-DfXIJ9QBgHpjj8TAd2NGQRymU7fgn8ix0P5YZKF6INwuEHA1kQmrhbrDVp/OywJSWi2dUy91iWkl33nYROFkdw=="],
 
-    "@alpinejs/mask": ["@alpinejs/mask@3.15.12", "", {}, "sha512-FcOVQp+tsIiBeNwWsH1BjAhJa+R/b6Tv6sPfSMRZlp1e/4w4H44Kagd9Aq86xpFgeI5dibJil2TG0+3LqB4JoA=="],
+    "@alpinejs/mask": ["@alpinejs/mask@3.16.0", "", {}, "sha512-woyMnaNIWVNqSNZzISqKyePZJMitHjtal0z8OTWlrQTfHKi1MyaGGSjq4aHPj+uZtPZck5n3/8Y35UlOXW8Lbg=="],
 
-    "@alpinejs/persist": ["@alpinejs/persist@3.15.12", "", {}, "sha512-vzDRf/3r8B5ihHvLYUkkg+XbJz4nNst+5jR5BM4Uff3BhdRenJlXKFnd3kYbM2Z/KCU65zg5neqOVhbNpytZ9A=="],
+    "@alpinejs/persist": ["@alpinejs/persist@3.16.0", "", {}, "sha512-7zRK6/V1m+RQAdGB/JhJdirxcFHn5A74okPyjCxynJV4tU+fFqOMEuz4xHG6EI02sm3/zzi3Z30HTcbN97Bxfw=="],
 
     "@eslint-community/eslint-utils": ["@eslint-community/eslint-utils@4.10.1", "", { "dependencies": { "eslint-visitor-keys": "^3.4.3" }, "peerDependencies": { "eslint": "^6.0.0 || ^7.0.0 || >=8.0.0" } }, "sha512-cuadcxVFE8sDK6iWJbs8Sn0av2Nrh2QSGQhVlBW9AaAHqHwjWsZHT8LJ4hFGPh7ASBV2deFdM7H/DPjulmh8rg=="],
 
@@ -175,7 +175,7 @@
 
     "ajv": ["ajv@6.15.0", "", { "dependencies": { "fast-deep-equal": "^3.1.1", "fast-json-stable-stringify": "^2.0.0", "json-schema-traverse": "^0.4.1", "uri-js": "^4.2.2" } }, "sha512-fgFx7Hfoq60ytK2c7DhnF8jIvzYgOMxfugjLOSMHjLIPgenqa7S7oaagATUq99mV6IYvN2tRmC0wnTYX6iPbMw=="],
 
-    "alpinejs": ["alpinejs@3.15.12", "", { "dependencies": { "@vue/reactivity": "~3.1.1" } }, "sha512-nJvPAQVNPdZZ0NrExJ/kzQco3ijR8LwvCOadQecllESiqT4NyZ/57sN9V2XyvhlBGAbmlKYgeWZvYdKq99ij/Q=="],
+    "alpinejs": ["alpinejs@3.16.0", "", { "dependencies": { "@vue/reactivity": "~3.1.1" } }, "sha512-fRAp17Igmh2NHvgRGOY8n/x9o/g8rlseVn27awaq3wy7IsNYfu0lKnQGHn4WQx+NdjnpQFajhRiULah+R1Nsog=="],
 
     "ansi-regex": ["ansi-regex@6.2.2", "", {}, "sha512-Bq3SmSpyFHaWjPk8If9yc6svM8c56dB5BAtW4Qbw5jHTwwXXcTLoRMkpDJp6VL0XzlWaCHTXrkFURMYmD0sLqg=="],
 
