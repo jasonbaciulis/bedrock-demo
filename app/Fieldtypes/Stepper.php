@@ -8,12 +8,18 @@ use Statamic\Fields\Fieldtype;
 
 final class Stepper extends Fieldtype
 {
+    /** @var list<string> */
     protected $categories = ['number'];
 
+    /** @var bool */
     protected $selectableInForms = true;
 
+    /** @var string */
     protected $icon = 'integer';
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     public function configFieldItems(): array
     {
         return [

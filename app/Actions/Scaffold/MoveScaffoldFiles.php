@@ -27,10 +27,10 @@ final readonly class MoveScaffoldFiles
     {
         $this->assertWritable($type, $new, $force);
 
-        return collect([
+        return array_values(collect([
             $this->moveFieldset($currentFieldset, $new),
             $this->moveView($type, $currentView, $new),
-        ])->filter()->values()->all();
+        ])->filter()->all());
     }
 
     /**

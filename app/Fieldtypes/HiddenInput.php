@@ -8,14 +8,19 @@ use Statamic\Fields\Fieldtype;
 
 final class HiddenInput extends Fieldtype
 {
+    /** @var string */
     protected static $title = 'Hidden Input';
 
+    /** @var bool */
     protected $selectable = false;
 
+    /** @var bool */
     protected $selectableInForms = true;
 
+    /** @var list<string> */
     protected $categories = ['text'];
 
+    /** @var string */
     protected $icon = 'fieldtype-hidden';
 
     public function component(): string
@@ -23,6 +28,9 @@ final class HiddenInput extends Fieldtype
         return 'text';
     }
 
+    /**
+     * @return array<string, array<string, string>>
+     */
     public function configFieldItems(): array
     {
         return [

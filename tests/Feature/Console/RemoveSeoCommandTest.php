@@ -1,7 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\File;
-use Statamic\Facades\Entry;
 use Statamic\Facades\Fieldset;
 use Statamic\Facades\YAML;
 use Tests\Feature\Console\Support\Scratch;
@@ -211,10 +212,9 @@ test('bedrock:remove-seo cleans template and build references', function (): voi
 test('bedrock:remove-seo strips seo keys from existing entries', function (): void {
     $this->artisan('bedrock:remove-seo', ['--force' => true])->assertSuccessful();
 
-    $entry = Entry::find($this->entryId);
+    $entry = TestEntry::fresh($this->entryId);
 
-    expect($entry)->not->toBeNull()
-        ->and($entry->has($this->seoTitleHandle))->toBeFalse()
-        ->and($entry->has($this->ogImageHandle))->toBeFalse()
-        ->and($entry->get('title'))->toBe('Test Page');
+    expect($entry->data()->all())
+        ->not->toHaveKeys([$this->seoTitleHandle, $this->ogImageHandle])
+        ->toHaveKey('title', 'Test Page');
 });

@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Contracts\Entries\Entry;
+use Statamic\Contracts\Structures\Nav as NavContract;
 use Statamic\Facades\Asset;
 use Statamic\Facades\Entry as EntryFacade;
 use Statamic\Facades\GlobalVariables;
@@ -14,6 +17,7 @@ use Statamic\Facades\Term;
 use Statamic\Stache\Stores\Store;
 use Symfony\Component\Finder\SplFileInfo;
 use Tests\Feature\Console\Support\Scratch;
+use Tests\Feature\Console\Support\TestEntry;
 
 beforeEach(function (): void {
     $this->realContentPath = base_path('content');
@@ -29,7 +33,7 @@ beforeEach(function (): void {
     pointStatamicAtScratchContent($this->contentPath, $this->assetsPath);
 
     // The command deletes content, so prove the repoint took effect before it runs.
-    expect(Stache::store('entries')->directory())->not->toStartWith($this->realContentPath);
+    expect(Str::startsWith(Stache::store('entries')->directory(), $this->realContentPath))->toBeFalse();
 });
 
 afterEach(function (): void {
@@ -150,7 +154,9 @@ function seededDemoState(): Entry
     }
 
     expect(Nav::all()->flatMap(
-        fn ($nav) => Site::all()->map->handle()->map(fn (string $siteHandle) => $nav->in($siteHandle)?->tree() ?? [])
+        fn (NavContract $nav): Collection => Site::all()->map->handle()->map(
+            fn (string $siteHandle): array => $nav->in($siteHandle)?->tree() ?? []
+        )
     )->flatten()->count())->toBeGreaterThan(0);
 
     return seedHomeEntryFields();
@@ -165,13 +171,11 @@ test('bedrock:clear removes demo content while preserving the home entry', funct
     expect($remaining->count())->toBe(1)
         ->and($remaining->first()->id())->toBe($home->id());
 
-    $freshHome = EntryFacade::find($home->id());
-    expect($freshHome->get('blocks'))->toBeNull()
-        ->and($freshHome->get('seo_title'))->toBeNull()
-        ->and($freshHome->get('seo_description'))->toBeNull()
-        ->and($freshHome->get('og_image'))->toBeNull()
-        ->and($freshHome->get('twitter_image'))->toBeNull()
-        ->and($freshHome->get('title'))->not->toBeNull();
+    $freshHome = TestEntry::fresh($home->id());
+
+    expect($freshHome->data()->all())
+        ->not->toHaveKeys(['blocks', 'seo_title', 'seo_description', 'og_image', 'twitter_image'])
+        ->toHaveKey('title');
 });
 
 test('bedrock:clear empties navigation trees, category terms and selected globals', function (): void {

@@ -6,6 +6,7 @@ namespace Tests\Feature\Console\Support;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use RuntimeException;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Entry as EntryFacade;
 
@@ -31,6 +32,18 @@ final class TestEntry
         $entry->slug($id);
         $entry->data($data);
         $entry->save();
+
+        return $entry;
+    }
+
+    /**
+     * Re-read an entry from the Stache after a command has changed it.
+     */
+    public static function fresh(string $id): Entry
+    {
+        $entry = EntryFacade::find($id);
+
+        throw_unless($entry instanceof Entry, RuntimeException::class, "Entry '{$id}' no longer exists.");
 
         return $entry;
     }

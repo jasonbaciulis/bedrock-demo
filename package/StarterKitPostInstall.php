@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 
-class StarterKitPostInstall
+final class StarterKitPostInstall
 {
     public function handle($console): void
     {
@@ -14,7 +16,7 @@ class StarterKitPostInstall
         $this->starRepo();
     }
 
-    protected function mergeComposerScripts(): void
+    private function mergeComposerScripts(): void
     {
         $path = getcwd().'/composer.json';
 
@@ -33,7 +35,7 @@ class StarterKitPostInstall
     /**
      * @return array<string, string|array<int, string>>
      */
-    protected function customScripts(): array
+    private function customScripts(): array
     {
         return [
             'dev' => [
@@ -61,7 +63,7 @@ class StarterKitPostInstall
             ],
             'test:type-coverage' => 'pest --type-coverage --min=100',
             'test:types' => 'phpstan',
-            'test:unit' => 'pest --parallel --exclude-testsuite=Browser',
+            'test:unit' => 'XDEBUG_MODE="coverage" pest --parallel --exclude-testsuite=Browser --coverage --exactly=100.0',
             'test:browser' => 'pest --testsuite=Browser',
             'test' => [
                 '@test:lint',
@@ -73,7 +75,7 @@ class StarterKitPostInstall
         ];
     }
 
-    protected function starRepo(): void
+    private function starRepo(): void
     {
         if (! confirm('Would you like to star the Bedrock repo?')) {
             return;

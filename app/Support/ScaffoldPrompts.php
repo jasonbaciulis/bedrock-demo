@@ -23,7 +23,7 @@ final readonly class ScaffoldPrompts
      */
     public function newGroup(array $groups): string
     {
-        return select(label: "Which group should this {$this->type->noun()} belong to?", options: $groups, required: true);
+        return (string) select(label: "Which group should this {$this->type->noun()} belong to?", options: $groups, required: true);
     }
 
     /**
@@ -31,7 +31,7 @@ final readonly class ScaffoldPrompts
      */
     public function existingGroup(array $groups): string
     {
-        return select(label: "Which group contains the {$this->type->noun()}?", options: $groups, required: true);
+        return (string) select(label: "Which group contains the {$this->type->noun()}?", options: $groups, required: true);
     }
 
     public function name(string $groupHandle, string $placeholder): string
@@ -57,7 +57,7 @@ final readonly class ScaffoldPrompts
      */
     public function setToDelete(array $sets): string
     {
-        return select(label: "Which {$this->type->noun()} would you like to delete?", options: $sets, required: true);
+        return (string) select(label: "Which {$this->type->noun()} would you like to delete?", options: $sets, required: true);
     }
 
     /**
@@ -65,7 +65,7 @@ final readonly class ScaffoldPrompts
      */
     public function setToRename(array $sets): string
     {
-        return select(label: "Which {$this->type->noun()} would you like to rename?", options: $sets, required: true);
+        return (string) select(label: "Which {$this->type->noun()} would you like to rename?", options: $sets, required: true);
     }
 
     public function newName(string $placeholder): string
@@ -86,7 +86,7 @@ final readonly class ScaffoldPrompts
             return $currentGroup;
         }
 
-        return select(label: 'Select the new group', options: $groups, required: true);
+        return (string) select(label: 'Select the new group', options: $groups, required: true);
     }
 
     public function confirmsDeletion(string $label, string $groupLabel, bool $keepFiles, string $fileName): bool

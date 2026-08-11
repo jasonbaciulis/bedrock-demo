@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Console\Support;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Config;
@@ -100,12 +101,14 @@ enum ScaffoldFixture
         $display = 'Scaffold Test '.Str::random(6);
         [$fieldset, $view] = self::handles($display);
 
-        test()->artisan($this->command('make'), [
+        $exitCode = Artisan::call($this->command('make'), [
             'group' => $this->group(),
             'name' => $display,
             '--instructions' => 'Test instructions',
             '--force' => true,
-        ])->assertSuccessful();
+        ]);
+
+        expect($exitCode)->toBe(0);
 
         return [$display, $fieldset, $view];
     }
@@ -135,7 +138,7 @@ enum ScaffoldFixture
         $parent = YAML::file($this->parentFieldsetPath())->parse();
 
         return Arr::get(
-            collect($parent['fields'])->firstWhere('handle', $this->entryField()),
+            collect((array) $parent['fields'])->firstWhere('handle', $this->entryField()),
             "field.sets.{$this->group()}.sets",
             [],
         );

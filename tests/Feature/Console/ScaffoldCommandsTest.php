@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Statamic\Facades\Entry;
 use Statamic\Facades\YAML;
 use Tests\Feature\Console\Support\ScaffoldFixture;
 use Tests\Feature\Console\Support\Scratch;
@@ -23,12 +24,12 @@ test('make creates the files and declares the set in the parent fieldset', funct
     expect($scaffold->fieldsetPath($fieldset))->toBeFile()
         ->and($scaffold->viewPath($view))->toBeFile();
 
-    $declared = $scaffold->declaredSets()[$fieldset] ?? null;
+    $declared = $scaffold->declaredSets()[$fieldset] ?? [];
 
-    expect($declared)->not->toBeNull()
-        ->and($declared['display'])->toBe($name)
-        ->and($declared['instructions'])->toBe('Test instructions')
-        ->and($declared['fields'][0]['import'])->toBe($fieldset);
+    expect($declared)->not->toBeEmpty()
+        ->and($declared['display'] ?? null)->toBe($name)
+        ->and($declared['instructions'] ?? null)->toBe('Test instructions')
+        ->and($declared['fields'][0]['import'] ?? null)->toBe($fieldset);
 })->with('scaffolds');
 
 test('make without --force fails when the files already exist', function (ScaffoldFixture $scaffold): void {
@@ -93,7 +94,7 @@ test('delete removes the declaration, the files and the entry usages', function 
         ->expectsConfirmation("Delete '{$name}' from '{$scaffold->groupDisplay()}' group?", 'yes')
         ->assertSuccessful();
 
-    $updated = Entry::find($entry->id());
+    $updated = TestEntry::fresh($entry->id());
 
     expect($updated)->not->toBeNull()
         ->and($scaffold->usedHandles($updated))->not->toContain($fieldset)

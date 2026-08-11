@@ -32,11 +32,11 @@ final readonly class ScaffoldRegistry
      */
     public function setsIn(string $groupHandle): array
     {
-        $root = $this->groupsRoot($this->contents());
+        $contents = $this->contents();
 
-        throw_unless(array_key_exists($groupHandle, $root), RuntimeException::class, "Group '{$groupHandle}' not found in {$this->fileName()}.");
+        throw_unless(array_key_exists($groupHandle, $this->groupsRoot($contents)), RuntimeException::class, "Group '{$groupHandle}' not found in {$this->fileName()}.");
 
-        return $this->labelsFromConfig(Arr::get($root[$groupHandle], 'sets', []));
+        return $this->labelsFromConfig($this->setsOf($contents, $groupHandle));
     }
 
     /**
@@ -112,37 +112,70 @@ final readonly class ScaffoldRegistry
         return $fieldset;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function contents(): array
     {
         return $this->fieldset()->contents();
     }
 
+    /**
+     * @param  array<string, mixed>  $contents
+     */
     private function write(array $contents): void
     {
         $this->fieldset()->setContents($contents)->saveQuietly();
     }
 
+    /**
+     * @param  array<string, mixed>  $contents
+     * @param  array<string, mixed>  $set
+     * @return array<string, mixed>
+     */
     private function withSet(array $contents, string $groupHandle, string $setHandle, array $set): array
     {
-        $sets = collect(Arr::get($this->groupsRoot($contents)[$groupHandle], 'sets', []))->put($setHandle, $set);
+        $sets = collect($this->setsOf($contents, $groupHandle))->put($setHandle, $set);
 
         return $this->updateGroupSets($contents, $groupHandle, $this->sortKeysNaturally($sets->all()));
     }
 
+    /**
+     * @param  array<string, mixed>  $contents
+     * @return array<string, mixed>
+     */
     private function withoutSet(array $contents, string $groupHandle, string $setHandle): array
     {
-        $sets = collect(Arr::get($this->groupsRoot($contents)[$groupHandle], 'sets', []))->except($setHandle);
+        $sets = collect($this->setsOf($contents, $groupHandle))->except($setHandle);
 
         return $this->updateGroupSets($contents, $groupHandle, $this->sortKeysNaturally($sets->all()));
     }
 
+    /**
+     * @param  array<string, mixed>  $contents
+     * @return array<string, array<string, mixed>>
+     */
+    private function setsOf(array $contents, string $groupHandle): array
+    {
+        return (array) Arr::get($this->groupsRoot($contents)[$groupHandle], 'sets', []);
+    }
+
+    /**
+     * @param  array<string, mixed>  $contents
+     * @return array<string, array<string, mixed>>
+     */
     private function groupsRoot(array $contents): array
     {
         $index = $this->groupFieldIndexOrFail($contents);
 
-        return $contents['fields'][$index]['field']['sets'] ?? [];
+        return (array) Arr::get($contents, "fields.{$index}.field.sets", []);
     }
 
+    /**
+     * @param  array<string, mixed>  $contents
+     * @param  array<string, array<string, mixed>>  $sets
+     * @return array<string, mixed>
+     */
     private function updateGroupSets(array $contents, string $groupHandle, array $sets): array
     {
         $index = $this->groupFieldIndexOrFail($contents);
@@ -152,6 +185,9 @@ final readonly class ScaffoldRegistry
         return $contents;
     }
 
+    /**
+     * @param  array<string, mixed>  $contents
+     */
     private function groupFieldIndexOrFail(array $contents): int
     {
         if (! isset($contents['fields']) || ! is_array($contents['fields'])) {
@@ -171,6 +207,10 @@ final readonly class ScaffoldRegistry
         );
     }
 
+    /**
+     * @param  array<string, array<string, mixed>>  $items
+     * @return array<string, array<string, mixed>>
+     */
     private function sortKeysNaturally(array $items): array
     {
         return collect($items)
@@ -178,6 +218,10 @@ final readonly class ScaffoldRegistry
             ->all();
     }
 
+    /**
+     * @param  array<string, array<string, mixed>>  $items
+     * @return array<string, string>
+     */
     private function labelsFromConfig(array $items): array
     {
         return collect($items)

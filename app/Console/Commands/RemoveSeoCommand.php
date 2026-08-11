@@ -85,12 +85,14 @@ final class RemoveSeoCommand extends Command
      */
     private function seoFieldHandles(): array
     {
-        return $this->seoFieldsets()
-            ->flatMap(fn (FieldsetInstance $fieldset): array => Arr::get($fieldset->contents(), 'fields', []))
-            ->pluck('handle')
-            ->filter()
-            ->values()
-            ->all();
+        return array_values(
+            $this->seoFieldsets()
+                ->flatMap(fn (FieldsetInstance $fieldset): array => (array) Arr::get($fieldset->contents(), 'fields', []))
+                ->pluck('handle')
+                ->filter()
+                ->map(fn (mixed $handle): string => (string) $handle)
+                ->all()
+        );
     }
 
     /**

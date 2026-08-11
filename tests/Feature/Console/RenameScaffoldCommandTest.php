@@ -1,7 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
-use Statamic\Facades\Entry;
 use Statamic\Facades\YAML;
 use Tests\Feature\Console\Support\ScaffoldFixture;
 use Tests\Feature\Console\Support\Scratch;
@@ -58,7 +59,7 @@ test('rename updates the entry usages', function (ScaffoldFixture $scaffold): vo
         '--force' => true,
     ])->assertSuccessful();
 
-    $updated = Entry::find($entry->id());
+    $updated = TestEntry::fresh($entry->id());
 
     expect($updated)->not->toBeNull()
         ->and($scaffold->usedHandles($updated))->not->toContain($fieldset)
