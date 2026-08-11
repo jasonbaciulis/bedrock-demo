@@ -19,7 +19,7 @@ statamic new project_name jasonbaciulis/bedrock
 5. Start Laravel's local dev server, bun run dev, start queue: `composer run dev`
 6. (Optional) Clear demo content: `php artisan bedrock:clear`
 
-Recommended to use [Herd](https://laravel.com/docs/12.x/installation#installation-using-herd) for local dev.
+Recommended to use [Herd](https://laravel.com/docs/13.x/installation#installation-using-herd) for local dev.
 Once you have started the development server with `composer run dev`, the website will be accessible in your web browser at [https://bedrock.test](https://bedrock.test). Head to [https://bedrock.test/cp](https://bedrock.test/cp) and use your email address and password to sign into the Statamic control panel.
 
 ## Tools, libraries and addons used in the project
@@ -29,7 +29,6 @@ Once you have started the development server with `composer run dev`, the websit
 - [Embla](https://www.embla-carousel.com) - A lightweight carousel library with fluid motion and great swipe precision.
 - [Laravel Boost](https://github.com/laravel/boost) - Accelerates AI-assisted development by providing the essential context that AI needs to generate high-quality, Laravel-specific code.
 - [Statamic MCP](https://statamic.com/addons/cboxdk/statamic-mcp) - MCP (Model Context Protocol) server for Statamic that provides AI assistants with structured access to Statamic's capabilities through a modern router-based architecture.
-- [Blade Icons](https://blade-ui-kit.com/blade-icons) - Easily add SVG icons in your Laravel Blade views from icon sets like Heroicons or Lucide.
 
 ## Views folder structure
 ```
