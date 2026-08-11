@@ -30,11 +30,19 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
+      - name: Validate composer.json against composer.lock
+        run: composer validate --no-check-publish
+
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v4
         with:
           dependency-versions: locked
           composer-options: --no-progress --no-interaction --prefer-dist
+
+      # roave/security-advisories only blocks vulnerable packages at install
+      # time, so this catches advisories published against the locked versions.
+      - name: Audit dependencies for security advisories
+        run: composer audit
 
       - name: Cache Bun dependencies
         uses: actions/cache@v6

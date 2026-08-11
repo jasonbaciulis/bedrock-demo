@@ -4,17 +4,19 @@ includes:
     - vendor/pestphp/pest-plugin-phpstan/extension.neon
 
 parameters:
-    level: 5
-
-    tmpDir: /tmp/phpstan
 
     paths:
         - app
+        - bootstrap/app.php
         - config
-        - bootstrap
-        - database/factories
+        - database
+        - public
         - routes
         - tests
+
+    level: 8
+
+    tmpDir: /tmp/phpstan
 
     ignoreErrors:
         -
