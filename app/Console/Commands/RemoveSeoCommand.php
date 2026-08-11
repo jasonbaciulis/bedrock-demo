@@ -225,7 +225,7 @@ final class RemoveSeoCommand extends Command
         $contents = collect($replacements)->reduce(
             function (string $contents, string $replacement, string $search) use ($path): string {
                 if (! Str::contains($contents, $search)) {
-                    warning("No match for '".Str::limit(trim($search), 60)."' in {$path}; remove it manually.");
+                    warning("No match for '".Str::limit(mb_trim($search), 60)."' in {$path}; remove it manually.");
 
                     return $contents;
                 }
