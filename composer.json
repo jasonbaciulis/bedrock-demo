@@ -32,6 +32,7 @@
     "pestphp/pest-plugin-laravel": "^5.0.1",
     "pestphp/pest-plugin-phpstan": "^5.0.2",
     "pestphp/pest-plugin-rector": "^5.0.3",
+    "pestphp/pest-plugin-type-coverage": "^5.0",
     "phpstan/phpstan": "^2.2.8",
     "phpunit/phpunit": "^13.2.6",
     "rector/rector": "^2.6.1"
@@ -95,6 +96,7 @@
       "rector --dry-run",
       "bun run test:lint"
     ],
+    "test:type-coverage": "pest --type-coverage --min=100",
     "test:types": "phpstan",
     "test:unit": [
       "pest --parallel --exclude-testsuite=Browser --exclude-group=console",
@@ -103,6 +105,7 @@
     "test:browser": "pest --testsuite=Browser",
     "test": [
       "@test:lint",
+      "@test:type-coverage",
       "@test:types",
       "@test:unit",
       "@test:browser"
