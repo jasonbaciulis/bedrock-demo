@@ -2,21 +2,11 @@
 
 namespace App\Console\Commands\Scaffold;
 
-use App\Console\Commands\Scaffold\Concerns\ManagesFieldsetFiles;
-use App\Console\Commands\Scaffold\Concerns\UpdatesEntryContent;
-use App\Support\Yaml\BlocksYaml;
+use App\Support\Scaffold\BlockTarget;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Statamic\Facades\Config;
-use Throwable;
-
-use function Laravel\Prompts\confirm;
-use function Laravel\Prompts\info;
-use function Laravel\Prompts\select;
-use function Laravel\Prompts\text;
 
 #[Description('Rename a Statamic page builder block')]
 #[Signature('rename:bedrock-block
@@ -24,132 +14,15 @@ use function Laravel\Prompts\text;
         {current_name? : The current block handle to rename}
         {new_name? : The new block display name}
         {--force : Overwrite existing files}')]
-class RenameBlock extends Command
+final class RenameBlock extends Command
 {
-    use ManagesFieldsetFiles;
-    use UpdatesEntryContent;
-
-    public function __construct(
-        private readonly Filesystem $files,
-        private readonly BlocksYaml $blocks
-    ) {
-        parent::__construct();
-    }
-
-    public function handle(): int
+    public function handle(Filesystem $files, BlockTarget $target): int
     {
-        // 1) Pick group first
-        $groups = $this->blocks->groups();
-        if ($groups === []) {
-            $this->error('No groups found in blocks.yaml.');
-
-            return self::FAILURE;
-        }
-
-        $currentGroup =
-            $this->argument('group') ?:
-            select(label: 'Which group contains the block?', options: $groups, required: true);
-
-        // 2) Then pick the block within the selected group
-        $sets = $this->blocks->sets($currentGroup);
-        if ($sets === []) {
-            info("The '{$groups[$currentGroup]}' group has no blocks.");
-
-            return self::SUCCESS;
-        }
-
-        $currentHandle =
-            $this->argument('current_name') ?:
-            select(label: 'Which block would you like to rename?', options: $sets, required: true);
-
-        // Get new name
-        $newName =
-            $this->argument('new_name') ?:
-            text(
-                label: 'What should the new block name be?',
-                placeholder: 'e.g. Hero Screenshot',
-                required: true
-            );
-
-        // Compute new slugs
-        $locale = Config::getShortLocale();
-        $newView = Str::slug($newName, '-', $locale);
-        $newFieldset = Str::slug($newName, '_', $locale);
-
-        // 3) Optionally choose a new group to move to (skip prompt if args provided)
-        $targetGroup = $currentGroup;
-        $hasArgs = $this->argument('group') && $this->argument('current_name');
-        if (! $hasArgs && confirm('Move this block to a different group?', default: false)) {
-            $targetGroup = select(label: 'Select the new group', options: $groups, required: true);
-        }
-
-        try {
-            $this->assertFilesWritable(
-                $newFieldset,
-                $newView,
-                (bool) $this->option('force'),
-                'blocks'
-            );
-
-            // Derive current display name from the current display label in its group
-            $currentName = $this->blocks->sets($currentGroup)[$currentHandle] ?? null;
-
-            if (
-                ! $this->option('force') &&
-                ! confirm(
-                    "Rename block '{$currentName}' to '{$newName}'? This will update all content entries."
-                )
-            ) {
-                $this->info('Rename cancelled.');
-
-                return self::SUCCESS;
-            }
-
-            $locale = Config::getShortLocale();
-            $originalView = $currentName ? Str::slug($currentName, '-', $locale) : $currentHandle;
-
-            $this->moveFilesFor($currentHandle, $originalView, $newFieldset, $newView, 'blocks');
-            $this->updateFieldsetTitle($newFieldset, $newName);
-            $this->updateBlocksYaml(
-                $currentGroup,
-                $targetGroup,
-                $currentHandle,
-                $newFieldset,
-                $newName
-            );
-            $updatedEntries = $this->renameBlockUsagesInEntries($currentHandle, $newFieldset);
-            if ($updatedEntries > 0) {
-                $this->info(
-                    "Updated {$updatedEntries} content {$this->entriesLabel($updatedEntries)}"
-                );
-            }
-        } catch (Throwable $throwable) {
-            $this->error($throwable->getMessage());
-
-            return self::FAILURE;
-        }
-
-        info("Successfully renamed block '{$currentName}' to '{$newName}'");
-
-        return self::SUCCESS;
-    }
-
-    private function updateBlocksYaml(
-        string $currentGroup,
-        string $targetGroup,
-        string $oldHandle,
-        string $newHandle,
-        string $newName
-    ): void {
-        // Prepare new block data with updated name and import reference
-        $newBlockData = $this->blocks->getSet($currentGroup, $oldHandle);
-        $newBlockData['display'] = $newName;
-        if (isset($newBlockData['fields'][0]['import'])) {
-            $newBlockData['fields'][0]['import'] = $newHandle;
-        }
-
-        // Remove old block and add new one using BlocksYaml methods
-        $this->blocks->removeSet($currentGroup, $oldHandle);
-        $this->blocks->addSet($targetGroup, $newHandle, $newBlockData);
+        return new RenameScaffold($files, $target, namePlaceholder: 'e.g. Hero Screenshot')->run(
+            group: $this->argument('group'),
+            currentHandle: $this->argument('current_name'),
+            newName: $this->argument('new_name'),
+            force: (bool) $this->option('force'),
+        );
     }
 }

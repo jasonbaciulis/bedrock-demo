@@ -39,44 +39,67 @@ class GroupedSetsYaml
     public function addSet(string $groupHandle, string $setHandle, array $set): void
     {
         $data = $this->read();
-        $root = $this->groupsRoot($data);
 
-        throw_unless(isset($root[$groupHandle]), RuntimeException::class, "Group '{$groupHandle}' not found.");
+        throw_unless(isset($this->groupsRoot($data)[$groupHandle]), RuntimeException::class, "Group '{$groupHandle}' not found.");
 
-        $sets = collect(Arr::get($root[$groupHandle], 'sets', []))
-            ->put($setHandle, $set)
-            ->pipe(fn ($collection): array => $this->sortKeysNaturally($collection->all()));
-
-        $data = $this->updateGroupSets($data, $groupHandle, $sets);
-
-        $this->write($data);
+        $this->write($this->withSet($data, $groupHandle, $setHandle, $set));
     }
 
     public function removeSet(string $groupHandle, string $setHandle): void
     {
         $data = $this->read();
+
+        throw_unless(isset($this->groupsRoot($data)[$groupHandle]['sets'][$setHandle]), RuntimeException::class, "Set '{$setHandle}' not found in group '{$groupHandle}'.");
+
+        $this->write($this->withoutSet($data, $groupHandle, $setHandle));
+    }
+
+    /**
+     * Rename a set (optionally moving it to another group) in a single read-modify-write,
+     * so a failure can never leave the set removed but not re-added.
+     */
+    public function renameSet(
+        string $fromGroup,
+        string $toGroup,
+        string $oldHandle,
+        string $newHandle,
+        string $newDisplay
+    ): void {
+        $data = $this->read();
         $root = $this->groupsRoot($data);
 
-        throw_unless(isset($root[$groupHandle]['sets'][$setHandle]), RuntimeException::class, "Set '{$setHandle}' not found in group '{$groupHandle}'.");
+        throw_unless(isset($root[$fromGroup]['sets'][$oldHandle]), RuntimeException::class, "Set '{$oldHandle}' not found in group '{$fromGroup}'.");
+        throw_unless(isset($root[$toGroup]), RuntimeException::class, "Group '{$toGroup}' not found.");
 
-        $sets = collect($root[$groupHandle]['sets'] ?? [])
-            ->except($setHandle)
-            ->pipe(fn ($collection): array => $this->sortKeysNaturally($collection->all()));
+        $set = $root[$fromGroup]['sets'][$oldHandle];
+        $set['display'] = $newDisplay;
+        if (isset($set['fields'][0]['import'])) {
+            $set['fields'][0]['import'] = $newHandle;
+        }
 
-        $data = $this->updateGroupSets($data, $groupHandle, $sets);
+        $data = $this->withoutSet($data, $fromGroup, $oldHandle);
+        $data = $this->withSet($data, $toGroup, $newHandle, $set);
 
         $this->write($data);
     }
 
-    /**
-     * Get the raw set configuration for a given group and set handle.
-     */
-    public function getSet(string $groupHandle, string $setHandle): ?array
+    public function fileName(): string
     {
-        $data = $this->read();
-        $root = $this->groupsRoot($data);
+        return basename($this->path);
+    }
 
-        return $root[$groupHandle]['sets'][$setHandle] ?? null;
+    private function withSet(array $data, string $groupHandle, string $setHandle, array $set): array
+    {
+        $sets = collect(Arr::get($this->groupsRoot($data)[$groupHandle], 'sets', []))->put($setHandle, $set);
+
+        return $this->updateGroupSets($data, $groupHandle, $this->sortKeysNaturally($sets->all()));
+    }
+
+    private function withoutSet(array $data, string $groupHandle, string $setHandle): array
+    {
+        $sets = collect(Arr::get($this->groupsRoot($data)[$groupHandle], 'sets', []))->except($setHandle);
+
+        return $this->updateGroupSets($data, $groupHandle, $this->sortKeysNaturally($sets->all()));
     }
 
     private function groupsRoot(array $data): array

@@ -60,15 +60,16 @@ class ClearDemoContent extends Command
 
     private function findHomeEntry(): ?Entry
     {
-        return EntryFacade::whereCollection('pages')
-            ->filter(fn ($entry): bool => $entry->slug() === 'home')
+        return EntryFacade::query()
+            ->where('collection', 'pages')
+            ->where('slug', 'home')
             ->first();
     }
 
     private function deleteEntries(?string $homeId): void
     {
         EntryFacade::all()
-            ->reject(fn ($entry): bool => $entry->id() === $homeId) // Keep the home page
+            ->reject(fn ($entry): bool => $entry->id() === $homeId)
             ->each(fn ($entry) => $entry->delete());
 
         info('Deleted all entries except home page.');
@@ -90,10 +91,10 @@ class ClearDemoContent extends Command
 
     private function clearAllNavigationTrees(): void
     {
+        $siteHandles = Site::all()->map->handle();
+
         Nav::all()->each(
-            fn ($nav) => Site::all()
-                ->map->handle()
-                ->each(fn ($site) => $nav->in($site)->tree([])->save())
+            fn ($nav) => $siteHandles->each(fn ($site) => $nav->in($site)->tree([])->save())
         );
 
         info('Cleared all navigation trees.');

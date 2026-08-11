@@ -152,6 +152,30 @@ test('bedrock:remove-seo removes the seo tab from collection blueprints', functi
     }
 });
 
+test('bedrock:remove-seo sweeps blueprints and site globals it does not know by name', function (): void {
+    $blueprintPath = "{$this->base}/resources/blueprints/collections/services/service.yaml";
+    File::ensureDirectoryExists(dirname($blueprintPath));
+    File::put($blueprintPath, YAML::dump([
+        'title' => 'Service',
+        'tabs' => [
+            'main' => ['display' => 'Main'],
+            'seo' => ['display' => 'SEO'],
+        ],
+    ]));
+
+    $siteGlobalsPath = "{$this->base}/content/globals/french/seo.yaml";
+    File::ensureDirectoryExists(dirname($siteGlobalsPath));
+    File::put($siteGlobalsPath, YAML::dump(['data' => []]));
+
+    $this->artisan('bedrock:remove-seo', ['--force' => true])
+        ->assertExitCode(Command::SUCCESS);
+
+    $data = YAML::file($blueprintPath)->parse();
+    expect($data['tabs'])->not->toHaveKey('seo')
+        ->and($data['tabs'])->toHaveKey('main')
+        ->and($siteGlobalsPath)->not->toBeFile();
+});
+
 test('bedrock:remove-seo cleans template and build references', function (): void {
     $this->artisan('bedrock:remove-seo', ['--force' => true])
         ->assertExitCode(Command::SUCCESS);

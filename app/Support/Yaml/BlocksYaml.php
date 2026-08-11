@@ -6,7 +6,7 @@ namespace App\Support\Yaml;
 
 use Illuminate\Filesystem\Filesystem;
 
-class BlocksYaml extends GroupedSetsYaml
+final class BlocksYaml extends GroupedSetsYaml
 {
     public function __construct(Filesystem $files)
     {

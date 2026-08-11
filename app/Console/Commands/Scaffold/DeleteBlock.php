@@ -2,21 +2,11 @@
 
 namespace App\Console\Commands\Scaffold;
 
-use App\Console\Commands\Scaffold\Concerns\ManagesFieldsetFiles;
-use App\Console\Commands\Scaffold\Concerns\UpdatesEntryContent;
-use App\Support\Yaml\BlocksYaml;
+use App\Support\Scaffold\BlockTarget;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Arr;
-use Statamic\Facades\Entry;
-use Throwable;
-
-use function Laravel\Prompts\confirm;
-use function Laravel\Prompts\info;
-use function Laravel\Prompts\select;
-use function Laravel\Prompts\warning;
 
 #[Description('Delete a Statamic page builder block.')]
 #[Signature('delete:bedrock-block
@@ -24,112 +14,15 @@ use function Laravel\Prompts\warning;
         {block? : The block (fieldset) handle to delete}
         {--keep-files : Only remove from blocks.yaml; keep fieldset/view files}
         {--force : Ignore missing files when deleting}')]
-class DeleteBlock extends Command
+final class DeleteBlock extends Command
 {
-    use ManagesFieldsetFiles;
-    use UpdatesEntryContent;
-
-    public function __construct(
-        private readonly Filesystem $files,
-        private readonly BlocksYaml $blocks
-    ) {
-        parent::__construct();
-    }
-
-    public function handle(): int
+    public function handle(Filesystem $files, BlockTarget $target): int
     {
-        // 1) Pick group (associative options; returns the key/handle)
-        $groups = $this->blocks->groups();
-        if ($groups === []) {
-            warning('No groups found in blocks.yaml.');
-
-            return self::FAILURE;
-        }
-
-        $group =
-            $this->argument('group') ?:
-            select(label: 'Which group contains the block?', options: $groups, required: true);
-
-        // 2) Pick block within the group (associative; returns fieldset handle)
-        $sets = $this->blocks->sets($group);
-        if ($sets === []) {
-            warning("The '{$groups[$group]}' group has no blocks.");
-
-            return self::SUCCESS;
-        }
-
-        $fieldset =
-            $this->argument('block') ?:
-            select(label: 'Which block would you like to delete?', options: $sets, required: true);
-
-        $blockLabel = $sets[$fieldset] ?? $fieldset;
-
-        // 3) Inform usage counts and confirm destructive action
-        $usingCount = $this->countEntriesUsingBlock($fieldset);
-        if ($usingCount > 0) {
-            $usingLabel = $this->entriesLabel($usingCount);
-            warning(
-                "Heads up: '{$blockLabel}' is used in {$usingCount} {$usingLabel}. It will be removed from the {$usingLabel}."
-            );
-        }
-
-        if (
-            ! confirm(
-                label: "Delete '{$blockLabel}' from '{$groups[$group]}' group?",
-                default: false,
-                hint: (bool) $this->option('keep-files')
-                    ? 'Only remove from blocks.yaml (files will be kept).'
-                    : 'This will also delete the fieldset and block view file.'
-            )
-        ) {
-            info('Aborted.');
-
-            return self::SUCCESS;
-        }
-
-        // 4) Perform deletion
-        try {
-            $this->blocks->removeSet($group, $fieldset);
-
-            if (! (bool) $this->option('keep-files')) {
-                $this->deleteFilesFor(
-                    fieldset: $fieldset,
-                    force: (bool) $this->option('force'),
-                    viewDir: 'blocks'
-                );
-            }
-
-            // Also remove usages from entries (pages, etc.)
-            $removedCount = $this->deleteBlockUsagesFromEntries($fieldset);
-            if ($removedCount > 0) {
-                $removedLabel = $this->entriesLabel($removedCount);
-                info("Removed from {$removedCount} {$removedLabel}.");
-            }
-        } catch (Throwable $throwable) {
-            $this->error($throwable->getMessage());
-
-            return self::FAILURE;
-        }
-
-        info("Removed '{$blockLabel}' block.");
-
-        return self::SUCCESS;
-    }
-
-    private function countEntriesUsingBlock(string $fieldset): int
-    {
-        return Entry::all()
-            ->filter(static function ($entry) use ($fieldset) {
-                $blocks = collect((array) $entry->get('blocks'));
-                if ($blocks->isEmpty()) {
-                    return false;
-                }
-
-                return $blocks->contains(
-                    static fn ($item): bool => is_array($item) &&
-                        Arr::get($item, 'type') === $fieldset
-                );
-            })
-            ->count();
+        return new DeleteScaffold($files, $target)->run(
+            group: $this->argument('group'),
+            handle: $this->argument('block'),
+            keepFiles: (bool) $this->option('keep-files'),
+            force: (bool) $this->option('force'),
+        );
     }
 }

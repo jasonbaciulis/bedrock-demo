@@ -7,7 +7,6 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Entry as EntryFacade;
@@ -124,38 +123,32 @@ class RemoveSeo extends Command
 
     private function deleteSeoFiles(): void
     {
-        $this->deletePaths(
-            collect(self::SEO_FIELDSETS)
-                ->map(fn (string $fieldset): string => $this->fieldsetPath($fieldset))
-                ->push(
-                    $this->resourcePath('blueprints/globals/seo.yaml'),
-                    $this->contentPath('globals/seo.yaml'),
-                    $this->contentPath('globals/default/seo.yaml'),
-                    $this->contentPath('seo.yaml'),
-                    $this->resourcePath('views/partials/seo.antlers.html'),
-                    $this->resourcePath('views/partials/fallback-description.antlers.html'),
-                    $this->resourcePath('views/partials/cookie-dialog.antlers.html'),
-                    $this->resourcePath('js/components/cookieDialog.js'),
-                )
-        );
-    }
+        $paths = collect(self::SEO_FIELDSETS)
+            ->map(fn (string $fieldset): string => $this->fieldsetPath($fieldset))
+            ->push(
+                $this->resourcePath('blueprints/globals/seo.yaml'),
+                $this->contentPath('globals/seo.yaml'),
+                $this->contentPath('seo.yaml'),
+                $this->resourcePath('views/partials/seo.antlers.html'),
+                $this->resourcePath('views/partials/fallback-description.antlers.html'),
+                $this->resourcePath('views/partials/cookie-dialog.antlers.html'),
+                $this->resourcePath('js/components/cookieDialog.js'),
+            )
+            ->merge($this->files->glob($this->contentPath('globals/*/seo.yaml')));
 
-    private function deletePaths(Collection $paths): void
-    {
-        $paths
-            ->filter(fn (string $path): bool => $this->files->exists($path))
-            ->each(fn (string $path) => $this->files->delete($path));
+        $this->files->delete($paths->all());
     }
 
     private function removeSeoTabFromBlueprints(): void
     {
-        collect([
-            $this->resourcePath('blueprints/collections/pages/page.yaml'),
-            $this->resourcePath('blueprints/collections/posts/post.yaml'),
-        ])
-            ->filter(fn (string $path): bool => $this->files->exists($path))
+        collect($this->files->glob($this->resourcePath('blueprints/collections/*/*.yaml')))
             ->each(function (string $path): void {
                 $data = YAML::file($path)->parse();
+
+                if (! Arr::has($data, 'tabs.seo')) {
+                    return;
+                }
+
                 Arr::forget($data, 'tabs.seo');
                 $this->files->put($path, YAML::dump($data));
             });
@@ -193,6 +186,9 @@ class RemoveSeo extends Command
     }
 
     /**
+     * Warns for every needle that finds nothing, so drift between these exact
+     * strings and reformatted templates surfaces instead of failing silently.
+     *
      * @param  array<string, string>  $replacements
      */
     private function replaceInFile(string $path, array $replacements): void
@@ -203,13 +199,24 @@ class RemoveSeo extends Command
             return;
         }
 
-        $contents = Str::replace(
-            array_keys($replacements),
-            array_values($replacements),
-            $this->files->get($path)
+        $original = $this->files->get($path);
+
+        $contents = collect($replacements)->reduce(
+            function (string $contents, string $replacement, string $search) use ($path): string {
+                if (! Str::contains($contents, $search)) {
+                    warning("No match for '".Str::limit(trim($search), 60)."' in {$path}; remove it manually.");
+
+                    return $contents;
+                }
+
+                return Str::replace($search, $replacement, $contents);
+            },
+            $original
         );
 
-        $this->files->put($path, $contents);
+        if ($contents !== $original) {
+            $this->files->put($path, $contents);
+        }
     }
 
     private function clearStache(): void
@@ -229,13 +236,9 @@ class RemoveSeo extends Command
         return config('statamic.bedrock.scaffold.fieldsets_path')."/{$handle}.yaml";
     }
 
-    /**
-     * Root for the kit's file tree. Overridable via config so tests can point
-     * the command at an isolated scratch copy instead of the real repo files.
-     */
     private function basePath(): string
     {
-        return config('statamic.bedrock.seo_removal.base_path', base_path());
+        return config('statamic.bedrock.seo_removal.base_path');
     }
 
     private function resourcePath(string $relative): string
