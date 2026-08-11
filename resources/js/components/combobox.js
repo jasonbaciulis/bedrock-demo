@@ -1,17 +1,17 @@
-import { slugify } from '../lib/utils.js'
+import { slugify } from '../lib/utilities.js'
 
 document.addEventListener('alpine:init', () => {
-  Alpine.data('combobox', props => ({
-    id: props.id || 'combobox',
-    placeholder: props.placeholder || 'Select an option…',
-    itemsRaw: props.items,
-    initialLoad: Number(props.initialLoad ?? 10),
-    batchSize: Number(props.batchSize ?? 25),
+  Alpine.data('combobox', properties => ({
+    id: properties.id || 'combobox',
+    placeholder: properties.placeholder || 'Select an option…',
+    itemsRaw: properties.items,
+    initialLoad: Number(properties.initialLoad ?? 10),
+    batchSize: Number(properties.batchSize ?? 25),
 
     items: [],
     itemsFiltered: [],
     itemsShown: [],
-    itemsLoaded: Number(props.initialLoad ?? 10),
+    itemsLoaded: Number(properties.initialLoad ?? 10),
     itemActive: null,
     itemSelected: null,
     comboboxSearch: '',
@@ -111,20 +111,20 @@ document.addEventListener('alpine:init', () => {
     },
 
     navigate(step) {
-      if (!this.listboxOpen || !this.itemsFiltered.length) return
-      const dir = step === 'next' ? 1 : -1
+      if (!this.listboxOpen || this.itemsFiltered.length === 0) return
+      const direction = step === 'next' ? 1 : -1
       const index = Math.max(0, this.itemsFiltered.indexOf(this.itemActive))
-      const len = this.itemsFiltered.length
-      const newIndex = (index + dir + len) % len
+      const itemCount = this.itemsFiltered.length
+      const newIndex = (index + direction + itemCount) % itemCount
       this.itemActive = this.itemsFiltered[newIndex]
       this._scrollToActiveItem()
     },
 
     _scrollToActiveItem() {
       if (!this.itemActive) return
-      const el = document.getElementById(this.optionId(this.itemActive.key))
-      if (!el || !this.$refs.listbox) return
-      window.requestAnimationFrame(() => el.scrollIntoView({ block: 'nearest' }))
+      const element = document.querySelector(`#${CSS.escape(this.optionId(this.itemActive.key))}`)
+      if (!element || !this.$refs.listbox) return
+      window.requestAnimationFrame(() => element.scrollIntoView({ block: 'nearest' }))
     },
 
     _searchItems() {
@@ -149,8 +149,8 @@ document.addEventListener('alpine:init', () => {
       return []
     },
 
-    _isObject(obj) {
-      return typeof obj === 'object' && obj !== null && !Array.isArray(obj)
+    _isObject(object) {
+      return typeof object === 'object' && object !== null && !Array.isArray(object)
     },
 
     _convertItemsToArray(map) {
