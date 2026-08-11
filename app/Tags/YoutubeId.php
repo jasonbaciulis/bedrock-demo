@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tags;
 
 use Statamic\Tags\Tags;
 
-class YoutubeId extends Tags
+final class YoutubeId extends Tags
 {
     /**
      * The {{ youtube_id }} tag.
      */
-    public function index(): string|array|false
+    public function index(): string|false
     {
         /**
          * https://gist.github.com/leogopal/b429f9700d473a55f70819dc6e5195f0

@@ -20,7 +20,7 @@ use Illuminate\Notifications\Notifiable;
     'password',
     'remember_token',
 ])]
-class User extends Authenticatable
+final class User extends Authenticatable
 {
     use HasFactory;
     use Notifiable;

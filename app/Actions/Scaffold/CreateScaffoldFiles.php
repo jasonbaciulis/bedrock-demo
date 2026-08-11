@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Commands\Scaffold\Actions;
+namespace App\Actions\Scaffold;
 
-use App\Console\Commands\Scaffold\Enums\ScaffoldType;
-use App\Console\Commands\Scaffold\Support\ScaffoldName;
+use App\Enums\ScaffoldType;
+use App\Support\ScaffoldName;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use RuntimeException;

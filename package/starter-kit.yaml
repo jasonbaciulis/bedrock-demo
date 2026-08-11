@@ -1,14 +1,19 @@
 export_paths:
+  - .ai
+  - .claude
+  - .github/workflows/ci.yml
+  - app/Actions
   - app/Console/Commands
+  - app/Enums
   - app/Fieldtypes
-  - app/Http/Controllers/NewsletterController.php
-  - app/Http/Requests/NewsletterRequest.php
+  - app/Http
+  - app/Models/User.php
   - app/Providers/AppServiceProvider.php
+  - app/Support
   - app/Tags
-  - app/Support/Yaml
+  - config/statamic/bedrock.php
   - config/statamic/git.php
   - config/statamic/search.php
-  - config/statamic/bedrock.php
   - content
   - public/assets
   - public/favicon
@@ -21,31 +26,28 @@ export_paths:
   - resources/svg
   - resources/views
   - routes/web.php
+  - tests
   - .env.example
   - .gitignore
+  - CLAUDE.md
+  - eslint.config.mjs
   - package.json
   - phpstan.neon
-  - rector.php
   - prettier.config.js
-  - eslint.config.mjs
-  - CLAUDE.md
-  - .claude
-  - .ai
-  - .github/workflows/ci.yml
+  - rector.php
   - vite.config.js
-  - tests
 dependencies_dev:
   - cboxdk/statamic-mcp
+  - driftingly/rector-laravel
   - larastan/larastan
   - laravel/boost
   - laravel/pao
-  - phpunit/phpunit
   - pestphp/pest
-  - pestphp/pest-plugin-laravel
-  - pestphp/pest-plugin-rector
-  - pestphp/pest-plugin-phpstan
   - pestphp/pest-plugin-browser
+  - pestphp/pest-plugin-laravel
+  - pestphp/pest-plugin-phpstan
+  - pestphp/pest-plugin-rector
   - pestphp/pest-plugin-type-coverage
   - phpstan/phpstan
+  - phpunit/phpunit
   - rector/rector
-  - driftingly/rector-laravel

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Commands\Scaffold\Support;
+namespace App\Support;
 
-use App\Console\Commands\Scaffold\Enums\ScaffoldType;
+use App\Enums\ScaffoldType;
 use Illuminate\Support\Arr;
 use RuntimeException;
 use Statamic\Facades\Fieldset;

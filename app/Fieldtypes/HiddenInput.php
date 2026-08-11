@@ -6,7 +6,7 @@ namespace App\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
 
-class HiddenInput extends Fieldtype
+final class HiddenInput extends Fieldtype
 {
     protected static $title = 'Hidden Input';
 

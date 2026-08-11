@@ -6,7 +6,7 @@ namespace App\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
 
-class Stepper extends Fieldtype
+final class Stepper extends Fieldtype
 {
     protected $categories = ['number'];
 
@@ -14,7 +14,7 @@ class Stepper extends Fieldtype
 
     protected $icon = 'integer';
 
-    protected function configFieldItems(): array
+    public function configFieldItems(): array
     {
         return [
             [

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Commands\Scaffold\Actions;
+namespace App\Actions\Scaffold;
 
-use App\Console\Commands\Scaffold\Enums\ScaffoldType;
+use App\Enums\ScaffoldType;
 use Statamic\Entries\Entry as EntryInstance;
 
 /**

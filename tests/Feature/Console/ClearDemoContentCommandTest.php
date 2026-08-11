@@ -1,201 +1,199 @@
 <?php
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Statamic\Entries\Entry;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Asset;
-use Statamic\Facades\AssetContainer;
 use Statamic\Facades\Entry as EntryFacade;
-use Statamic\Facades\GlobalSet;
 use Statamic\Facades\GlobalVariables;
 use Statamic\Facades\Nav;
 use Statamic\Facades\Site;
+use Statamic\Facades\Stache;
 use Statamic\Facades\Term;
+use Statamic\Stache\Stores\Store;
 
 beforeEach(function (): void {
-    // Backup the entire content directory so we can restore it after the test.
-    $this->fs = new Filesystem;
-    $this->contentPath = base_path('content');
-    $this->backupPath = base_path('content_backup_for_tests');
+    $this->realContentPath = base_path('content');
+    $this->realAssetsPath = public_path('assets');
+    $this->scratchPath = bedrockTestScratchPath();
+    $this->contentPath = $this->scratchPath.'/content-root/content';
+    $this->assetsPath = $this->scratchPath.'/content-root/public/assets';
 
-    if ($this->fs->exists($this->backupPath)) {
-        $this->fs->deleteDirectory($this->backupPath);
-    }
+    File::copyDirectory($this->realContentPath, $this->contentPath);
+    File::ensureDirectoryExists($this->assetsPath);
+    File::put($this->assetsPath.'/.gitkeep', '');
 
-    $this->fs->copyDirectory($this->contentPath, $this->backupPath);
+    pointStatamicAtScratchContent($this->contentPath, $this->assetsPath);
 
-    // Backup the assets directory so we can restore it after the test.
-    $this->assetsPath = public_path('assets');
-    $this->assetsBackupPath = public_path('assets_backup_for_tests');
-
-    if ($this->fs->exists($this->assetsBackupPath)) {
-        $this->fs->deleteDirectory($this->assetsBackupPath);
-    }
-
-    if ($this->fs->exists($this->assetsPath)) {
-        $this->fs->copyDirectory($this->assetsPath, $this->assetsBackupPath);
-    }
+    // The command deletes content, so prove the repoint took effect before it runs.
+    expect(Stache::store('entries')->directory())->not->toStartWith($this->realContentPath);
 });
 
 afterEach(function (): void {
-    // Restore content directory from backup
-    if ($this->fs->exists($this->backupPath)) {
-        $this->fs->deleteDirectory($this->contentPath);
-        $this->fs->copyDirectory($this->backupPath, $this->contentPath);
-        $this->fs->deleteDirectory($this->backupPath);
+    File::deleteDirectory($this->scratchPath);
+});
+
+/**
+ * Repoint every Stache store under content/ and the assets disk at a scratch
+ * copy, so bedrock:clear deletes copies instead of the real demo content.
+ */
+function pointStatamicAtScratchContent(string $contentPath, string $assetsPath): void
+{
+    $realContentPath = base_path('content');
+
+    Stache::stores()
+        ->filter(fn (Store $store): bool => Str::startsWith($store->directory(), $realContentPath))
+        ->each(fn (Store $store) => $store->directory(
+            Str::replaceStart($realContentPath, $contentPath, $store->directory())
+        ));
+
+    config(['filesystems.disks.assets.root' => $assetsPath]);
+
+    // The suite shares the real file cache, so give the Stache its own store.
+    // Otherwise the emptied scratch index persists into the next test and into
+    // the developer's site.
+    config(['statamic.stache.cache_store' => 'array']);
+
+    Stache::clear();
+}
+
+/**
+ * @return list<string>
+ */
+function clearedGlobalSetHandles(): array
+{
+    return ['banner', 'browser_appearance', 'newsletter', 'social_media', 'theme'];
+}
+
+/**
+ * Put values on the home entry in the fields the command strips, so the test
+ * proves removal instead of asserting on already-empty fields.
+ */
+function seedHomeEntryFields(): Entry
+{
+    $home = EntryFacade::query()
+        ->where('collection', 'pages')
+        ->where('slug', 'home')
+        ->first();
+
+    $home
+        ->set('blocks', [['type' => 'test_block']])
+        ->set('seo_title', 'Test title')
+        ->set('seo_description', 'Test description')
+        ->set('og_image', 'og.jpg')
+        ->set('twitter_image', 'twitter.jpg')
+        ->save();
+
+    return $home;
+}
+
+/**
+ * @return array<string, string>
+ */
+function seedDemoAssets(string $assetsPath): array
+{
+    $paths = [
+        'image' => 'images/test-demo-image.txt',
+        'avatar' => 'avatars/test-demo-avatar.txt',
+        'logo' => 'logos/test-demo-logo.txt',
+    ];
+
+    return collect($paths)->map(function (string $path) use ($assetsPath): string {
+        File::ensureDirectoryExists(dirname("{$assetsPath}/{$path}"));
+        File::put("{$assetsPath}/{$path}", 'test content');
+
+        $asset = Asset::make()->container('assets')->path($path)->syncOriginal();
+        $asset->save();
+
+        return $asset->id();
+    })->all();
+}
+
+function countFilesIn(string $path): int
+{
+    return count(File::allFiles($path));
+}
+
+/**
+ * Assert the copied demo content holds everything the command is meant to
+ * clear, then seed the home entry fields. A missing fixture fails here instead
+ * of turning a later assertion into a false pass.
+ */
+function seededDemoState(string $assetsPath): Entry
+{
+    expect(EntryFacade::all()->count())->toBeGreaterThan(1)
+        ->and(Term::whereTaxonomy('categories')->count())->toBeGreaterThan(0);
+
+    foreach (clearedGlobalSetHandles() as $handle) {
+        expect(GlobalVariables::whereSet($handle)->count())->toBeGreaterThan(0);
     }
 
-    // Restore assets directory from backup
-    if ($this->fs->exists($this->assetsBackupPath)) {
-        if ($this->fs->exists($this->assetsPath)) {
-            $this->fs->deleteDirectory($this->assetsPath);
-        }
+    expect(Nav::all()->flatMap(
+        fn ($nav) => Site::all()->map->handle()->map(fn (string $siteHandle) => $nav->in($siteHandle)?->tree() ?? [])
+    )->flatten()->count())->toBeGreaterThan(0);
 
-        $this->fs->copyDirectory($this->assetsBackupPath, $this->assetsPath);
-        $this->fs->deleteDirectory($this->assetsBackupPath);
+    return seedHomeEntryFields();
+}
+
+test('bedrock:clear removes demo content while preserving the home entry', function (): void {
+    $home = seededDemoState($this->assetsPath);
+
+    $this->artisan('bedrock:clear', ['--force' => true])->assertExitCode(Command::SUCCESS);
+
+    $remaining = EntryFacade::all();
+    expect($remaining->count())->toBe(1)
+        ->and($remaining->first()->id())->toBe($home->id());
+
+    $freshHome = EntryFacade::find($home->id());
+    expect($freshHome->get('blocks'))->toBeNull()
+        ->and($freshHome->get('seo_title'))->toBeNull()
+        ->and($freshHome->get('seo_description'))->toBeNull()
+        ->and($freshHome->get('og_image'))->toBeNull()
+        ->and($freshHome->get('twitter_image'))->toBeNull()
+        ->and($freshHome->get('title'))->not->toBeNull();
+});
+
+test('bedrock:clear empties navigation trees, category terms and selected globals', function (): void {
+    seededDemoState($this->assetsPath);
+
+    $this->artisan('bedrock:clear', ['--force' => true])->assertExitCode(Command::SUCCESS);
+
+    foreach (Nav::all() as $nav) {
+        foreach (Site::all()->map->handle() as $siteHandle) {
+            expect($nav->in($siteHandle)?->tree() ?? [])->toBe([]);
+        }
+    }
+
+    expect(Term::whereTaxonomy('categories')->count())->toBe(0);
+
+    foreach (clearedGlobalSetHandles() as $handle) {
+        expect(GlobalVariables::whereSet($handle)->count())->toBe(0);
     }
 });
 
-test('bedrock:clear removes demo content while preserving home entry', function (): void {
-    // Ensure home exists; if not, create it.
-    $home = EntryFacade::whereCollection('pages')->first(fn ($entry): bool => $entry->slug() === 'home');
-    if (! $home) {
-        /** @var Entry $newHome */
-        $newHome = EntryFacade::make();
-        $newHome
-            ->collection('pages')
-            ->slug('home')
-            ->data(['title' => 'Home']);
-        $newHome->save();
-        $home = EntryFacade::find($newHome->id());
-    }
+test('bedrock:clear deletes demo assets but keeps logos', function (): void {
+    seededDemoState($this->assetsPath);
+    $assetIds = seedDemoAssets($this->assetsPath);
 
-    // Ensure there's at least one other entry to delete
-    if (EntryFacade::all()->count() <= 1) {
-        /** @var Entry $tempPost */
-        $tempPost = EntryFacade::make();
-        $tempPost
-            ->collection('posts')
-            ->slug('temp-post')
-            ->data(['title' => 'Temp Post']);
-        $tempPost->save();
-    }
-
-    // Ensure at least one term exists in categories
-    if (Term::whereTaxonomy('categories')->count() === 0) {
-        /** @var Statamic\Taxonomies\Term $tempTerm */
-        $tempTerm = Term::make('temp-category');
-        $tempTerm->taxonomy('categories')->set('title', 'Temp Category');
-        $tempTerm->save();
-    }
-
-    // Ensure globals exist for specified sets across default site
-    foreach (['banner', 'browser_appearance', 'newsletter', 'social_media', 'theme'] as $handle) {
-        if (GlobalVariables::whereSet($handle)->count() === 0) {
-            $vars = GlobalSet::findByHandle($handle)?->inDefaultSite();
-            if ($vars) {
-                $vars->set('seeded', true)->save();
-            }
-        }
-    }
-
-    // Ensure at least one nav has items in at least one site
-    $sites = Site::all()->map->handle();
-    foreach (Nav::all() as $nav) {
-        foreach ($sites as $site) {
-            $tree = $nav->in($site);
-            if ($tree && empty($tree->tree())) {
-                $tree->tree([['entry' => $home->id()]])->save();
-            }
-        }
-    }
-
-    // Create test assets by copying existing files and creating new Statamic asset entries
-    $fs = new Filesystem;
-    $container = AssetContainer::findByHandle('assets');
-    $assetsPath = public_path('assets');
-
-    // Create simple test files in the filesystem first
-    $fs->ensureDirectoryExists($assetsPath.'/images');
-    $fs->ensureDirectoryExists($assetsPath.'/avatars');
-    $fs->ensureDirectoryExists($assetsPath.'/logos');
-
-    $fs->put($assetsPath.'/images/test-demo-image.txt', 'test image content');
-    $fs->put($assetsPath.'/avatars/test-demo-avatar.txt', 'test avatar content');
-    $fs->put($assetsPath.'/logos/test-demo-logo.txt', 'test logo content');
-
-    // Create Statamic asset entries for these files
-    $testImageAsset = Asset::make()
-        ->container($container->handle())
-        ->path('images/test-demo-image.txt')
-        ->syncOriginal();
-    $testImageAsset->save();
-
-    $testAvatarAsset = Asset::make()
-        ->container($container->handle())
-        ->path('avatars/test-demo-avatar.txt')
-        ->syncOriginal();
-    $testAvatarAsset->save();
-
-    $testLogoAsset = Asset::make()
-        ->container($container->handle())
-        ->path('logos/test-demo-logo.txt')
-        ->syncOriginal();
-    $testLogoAsset->save();
-
-    // Store references for assertions later
-    $this->testImageAssetId = $testImageAsset->id();
-    $this->testAvatarAssetId = $testAvatarAsset->id();
-    $this->testLogoAssetId = $testLogoAsset->id();
-
-    // Run the command
     $this->artisan('bedrock:clear', ['--force' => true])->assertExitCode(Command::SUCCESS);
 
-    // 1) Entries: only home page should remain in pages; other collections should be empty
-    $entries = EntryFacade::all();
-    // Keep everything that is the home entry
-    $nonHome = $entries->reject(fn ($entry): bool => $entry->id() === $home->id());
-    expect($nonHome->count())->toBe(0);
+    expect(Asset::find($assetIds['image']))->toBeNull()
+        ->and(Asset::find($assetIds['avatar']))->toBeNull()
+        ->and(Asset::find($assetIds['logo']))->not->toBeNull()
+        ->and(Asset::whereFolder('logos', 'assets')->count())->toBeGreaterThan(0)
+        ->and($this->assetsPath.'/.gitkeep')->toBeFile();
+});
 
-    // Home must have fields cleared
-    /** @var Entry $freshHome */
-    $freshHome = EntryFacade::find($home->id());
-    expect($freshHome->data()->get('blocks'))->toBeNull()
-        ->and($freshHome->data()->get('seo_title'))->toBeNull()
-        ->and($freshHome->data()->get('seo_description'))->toBeNull()
-        ->and($freshHome->data()->get('og_image'))->toBeNull()
-        ->and($freshHome->data()->get('twitter_image'))->toBeNull();
+test('bedrock:clear leaves the real content and assets untouched', function (): void {
+    seededDemoState($this->assetsPath);
 
-    // 2) Navs: all trees should be empty
-    foreach (Nav::all() as $nav) {
-        foreach (Site::all()->map->handle() as $site) {
-            $tree = $nav->in($site);
-            if ($tree) {
-                expect($tree->tree())->toBe([]);
-            }
-        }
-    }
+    $contentFiles = countFilesIn($this->realContentPath);
+    $assetFiles = countFilesIn($this->realAssetsPath);
 
-    // 3) Terms: categories should be empty
-    expect(Term::whereTaxonomy('categories')->count())->toBe(0);
+    $this->artisan('bedrock:clear', ['--force' => true])->assertExitCode(Command::SUCCESS);
 
-    // 4) Globals: variables for selected sets should be deleted
-    foreach (['banner', 'browser_appearance', 'newsletter', 'social_media', 'theme'] as $handle) {
-        expect(GlobalVariables::whereSet($handle)->count())->toBe(0);
-    }
-
-    // 5) Assets: demo assets should be deleted, but logos should be preserved
-    expect(Asset::find($this->testImageAssetId))->toBeNull();
-    expect(Asset::find($this->testAvatarAssetId))->toBeNull();
-
-    // Logo asset should still exist
-    expect(Asset::find($this->testLogoAssetId))->not->toBeNull();
-
-    // Verify by folder: logos folder should still have assets, others should be empty
-    $remainingLogoAssets = Asset::whereFolder('logos', 'assets');
-    expect($remainingLogoAssets->count())->toBeGreaterThan(0);
-
-    // .gitkeep should be preserved
-    $fs = new Filesystem;
-    expect($fs->exists(public_path('assets/.gitkeep')))->toBeTrue();
+    expect(countFilesIn($this->realContentPath))->toBe($contentFiles)
+        ->and(countFilesIn($this->realAssetsPath))->toBe($assetFiles)
+        ->and($this->realContentPath.'/collections/pages/home.md')->toBeFile();
 });

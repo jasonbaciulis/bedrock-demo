@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Commands\Scaffold\Enums;
+namespace App\Enums;
 
 use Closure;
 use Illuminate\Support\Arr;

@@ -7,10 +7,26 @@ use Statamic\Facades\Fieldset;
 use Statamic\Facades\YAML;
 
 beforeEach(function (): void {
-    setUpSeoRemovalScratch();
+    $this->projectRoot = base_path();
+    $this->scratchPath = bedrockTestScratchPath();
+    $this->base = $this->scratchPath.'/seo-root';
+    $this->fieldsetsPath = $this->base.'/resources/fieldsets';
 
-    $this->base = bedrockSeoScratchBase();
-    $this->fieldsetsPath = bedrockSeoScratchBase().'/resources/fieldsets';
+    copyKitFilesForSeoRemoval($this->base);
+
+    // The command deletes fieldsets through the Fieldset facade, so point the
+    // repository at the scratch copy to keep fieldset imports resolving.
+    Fieldset::setDirectory($this->fieldsetsPath);
+
+    // Repoint the application root so every base_path() call inside the command
+    // lands in the scratch copy. Storage stays real, because the log and cache
+    // stores write there while the command runs.
+    $storagePath = storage_path();
+    $this->app->setBasePath($this->base);
+    $this->app->useStoragePath($storagePath);
+
+    // The command deletes files, so prove the repoint took effect before it runs.
+    expect(base_path())->not->toBe($this->projectRoot);
 
     // Test-only handles so entry stripping only touches the seeded entry,
     // never real demo content.
@@ -36,7 +52,9 @@ beforeEach(function (): void {
 });
 
 afterEach(function (): void {
-    File::deleteDirectory(bedrockTestScratchPath());
+    $this->app->setBasePath($this->projectRoot);
+
+    File::deleteDirectory($this->scratchPath);
 
     foreach (glob(base_path('content/collections/pages/test-page-*.md')) ?: [] as $file) {
         @unlink($file);
@@ -44,23 +62,11 @@ afterEach(function (): void {
 });
 
 /**
- * Scratch root the bedrock:remove-seo command is pointed at so it mutates an
- * isolated copy of the kit files instead of the real repo.
+ * Copy every file bedrock:remove-seo edits or deletes into an isolated root, so
+ * the command mutates a copy of the kit instead of the real repo.
  */
-function bedrockSeoScratchBase(): string
+function copyKitFilesForSeoRemoval(string $base): void
 {
-    return bedrockTestScratchPath().'/seo-root';
-}
-
-/**
- * Copy the files bedrock:remove-seo edits/deletes into the scratch root and
- * rebind config so the command operates there. The SEO fieldsets are seeded
- * separately in beforeEach with test-only handles.
- */
-function setUpSeoRemovalScratch(): void
-{
-    $base = bedrockSeoScratchBase();
-
     $files = [
         'resources/blueprints/globals/seo.yaml',
         'resources/blueprints/collections/pages/page.yaml',
@@ -90,14 +96,7 @@ function setUpSeoRemovalScratch(): void
         File::copy($source, $destination);
     }
 
-    // The command deletes fieldsets through the Fieldset facade, so point the
-    // repository at a full scratch copy to keep fieldset imports resolving.
     File::copyDirectory(base_path('resources/fieldsets'), "{$base}/resources/fieldsets");
-    Fieldset::setDirectory("{$base}/resources/fieldsets");
-
-    config([
-        'statamic.bedrock.seo_removal.base_path' => $base,
-    ]);
 }
 
 function writeSeoFieldset(string $dir, string $handle, array $fieldHandles): void
@@ -135,6 +134,28 @@ test('bedrock:remove-seo deletes seo files and fieldsets', function (): void {
     foreach (['seo_basic', 'seo_advanced', 'seo_open_graph', 'seo_json-ld_schema', 'seo_sitemap'] as $fieldset) {
         expect("{$this->fieldsetsPath}/{$fieldset}.yaml")->not->toBeFile();
     }
+});
+
+test('bedrock:remove-seo leaves the real project files untouched', function (): void {
+    $this->artisan('bedrock:remove-seo', ['--force' => true])
+        ->assertExitCode(Command::SUCCESS);
+
+    $untouched = [
+        'resources/blueprints/globals/seo.yaml',
+        'resources/views/partials/seo.antlers.html',
+        'resources/js/components/cookieDialog.js',
+        'resources/fieldsets/seo_basic.yaml',
+        'vite.config.js',
+    ];
+
+    foreach ($untouched as $relative) {
+        expect("{$this->projectRoot}/{$relative}")->toBeFile();
+    }
+
+    expect(File::get("{$this->projectRoot}/resources/views/layout.antlers.html"))
+        ->toContain('partials.seo')
+        ->and(File::get("{$this->projectRoot}/vite.config.js"))
+        ->toContain('cookieDialog.js');
 });
 
 test('bedrock:remove-seo removes the seo tab from collection blueprints', function (): void {

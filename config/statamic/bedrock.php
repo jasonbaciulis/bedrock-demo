@@ -7,8 +7,4 @@ return [
         'blocks_views_path' => resource_path('views/blocks'),
         'sets_views_path' => resource_path('views/sets'),
     ],
-
-    'seo_removal' => [
-        'base_path' => base_path(),
-    ],
 ];

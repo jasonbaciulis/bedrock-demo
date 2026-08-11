@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Scaffold;
 
-use App\Console\Commands\Scaffold\Actions\CreateScaffoldFiles;
-use App\Console\Commands\Scaffold\Enums\ScaffoldType;
-use App\Console\Commands\Scaffold\Support\ScaffoldName;
-use App\Console\Commands\Scaffold\Support\ScaffoldPrompts;
-use App\Console\Commands\Scaffold\Support\ScaffoldRegistry;
+use App\Actions\Scaffold\CreateScaffoldFiles;
+use App\Enums\ScaffoldType;
+use App\Support\ScaffoldName;
+use App\Support\ScaffoldPrompts;
+use App\Support\ScaffoldRegistry;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;

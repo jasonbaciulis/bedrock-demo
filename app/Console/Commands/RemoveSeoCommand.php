@@ -202,7 +202,7 @@ final class RemoveSeoCommand extends Command
     private function removeCookieDialogFromVite(): void
     {
         $this->replaceInFile(
-            $this->basePath().'/vite.config.js',
+            base_path('vite.config.js'),
             ["          'resources/js/components/cookieDialog.js',\n" => ''],
         );
     }
@@ -253,18 +253,13 @@ final class RemoveSeoCommand extends Command
         info('Next: install your SEO addon (e.g. `composer require statamic/seo-pro`) and add its meta tag in layout.antlers.html where the SEO partial used to be.');
     }
 
-    private function basePath(): string
-    {
-        return config('statamic.bedrock.seo_removal.base_path');
-    }
-
     private function resourcePath(string $relative): string
     {
-        return $this->basePath()."/resources/{$relative}";
+        return base_path("resources/{$relative}");
     }
 
     private function contentPath(string $relative): string
     {
-        return $this->basePath()."/content/{$relative}";
+        return base_path("content/{$relative}");
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Commands\Scaffold\Support;
+namespace App\Support;
 
 use Illuminate\Support\Str;
 use Statamic\Facades\Config;
