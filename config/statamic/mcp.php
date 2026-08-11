@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Cboxdk\StatamicMcp\OAuth\Drivers\BuiltInOAuthDriver;
 use Cboxdk\StatamicMcp\Storage\Audit\FileAuditStore;
 use Cboxdk\StatamicMcp\Storage\Tokens\FileTokenStore;
@@ -177,7 +179,7 @@ return [
         'client_ttl' => (int) env('STATAMIC_MCP_OAUTH_CLIENT_TTL', 2592000),
         'token_ttl' => (int) env('STATAMIC_MCP_OAUTH_TOKEN_TTL', 604800), // 7 days
         'refresh_token_ttl' => (int) env('STATAMIC_MCP_OAUTH_REFRESH_TOKEN_TTL', 2592000), // 30 days
-        'default_scopes' => array_filter(explode(',', env('STATAMIC_MCP_OAUTH_DEFAULT_SCOPES', 'content:read,blueprints:read,structures:read,entries:read,terms:read,globals:read,assets:read,system:read,content-facade:read'))),
+        'default_scopes' => array_filter(explode(',', (string) env('STATAMIC_MCP_OAUTH_DEFAULT_SCOPES', 'content:read,blueprints:read,structures:read,entries:read,terms:read,globals:read,assets:read,system:read,content-facade:read'))),
         'max_clients' => (int) env('STATAMIC_MCP_OAUTH_MAX_CLIENTS', 50),
         'max_clients_per_ip' => (int) env('STATAMIC_MCP_OAUTH_MAX_CLIENTS_PER_IP', 5),
 
