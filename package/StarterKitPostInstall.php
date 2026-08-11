@@ -59,11 +59,13 @@ class StarterKitPostInstall
                 'rector --dry-run',
                 'bun run test:lint',
             ],
+            'test:type-coverage' => 'pest --type-coverage --min=100',
             'test:types' => 'phpstan',
             'test:unit' => 'pest --parallel --exclude-testsuite=Browser',
             'test:browser' => 'pest --testsuite=Browser',
             'test' => [
                 '@test:lint',
+                '@test:type-coverage',
                 '@test:types',
                 '@test:unit',
                 '@test:browser',

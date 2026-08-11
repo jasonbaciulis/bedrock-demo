@@ -44,6 +44,7 @@ dependencies_dev:
   - pestphp/pest-plugin-rector
   - pestphp/pest-plugin-phpstan
   - pestphp/pest-plugin-browser
+  - pestphp/pest-plugin-type-coverage
   - phpstan/phpstan
   - rector/rector
   - driftingly/rector-laravel
