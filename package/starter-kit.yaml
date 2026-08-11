@@ -38,6 +38,7 @@ dependencies_dev:
   - cboxdk/statamic-mcp
   - larastan/larastan
   - laravel/boost
+  - laravel/pao
   - phpunit/phpunit
   - pestphp/pest
   - pestphp/pest-plugin-laravel
