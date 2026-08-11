@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\Fieldset;
 use Statamic\Facades\YAML;
+use Statamic\Fields\FieldsetRepository;
 use Tests\Feature\Console\Support\Scratch;
 use Tests\Feature\Console\Support\TestEntry;
 
@@ -14,6 +15,7 @@ beforeEach(function (): void {
     $this->fieldsetsPath = $this->scratchRoot.'/resources/fieldsets';
 
     copyKitFilesForSeoRemoval($this->scratchRoot);
+    Scratch::isolateContentTree();
     pointApplicationAtScratchRoot($this->scratchRoot, $this->fieldsetsPath);
 
     // The command deletes files, so prove the repoint took effect before it runs.
@@ -43,7 +45,6 @@ afterEach(function (): void {
     $this->app->setBasePath($this->projectRoot);
 
     Scratch::delete();
-    TestEntry::deleteAll();
 });
 
 /**
@@ -96,6 +97,18 @@ function pointApplicationAtScratchRoot(string $scratchRoot, string $fieldsetsPat
     Fieldset::setDirectory($fieldsetsPath);
     app()->setBasePath($scratchRoot);
     app()->useStoragePath($storagePath);
+}
+
+/**
+ * The fieldset repository memoizes every handle it has read, so a test that
+ * deletes fieldset files behind its back needs a fresh instance.
+ */
+function forgetCachedFieldsets(string $fieldsetsPath): void
+{
+    app()->forgetInstance(FieldsetRepository::class);
+
+    Fieldset::clearResolvedInstances();
+    Fieldset::setDirectory($fieldsetsPath);
 }
 
 /**
@@ -207,6 +220,76 @@ test('bedrock:remove-seo cleans template and build references', function (): voi
 
     $vite = File::get("{$this->scratchRoot}/vite.config.js");
     expect($vite)->not->toContain('cookieDialog.js');
+});
+
+test('bedrock:remove-seo keeps everything when the confirmation is declined', function (): void {
+    $this->artisan('bedrock:remove-seo')
+        ->expectsConfirmation(
+            'This removes the built-in SEO global, fieldsets, templates and trackers. Continue?',
+            'no'
+        )
+        ->expectsOutputToContain('Aborted.')
+        ->assertSuccessful();
+
+    expect("{$this->scratchRoot}/resources/views/partials/seo.antlers.html")->toBeFile()
+        ->and("{$this->scratchRoot}/resources/fieldsets/seo_basic.yaml")->toBeFile()
+        ->and(TestEntry::fresh($this->entryId)->data()->all())
+        ->toHaveKey($this->seoTitleHandle, 'Custom title');
+});
+
+test('bedrock:remove-seo runs after the confirmation is accepted', function (): void {
+    $this->artisan('bedrock:remove-seo')
+        ->expectsConfirmation(
+            'This removes the built-in SEO global, fieldsets, templates and trackers. Continue?',
+            'yes'
+        )
+        ->assertSuccessful();
+
+    expect("{$this->scratchRoot}/resources/views/partials/seo.antlers.html")->not->toBeFile();
+});
+
+test('bedrock:remove-seo leaves entries alone when there are no seo fieldsets', function (): void {
+    File::delete(File::glob("{$this->fieldsetsPath}/seo_*.yaml"));
+    forgetCachedFieldsets($this->fieldsetsPath);
+
+    $this->artisan('bedrock:remove-seo', ['--force' => true])
+        ->doesntExpectOutputToContain('Stripped SEO fields')
+        ->assertSuccessful();
+
+    expect(TestEntry::fresh($this->entryId)->data()->all())
+        ->toHaveKey($this->seoTitleHandle, 'Custom title');
+});
+
+test('bedrock:remove-seo leaves a blueprint without an seo tab untouched', function (): void {
+    $blueprintPath = "{$this->scratchRoot}/resources/blueprints/collections/services/service.yaml";
+    File::ensureDirectoryExists(dirname($blueprintPath));
+    File::put($blueprintPath, $original = YAML::dump([
+        'title' => 'Service',
+        'tabs' => ['main' => ['display' => 'Main']],
+    ]));
+
+    $this->artisan('bedrock:remove-seo', ['--force' => true])->assertSuccessful();
+
+    expect(File::get($blueprintPath))->toBe($original);
+});
+
+test('bedrock:remove-seo warns about a template it cannot find', function (): void {
+    File::delete("{$this->scratchRoot}/resources/views/partials/social-sharing.antlers.html");
+
+    $this->artisan('bedrock:remove-seo', ['--force' => true])
+        ->expectsOutputToContain('Skipped missing file:')
+        ->assertSuccessful();
+});
+
+test('bedrock:remove-seo warns about a reference it cannot match', function (): void {
+    File::put("{$this->scratchRoot}/resources/views/layout.antlers.html", '<html>reformatted</html>');
+
+    $this->artisan('bedrock:remove-seo', ['--force' => true])
+        ->expectsOutputToContain('remove it manually.')
+        ->assertSuccessful();
+
+    expect(File::get("{$this->scratchRoot}/resources/views/layout.antlers.html"))
+        ->toBe('<html>reformatted</html>');
 });
 
 test('bedrock:remove-seo strips seo keys from existing entries', function (): void {

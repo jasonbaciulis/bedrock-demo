@@ -60,6 +60,18 @@ enum ScaffoldFixture
     }
 
     /**
+     * A second group in the same parent fieldset, so rename can move a set out
+     * of group().
+     */
+    public function otherGroup(): string
+    {
+        return match ($this) {
+            self::Block => 'conversion',
+            self::ArticleSet => 'media',
+        };
+    }
+
+    /**
      * Entry field, and parent fieldset handle, the scaffolded sets live in.
      */
     public function entryField(): string
@@ -113,6 +125,40 @@ enum ScaffoldFixture
         return [$display, $fieldset, $view];
     }
 
+    /**
+     * A parent fieldset whose entry field declares no groups at all.
+     *
+     * @return array<string, mixed>
+     */
+    public function parentFieldsetWithoutGroups(): array
+    {
+        return $this->parentFieldsetWith([]);
+    }
+
+    /**
+     * A parent fieldset whose entry field declares this fixture's group with no
+     * sets in it.
+     *
+     * @return array<string, mixed>
+     */
+    public function parentFieldsetWithEmptyGroup(): array
+    {
+        return $this->parentFieldsetWith([
+            $this->group() => ['display' => $this->groupDisplay(), 'sets' => []],
+        ]);
+    }
+
+    /**
+     * A parent fieldset with no entry field, so the registry cannot locate the
+     * group root.
+     *
+     * @return array<string, mixed>
+     */
+    public function parentFieldsetWithoutEntryField(): array
+    {
+        return ['title' => 'Parent', 'fields' => [['handle' => 'unrelated', 'field' => ['type' => 'text']]]];
+    }
+
     public function fieldsetPath(string $fieldset): string
     {
         return Scratch::fieldsetsPath()."/{$fieldset}.yaml";
@@ -135,11 +181,21 @@ enum ScaffoldFixture
      */
     public function declaredSets(): array
     {
+        return $this->declaredSetsIn($this->group());
+    }
+
+    /**
+     * Sets the parent fieldset declares for the given group.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function declaredSetsIn(string $groupHandle): array
+    {
         $parent = YAML::file($this->parentFieldsetPath())->parse();
 
         return Arr::get(
             collect((array) $parent['fields'])->firstWhere('handle', $this->entryField()),
-            "field.sets.{$this->group()}.sets",
+            "field.sets.{$groupHandle}.sets",
             [],
         );
     }
@@ -173,5 +229,22 @@ enum ScaffoldFixture
         };
 
         return data_get((array) $entry->get($this->entryField()), $path, []);
+    }
+
+    /**
+     * @param  array<string, array<string, mixed>>  $groups
+     * @return array<string, mixed>
+     */
+    private function parentFieldsetWith(array $groups): array
+    {
+        return [
+            'title' => 'Parent',
+            'fields' => [
+                [
+                    'handle' => $this->entryField(),
+                    'field' => ['type' => $this->fieldType(), 'sets' => $groups],
+                ],
+            ],
+        ];
     }
 }

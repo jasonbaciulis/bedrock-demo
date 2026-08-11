@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Contracts\Structures\Nav as NavContract;
@@ -14,73 +15,31 @@ use Statamic\Facades\Nav;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Facades\Term;
-use Statamic\Stache\Stores\Store;
-use Symfony\Component\Finder\SplFileInfo;
 use Tests\Feature\Console\Support\Scratch;
 use Tests\Feature\Console\Support\TestEntry;
 
 beforeEach(function (): void {
     $this->realContentPath = base_path('content');
     $this->realAssetsPath = public_path('assets');
-    $this->scratchPath = Scratch::path();
-    $this->contentPath = $this->scratchPath.'/content-root/content';
-    $this->assetsPath = $this->scratchPath.'/content-root/public/assets';
+    $this->assetsPath = Scratch::path().'/content-root/public/assets';
 
-    copyDemoContent($this->realContentPath, $this->contentPath);
     File::ensureDirectoryExists($this->assetsPath);
     File::put($this->assetsPath.'/.gitkeep', '');
 
-    pointStatamicAtScratchContent($this->contentPath, $this->assetsPath);
+    // Repoint the disk before isolateContentTree() clears the Stache, so the
+    // asset store never caches the real assets directory.
+    config(['filesystems.disks.assets.root' => $this->assetsPath]);
+    Scratch::isolateContentTree();
 
-    // The command deletes content, so prove the repoint took effect before it runs.
-    expect(Str::startsWith(Stache::store('entries')->directory(), $this->realContentPath))->toBeFalse();
+    // The command deletes content and assets, so prove both repoints took
+    // effect before it runs.
+    expect(Str::startsWith(Stache::store('entries')->directory(), $this->realContentPath))->toBeFalse()
+        ->and(Str::startsWith(Storage::disk('assets')->path(''), $this->realAssetsPath))->toBeFalse();
 });
 
 afterEach(function (): void {
     Scratch::delete();
 });
-
-/**
- * Copy the demo content, minus the entries other parallel processes seed into
- * the same tree. Those files appear and vanish while this copy runs.
- */
-function copyDemoContent(string $source, string $destination): void
-{
-    demoFilesIn($source)->each(function (SplFileInfo $file) use ($destination): void {
-        $target = $destination.'/'.$file->getRelativePathname();
-
-        File::ensureDirectoryExists(dirname($target));
-        File::copy($file->getPathname(), $target);
-    });
-}
-
-/**
- * @return Collection<int, SplFileInfo>
- */
-function demoFilesIn(string $path): Collection
-{
-    return collect(File::allFiles($path))
-        ->reject(fn (SplFileInfo $file): bool => Str::startsWith($file->getFilename(), 'test-'));
-}
-
-/**
- * Repoint every Stache store under content/ and the assets disk at a scratch
- * copy, so bedrock:clear deletes copies instead of the real demo content.
- */
-function pointStatamicAtScratchContent(string $contentPath, string $assetsPath): void
-{
-    $realContentPath = base_path('content');
-
-    Stache::stores()
-        ->filter(fn (Store $store): bool => Str::startsWith($store->directory(), $realContentPath))
-        ->each(fn (Store $store) => $store->directory(
-            Str::replaceStart($realContentPath, $contentPath, $store->directory())
-        ));
-
-    config(['filesystems.disks.assets.root' => $assetsPath]);
-
-    Stache::clear();
-}
 
 /**
  * @return list<string>
@@ -136,7 +95,7 @@ function seedDemoAssets(string $assetsPath): array
 
 function countDemoFilesIn(string $path): int
 {
-    return demoFilesIn($path)->count();
+    return Scratch::demoFilesIn($path)->count();
 }
 
 /**
@@ -207,6 +166,28 @@ test('bedrock:clear deletes demo assets but keeps logos', function (): void {
         ->and(Asset::find($assetIds['logo']))->not->toBeNull()
         ->and(Asset::whereFolder('logos', 'assets')->count())->toBeGreaterThan(0)
         ->and($this->assetsPath.'/.gitkeep')->toBeFile();
+});
+
+test('bedrock:clear keeps everything when the confirmation is declined', function (): void {
+    $entryCount = EntryFacade::all()->count();
+
+    $this->artisan('bedrock:clear')
+        ->expectsConfirmation('This will delete all Bedrock demo content. Continue?', 'no')
+        ->expectsOutputToContain('Aborted.')
+        ->assertSuccessful();
+
+    expect(EntryFacade::all()->count())->toBe($entryCount)
+        ->and(Term::whereTaxonomy('categories')->count())->toBeGreaterThan(0);
+});
+
+test('bedrock:clear runs after the confirmation is accepted', function (): void {
+    seededDemoState();
+
+    $this->artisan('bedrock:clear')
+        ->expectsConfirmation('This will delete all Bedrock demo content. Continue?', 'yes')
+        ->assertSuccessful();
+
+    expect(EntryFacade::all()->count())->toBe(1);
 });
 
 test('bedrock:clear leaves the real content and assets untouched', function (): void {

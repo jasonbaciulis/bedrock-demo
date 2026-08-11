@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Console\Support;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Statamic\Contracts\Entries\Entry;
@@ -17,14 +16,14 @@ use Statamic\Facades\Entry as EntryFacade;
 final class TestEntry
 {
     /**
-     * The id doubles as the slug, so Statamic's filename matches the
-     * deleteAll() glob.
+     * The id doubles as the slug, so the file this seeds is recognisable as a
+     * test fixture if a crashed run ever leaves one behind.
      *
      * @param  array<string, mixed>  $data
      */
     public static function create(string $collection, array $data): Entry
     {
-        $id = 'test-'.Str::singular($collection).'-w'.ParallelWorker::id().'-'.Str::random(6);
+        $id = 'test-'.Str::singular($collection).'-'.Str::random(6);
 
         $entry = EntryFacade::make();
         $entry->collection($collection);
@@ -46,14 +45,5 @@ final class TestEntry
         throw_unless($entry instanceof Entry, RuntimeException::class, "Entry '{$id}' no longer exists.");
 
         return $entry;
-    }
-
-    /**
-     * Only this process's entries, so a parallel run never deletes the fixtures
-     * another process is still using.
-     */
-    public static function deleteAll(): void
-    {
-        File::delete(File::glob(base_path('content/collections/*/test-*-w'.ParallelWorker::id().'-*.md')));
     }
 }

@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Console\Support;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Statamic\Facades\Fieldset;
+use Statamic\Facades\Stache;
+use Statamic\Stache\Stores\Store;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * The isolated workspace the console command tests run against, so the commands
@@ -51,6 +56,58 @@ final class Scratch
             'statamic.bedrock.scaffold.blocks_views_path' => $blocksViews,
             'statamic.bedrock.scaffold.sets_views_path' => $setsViews,
         ]);
+    }
+
+    public static function contentPath(): string
+    {
+        return self::path().'/content-root/content';
+    }
+
+    /**
+     * Copy the content tree into this worker's workspace and repoint every
+     * Stache store at the copy. Parallel workers otherwise seed and delete
+     * entries in one shared directory, and a Stache traversal that lists that
+     * directory then stats a file another worker has just removed dies.
+     */
+    public static function isolateContentTree(): string
+    {
+        $realContentPath = base_path('content');
+        $contentPath = self::contentPath();
+
+        self::copyDemoFiles($realContentPath, $contentPath);
+
+        Stache::stores()
+            ->filter(fn (Store $store): bool => Str::startsWith($store->directory(), $realContentPath))
+            ->each(fn (Store $store) => $store->directory(
+                Str::replaceStart($realContentPath, $contentPath, $store->directory())
+            ));
+
+        Stache::clear();
+
+        return $contentPath;
+    }
+
+    /**
+     * Files a previous run left behind are skipped, so a crashed run cannot
+     * seed the next one with stray entries.
+     */
+    public static function copyDemoFiles(string $source, string $destination): void
+    {
+        self::demoFilesIn($source)->each(function (SplFileInfo $file) use ($destination): void {
+            $target = $destination.'/'.$file->getRelativePathname();
+
+            File::ensureDirectoryExists(dirname($target));
+            File::copy($file->getPathname(), $target);
+        });
+    }
+
+    /**
+     * @return Collection<int, SplFileInfo>
+     */
+    public static function demoFilesIn(string $path): Collection
+    {
+        return collect(File::allFiles($path))
+            ->reject(fn (SplFileInfo $file): bool => Str::startsWith($file->getFilename(), 'test-'));
     }
 
     public static function delete(): void

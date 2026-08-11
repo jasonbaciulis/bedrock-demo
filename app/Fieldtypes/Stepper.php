@@ -18,7 +18,7 @@ final class Stepper extends Fieldtype
     protected $icon = 'integer';
 
     /**
-     * @return list<array<string, mixed>>
+     * @return list<array{display: string, fields: array<string, array<string, mixed>>}>
      */
     public function configFieldItems(): array
     {
