@@ -70,8 +70,8 @@ final readonly class DeleteScaffold
             }
 
             $this->removeUsagesFromEntries($entriesUsing, $fieldset);
-        } catch (RuntimeException $exception) {
-            error($exception->getMessage());
+        } catch (RuntimeException $runtimeException) {
+            error($runtimeException->getMessage());
 
             return Command::FAILURE;
         }

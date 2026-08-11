@@ -81,8 +81,8 @@ final readonly class RenameScaffold
             $this->fieldsetFiles->updateFieldsetTitle($newFieldset, $newName);
             $this->target->yaml->renameSet($currentGroup, $targetGroup, $currentHandle, $newFieldset, $newName);
             $this->renameUsagesInEntries($currentHandle, $newFieldset);
-        } catch (RuntimeException $exception) {
-            error($exception->getMessage());
+        } catch (RuntimeException $runtimeException) {
+            error($runtimeException->getMessage());
 
             return Command::FAILURE;
         }

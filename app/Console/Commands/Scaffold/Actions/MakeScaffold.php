@@ -44,8 +44,8 @@ final readonly class MakeScaffold
         try {
             $this->createFieldsetAndView($name, $force);
             $this->registerInGroup($group, $name, $instructions);
-        } catch (RuntimeException $exception) {
-            error($exception->getMessage());
+        } catch (RuntimeException $runtimeException) {
+            error($runtimeException->getMessage());
 
             return Command::FAILURE;
         }
