@@ -8,6 +8,22 @@ export default [
   unicorn.configs.recommended,
   prettier,
   {
+    rules: {
+      // These read as whole words in this codebase, not as abbreviations.
+      // Every other replacement stays active.
+      'unicorn/name-replacements': [
+        'error',
+        {
+          replacements: {
+            env: false,
+            props: false,
+            utils: false,
+          },
+        },
+      ],
+    },
+  },
+  {
     ignores: [
       'node_modules/**',
       'vendor/**',

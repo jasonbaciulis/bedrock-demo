@@ -1,17 +1,17 @@
-import { slugify } from '../lib/utilities.js'
+import { slugify } from '../lib/utils.js'
 
 document.addEventListener('alpine:init', () => {
-  Alpine.data('combobox', properties => ({
-    id: properties.id || 'combobox',
-    placeholder: properties.placeholder || 'Select an option…',
-    itemsRaw: properties.items,
-    initialLoad: Number(properties.initialLoad ?? 10),
-    batchSize: Number(properties.batchSize ?? 25),
+  Alpine.data('combobox', props => ({
+    id: props.id || 'combobox',
+    placeholder: props.placeholder || 'Select an option…',
+    itemsRaw: props.items,
+    initialLoad: Number(props.initialLoad ?? 10),
+    batchSize: Number(props.batchSize ?? 25),
 
     items: [],
     itemsFiltered: [],
     itemsShown: [],
-    itemsLoaded: Number(properties.initialLoad ?? 10),
+    itemsLoaded: Number(props.initialLoad ?? 10),
     itemActive: null,
     itemSelected: null,
     comboboxSearch: '',
