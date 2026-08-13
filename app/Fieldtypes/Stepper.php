@@ -68,10 +68,8 @@ final class Stepper extends Fieldtype
 
     public function preProcess(mixed $value): int
     {
-        if ($value === null) {
-            return (int) $this->config('default', 0);
-        }
+        $value ??= $this->config('default', 0);
 
-        return (int) $value;
+        return is_numeric($value) ? (int) $value : 0;
     }
 }

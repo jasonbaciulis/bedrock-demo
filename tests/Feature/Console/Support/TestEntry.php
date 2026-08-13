@@ -6,7 +6,7 @@ namespace Tests\Feature\Console\Support;
 
 use Illuminate\Support\Str;
 use RuntimeException;
-use Statamic\Contracts\Entries\Entry;
+use Statamic\Entries\Entry;
 use Statamic\Facades\Entry as EntryFacade;
 
 /**
@@ -25,11 +25,12 @@ final class TestEntry
     {
         $id = 'test-'.Str::singular($collection).'-'.Str::random(6);
 
-        $entry = EntryFacade::make();
-        $entry->collection($collection);
-        $entry->id($id);
-        $entry->slug($id);
-        $entry->data($data);
+        $entry = EntryFacade::make()
+            ->collection($collection)
+            ->id($id)
+            ->slug($id)
+            ->data($data);
+
         $entry->save();
 
         return $entry;
@@ -38,12 +39,12 @@ final class TestEntry
     /**
      * Re-read an entry from the Stache after a command has changed it.
      */
-    public static function fresh(string $id): Entry
+    public static function fresh(Entry $entry): Entry
     {
-        $entry = EntryFacade::find($id);
+        $reread = EntryFacade::find($entry->id());
 
-        throw_unless($entry instanceof Entry, RuntimeException::class, "Entry '{$id}' no longer exists.");
+        throw_unless($reread instanceof Entry, RuntimeException::class, 'Entry no longer exists.');
 
-        return $entry;
+        return $reread;
     }
 }

@@ -32,16 +32,14 @@ final class YoutubeId extends Tags
 
         $youtubeUrl = $this->params->get('youtube_url');
 
-        if (empty($youtubeUrl)) {
+        if (! is_string($youtubeUrl)) {
             return false;
         }
 
-        // Checks if it matches a pattern and returns the value
         if (preg_match($pattern, $youtubeUrl, $match)) {
             return $match[1];
         }
 
-        // if no match return false.
         return false;
     }
 }

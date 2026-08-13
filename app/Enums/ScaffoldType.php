@@ -151,7 +151,7 @@ enum ScaffoldType
                 return $item;
             },
             self::ArticleSet => static function (array $node) use ($newHandle): array {
-                $node['attrs']['values']['type'] = $newHandle;
+                Arr::set($node, 'attrs.values.type', $newHandle);
 
                 return $node;
             },

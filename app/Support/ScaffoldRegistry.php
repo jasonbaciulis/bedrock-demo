@@ -55,7 +55,7 @@ final readonly class ScaffoldRegistry
     {
         $contents = $this->contents();
 
-        throw_unless(isset($this->groupsRoot($contents)[$groupHandle]['sets'][$setHandle]), RuntimeException::class, "Set '{$setHandle}' not found in group '{$groupHandle}'.");
+        throw_unless(isset($this->setsOf($contents, $groupHandle)[$setHandle]), RuntimeException::class, "Set '{$setHandle}' not found in group '{$groupHandle}'.");
 
         $this->write($this->withoutSet($contents, $groupHandle, $setHandle));
     }
@@ -72,15 +72,15 @@ final readonly class ScaffoldRegistry
         string $newDisplay
     ): void {
         $contents = $this->contents();
-        $root = $this->groupsRoot($contents);
+        $sets = $this->setsOf($contents, $fromGroup);
 
-        throw_unless(isset($root[$fromGroup]['sets'][$oldHandle]), RuntimeException::class, "Set '{$oldHandle}' not found in group '{$fromGroup}'.");
-        throw_unless(isset($root[$toGroup]), RuntimeException::class, "Group '{$toGroup}' not found.");
+        throw_unless(isset($sets[$oldHandle]), RuntimeException::class, "Set '{$oldHandle}' not found in group '{$fromGroup}'.");
+        throw_unless(isset($this->groupsRoot($contents)[$toGroup]), RuntimeException::class, "Group '{$toGroup}' not found.");
 
-        $set = $root[$fromGroup]['sets'][$oldHandle];
+        $set = $sets[$oldHandle];
         $set['display'] = $newDisplay;
-        if (isset($set['fields'][0]['import'])) {
-            $set['fields'][0]['import'] = $newHandle;
+        if (Arr::has($set, 'fields.0.import')) {
+            $set = UntypedYaml::withValueAt($set, 'fields.0.import', $newHandle);
         }
 
         $contents = $this->withoutSet($contents, $fromGroup, $oldHandle);
@@ -117,7 +117,7 @@ final readonly class ScaffoldRegistry
      */
     private function contents(): array
     {
-        return $this->fieldset()->contents();
+        return UntypedYaml::toMap($this->fieldset()->contents());
     }
 
     /**
@@ -157,7 +157,7 @@ final readonly class ScaffoldRegistry
      */
     private function setsOf(array $contents, string $groupHandle): array
     {
-        return (array) Arr::get($this->groupsRoot($contents)[$groupHandle], 'sets', []);
+        return UntypedYaml::toMapOfMaps(Arr::get($this->groupsRoot($contents)[$groupHandle], 'sets', []));
     }
 
     /**
@@ -168,7 +168,7 @@ final readonly class ScaffoldRegistry
     {
         $index = $this->groupFieldIndexOrFail($contents);
 
-        return (array) Arr::get($contents, "fields.{$index}.field.sets", []);
+        return UntypedYaml::toMapOfMaps(Arr::get($contents, "fields.{$index}.field.sets", []));
     }
 
     /**
@@ -180,9 +180,7 @@ final readonly class ScaffoldRegistry
     {
         $index = $this->groupFieldIndexOrFail($contents);
 
-        $contents['fields'][$index]['field']['sets'][$groupHandle]['sets'] = $sets;
-
-        return $contents;
+        return UntypedYaml::withValueAt($contents, "fields.{$index}.field.sets.{$groupHandle}.sets", $sets);
     }
 
     /**
@@ -190,14 +188,16 @@ final readonly class ScaffoldRegistry
      */
     private function groupFieldIndexOrFail(array $contents): int
     {
-        if (! isset($contents['fields']) || ! is_array($contents['fields'])) {
+        $fields = $contents['fields'] ?? null;
+
+        if (! is_array($fields)) {
             throw new RuntimeException(
                 "Invalid YAML structure in {$this->fileName()}: missing 'fields'."
             );
         }
 
-        foreach ($contents['fields'] as $index => $field) {
-            if (($field['handle'] ?? null) === $this->handle()) {
+        foreach ($fields as $index => $field) {
+            if (is_int($index) && (UntypedYaml::toMap($field)['handle'] ?? null) === $this->handle()) {
                 return $index;
             }
         }
@@ -225,11 +225,11 @@ final readonly class ScaffoldRegistry
     private function labelsFromConfig(array $items): array
     {
         return collect($items)
-            ->mapWithKeys(
-                fn (array $config, string $handle): array => [
-                    $handle => (string) ($config['display'] ?? Stringy::humanize($handle)),
-                ]
-            )
+            ->mapWithKeys(function (array $config, string $handle): array {
+                $display = $config['display'] ?? null;
+
+                return [$handle => is_string($display) ? $display : Stringy::humanize($handle)];
+            })
             ->all();
     }
 }

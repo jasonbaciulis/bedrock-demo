@@ -27,7 +27,7 @@ test('make creates the files and declares the set in the parent fieldset', funct
     expect($declared)->not->toBeEmpty()
         ->and($declared['display'] ?? null)->toBe($name)
         ->and($declared['instructions'] ?? null)->toBe('Test instructions')
-        ->and($declared['fields'][0]['import'] ?? null)->toBe($fieldset);
+        ->and(data_get($declared, 'fields.0.import'))->toBe($fieldset);
 })->with('scaffolds');
 
 test('make without --force fails when the files already exist', function (ScaffoldFixture $scaffold): void {
@@ -83,7 +83,7 @@ test('delete removes the declaration, the files and the entry usages', function 
         ->expectsConfirmation($scaffold->deleteConfirmation($name), 'yes')
         ->assertSuccessful();
 
-    expect($scaffold->usedHandles(TestEntry::fresh($entry->id())))->not->toContain($fieldset)
+    expect($scaffold->usedHandles(TestEntry::fresh($entry)))->not->toContain($fieldset)
         ->and($scaffold->declaredSets())->not->toHaveKey($fieldset)
         ->and($scaffold->fieldsetPath($fieldset))->not->toBeFile()
         ->and($scaffold->viewPath($view))->not->toBeFile();

@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Console\Support;
 
+use App\Support\UntypedYaml;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Statamic\Contracts\Entries\Entry;
+use Statamic\Entries\Entry;
 use Statamic\Facades\Config;
 use Statamic\Facades\YAML;
 
@@ -179,12 +180,11 @@ enum ScaffoldFixture
     public function declaredSetsIn(string $groupHandle): array
     {
         $parent = YAML::file($this->parentFieldsetPath())->parse();
+        $fields = $parent['fields'] ?? [];
 
-        return Arr::get(
-            collect((array) $parent['fields'])->firstWhere('handle', $this->entryField()),
-            "field.sets.{$groupHandle}.sets",
-            [],
-        );
+        $field = collect(is_array($fields) ? $fields : [])->firstWhere('handle', $this->entryField());
+
+        return UntypedYaml::toMapOfMaps(Arr::get(UntypedYaml::toMap($field), "field.sets.{$groupHandle}.sets", []));
     }
 
     /**
@@ -199,7 +199,9 @@ enum ScaffoldFixture
             self::ArticleSet => '*.attrs.values.type',
         };
 
-        return data_get((array) $entry->get($this->entryField()), $path, []);
+        $handles = data_get((array) $entry->get($this->entryField()), $path, []);
+
+        return is_array($handles) ? array_values($handles) : [];
     }
 
     private function groupDisplay(): string

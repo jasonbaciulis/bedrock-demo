@@ -56,7 +56,7 @@ test('rename updates the entry usages', function (ScaffoldFixture $scaffold): vo
         '--force' => true,
     ])->assertSuccessful();
 
-    expect($scaffold->usedHandles(TestEntry::fresh($entry->id())))
+    expect($scaffold->usedHandles(TestEntry::fresh($entry)))
         ->not->toContain($fieldset)
         ->toContain($newFieldset);
 })->with('scaffolds');
