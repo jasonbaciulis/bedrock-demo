@@ -13,6 +13,9 @@ final class StarterKitPostInstall
 
         $this->mergeComposerScripts();
 
+        // run initial formatting over default Statamic/Laravel
+        exec('composer run lint');
+
         $this->starRepo();
     }
 
