@@ -13,8 +13,6 @@ use Illuminate\Support\Arr;
  */
 final class UntypedYaml
 {
-    private function __construct() {}
-
     /**
      * Non-string keys cannot come from a YAML map, so they are dropped rather
      * than carried further.
