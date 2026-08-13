@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\NewsletterRequest;
+use App\Http\Requests\SubscribeNewsletterRequest;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-final class NewsletterController
+final class SubscribeNewsletterController
 {
-    public function __invoke(NewsletterRequest $request): JsonResponse
+    public function __invoke(SubscribeNewsletterRequest $request): JsonResponse
     {
         return response()->json(
             [

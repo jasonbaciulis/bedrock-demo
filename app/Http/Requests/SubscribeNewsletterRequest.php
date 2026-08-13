@@ -7,7 +7,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-final class NewsletterRequest extends FormRequest
+final class SubscribeNewsletterRequest extends FormRequest
 {
     /**
      * @return array<string, ValidationRule|array<mixed>|string>
