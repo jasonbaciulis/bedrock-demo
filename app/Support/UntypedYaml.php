@@ -25,15 +25,9 @@ final class UntypedYaml
             return [];
         }
 
-        $map = [];
-
-        foreach ($value as $key => $item) {
-            if (is_string($key)) {
-                $map[$key] = $item;
-            }
-        }
-
-        return $map;
+        return collect($value)
+            ->filter(static fn (mixed $item, mixed $key): bool => is_string($key))
+            ->all();
     }
 
     /**
