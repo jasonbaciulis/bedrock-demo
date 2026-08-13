@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
-use Statamic\Facades\YAML;
 use Tests\Feature\Console\Support\ScaffoldFixture;
 use Tests\Feature\Console\Support\Scratch;
 use Tests\Feature\Console\Support\TestEntry;
@@ -43,11 +41,13 @@ test('make without --force fails when the files already exist', function (Scaffo
 })->with('scaffolds');
 
 test('make fails when the parent fieldset declares no groups', function (ScaffoldFixture $scaffold): void {
-    File::put($scaffold->parentFieldsetPath(), YAML::dump($scaffold->parentFieldsetWithoutGroups()));
+    $scaffold->writeParentFieldsetWithoutGroups();
+
+    [$name] = ScaffoldFixture::plan();
 
     $this->artisan($scaffold->command('make'), [
         'group' => $scaffold->group(),
-        'name' => 'Scaffold Test '.Str::random(6),
+        'name' => $name,
         '--instructions' => 'Test instructions',
         '--force' => true,
     ])
@@ -56,7 +56,7 @@ test('make fails when the parent fieldset declares no groups', function (Scaffol
 })->with('scaffolds');
 
 test('make with an unknown group fails before it creates files', function (ScaffoldFixture $scaffold): void {
-    [$fieldset, $view] = ScaffoldFixture::handles($name = 'Scaffold Test '.Str::random(6));
+    [$name, $fieldset, $view] = ScaffoldFixture::plan();
 
     $this->artisan($scaffold->command('make'), [
         'group' => 'does_not_exist',
@@ -74,22 +74,16 @@ test('make with an unknown group fails before it creates files', function (Scaff
 test('delete removes the declaration, the files and the entry usages', function (ScaffoldFixture $scaffold): void {
     [$name, $fieldset, $view] = $scaffold->create();
 
-    $entry = TestEntry::create($scaffold->collection(), [
-        'title' => 'Test Entry',
-        $scaffold->entryField() => $scaffold->entryContent($fieldset),
-    ]);
+    $entry = $scaffold->createEntryUsing($fieldset);
 
     $this->artisan($scaffold->command('delete'), [
         'group' => $scaffold->group(),
         $scaffold->noun() => $fieldset,
     ])
-        ->expectsConfirmation("Delete '{$name}' from '{$scaffold->groupDisplay()}' group?", 'yes')
+        ->expectsConfirmation($scaffold->deleteConfirmation($name), 'yes')
         ->assertSuccessful();
 
-    $updated = TestEntry::fresh($entry->id());
-
-    expect($updated)->not->toBeNull()
-        ->and($scaffold->usedHandles($updated))->not->toContain($fieldset)
+    expect($scaffold->usedHandles(TestEntry::fresh($entry->id())))->not->toContain($fieldset)
         ->and($scaffold->declaredSets())->not->toHaveKey($fieldset)
         ->and($scaffold->fieldsetPath($fieldset))->not->toBeFile()
         ->and($scaffold->viewPath($view))->not->toBeFile();
@@ -103,7 +97,7 @@ test('delete with --keep-files removes the declaration but keeps the files', fun
         $scaffold->noun() => $fieldset,
         '--keep-files' => true,
     ])
-        ->expectsConfirmation("Delete '{$name}' from '{$scaffold->groupDisplay()}' group?", 'yes')
+        ->expectsConfirmation($scaffold->deleteConfirmation($name), 'yes')
         ->assertSuccessful();
 
     expect($scaffold->declaredSets())->not->toHaveKey($fieldset)
@@ -135,7 +129,7 @@ test('delete with an unknown group fails with an error', function (ScaffoldFixtu
 })->with('scaffolds');
 
 test('delete fails when the parent fieldset declares no groups', function (ScaffoldFixture $scaffold): void {
-    File::put($scaffold->parentFieldsetPath(), YAML::dump($scaffold->parentFieldsetWithoutGroups()));
+    $scaffold->writeParentFieldsetWithoutGroups();
 
     $this->artisan($scaffold->command('delete'), [
         'group' => $scaffold->group(),
@@ -147,13 +141,13 @@ test('delete fails when the parent fieldset declares no groups', function (Scaff
 })->with('scaffolds');
 
 test('delete reports an empty group instead of prompting', function (ScaffoldFixture $scaffold): void {
-    File::put($scaffold->parentFieldsetPath(), YAML::dump($scaffold->parentFieldsetWithEmptyGroup()));
+    $scaffold->writeParentFieldsetWithEmptyGroup();
 
     $this->artisan($scaffold->command('delete'), [
         'group' => $scaffold->group(),
         '--force' => true,
     ])
-        ->expectsOutputToContain("The '{$scaffold->groupDisplay()}' group has no {$scaffold->noun()}s.")
+        ->expectsOutputToContain($scaffold->emptyGroupNotice())
         ->assertSuccessful();
 })->with('scaffolds');
 
@@ -166,7 +160,7 @@ test('delete fails when the files are already gone and --force is not passed', f
         'group' => $scaffold->group(),
         $scaffold->noun() => $fieldset,
     ])
-        ->expectsConfirmation("Delete '{$name}' from '{$scaffold->groupDisplay()}' group?", 'yes')
+        ->expectsConfirmation($scaffold->deleteConfirmation($name), 'yes')
         ->expectsOutputToContain('Some files were not found to delete')
         ->assertFailed();
 })->with('scaffolds');

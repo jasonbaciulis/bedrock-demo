@@ -6,6 +6,7 @@ namespace Tests\Feature\Console\Support;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Config;
@@ -22,17 +23,19 @@ enum ScaffoldFixture
     case ArticleSet;
 
     /**
-     * Fieldset handle and view slug the scaffold commands derive from a display
-     * name. Spelled out here rather than through App\Support\ScaffoldName, so a
-     * change in that class fails the assertions instead of moving them.
+     * A unique display name, plus the fieldset handle and view slug the scaffold
+     * commands derive from it. The derivation is spelled out here rather than
+     * taken from App\Support\ScaffoldName, so a change in that class fails the
+     * assertions instead of moving them.
      *
-     * @return array{0: string, 1: string}
+     * @return array{0: string, 1: string, 2: string}
      */
-    public static function handles(string $display): array
+    public static function plan(string $prefix = 'Scaffold Test'): array
     {
+        $display = $prefix.' '.Str::random(6);
         $locale = Config::getShortLocale();
 
-        return [Str::slug($display, '_', $locale), Str::slug($display, '-', $locale)];
+        return [$display, Str::slug($display, '_', $locale), Str::slug($display, '-', $locale)];
     }
 
     public function noun(): string
@@ -51,14 +54,6 @@ enum ScaffoldFixture
         };
     }
 
-    public function groupDisplay(): string
-    {
-        return match ($this) {
-            self::Block => 'Messaging',
-            self::ArticleSet => 'Text & Layout',
-        };
-    }
-
     /**
      * A second group in the same parent fieldset, so rename can move a set out
      * of group().
@@ -68,33 +63,6 @@ enum ScaffoldFixture
         return match ($this) {
             self::Block => 'conversion',
             self::ArticleSet => 'media',
-        };
-    }
-
-    /**
-     * Entry field, and parent fieldset handle, the scaffolded sets live in.
-     */
-    public function entryField(): string
-    {
-        return match ($this) {
-            self::Block => 'blocks',
-            self::ArticleSet => 'article',
-        };
-    }
-
-    public function fieldType(): string
-    {
-        return match ($this) {
-            self::Block => 'replicator',
-            self::ArticleSet => 'bard',
-        };
-    }
-
-    public function collection(): string
-    {
-        return match ($this) {
-            self::Block => 'pages',
-            self::ArticleSet => 'posts',
         };
     }
 
@@ -110,8 +78,7 @@ enum ScaffoldFixture
      */
     public function create(): array
     {
-        $display = 'Scaffold Test '.Str::random(6);
-        [$fieldset, $view] = self::handles($display);
+        [$display, $fieldset, $view] = self::plan();
 
         $exitCode = Artisan::call($this->command('make'), [
             'group' => $this->group(),
@@ -125,48 +92,68 @@ enum ScaffoldFixture
         return [$display, $fieldset, $view];
     }
 
-    /**
-     * A parent fieldset whose entry field declares no groups at all.
-     *
-     * @return array<string, mixed>
-     */
-    public function parentFieldsetWithoutGroups(): array
+    public function deleteConfirmation(string $name): string
     {
-        return $this->parentFieldsetWith([]);
+        return "Delete '{$name}' from '{$this->groupDisplay()}' group?";
+    }
+
+    public function renameConfirmation(string $name, string $newName): string
+    {
+        return "Rename {$this->noun()} '{$name}' to '{$newName}'? This will update all content entries.";
+    }
+
+    public function emptyGroupNotice(): string
+    {
+        return "The '{$this->groupDisplay()}' group has no {$this->noun()}s.";
+    }
+
+    public function createEntryUsing(string $fieldset): Entry
+    {
+        return TestEntry::create($this->collection(), [
+            'title' => 'Test Entry',
+            $this->entryField() => $this->entryContent($fieldset),
+        ]);
+    }
+
+    public function writeParentFieldsetWithoutGroups(): void
+    {
+        $this->writeParentFieldset($this->parentFieldsetWith([]));
+    }
+
+    public function writeParentFieldsetWithEmptyGroup(): void
+    {
+        $this->writeParentFieldset($this->parentFieldsetWith([
+            $this->group() => ['display' => $this->groupDisplay(), 'sets' => []],
+        ]));
     }
 
     /**
-     * A parent fieldset whose entry field declares this fixture's group with no
-     * sets in it.
-     *
-     * @return array<string, mixed>
+     * Without the entry field the registry cannot locate the group root.
      */
-    public function parentFieldsetWithEmptyGroup(): array
+    public function writeParentFieldsetWithoutEntryField(): void
     {
-        return $this->parentFieldsetWith([
-            $this->group() => ['display' => $this->groupDisplay(), 'sets' => []],
+        $this->writeParentFieldset([
+            'title' => 'Parent',
+            'fields' => [['handle' => 'unrelated', 'field' => ['type' => 'text']]],
         ]);
     }
 
     /**
-     * A parent fieldset with no entry field, so the registry cannot locate the
-     * group root.
-     *
-     * @return array<string, mixed>
+     * A sectioned fieldset drops the top-level 'fields' key the registry reads.
      */
-    public function parentFieldsetWithoutEntryField(): array
+    public function writeSectionedParentFieldset(): void
     {
-        return ['title' => 'Parent', 'fields' => [['handle' => 'unrelated', 'field' => ['type' => 'text']]]];
+        $this->writeParentFieldset([
+            'title' => 'Parent',
+            'sections' => [
+                'main' => ['fields' => [['handle' => $this->entryField(), 'field' => ['type' => 'text']]]],
+            ],
+        ]);
     }
 
     public function fieldsetPath(string $fieldset): string
     {
         return Scratch::fieldsetsPath()."/{$fieldset}.yaml";
-    }
-
-    public function parentFieldsetPath(): string
-    {
-        return $this->fieldsetPath($this->entryField());
     }
 
     public function viewPath(string $view): string
@@ -201,22 +188,6 @@ enum ScaffoldFixture
     }
 
     /**
-     * Entry content that uses the given fieldset once.
-     *
-     * @return list<array<string, mixed>>
-     */
-    public function entryContent(string $fieldset): array
-    {
-        return match ($this) {
-            self::Block => [['type' => $fieldset, 'enabled' => true]],
-            self::ArticleSet => [[
-                'type' => 'set',
-                'attrs' => ['id' => 'abc', 'values' => ['type' => $fieldset]],
-            ]],
-        };
-    }
-
-    /**
      * Fieldset handles the entry content currently uses.
      *
      * @return list<mixed>
@@ -229,6 +200,62 @@ enum ScaffoldFixture
         };
 
         return data_get((array) $entry->get($this->entryField()), $path, []);
+    }
+
+    private function groupDisplay(): string
+    {
+        return match ($this) {
+            self::Block => 'Messaging',
+            self::ArticleSet => 'Text & Layout',
+        };
+    }
+
+    /**
+     * Entry field, and parent fieldset handle, the scaffolded sets live in.
+     */
+    private function entryField(): string
+    {
+        return match ($this) {
+            self::Block => 'blocks',
+            self::ArticleSet => 'article',
+        };
+    }
+
+    private function fieldType(): string
+    {
+        return match ($this) {
+            self::Block => 'replicator',
+            self::ArticleSet => 'bard',
+        };
+    }
+
+    private function collection(): string
+    {
+        return match ($this) {
+            self::Block => 'pages',
+            self::ArticleSet => 'posts',
+        };
+    }
+
+    private function parentFieldsetPath(): string
+    {
+        return $this->fieldsetPath($this->entryField());
+    }
+
+    /**
+     * Entry content that uses the given fieldset once.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function entryContent(string $fieldset): array
+    {
+        return match ($this) {
+            self::Block => [['type' => $fieldset, 'enabled' => true]],
+            self::ArticleSet => [[
+                'type' => 'set',
+                'attrs' => ['id' => 'abc', 'values' => ['type' => $fieldset]],
+            ]],
+        };
     }
 
     /**
@@ -246,5 +273,13 @@ enum ScaffoldFixture
                 ],
             ],
         ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $fieldset
+     */
+    private function writeParentFieldset(array $fieldset): void
+    {
+        File::put($this->parentFieldsetPath(), YAML::dump($fieldset));
     }
 }

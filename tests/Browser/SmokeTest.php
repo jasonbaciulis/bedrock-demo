@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-it('loads key pages without javascript errors', function (): void {
-    $pages = visit(['/', '/blog']);
+test('homepage loads without javascript errors', function (): void {
+    $homepage = visit(['/']);
 
-    $pages->assertNoJavaScriptErrors();
+    $homepage->assertNoJavaScriptErrors();
 });

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 use Statamic\Facades\YAML;
 use Tests\Feature\Console\Support\ScaffoldFixture;
 use Tests\Feature\Console\Support\Scratch;
@@ -20,7 +19,7 @@ afterEach(function (): void {
 
 test('rename moves the files and updates the parent fieldset', function (ScaffoldFixture $scaffold): void {
     [, $fieldset, $view] = $scaffold->create();
-    [$newFieldset, $newView] = ScaffoldFixture::handles($newName = 'Scaffold Renamed '.Str::random(6));
+    [$newName, $newFieldset, $newView] = ScaffoldFixture::plan('Scaffold Renamed');
 
     expect($scaffold->fieldsetPath($fieldset))->toBeFile()
         ->and($scaffold->viewPath($view))->toBeFile();
@@ -46,12 +45,9 @@ test('rename moves the files and updates the parent fieldset', function (Scaffol
 
 test('rename updates the entry usages', function (ScaffoldFixture $scaffold): void {
     [, $fieldset] = $scaffold->create();
-    [$newFieldset] = ScaffoldFixture::handles($newName = 'Scaffold Renamed '.Str::random(6));
+    [$newName, $newFieldset] = ScaffoldFixture::plan('Scaffold Renamed');
 
-    $entry = TestEntry::create($scaffold->collection(), [
-        'title' => 'Test Entry',
-        $scaffold->entryField() => $scaffold->entryContent($fieldset),
-    ]);
+    $entry = $scaffold->createEntryUsing($fieldset);
 
     $this->artisan($scaffold->command('rename'), [
         'group' => $scaffold->group(),
@@ -60,11 +56,9 @@ test('rename updates the entry usages', function (ScaffoldFixture $scaffold): vo
         '--force' => true,
     ])->assertSuccessful();
 
-    $updated = TestEntry::fresh($entry->id());
-
-    expect($updated)->not->toBeNull()
-        ->and($scaffold->usedHandles($updated))->not->toContain($fieldset)
-        ->and($scaffold->usedHandles($updated))->toContain($newFieldset);
+    expect($scaffold->usedHandles(TestEntry::fresh($entry->id())))
+        ->not->toContain($fieldset)
+        ->toContain($newFieldset);
 })->with('scaffolds');
 
 test('rename fails when the target files exist without --force', function (ScaffoldFixture $scaffold): void {
@@ -76,10 +70,7 @@ test('rename fails when the target files exist without --force', function (Scaff
         'current_name' => $fieldset,
         'new_name' => $newName,
     ])
-        ->expectsConfirmation(
-            "Rename {$scaffold->noun()} '{$name}' to '{$newName}'? This will update all content entries.",
-            'yes'
-        )
+        ->expectsConfirmation($scaffold->renameConfirmation($name, $newName), 'yes')
         ->assertFailed();
 })->with('scaffolds');
 
@@ -94,7 +85,7 @@ test('rename fails when the source does not exist', function (ScaffoldFixture $s
 })->with('scaffolds');
 
 test('rename fails when the parent fieldset declares no groups', function (ScaffoldFixture $scaffold): void {
-    File::put($scaffold->parentFieldsetPath(), YAML::dump($scaffold->parentFieldsetWithoutGroups()));
+    $scaffold->writeParentFieldsetWithoutGroups();
 
     $this->artisan($scaffold->command('rename'), [
         'group' => $scaffold->group(),
@@ -118,19 +109,19 @@ test('rename with an unknown group fails with an error', function (ScaffoldFixtu
 })->with('scaffolds');
 
 test('rename reports an empty group instead of prompting', function (ScaffoldFixture $scaffold): void {
-    File::put($scaffold->parentFieldsetPath(), YAML::dump($scaffold->parentFieldsetWithEmptyGroup()));
+    $scaffold->writeParentFieldsetWithEmptyGroup();
 
     $this->artisan($scaffold->command('rename'), [
         'group' => $scaffold->group(),
         '--force' => true,
     ])
-        ->expectsOutputToContain("The '{$scaffold->groupDisplay()}' group has no {$scaffold->noun()}s.")
+        ->expectsOutputToContain($scaffold->emptyGroupNotice())
         ->assertSuccessful();
 })->with('scaffolds');
 
 test('rename notes the missing source files and still renames the declaration', function (ScaffoldFixture $scaffold): void {
     [, $fieldset, $view] = $scaffold->create();
-    [$newFieldset] = ScaffoldFixture::handles($newName = 'Scaffold Renamed '.Str::random(6));
+    [$newName, $newFieldset] = ScaffoldFixture::plan('Scaffold Renamed');
 
     File::delete([$scaffold->fieldsetPath($fieldset), $scaffold->viewPath($view)]);
 
@@ -144,10 +135,8 @@ test('rename notes the missing source files and still renames the declaration', 
         ->expectsOutputToContain('Note: View file not found')
         ->assertSuccessful();
 
-    $declared = $scaffold->declaredSets();
-
-    expect($declared)->not->toHaveKey($fieldset)
-        ->and($declared)->toHaveKey($newFieldset);
+    expect($scaffold->declaredSets())->not->toHaveKey($fieldset)
+        ->toHaveKey($newFieldset);
 })->with('scaffolds');
 
 test('rename with --force overwrites the files of an existing set', function (ScaffoldFixture $scaffold): void {
@@ -164,6 +153,6 @@ test('rename with --force overwrites the files of an existing set', function (Sc
     ])->assertSuccessful();
 
     expect($scaffold->declaredSets())->not->toHaveKey($fieldset)
-        ->and($scaffold->declaredSets())->toHaveKey($targetFieldset)
+        ->toHaveKey($targetFieldset)
         ->and(File::get($scaffold->viewPath($targetView)))->not->toBe('target view');
 })->with('scaffolds');
