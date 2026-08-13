@@ -15,8 +15,7 @@ final class StarterKitPostInstall
     /**
      * Statamic installs `dependencies_dev` with a partial `composer require` that cannot
      * pass `--with-all-dependencies`, which Pest 5 and PHPUnit 13 need, so this hook
-     * installs them instead. `export-starter-kit.sh` fails when a version here drifts
-     * from require-dev in composer.json.
+     * installs them instead.
      *
      * @var list<string>
      */
