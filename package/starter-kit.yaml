@@ -7,7 +7,6 @@ export_paths:
   - app/Enums
   - app/Fieldtypes
   - app/Http
-  - app/Models/User.php
   - app/Providers/AppServiceProvider.php
   - app/Support
   - app/Tags
