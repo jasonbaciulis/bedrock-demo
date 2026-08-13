@@ -40,19 +40,4 @@ export_paths:
   - vite.config.js
 dependencies:
   - nunomaduro/essentials
-dependencies_dev:
-  - cboxdk/statamic-mcp
-  - driftingly/rector-laravel
-  - larastan/larastan
-  - laravel/boost
-  - laravel/pao
-  - pestphp/pest
-  - pestphp/pest-plugin-browser
-  - pestphp/pest-plugin-laravel
-  - pestphp/pest-plugin-phpstan
-  - pestphp/pest-plugin-rector
-  - pestphp/pest-plugin-type-coverage
-  - phpstan/phpstan
-  - phpunit/phpunit
-  - rector/rector
-  - roave/security-advisories
+# The dev dependencies are installed by StarterKitPostInstall.php, not from here.
