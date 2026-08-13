@@ -17,7 +17,6 @@ statamic new project_name jasonbaciulis/bedrock
 3. Create a Statamic user: `php please make:user`
 4. (Optional) install the MCP server and AI coding guidelines: `php artisan boost:install`
 5. Start Laravel's local dev server, bun run dev, start queue: `composer run dev`
-6. (Optional) Clear demo content: `php artisan bedrock:clear`
 
 Recommended to use [Herd](https://laravel.com/docs/13.x/installation#installation-using-herd) for local dev.
 Once you have started the development server with `composer run dev`, the website will be accessible in your web browser at [https://bedrock.test](https://bedrock.test). Head to [https://bedrock.test/cp](https://bedrock.test/cp) and use your email address and password to sign into the Statamic control panel.

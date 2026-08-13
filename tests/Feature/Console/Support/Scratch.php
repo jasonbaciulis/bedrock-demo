@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Console\Support;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Statamic\Facades\Fieldset;
@@ -18,11 +17,6 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 final class Scratch
 {
-    public static function path(): string
-    {
-        return storage_path('framework/testing/bedrock-'.ParallelWorker::id());
-    }
-
     /**
      * Fieldsets directory the Statamic fieldset repository points at during
      * scaffold tests.
@@ -58,18 +52,13 @@ final class Scratch
         ]);
     }
 
-    public static function contentPath(): string
-    {
-        return self::path().'/content-root/content';
-    }
-
     /**
      * Copy the content tree into this worker's workspace and repoint every
      * Stache store at the copy. Parallel workers otherwise seed and delete
      * entries in one shared directory, and a Stache traversal that lists that
      * directory then stats a file another worker has just removed dies.
      */
-    public static function isolateContentTree(): string
+    public static function isolateContentTree(): void
     {
         $realContentPath = base_path('content');
         $contentPath = self::contentPath();
@@ -83,35 +72,36 @@ final class Scratch
             ));
 
         Stache::clear();
+    }
 
-        return $contentPath;
+    public static function delete(): void
+    {
+        File::deleteDirectory(self::path());
+    }
+
+    private static function path(): string
+    {
+        return storage_path('framework/testing/bedrock-'.ParallelWorker::id());
+    }
+
+    private static function contentPath(): string
+    {
+        return self::path().'/content-root/content';
     }
 
     /**
      * Files a previous run left behind are skipped, so a crashed run cannot
      * seed the next one with stray entries.
      */
-    public static function copyDemoFiles(string $source, string $destination): void
+    private static function copyDemoFiles(string $source, string $destination): void
     {
-        self::demoFilesIn($source)->each(function (SplFileInfo $file) use ($destination): void {
-            $target = $destination.'/'.$file->getRelativePathname();
+        collect(File::allFiles($source))
+            ->reject(fn (SplFileInfo $file): bool => Str::startsWith($file->getFilename(), 'test-'))
+            ->each(function (SplFileInfo $file) use ($destination): void {
+                $target = $destination.'/'.$file->getRelativePathname();
 
-            File::ensureDirectoryExists(dirname($target));
-            File::copy($file->getPathname(), $target);
-        });
-    }
-
-    /**
-     * @return Collection<int, SplFileInfo>
-     */
-    public static function demoFilesIn(string $path): Collection
-    {
-        return collect(File::allFiles($path))
-            ->reject(fn (SplFileInfo $file): bool => Str::startsWith($file->getFilename(), 'test-'));
-    }
-
-    public static function delete(): void
-    {
-        File::deleteDirectory(self::path());
+                File::ensureDirectoryExists(dirname($target));
+                File::copy($file->getPathname(), $target);
+            });
     }
 }
