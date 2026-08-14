@@ -90,7 +90,7 @@ final class StarterKitPostInstall
             return;
         }
 
-        info('Removed '.$removed->count().' default Statamic test files.');
+        info('Removed default Statamic test files.');
     }
 
     private function installDevDependencies(Command|NullConsole $console): void
