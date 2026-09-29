@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e23ce86b093c8642e23b268935a8a103",
+    "content-hash": "e108c3fe6b03c99c0be3440043034e05",
     "packages": [
         {
             "name": "ajthinking/archetype",
@@ -11482,6 +11482,101 @@
                 "source": "https://github.com/iamcal/SQLParser/tree/v0.7"
             },
             "time": "2026-01-28T22:20:33+00:00"
+        },
+        {
+            "name": "jasonbaciulis/bedrock-commands",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../bedrock-commands",
+                "reference": "ed43abbf2051b64b3f32441eae919a490209b112"
+            },
+            "require": {
+                "php": "^8.4",
+                "statamic/cms": "^6.34.1"
+            },
+            "require-dev": {
+                "driftingly/rector-laravel": "^2.6.2",
+                "larastan/larastan": "^3.12.2",
+                "laravel/pint": "^1.32.1",
+                "orchestra/testbench": "^11.0",
+                "pestphp/pest": "^5.2.1",
+                "pestphp/pest-plugin-laravel": "^5.0.1",
+                "pestphp/pest-plugin-phpstan": "^5.2.1",
+                "pestphp/pest-plugin-rector": "^5.0.4",
+                "pestphp/pest-plugin-type-coverage": "^5.0.2",
+                "phpstan/phpstan": "^2.2.15",
+                "phpunit/phpunit": "^13.3.4",
+                "rector/rector": "^2.6.7"
+            },
+            "type": "statamic-addon",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                },
+                "statamic": {
+                    "name": "Bedrock Commands",
+                    "description": "Scaffold, rename and delete Bedrock blocks and sets"
+                },
+                "laravel": {
+                    "providers": [
+                        "JasonBaciulis\\BedrockCommands\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JasonBaciulis\\BedrockCommands\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "JasonBaciulis\\BedrockCommands\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "lint": [
+                    "rector",
+                    "pint --parallel"
+                ],
+                "test:lint": [
+                    "pint --parallel --test",
+                    "rector --dry-run"
+                ],
+                "test:type-coverage": [
+                    "pest --type-coverage --min=100"
+                ],
+                "test:types": [
+                    "phpstan"
+                ],
+                "test:unit": [
+                    "XDEBUG_MODE=\"coverage\" pest --parallel --coverage --exactly=100.0"
+                ],
+                "test": [
+                    "@test:lint",
+                    "@test:type-coverage",
+                    "@test:types",
+                    "@test:unit"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jason Baciulis",
+                    "email": "jason@remarkable.dev"
+                }
+            ],
+            "description": "Artisan commands that scaffold, rename and delete page builder blocks and article sets in the Bedrock starter kit",
+            "keywords": [
+                "bedrock",
+                "scaffold",
+                "statamic"
+            ],
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "jean85/pretty-package-versions",
