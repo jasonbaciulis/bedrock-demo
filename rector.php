@@ -7,7 +7,6 @@ use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodingStyle\Rector\ClassMethod\MakeInheritedMethodVisibilitySameAsParentRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPublicMethodParameterRector;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\Transform\Rector\FuncCall\FuncCallToStaticCallRector;
 use Rector\Transform\ValueObject\FuncCallToStaticCall;
 use RectorLaravel\Rector\Class_\AddHasFactoryToModelsRector;
@@ -58,7 +57,6 @@ return RectorConfig::configure()
         RemoveUnusedPublicMethodParameterRector::class => [
             __DIR__.'/app/Http/Controllers',
         ],
-        AddOverrideAttributeToOverriddenMethodsRector::class,
         DispatchToHelperFunctionsRector::class,
         MakeInheritedMethodVisibilitySameAsParentRector::class,
     ])
