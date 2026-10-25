@@ -62,6 +62,9 @@ export default [
             // DOM and JSON APIs return and expect `null`, not `undefined`.
             'unicorn/no-null': 'off',
 
+            // Keep the standard ` * ` prefix on JSDoc lines that editors and Prettier expect.
+            'unicorn/no-asterisk-prefix-in-documentation-comments': 'off',
+
             'unicorn/filename-case': ['error', { case: 'camelCase' }],
         },
     },
