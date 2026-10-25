@@ -11,6 +11,8 @@ export_paths:
   - config/statamic/mcp.php
   - config/statamic/git.php
   - config/statamic/search.php
+  - config/statamic/seo-pro.php
+  - config/statamic/static_caching.php
   - database/factories/UserFactory.php
   - content
   - public/assets
@@ -40,4 +42,5 @@ export_paths:
   - vite.config.js
 dependencies:
   - nunomaduro/essentials
+  - statamic/seo-pro
 # The dev dependencies are installed by StarterKitPostInstall.php, not from here.

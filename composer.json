@@ -14,6 +14,7 @@
         "laravel/tinker": "^3.0.2",
         "nunomaduro/essentials": "^1.2",
         "statamic/cms": "^6.38.0",
+        "statamic/seo-pro": "^7.15",
         "statamic/ssg": "^4.1"
     },
     "require-dev": {
