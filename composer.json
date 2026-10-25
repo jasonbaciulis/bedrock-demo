@@ -128,12 +128,5 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "name": "bedrock-commands",
-            "type": "path",
-            "url": "../bedrock-commands"
-        }
-    ]
+    "prefer-stable": true
 }
