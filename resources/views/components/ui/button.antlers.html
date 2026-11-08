@@ -67,5 +67,8 @@ type: 'button'
     >
         {{ view:label }}
         {{ slot }}
+        {{ if view:target_blank }}
+            <s:partial:components.ui.new-tab-hint />
+        {{ /if }}
     </{{ view:as }}>
 {{ /if }}

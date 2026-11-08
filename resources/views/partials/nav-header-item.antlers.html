@@ -10,7 +10,12 @@
         />
     {{ /if }}
     <div>
-        <span class="text-foreground font-medium">{{ title }}</span>
+        <span class="text-foreground font-medium">
+            {{ title }}
+            {{ if is_external }}
+                <s:partial:components.ui.new-tab-hint />
+            {{ /if }}
+        </span>
         {{ if badge }}
             <span class="badge badge--outline relative -top-px ml-1.5">{{ badge }}</span>
         {{ /if }}

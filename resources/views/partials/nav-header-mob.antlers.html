@@ -57,6 +57,9 @@
                                             {{ child:is_external ?= 'target="_blank" rel="noopener nofollow"' }}
                                         >
                                             {{ child:title }}
+                                            {{ if child:is_external }}
+                                                <s:partial:components.ui.new-tab-hint />
+                                            {{ /if }}
                                         </a>
                                     {{ /children }}
                                 {{ elseif !children }}
@@ -66,6 +69,9 @@
                                         {{ is_external ?= 'target="_blank" rel="noopener nofollow"' }}
                                     >
                                         {{ title }}
+                                        {{ if is_external }}
+                                            <s:partial:components.ui.new-tab-hint />
+                                        {{ /if }}
                                     </a>
                                 {{ /if }}
                             {{ /items }}

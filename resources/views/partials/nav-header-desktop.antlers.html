@@ -62,6 +62,9 @@
                 {{ is_external ?= 'target="_blank" rel="noopener nofollow"' }}
             >
                 {{ title }}
+                {{ if is_external }}
+                    <s:partial:components.ui.new-tab-hint />
+                {{ /if }}
             </a>
         {{ /if }}
     </s:nav>
