@@ -5,6 +5,7 @@ export_paths:
   - app/Fieldtypes
   - app/Http
   - app/Models/User.php
+  - app/MutatorPlugins
   - app/Providers/AppServiceProvider.php
   - config/filesystems.php
   - config/essentials.php
@@ -41,6 +42,7 @@ export_paths:
   - rector.php
   - vite.config.js
 dependencies:
+  - jacksleight/statamic-bard-mutator
   - nunomaduro/essentials
   - statamic/seo-pro
 # The dev dependencies are installed by StarterKitPostInstall.php, not from here.

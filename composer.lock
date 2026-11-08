@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec5ca94fb77c9cbb66d8876cbebdacca",
+    "content-hash": "49aa124d23c79dc5e173f35995b93739",
     "packages": [
         {
             "name": "ajthinking/archetype",
@@ -1591,6 +1591,63 @@
             ],
             "time": "2026-10-30T13:38:01+00:00",
             "published-time": "2026-10-30T13:41:47+00:00"
+        },
+        {
+            "name": "jacksleight/statamic-bard-mutator",
+            "version": "3.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jacksleight/statamic-bard-mutator.git",
+                "reference": "700a1d326c090f68796c8349ef9aab88e8bca34e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jacksleight/statamic-bard-mutator/zipball/700a1d326c090f68796c8349ef9aab88e8bca34e",
+                "reference": "700a1d326c090f68796c8349ef9aab88e8bca34e",
+                "shasum": ""
+            },
+            "require": {
+                "statamic/cms": "^5.0|^6.0"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^8.1",
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JackSleight\\StatamicBardMutator\\ServiceProvider"
+                    ]
+                },
+                "statamic": {
+                    "name": "Bard Mutator",
+                    "description": "Modify the data and tags rendered by the Bard fieldtype, giving you full control over the final HTML."
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JackSleight\\StatamicBardMutator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Modify the data and tags rendered by the Bard fieldtype, giving you full control over the final HTML.",
+            "support": {
+                "issues": "https://github.com/jacksleight/statamic-bard-mutator/issues",
+                "source": "https://github.com/jacksleight/statamic-bard-mutator/tree/3.0.6"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/jacksleight",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-11-02T10:21:56+00:00",
+            "published-time": "2026-11-02T10:22:34+00:00"
         },
         {
             "name": "james-heinrich/getid3",
