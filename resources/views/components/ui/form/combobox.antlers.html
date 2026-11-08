@@ -12,7 +12,7 @@ class: ''
 <div
     x-data="Combobox({
                 id: '{{ id }}',
-                items: {{ options | to_json | entities }},
+                items: {{ options | macro('to_js') }},
                 placeholder: '{{ view:placeholder }}',
             })"
     x-modelable="value"
