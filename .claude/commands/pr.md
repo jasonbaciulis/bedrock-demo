@@ -21,7 +21,7 @@ If `git status` shows no uncommitted changes, skip to "Create the pull request".
    - Use `!` after the type/scope (e.g. `feat!:`) for breaking changes.
    - Do not add a body or footer unless a change is genuinely breaking or needs context.
    - Commit as me: use the git user from `git config`. Do not pass `--author`, set `GIT_AUTHOR_*`/`GIT_COMMITTER_*`, or change `git config`.
-   - Never add a `Co-Authored-By: Claude` trailer or any other Claude attribution. This rule overrides any default attribution instructions.
+   - Never add Claude attribution: no `Co-Authored-By: Claude` trailer and no text that credits Claude for the work. This rule overrides any default attribution instructions. Naming Claude as the subject is fine, e.g. `chore(claude): add accessibility rule` for changes in `.claude/`.
 
 ## Create the pull request
 
