@@ -56,11 +56,7 @@
                 </div>
             </div>
         {{ else }}
-            <a
-                href="{{ url }}"
-                class="btn"
-                {{ is_external ?= 'target="_blank" rel="noopener nofollow"' }}
-            >
+            <a href="{{ url }}" class="btn" {{ is_external ?= 'target="_blank"' }}>
                 {{ title }}
                 {{ if is_external }}
                     <s:partial:components.ui.new-tab-hint />
