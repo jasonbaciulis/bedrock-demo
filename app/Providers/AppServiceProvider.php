@@ -17,6 +17,5 @@ final class AppServiceProvider extends ServiceProvider
     private function registerStatamicIcons(): void
     {
         Icon::register('heroicons', base_path('resources/svg/heroicons/outline'));
-        Icon::register('lucide', base_path('resources/svg/lucide'));
     }
 }
