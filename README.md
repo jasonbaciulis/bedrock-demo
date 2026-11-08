@@ -28,7 +28,8 @@ resources/views/
 ├── blocks/                      # Page building blocks (Replicator fields)
 ├── components/                  # Project specific reusable components
 │   └── ui/                      # Highly-reusable shadcn/ui style Alpine.js components
-│       └── form/                # Form field types (custom Statamic form fields will require a snake_case view file here)
+│       └── form/                # Statamic form (create), field wrapper and shared form parts (label, error, instructions, etc.)
+│           └── fields/          # Form field types (custom Statamic form fields will require a snake_case view file here)
 ├── partials/                    # Template partials and fragments (things that aren't really reusable go here)
 ├── posts/                       # Posts collection templates
 ├── sets/                        # Content sets for Article Block
