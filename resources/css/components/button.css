@@ -16,11 +16,11 @@
     }
 
     .btn--link {
-        @apply text-neutral-900 underline-offset-4 hover:underline active:underline;
+        @apply text-foreground underline-offset-4 hover:underline active:underline;
     }
 
     .btn--ghost {
-        @apply hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 text-neutral-900;
+        @apply hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 text-foreground;
     }
 
     .btn--destructive {
