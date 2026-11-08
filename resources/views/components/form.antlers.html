@@ -42,6 +42,8 @@ submit_label: 'Submit'
             :form_handle="view:form_handle"
         />
 
+        <s:partial:components.form-error-summary />
+
         <div class="space-y-12 divide-y divide-gray-300">
             {{ sections }}
                 <div {{ !last ?= 'class="pb-12"' }}>

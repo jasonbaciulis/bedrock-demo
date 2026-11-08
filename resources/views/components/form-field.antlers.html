@@ -49,6 +49,13 @@ fields_without_error:
                         :id="id"
                     />
                 {{ /if }}
+                {{ if character_limit }}
+                    <s:partial:components.ui.input-char-counter
+                        model="form.{handle}"
+                        :character_limit="character_limit"
+                        id="{id}-character-limit"
+                    />
+                {{ /if }}
                 {{ unless view:fields_without_error | contains(type) }}
                     <s:partial:components.ui.input-error :handle="handle" :id="id" />
                 {{ /unless }}
