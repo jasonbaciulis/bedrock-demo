@@ -126,6 +126,13 @@
             "pestphp/pest-plugin": true,
             "php-http/discovery": true,
             "pixelfear/composer-dist-plugin": true
+        },
+        "policy": {
+            "abandoned": {
+                "ignore": {
+                    "symplify/rule-doc-generator-contracts": "Dev-only; required by driftingly/rector-laravel. See driftingly/rector-laravel#574."
+                }
+            }
         }
     },
     "minimum-stability": "dev",
