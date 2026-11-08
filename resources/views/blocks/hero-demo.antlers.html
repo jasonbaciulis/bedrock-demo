@@ -385,11 +385,12 @@
                             {{ partial:components/ui/collapsible trigger_class="flex w-full items-center justify-between py-2 text-left text-sm font-medium" content_class="text-muted-foreground text-sm" }}
                                 {{ slot:trigger }}
                                     {{ question }}
-                                    <s:svg
-                                        src="heroicons/outline/chevron-down"
-                                        class="size-4 transition-transform"
-                                        :class="open && 'rotate-180'"
-                                    />
+                                    <span :class="open && 'rotate-180'">
+                                        <s:svg
+                                            src="heroicons/outline/chevron-down"
+                                            class="size-4 transition-transform"
+                                        />
+                                    </span>
                                 {{ /slot:trigger }}
                                 {{ slot:content }}
                                     <p>{{ answer }}</p>
