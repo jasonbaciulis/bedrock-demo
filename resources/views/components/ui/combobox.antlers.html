@@ -29,6 +29,7 @@ class: ''
         type="button"
         aria-haspopup="listbox"
         :aria-expanded="listboxOpen"
+        {{ partial:components.ui.form.aria-describedby }}
         class="btn btn--outline w-full justify-between font-normal"
         @click="toggleListbox()"
     >

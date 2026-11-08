@@ -18,7 +18,7 @@ class: ''
     x-data="Stepper({{ view:min }}, {{ view:max }}, {{ view:step }})"
 >
     {{ unless slot }}
-        <s:partial:components.ui.label :display="display" :id="id" />
+        <s:partial:components.ui.form.label :display="display" :id="id" />
     {{ /unless }}
     <div class="flex items-center gap-x-1">
         <button
@@ -48,7 +48,7 @@ class: ''
                 :step="step"
                 aria-labelledby="{{ id }}-label"
                 :aria-invalid="form.invalid('{{ handle }}')"
-                :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : {{ if instructions }}'{{ id }}-instructions'{{ else }}false{{ /if }}"
+                {{ partial:components.ui.form.aria-describedby }}
                 @input="handleInput"
                 @change="form.validate('{{ handle }}')"
             />
@@ -79,3 +79,4 @@ class: ''
         </button>
     </div>
 </div>
+<s:partial:components.ui.form.instructions :instructions="instructions" :id="id" />

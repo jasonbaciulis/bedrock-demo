@@ -70,8 +70,11 @@
                         </div>
                         <div class="flex flex-1 flex-col gap-4">
                             <div class="grid gap-3">
-                                <s:partial:components.ui.label id="contact_name" display="Name" />
-                                <s:partial:components.ui.form.text
+                                <s:partial:components.ui.form.label
+                                    id="contact_name"
+                                    display="Name"
+                                />
+                                <s:partial:components.ui.form.fields.text
                                     model="form.name"
                                     handle="contact_name"
                                     id="contact_name"
@@ -79,8 +82,11 @@
                                 />
                             </div>
                             <div class="grid gap-3">
-                                <s:partial:components.ui.label id="contact_email" display="Email" />
-                                <s:partial:components.ui.form.text
+                                <s:partial:components.ui.form.label
+                                    id="contact_email"
+                                    display="Email"
+                                />
+                                <s:partial:components.ui.form.fields.text
                                     model="form.email"
                                     handle="contact_email"
                                     id="contact_email"
@@ -89,11 +95,11 @@
                                 />
                             </div>
                             <div class="grid gap-3">
-                                <s:partial:components.ui.label
+                                <s:partial:components.ui.form.label
                                     id="contact_message"
                                     display="Message"
                                 />
-                                <s:partial:components.ui.form.textarea
+                                <s:partial:components.ui.form.fields.textarea
                                     model="form.message"
                                     handle="contact_message"
                                     id="contact_message"
@@ -124,11 +130,11 @@
                         </div>
                         <div class="flex flex-1 flex-col gap-4">
                             <div class="grid gap-3">
-                                <s:partial:components.ui.label
+                                <s:partial:components.ui.form.label
                                     id="newsletter_email"
                                     display="Email Address"
                                 />
-                                <s:partial:components.ui.form.text
+                                <s:partial:components.ui.form.fields.text
                                     model="form.email"
                                     handle="email"
                                     id="newsletter_email"
@@ -137,9 +143,12 @@
                                 />
                             </div>
                             <div class="grid gap-3">
-                                <s:partial:components.ui.label id="frequency" display="Frequency" />
+                                <s:partial:components.ui.form.label
+                                    id="frequency"
+                                    display="Frequency"
+                                />
                                 {{ frequency_options = ['daily' => 'Daily updates', 'weekly' => 'Weekly digest', 'monthly' => 'Monthly newsletter'] }}
-                                <s:partial:components.ui.form.select
+                                <s:partial:components.ui.form.fields.select
                                     model="form.frequency"
                                     handle="frequency"
                                     id="frequency"
@@ -148,7 +157,7 @@
                             </div>
                             <div class="grid gap-3">
                                 {{ topics_options = ['design' => 'Design tips', 'development' => 'Development news', 'marketing' => 'Marketing insights'] }}
-                                <s:partial:components.ui.form.checkboxes
+                                <s:partial:components.ui.form.fields.checkboxes
                                     model="form.topics"
                                     handle="topics"
                                     id="topics"
@@ -221,7 +230,7 @@
                             <div class="grid gap-6">
                                 <div class="grid gap-3">
                                     {{ theme_options = ['light' => 'Light mode', 'dark' => 'Dark mode', 'system' => 'System default'] }}
-                                    <s:partial:components.ui.form.radio
+                                    <s:partial:components.ui.form.fields.radio
                                         id="theme"
                                         handle="theme"
                                         model="form.theme"
@@ -230,12 +239,12 @@
                                     />
                                 </div>
                                 <div class="grid gap-3">
-                                    <s:partial:components.ui.label
+                                    <s:partial:components.ui.form.label
                                         id="language"
                                         display="Language"
                                     />
                                     {{ languages = ['en' => 'English', 'es' => 'Spanish', 'fr' => 'French', 'de' => 'German', 'it' => 'Italian', 'pt' => 'Portuguese', 'ru' => 'Russian', 'zh' => 'Chinese', 'ja' => 'Japanese', 'ko' => 'Korean', 'ar' => 'Arabic'] }}
-                                    <s:partial:components.ui.form.combobox
+                                    <s:partial:components.ui.combobox
                                         id="language"
                                         handle="language"
                                         model="form.language"
@@ -244,7 +253,7 @@
                                     />
                                 </div>
                                 <div class="grid gap-3">
-                                    <s:partial:components.ui.form.toggle
+                                    <s:partial:components.ui.form.fields.toggle
                                         model="form.notifications"
                                         handle="notifications"
                                         id="notifications"
@@ -328,7 +337,7 @@
                             </p>
                         </div>
                         <div class="flex flex-1 flex-col items-center gap-4">
-                            <s:partial:components.ui.form.stepper
+                            <s:partial:components.ui.form.fields.stepper
                                 model="form.steps"
                                 handle="steps"
                                 id="steps"
@@ -345,7 +354,7 @@
                                 >
                                     Steps/day
                                 </label>
-                            </s:partial:components.ui.form.stepper>
+                            </s:partial:components.ui.form.fields.stepper>
 
                             <div class="flex w-full items-end gap-2">
                                 {{ bar_heights = ['h-16', 'h-12', 'h-8', 'h-6', 'h-4', 'h-8', 'h-10', 'h-12', 'h-14', 'h-16'] }}

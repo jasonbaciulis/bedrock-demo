@@ -23,7 +23,7 @@ class: ''
         :class="{ 'bg-primary': on, 'bg-input': !on }"
         role="switch"
         aria-labelledby="{{ id }}-label"
-        :aria-describedby="form.invalid('{{ handle }}') ? '{{ id }}-error' : {{ if instructions }}'{{ id }}-instructions'{{ else }}false{{ /if }}"
+        {{ partial:components.ui.form.aria-describedby }}
         :aria-checked="on.toString()"
         @click="toggle()"
     >
@@ -56,3 +56,4 @@ class: ''
         class="sr-only"
     />
 </div>
+<s:partial:components.ui.form.instructions :instructions="instructions" :id="id" />

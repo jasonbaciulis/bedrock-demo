@@ -2,13 +2,13 @@
 model: ''
 character_limit: ''
 id: ''
-class: 'ml-auto text-muted-foreground text-sm'
+class: 'text-muted-foreground text-sm'
 label: 'Character limit:'
 ---
 
 {{# The status for screen readers waits until typing stops, so it does not speak on each key press. #}}
 <span
-    class="{{ view:class }}"
+    {{ view:class | attribute:class }}
     x-data="{ get currentLength() { return {{ view:model }}.length }, spokenStatus: '' }"
     x-init="$watch('currentLength', Alpine.debounce(length => spokenStatus = `${length} of {{ view:character_limit }} characters used`, 1000))"
 >
