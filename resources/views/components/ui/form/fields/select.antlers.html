@@ -7,7 +7,7 @@ class: ''
 ---
 
 {{ if view:searchable }}
-    <s:partial:components.ui.combobox :model="view:model" />
+    <s:partial:components.ui.form.combobox :model="view:model" />
 {{ else }}
     <select
         x-model="{{ view:model }}"
