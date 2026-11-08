@@ -20,7 +20,7 @@
     }
 
     .btn--ghost {
-        @apply hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 text-foreground;
+        @apply hover:bg-accent hover:text-accent-foreground text-foreground h-9 px-4 py-2;
     }
 
     .btn--destructive {
