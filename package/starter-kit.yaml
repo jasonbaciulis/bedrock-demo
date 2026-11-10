@@ -7,7 +7,11 @@ export_paths:
   - app/Models/User.php
   - app/MutatorPlugins
   - app/Providers/AppServiceProvider.php
+  - app/Providers/HorizonServiceProvider.php
+  - bootstrap/providers.php
   - config/bedrock.php
+  - config/horizon.php
+  - config/services.php
   - config/filesystems.php
   - config/essentials.php
   - config/statamic/mcp.php
@@ -27,6 +31,7 @@ export_paths:
   - resources/js
   - resources/svg/social
   - resources/views
+  - routes/console.php
   - routes/web.php
   - tests
   - .env.example
@@ -44,6 +49,7 @@ export_paths:
   - vite.config.js
 dependencies:
   - jacksleight/statamic-bard-mutator
+  - laravel/horizon
   - nunomaduro/essentials
   - statamic/seo-pro
 # The dev dependencies are installed by StarterKitPostInstall.php, not from here.
