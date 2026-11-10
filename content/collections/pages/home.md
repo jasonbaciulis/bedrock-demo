@@ -1,6 +1,6 @@
 ---
 id: home
-blueprint: pages
+blueprint: page
 title: Home
 template: default
 updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
@@ -52,6 +52,7 @@ blocks:
     id: m5nrhfol
     title: 'Search demo'
     text: 'Search within posts collection'
+    results_page: d50dbcf7-2ed9-4a10-91c5-5b5557d694ea
     type: search_form
     enabled: true
   -
