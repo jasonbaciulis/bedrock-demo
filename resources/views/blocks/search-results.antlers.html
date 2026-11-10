@@ -7,7 +7,7 @@
             <div class="site-grid gap-y-20 md:gap-y-12">
                 <div class="max-w-md sm:col-span-12">
                     <s:partial:components.search-form
-                        :action="theme:search_results:url"
+                        :action="current_url"
                         :total_results="paginate:total_items ?? 0"
                     />
                 </div>

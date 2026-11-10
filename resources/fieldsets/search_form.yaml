@@ -10,3 +10,11 @@ fields:
     field: common.text_plain
     config:
       display: Text
+  -
+    handle: results_page
+    field: common.entry
+    config:
+      display: 'Results page'
+      instructions: 'The page that contains the "Search results" block.'
+      collections:
+        - pages
