@@ -16,7 +16,7 @@ tabs:
                   sets:
                     discord:
                       display: Discord
-                      icon: mail-chat-bubble-text
+                      icon: social-discord-logo
                       fields:
                         -
                           handle: url
@@ -33,7 +33,7 @@ tabs:
                             default: 'https://discord.com/'
                     email:
                       display: Email
-                      icon: social-mail-send-email-message
+                      icon: mail
                       fields:
                         -
                           handle: url
@@ -49,7 +49,7 @@ tabs:
                             default: 'mailto:'
                     facebook:
                       display: Facebook
-                      icon: social-facebook
+                      icon: social-facebook-logo
                       fields:
                         -
                           handle: url
@@ -66,7 +66,7 @@ tabs:
                             default: 'https://www.facebook.com/'
                     github:
                       display: GitHub
-                      icon: social-github
+                      icon: social-github-logo
                       fields:
                         -
                           handle: url
@@ -83,7 +83,7 @@ tabs:
                             default: 'https://www.github.com/'
                     instagram:
                       display: Instagram
-                      icon: social-instagram
+                      icon: social-instagram-logo
                       fields:
                         -
                           handle: url
@@ -100,7 +100,7 @@ tabs:
                             default: 'https://www.instagram.com/'
                     linkedin:
                       display: LinkedIn
-                      icon: social-linkedin
+                      icon: social-linkedin-logo
                       fields:
                         -
                           handle: url
@@ -117,7 +117,7 @@ tabs:
                             default: 'https://www.linkedin.com/'
                     pinterest:
                       display: Pinterest
-                      icon: social-pinterest
+                      icon: social-pinterest-logo
                       fields:
                         -
                           handle: url
@@ -134,7 +134,7 @@ tabs:
                             default: 'https://www.pinterest.com/'
                     x:
                       display: X
-                      icon: social-twitter
+                      icon: social-x-twitter-logo
                       fields:
                         -
                           handle: url
@@ -151,7 +151,7 @@ tabs:
                             default: 'https://x.com/'
                     vimeo:
                       display: Vimeo
-                      icon: social-vimeo
+                      icon: social-vimeo-logo-1
                       fields:
                         -
                           handle: url
@@ -168,7 +168,7 @@ tabs:
                             default: 'https://www.vimeo.com/'
                     youtube:
                       display: YouTube
-                      icon: social-youtube
+                      icon: social-youtube-logo
                       fields:
                         -
                           handle: url
@@ -185,7 +185,7 @@ tabs:
                             default: 'https://www.youtube.com/'
                     tiktok:
                       display: TikTok
-                      icon: media-music-notes
+                      icon: social-tiktok-logo
                       fields:
                         -
                           handle: url
