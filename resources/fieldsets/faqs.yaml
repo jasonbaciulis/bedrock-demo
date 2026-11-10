@@ -32,10 +32,14 @@ fields:
                   field:
                     display: Title
                     type: text
+                    validate:
+                      - required
                 -
                   handle: text
                   field: common.text_basic
                   config:
+                    validate:
+                      - required
                     buttons:
                       - bold
                       - italic
