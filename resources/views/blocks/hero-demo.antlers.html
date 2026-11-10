@@ -187,7 +187,10 @@
                         </div>
 
                         <div class="flex flex-1 items-center px-8">
-                            {{ partial:components/ui/carousel/carousel class="w-full max-w-full" opts="loop: true, align: 'center'" }}
+                            <s:partial:components.ui.carousel.carousel
+                                class="w-full max-w-full"
+                                opts="loop: true, align: 'center'"
+                            >
                                 {{ slot:content }}
                                     {{ loop times="5" }}
                                         <s:partial:components.ui.carousel.slide>
@@ -211,7 +214,7 @@
                                         class="btn--outline btn--round"
                                     />
                                 {{ /slot:nav }}
-                            {{ /partial:components/ui/carousel/carousel }}
+                            </s:partial:components.ui.carousel.carousel>
                         </div>
                     </div>
                 </div>
@@ -288,7 +291,9 @@
             {{# Tabs #}}
             <div class="grid gap-4 xl:col-span-full xl:grid-cols-2">
                 {{ services_tabs = [['title' => 'AI agents', 'description' => 'AI agents can help you with a wide range of tasks, from customer service to data analysis.', 'features' => ['Automated workflows', 'Data analysis', 'Customer service']], ['title' => 'Web apps', 'description' => 'Build apps for your business.', 'features' => ['Filament dashboards', 'SPA apps with Inertia and Vue/React', 'Laravel apps']], ['title' => 'Websites', 'description' => 'Build high-converting websites.', 'features' => ['Beautiful design', 'Lightning-fast loading', 'SEO-friendly']]] }}
-                {{ partial:components/ui/tabs/tabs list_class="bg-muted text-muted-foreground flex min-h-9 w-full items-center justify-center rounded-lg p-[3px] outline-none" }}
+                <s:partial:components.ui.tabs.tabs
+                    list_class="bg-muted text-muted-foreground flex min-h-9 w-full items-center justify-center rounded-lg p-[3px] outline-none"
+                >
                     {{ slot:list }}
                         {{ services_tabs }}
                             <s:partial:components.ui.tabs.trigger
@@ -327,7 +332,7 @@
                             </s:partial:components.ui.tabs.panel>
                         {{ /services_tabs }}
                     {{ /slot:panels }}
-                {{ /partial:components/ui/tabs/tabs }}
+                </s:partial:components.ui.tabs.tabs>
                 <div x-data="heroDemoSteps()">
                     <div class="card shadow-none">
                         <div class="card__header">
@@ -427,7 +432,10 @@
                                 Share this starter-kit with your followers
                             </p>
                         </div>
-                        {{ partial:components/ui/dialog size="sm" trigger_class="btn--outline btn--sm" }}
+                        <s:partial:components.ui.dialog
+                            size="sm"
+                            trigger_class="btn--outline btn--sm"
+                        >
                             {{ slot:trigger }}
                                 Share
                             {{ /slot:trigger }}
@@ -473,7 +481,7 @@
                                     </div>
                                 </div>
                             {{ /slot:content }}
-                        {{ /partial:components/ui/dialog }}
+                        </s:partial:components.ui.dialog>
                     </div>
 
                     {{# Dropdown #}}
@@ -482,7 +490,11 @@
                             <p class="text-sm font-medium">Quick actions</p>
                             <p class="text-muted-foreground text-sm">Common website actions</p>
                         </div>
-                        {{ partial:components/ui/dropdown/dropdown alignment="right" width="w-48" toggle_class="btn--outline btn--sm" }}
+                        <s:partial:components.ui.dropdown.dropdown
+                            alignment="right"
+                            width="w-48"
+                            toggle_class="btn--outline btn--sm"
+                        >
                             {{ slot:toggle }}
                                 Actions
                                 <s:svg
@@ -520,7 +532,7 @@
                                     Settings
                                 </s:partial:components.ui.dropdown.item>
                             {{ /slot:content }}
-                        {{ /partial:components/ui/dropdown/dropdown }}
+                        </s:partial:components.ui.dropdown.dropdown>
                     </div>
                 </div>
 
