@@ -35,7 +35,8 @@ resources/views/
 ├── blocks/                      # Page building blocks (Replicator fields)
 ├── components/                  # Project specific reusable components
 │   └── ui/                      # Highly-reusable shadcn/ui style Alpine.js components
-│       └── form/                # Form field types (custom Statamic form fields will require a snake_case view file here)
+│       └── form/                # Statamic form (create), field wrapper and shared form parts (label, error, instructions, etc.)
+│           └── fields/          # Form field types (custom Statamic form fields will require a snake_case view file here)
 ├── partials/                    # Template partials and fragments (things that aren't really reusable go here)
 ├── posts/                       # Posts collection templates
 ├── sets/                        # Content sets for Article Block
@@ -67,63 +68,65 @@ Sets provide a powerful content creation experience with unparalleled flexibilit
 Dump your `.env` values here with sensitive data removed. The following is a production example that uses full static caching:
 
 ```env
-APP_NAME=Statamic
+APP_NAME=Bedrock
 APP_ENV=production
 APP_KEY=
 APP_DEBUG=false
 APP_URL=
 
+APP_LOCALE=en
+APP_FALLBACK_LOCALE=en
+
+LOG_CHANNEL=stack
+LOG_STACK=single
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=error
+
+DB_CONNECTION=sqlite
+
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+SESSION_ENCRYPT=false
+SESSION_PATH=/
+SESSION_DOMAIN=null
+
+BROADCAST_CONNECTION=log
+FILESYSTEM_DISK=local
+QUEUE_CONNECTION=redis
+
+CACHE_STORE=file
+
+REDIS_CLIENT=phpredis
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+MAIL_MAILER=smtp
+MAIL_HOST=
+MAIL_PORT=587
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="hello@example.com"
+MAIL_FROM_NAME="${APP_NAME}"
+
 STATAMIC_LICENSE_KEY=
+STATAMIC_PRO_ENABLED=true
 STATAMIC_STACHE_WATCHER=false
 STATAMIC_STATIC_CACHING_STRATEGY=full
+STATAMIC_TWO_FACTOR_ENABLED=true
 STATAMIC_REVISIONS_ENABLED=true
 STATAMIC_GRAPHQL_ENABLED=false
 STATAMIC_API_ENABLED=false
 STATAMIC_GIT_ENABLED=true
 STATAMIC_GIT_PUSH=true
 STATAMIC_GIT_DISPATCH_DELAY=1
-STATAMIC_THEME=business
-
-SAVE_CACHED_IMAGES=true
 
 STATAMIC_CUSTOM_CMS_NAME="${APP_NAME}"
-STATAMIC_CUSTOM_LOGO_URL='/assets/logos/logo-brand-fixed.svg'
+STATAMIC_CUSTOM_NAV_LOGO_URL='/assets/logos/logo-brand-fixed-white.svg'
+STATAMIC_CUSTOM_OUTSIDE_LOGO_URL='/assets/logos/logo-brand-fixed.svg'
 
-LOG_CHANNEL=stack
-LOG_DEPRECATIONS_CHANNEL=null
-LOG_LEVEL=debug
-
-BROADCAST_DRIVER=pusher
-CACHE_DRIVER=file
-FILESYSTEM_DISK=local
-QUEUE_CONNECTION=redis
-SESSION_DRIVER=file
-SESSION_LIFETIME=120
-
-MEMCACHED_HOST=127.0.0.1
-
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=null
-REDIS_PORT=6379
-
-MAIL_MAILER=smtp
-MAIL_HOST=mailhog
-MAIL_PORT=1025
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS=null
-MAIL_FROM_NAME="${APP_NAME}"
-
-PUSHER_APP_ID=
-PUSHER_APP_KEY=
-PUSHER_APP_SECRET=
-PUSHER_APP_CLUSTER=mt1
-
-MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
-MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
-
-DEBUGBAR_ENABLED=false
+BEDROCK_CP_TOOLBAR_ENABLED=true
 ```
 
 ## NGINX config
