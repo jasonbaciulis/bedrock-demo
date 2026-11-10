@@ -1,0 +1,75 @@
+title: Blocks
+fields:
+  -
+    handle: blocks
+    field:
+      type: replicator
+      localizable: true
+      collapse: true
+      listable: false
+      display: Blocks
+      instructions: 'Build your page by using various predefined content models.'
+      button_label: 'Add Block'
+      sets:
+        hero:
+          display: Hero
+          instructions: 'Above-the-fold intro blocks'
+          icon: align-object-top
+          sets: {}
+        messaging:
+          display: Messaging
+          instructions: 'Features, benefits, how it works'
+          icon: share-mega-phone
+          sets: {}
+        authority:
+          display: Authority
+          instructions: 'Testimonials, logos, ratings, press'
+          icon: favorite-award-prize
+          sets: {}
+        content:
+          display: Content
+          instructions: 'Article, Collections, FAQs, search'
+          icon: media-news-paper
+          sets:
+            article:
+              display: Article
+              instructions: 'Long form content with rich media'
+              icon: text-formatting-image-bottom
+              fields:
+                -
+                  import: article
+            faqs:
+              display: FAQs
+              icon: support
+              fields:
+                -
+                  import: faqs
+        conversion:
+          display: Conversion
+          instructions: 'CTAs & forms that capture leads'
+          icon: money-graph-bar-increase
+          sets:
+            contact:
+              display: Contact
+              icon: phone-contact-phonebook
+              fields:
+                -
+                  import: contact
+            newsletter:
+              display: Newsletter
+              icon: mail
+              fields:
+                -
+                  import: newsletter
+        special:
+          display: Special
+          instructions: 'Interactive & special blocks'
+          icon: labs-idea-experimental-flask
+          sets:
+            style_guide:
+              display: 'Style Guide'
+              instructions: 'Styles and components in one place'
+              icon: edit-paint-palette
+              fields:
+                -
+                  import: style_guide

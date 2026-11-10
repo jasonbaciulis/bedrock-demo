@@ -42,12 +42,14 @@ final class StarterKitPostInstall
 
     /**
      * The Statamic skeleton ships these, and `export_paths` can only overwrite files,
-     * never delete them. `CreatesApplication` is orphaned by the kit's own TestCase,
+     * never delete them. The kit's home page uses the default template, so no view
+     * renders `home`. `CreatesApplication` is orphaned by the kit's own TestCase,
      * and both example tests fail `composer run test`.
      *
      * @var list<string>
      */
-    public const SKELETON_TEST_FILES = [
+    public const SKELETON_FILES = [
+        'resources/views/home.antlers.html',
         'tests/CreatesApplication.php',
         'tests/Feature/ExampleTest.php',
         'tests/Unit/ExampleTest.php',
@@ -55,7 +57,7 @@ final class StarterKitPostInstall
 
     public function handle(Command|NullConsole $console): void
     {
-        $this->removeSkeletonTestFiles();
+        $this->removeSkeletonFiles();
 
         $this->setPhpRequirement();
 
@@ -82,9 +84,9 @@ final class StarterKitPostInstall
      * Runs before the formatting step, so Pint and Rector never touch a file that
      * is about to be deleted.
      */
-    private function removeSkeletonTestFiles(): void
+    private function removeSkeletonFiles(): void
     {
-        $removed = collect(self::SKELETON_TEST_FILES)
+        $removed = collect(self::SKELETON_FILES)
             ->map(fn (string $path): string => getcwd().'/'.$path)
             ->filter(fn (string $path): bool => file_exists($path))
             ->each(fn (string $path) => unlink($path));
@@ -93,7 +95,7 @@ final class StarterKitPostInstall
             return;
         }
 
-        info('Removed default Statamic test files.');
+        info('Removed unused Statamic skeleton files.');
     }
 
     private function installDevDependencies(Command|NullConsole $console): void

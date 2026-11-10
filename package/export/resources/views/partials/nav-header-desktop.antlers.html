@@ -1,0 +1,58 @@
+<nav class="hidden space-x-10 lg:flex">
+    <s:nav handle="header" max_depth="2" select="title|url|is_external">
+        {{ if children }}
+            <div
+                class="relative"
+                x-data="{ subnavOpen: false }"
+                x-id="['header-subnav']"
+                @keydown.escape="subnavOpen = false; $refs.trigger.focus()"
+            >
+                <s:partial:components.ui.button
+                    as="button"
+                    variant=""
+                    class="gap-x-1 text-neutral-900"
+                    x_ref="trigger"
+                    x_aria_controls="$id('header-subnav')"
+                    x_aria_expanded="subnavOpen"
+                    x_class="subnavOpen ? 'opacity-75' : ''"
+                    x_click="subnavOpen = !subnavOpen"
+                >
+                    <span>{{ title }}</span>
+                    <span
+                        class="mt-0.5 transition-transform duration-500"
+                        :class="{ 'translate-y-0.5': subnavOpen }"
+                    >
+                        <s:svg src="heroicons/outline/chevron-down" class="size-4 opacity-50" />
+                    </span>
+                </s:partial:components.ui.button>
+
+                <div
+                    x-cloak
+                    x-show="subnavOpen"
+                    x-transition:enter="transition duration-200 ease-out"
+                    x-transition:enter-start="translate-y-1 opacity-0"
+                    x-transition:enter-end="translate-y-0 opacity-100"
+                    x-transition:leave="transition duration-150 ease-in"
+                    x-transition:leave-start="translate-y-0 opacity-100"
+                    x-transition:leave-end="translate-y-1 opacity-0"
+                    @click.outside="subnavOpen = false"
+                    :id="$id('header-subnav')"
+                    class="absolute left-1/2 z-10 mt-5 w-screen max-w-xs -translate-x-1/2 transform px-2"
+                >
+                    <div class="overflow-hidden rounded-lg border bg-white p-3 text-sm/6 shadow">
+                        {{ children scope="child" }}
+                            <s:partial:partials.nav-link
+                                :url="child:url"
+                                :title="child:title"
+                                :is_external="child:is_external"
+                                class="hover:bg-accent text-foreground block rounded-lg p-3 font-medium transition-colors"
+                            />
+                        {{ /children }}
+                    </div>
+                </div>
+            </div>
+        {{ else }}
+            <s:partial:partials.nav-link :url="url" :title="title" :is_external="is_external" class="btn" />
+        {{ /if }}
+    </s:nav>
+</nav>

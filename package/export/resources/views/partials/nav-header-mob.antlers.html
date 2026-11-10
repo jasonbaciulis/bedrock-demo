@@ -1,0 +1,73 @@
+<s:nav handle="header" max_depth="2" select="title|url|is_external" as="items">
+    <div
+        x-cloak
+        x-show="mobileNavOpen"
+        x-trap.noscroll="mobileNavOpen"
+        @keydown.escape="mobileNavOpen = false"
+        class="lg:hidden"
+        role="dialog"
+        aria-modal="true"
+    >
+        {{# Background backdrop #}}
+        <div x-cloak x-show="mobileNavOpen" class="fixed inset-0 z-10"></div>
+        <div
+            class="fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+        >
+            <div class="p-6">
+                <div class="flex items-center justify-between">
+                    <s:partial:components.logo :logo="theme:logo" class="inline-flex h-8 w-40" />
+                    <s:partial:components.ui.button
+                        as="button"
+                        variant="ghost"
+                        class="btn--square -my-2 -mr-2"
+                        aria_label="Close menu"
+                        x_click="mobileNavOpen = false"
+                    >
+                        <s:svg src="heroicons/outline/x-mark" class="size-5" />
+                    </s:partial:components.ui.button>
+                </div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/10">
+                        <div class="space-y-2 py-6">
+                            {{ items }}
+                                {{ if children }}
+                                    {{ children scope="child" }}
+                                        <s:partial:partials.nav-link
+                                            :url="child:url"
+                                            :title="child:title"
+                                            :is_external="child:is_external"
+                                            class="hover:bg-accent -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-neutral-900"
+                                        />
+                                    {{ /children }}
+                                {{ else }}
+                                    <s:partial:partials.nav-link
+                                        :url="url"
+                                        :title="title"
+                                        :is_external="is_external"
+                                        class="hover:bg-accent -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-neutral-900"
+                                    />
+                                {{ /if }}
+                            {{ /items }}
+                        </div>
+                        <div class="flex flex-col-reverse gap-y-6 py-6">
+                            {{ theme:header_buttons }}
+                                <s:partial:components.ui.button
+                                    :variant="variant"
+                                    :link_type="link_type"
+                                    :url="url"
+                                    :entry="entry"
+                                    :email="email"
+                                    :phone="phone"
+                                    :asset="asset"
+                                    :code="code"
+                                    :target_blank="target_blank"
+                                    :label="label"
+                                />
+                            {{ /theme:header_buttons }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</s:nav>
