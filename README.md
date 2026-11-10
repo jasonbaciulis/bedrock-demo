@@ -77,63 +77,66 @@ Removes a set from the Article and all associated files.
 Dump your `.env` values here with sensitive data removed. The following is a production example that uses full static caching:
 
 ```env
-APP_NAME=Statamic
+APP_NAME=Bedrock
 APP_ENV=production
 APP_KEY=
 APP_DEBUG=false
 APP_URL=
 
+APP_LOCALE=en
+APP_FALLBACK_LOCALE=en
+
+LOG_CHANNEL=stack
+LOG_STACK=single
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=error
+
+DB_CONNECTION=sqlite
+
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+SESSION_ENCRYPT=false
+SESSION_PATH=/
+SESSION_DOMAIN=null
+
+BROADCAST_CONNECTION=log
+FILESYSTEM_DISK=local
+QUEUE_CONNECTION=redis
+
+CACHE_STORE=file
+
+REDIS_CLIENT=phpredis
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+MAIL_MAILER=smtp
+MAIL_HOST=
+MAIL_PORT=587
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="hello@example.com"
+MAIL_FROM_NAME="${APP_NAME}"
+
 STATAMIC_LICENSE_KEY=
+STATAMIC_PRO_ENABLED=true
 STATAMIC_STACHE_WATCHER=false
 STATAMIC_STATIC_CACHING_STRATEGY=full
+STATAMIC_STATIC_WARM_INSECURE=true
+STATAMIC_TWO_FACTOR_ENABLED=true
 STATAMIC_REVISIONS_ENABLED=true
 STATAMIC_GRAPHQL_ENABLED=false
 STATAMIC_API_ENABLED=false
 STATAMIC_GIT_ENABLED=true
 STATAMIC_GIT_PUSH=true
 STATAMIC_GIT_DISPATCH_DELAY=1
-STATAMIC_THEME=business
-
-SAVE_CACHED_IMAGES=true
 
 STATAMIC_CUSTOM_CMS_NAME="${APP_NAME}"
-STATAMIC_CUSTOM_LOGO_URL='/assets/logos/logo-brand-fixed.svg'
+STATAMIC_CUSTOM_NAV_LOGO_URL='/assets/logos/logo-brand-fixed-white.svg'
+STATAMIC_CUSTOM_OUTSIDE_LOGO_URL='/assets/logos/logo-brand-fixed.svg'
 
-LOG_CHANNEL=stack
-LOG_DEPRECATIONS_CHANNEL=null
-LOG_LEVEL=debug
-
-BROADCAST_DRIVER=pusher
-CACHE_DRIVER=file
-FILESYSTEM_DISK=local
-QUEUE_CONNECTION=redis
-SESSION_DRIVER=file
-SESSION_LIFETIME=120
-
-MEMCACHED_HOST=127.0.0.1
-
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=null
-REDIS_PORT=6379
-
-MAIL_MAILER=smtp
-MAIL_HOST=mailhog
-MAIL_PORT=1025
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS=null
-MAIL_FROM_NAME="${APP_NAME}"
-
-PUSHER_APP_ID=
-PUSHER_APP_KEY=
-PUSHER_APP_SECRET=
-PUSHER_APP_CLUSTER=mt1
-
-MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
-MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
-
-DEBUGBAR_ENABLED=false
+BEDROCK_CP_TOOLBAR_ENABLED=true
 ```
 
 ## NGINX config
@@ -156,57 +159,72 @@ map $sent_http_content_type $expires {
 }
 ```
 
-## Forge deploy script
+## Ploi deploy scripts (with zero-downtime enabled)
+
+Ploi does not install Bun by default. [Install Bun on your server](https://ploi.io/documentation/server/how-to-install-bun-package-manager) before the first deploy.
+
+### Pre deploy script
 
 ```bash
-if [[ $FORGE_DEPLOY_MESSAGE =~ "[BOT]" ]]; then
-    echo "Auto-committed on production. Nothing to deploy."
-    exit 0
-fi
-
-cd $FORGE_SITE_PATH
-git pull origin $FORGE_SITE_BRANCH
-$FORGE_COMPOSER install --no-interaction --optimize-autoloader --no-dev
-
-bun install --frozen-lockfile
-bun run build
-$FORGE_PHP artisan cache:clear
-$FORGE_PHP artisan config:cache
-$FORGE_PHP artisan route:cache
-$FORGE_PHP artisan statamic:stache:warm
-$FORGE_PHP artisan queue:restart
-$FORGE_PHP artisan statamic:search:update --all
-$FORGE_PHP artisan statamic:static:clear
-$FORGE_PHP artisan statamic:static:warm --queue
-
-( flock -w 10 9 || exit 1
-    echo 'Restarting FPM...'; sudo -S service $FORGE_PHP_FPM reload ) 9>/tmp/fpmlock
+# Needed for Bun to work
+export PATH="$HOME/.bun/bin:$PATH"
 ```
 
-## Ploi deploy script
+### Main deploy script
 
 ```bash
-if [[ {COMMIT_MESSAGE} =~ "[BOT]" ]] && [[ {DEPLOYMENT_SOURCE} == "quick-deploy" ]]; then
+# Early Exit Check
+if [[ {COMMIT_MESSAGE} =~ "[BOT]" ]]; then
     echo "Auto-committed on production. Nothing to deploy."
     {DO_NOT_NOTIFY}
+    {CLEAR_NEW_RELEASE}
     exit 0
 fi
 
-cd {SITE_DIRECTORY}
-git pull origin {BRANCH}
-composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+cd {RELEASE}
 
+# Git & Dependencies
+git pull --rebase --autostash origin {BRANCH}
+
+{SITE_COMPOSER} install --no-interaction --prefer-dist --optimize-autoloader --no-dev --classmap-authoritative
+
+# Database (Safe Migration)
+if [ -f artisan ]; then
+    {SITE_PHP} artisan migrate --force
+fi
+
+# Frontend Build
 bun install --frozen-lockfile
 bun run build
 
-{RELOAD_PHP_FPM}
-
-{SITE_PHP} artisan cache:clear
+# Laravel Optimization
+# We group these to minimize the window where the app is "naked"
 {SITE_PHP} artisan config:cache
 {SITE_PHP} artisan route:cache
+{SITE_PHP} artisan view:cache
+{SITE_PHP} artisan event:cache
+
+echo "⏳ Release prepared. Awaiting symlink switch…"
+```
+
+### Post deploy script
+
+```bash
+# Flush the PHP FPM worker
+{RELOAD_PHP_FPM}
+
+# Statamic Stache
+{SITE_PHP} artisan statamic:stache:clear
 {SITE_PHP} artisan statamic:stache:warm
+{SITE_PHP} artisan statamic:stache:doctor
+
+# Restart Queue Workers
 {SITE_PHP} artisan queue:restart
+
+# Update all search indexes
 {SITE_PHP} artisan statamic:search:update --all
+
+# Static Caching
 {SITE_PHP} artisan statamic:static:clear
 {SITE_PHP} artisan statamic:static:warm --queue
 

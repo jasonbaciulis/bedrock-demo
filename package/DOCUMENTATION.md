@@ -114,6 +114,7 @@ STATAMIC_LICENSE_KEY=
 STATAMIC_PRO_ENABLED=true
 STATAMIC_STACHE_WATCHER=false
 STATAMIC_STATIC_CACHING_STRATEGY=full
+STATAMIC_STATIC_WARM_INSECURE=true
 STATAMIC_TWO_FACTOR_ENABLED=true
 STATAMIC_REVISIONS_ENABLED=true
 STATAMIC_GRAPHQL_ENABLED=false
@@ -149,41 +150,23 @@ map $sent_http_content_type $expires {
 }
 ```
 
-## Forge deploy script
+## Ploi deploy scripts (with zero-downtime enabled)
+
+Ploi does not install Bun by default. [Install Bun on your server](https://ploi.io/documentation/server/how-to-install-bun-package-manager) before the first deploy.
+
+### Pre deploy script
 
 ```bash
-if [[ $FORGE_DEPLOY_MESSAGE =~ "[BOT]" ]]; then
-    echo "Auto-committed on production. Nothing to deploy."
-    exit 0
-fi
-
-cd $FORGE_SITE_PATH
-git pull origin $FORGE_SITE_BRANCH
-$FORGE_COMPOSER install --no-interaction --optimize-autoloader --no-dev
-
-bun install --frozen-lockfile
-bun run build
-$FORGE_PHP artisan cache:clear
-$FORGE_PHP artisan config:cache
-$FORGE_PHP artisan route:cache
-$FORGE_PHP artisan statamic:stache:warm
-$FORGE_PHP artisan queue:restart
-$FORGE_PHP artisan statamic:search:update --all
-$FORGE_PHP artisan statamic:static:clear
-$FORGE_PHP artisan statamic:static:warm --queue
-
-( flock -w 10 9 || exit 1
-    echo 'Restarting FPM...'; sudo -S service $FORGE_PHP_FPM reload ) 9>/tmp/fpmlock
+# Needed for Bun to work
+export PATH="$HOME/.bun/bin:$PATH"
 ```
-
-## Ploi deploy scripts (with zero-downtime enabled)
 
 ### Main deploy script
 
 ```bash
 # Early Exit Check
 if [[ {COMMIT_MESSAGE} =~ "[BOT]" ]]; then
-    echo "Auto-committed on staging. Nothing to deploy."
+    echo "Auto-committed on production. Nothing to deploy."
     {DO_NOT_NOTIFY}
     {CLEAR_NEW_RELEASE}
     exit 0
@@ -224,6 +207,7 @@ echo "⏳ Release prepared. Awaiting symlink switch…"
 # Statamic Stache
 {SITE_PHP} artisan statamic:stache:clear
 {SITE_PHP} artisan statamic:stache:warm
+{SITE_PHP} artisan statamic:stache:doctor
 
 # Restart Queue Workers
 {SITE_PHP} artisan queue:restart
@@ -233,7 +217,7 @@ echo "⏳ Release prepared. Awaiting symlink switch…"
 
 # Static Caching
 {SITE_PHP} artisan statamic:static:clear
-{SITE_PHP} artisan statamic:static:warm --queue --insecure
+{SITE_PHP} artisan statamic:static:warm --queue
 
 echo "🚀 Website deployed!"
 ```
