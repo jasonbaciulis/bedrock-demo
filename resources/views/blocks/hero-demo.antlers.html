@@ -388,12 +388,15 @@
                         </p>
                     </div>
 
-                    {{ demo_faqs = [['question' => 'How long does a project take?', 'answer' => 'Project timelines vary based on complexity, but most websites take 4-8 weeks from start to finish.'], ['question' => 'Do you offer maintenance?', 'answer' => 'Yes, we provide ongoing maintenance and support packages to keep your website running smoothly.'], ['question' => 'How do I get started?', 'answer' => 'Contact us to discuss your project and we’ll provide a free consultation to help you get started.']] }}
+                    {{ demo_faqs = [['title' => 'How long does a project take?', 'text' => 'Project timelines vary based on complexity, but most websites take 4-8 weeks from start to finish.'], ['title' => 'Do you offer maintenance?', 'text' => 'Yes, we provide ongoing maintenance and support packages to keep your website running smoothly.'], ['title' => 'How do I get started?', 'text' => 'Contact us to discuss your project and we’ll provide a free consultation to help you get started.']] }}
                     <dl class="space-y-2">
                         {{ demo_faqs }}
-                            {{ partial:components/ui/collapsible trigger_class="flex w-full items-center justify-between py-2 text-left text-sm font-medium" content_class="text-muted-foreground text-sm" }}
+                            <s:partial:components.ui.collapsible
+                                trigger_class="flex w-full items-center justify-between py-2 text-left text-sm font-medium"
+                                content_class="text-muted-foreground text-sm"
+                            >
                                 {{ slot:trigger }}
-                                    {{ question }}
+                                    {{ title }}
                                     <span :class="open && 'rotate-180'">
                                         <s:svg
                                             src="heroicons/outline/chevron-down"
@@ -402,9 +405,9 @@
                                     </span>
                                 {{ /slot:trigger }}
                                 {{ slot:content }}
-                                    <p>{{ answer }}</p>
+                                    <p>{{ text }}</p>
                                 {{ /slot:content }}
-                            {{ /partial:components/ui/collapsible }}
+                            </s:partial:components.ui.collapsible>
                         {{ /demo_faqs }}
                     </dl>
                 </div>
