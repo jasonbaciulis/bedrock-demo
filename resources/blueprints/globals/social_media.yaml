@@ -56,14 +56,14 @@ tabs:
                           field:
                             type: text
                             localizable: true
-                            prepend: 'https://www.facebook.com/'
+                            prepend: 'https://facebook.com/'
                             display: Handle
                             validate: required
                         -
                           handle: prefix
                           field:
                             type: hidden
-                            default: 'https://www.facebook.com/'
+                            default: 'https://facebook.com/'
                     github:
                       display: GitHub
                       icon: social-github-logo
@@ -73,14 +73,14 @@ tabs:
                           field:
                             type: text
                             localizable: true
-                            prepend: 'https://www.github.com/'
+                            prepend: 'https://github.com/'
                             display: Handle
                             validate: required
                         -
                           handle: prefix
                           field:
                             type: hidden
-                            default: 'https://www.github.com/'
+                            default: 'https://github.com/'
                     instagram:
                       display: Instagram
                       icon: social-instagram-logo
@@ -90,14 +90,14 @@ tabs:
                           field:
                             type: text
                             localizable: true
-                            prepend: 'https://www.instagram.com/'
+                            prepend: 'https://instagram.com/'
                             display: Handle
                             validate: required
                         -
                           handle: prefix
                           field:
                             type: hidden
-                            default: 'https://www.instagram.com/'
+                            default: 'https://instagram.com/'
                     linkedin:
                       display: LinkedIn
                       icon: social-linkedin-logo
@@ -107,14 +107,14 @@ tabs:
                           field:
                             type: text
                             localizable: true
-                            prepend: 'https://www.linkedin.com/'
+                            prepend: 'https://linkedin.com/'
                             display: Handle
                             validate: required
                         -
                           handle: prefix
                           field:
                             type: hidden
-                            default: 'https://www.linkedin.com/'
+                            default: 'https://linkedin.com/'
                     pinterest:
                       display: Pinterest
                       icon: social-pinterest-logo
@@ -124,14 +124,14 @@ tabs:
                           field:
                             type: text
                             localizable: true
-                            prepend: 'https://www.pinterest.com/'
-                            display: URL
+                            prepend: 'https://pinterest.com/'
+                            display: Handle
                             validate: required
                         -
                           handle: prefix
                           field:
                             type: hidden
-                            default: 'https://www.pinterest.com/'
+                            default: 'https://pinterest.com/'
                     x:
                       display: X
                       icon: social-x-twitter-logo
@@ -158,14 +158,14 @@ tabs:
                           field:
                             type: text
                             localizable: true
-                            prepend: 'https://www.vimeo.com/'
+                            prepend: 'https://vimeo.com/'
                             display: Handle
                             validate: required
                         -
                           handle: prefix
                           field:
                             type: hidden
-                            default: 'https://www.vimeo.com/'
+                            default: 'https://vimeo.com/'
                     youtube:
                       display: YouTube
                       icon: social-youtube-logo
@@ -175,14 +175,14 @@ tabs:
                           field:
                             type: text
                             localizable: true
-                            prepend: 'https://www.youtube.com/'
+                            prepend: 'https://youtube.com/'
                             display: Handle
                             validate: required
                         -
                           handle: prefix
                           field:
                             type: hidden
-                            default: 'https://www.youtube.com/'
+                            default: 'https://youtube.com/'
                     tiktok:
                       display: TikTok
                       icon: social-tiktok-logo
@@ -192,11 +192,11 @@ tabs:
                           field:
                             type: text
                             localizable: true
-                            prepend: 'https://www.tiktok.com/'
+                            prepend: 'https://tiktok.com/'
                             display: Handle
                             validate: required
                         -
                           handle: prefix
                           field:
                             type: hidden
-                            default: 'https://www.tiktok.com/'
+                            default: 'https://tiktok.com/'
