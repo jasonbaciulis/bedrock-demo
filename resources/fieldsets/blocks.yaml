@@ -26,10 +26,7 @@ fields:
           display: Messaging
           instructions: 'Features, benefits, how it works'
           icon: share-mega-phone
-          sets:
-            new_set:
-              display: 'New Set'
-              fields: {  }
+          sets: {}
         authority:
           display: Authority
           instructions: 'Testimonials, logos, ratings, press'
