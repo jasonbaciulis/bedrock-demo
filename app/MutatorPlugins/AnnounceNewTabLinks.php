@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MutatorPlugins;
 
+use Illuminate\Support\Str;
 use JackSleight\StatamicBardMutator\Info;
 use JackSleight\StatamicBardMutator\Plugins\Plugin;
 use JackSleight\StatamicBardMutator\Support\Data;
@@ -53,9 +54,9 @@ final class AnnounceNewTabLinks extends Plugin
      */
     private function splitOffLastWord(string $text): array
     {
-        preg_match('/^(.*?)(\S*)$/su', $text, $matches);
+        $lastWord = Str::match('/\S*\z/u', $text);
 
-        return [$matches[1], $matches[2]];
+        return [Str::replaceEnd($lastWord, '', $text), $lastWord];
     }
 
     private function newTabLinkHint(string $lastWord): string

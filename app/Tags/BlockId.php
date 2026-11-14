@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tags;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Statamic\Fields\Values;
 use Statamic\Tags\Tags;
@@ -15,21 +16,28 @@ final class BlockId extends Tags
      */
     public function index(): string
     {
-        $slug = Str::slug($this->context->value('type'));
-        $position = $this->positionAmongBlocksOfSameType();
+        $type = Arr::string($this->context, 'type');
+        $slug = Str::slug($type);
+        $position = $this->positionAmongBlocksOfSameType($type);
 
         return $position > 1 ? "{$slug}-{$position}" : $slug;
     }
 
-    private function positionAmongBlocksOfSameType(): int
+    private function positionAmongBlocksOfSameType(string $type): int
     {
-        // Replicator augments only sets that have fields into Values, so a set without fields stays an array.
-        $blocks = collect($this->context->value('blocks'));
-        $currentIndex = $blocks->search(fn (array|Values $block): bool => $block['id'] === $this->context->value('id'));
+        $blocks = $this->context->value('blocks');
 
-        return $blocks
-            ->take($currentIndex + 1)
-            ->where('type', $this->context->value('type'))
-            ->count();
+        // A block rendered outside the blocks loop, such as the article layout, has no blocks in its context.
+        if (! is_array($blocks)) {
+            return 1;
+        }
+
+        $currentId = $this->context->value('id');
+
+        // Replicator augments only sets that have fields into Values, so a set without fields stays an array.
+        return collect($blocks)
+            ->takeUntil(fn (array|Values $block): bool => $block['id'] === $currentId)
+            ->where('type', $type)
+            ->count() + 1;
     }
 }
