@@ -5,7 +5,7 @@ export default {
     theme: {
         extend: {
             // Each key merges into the plugin's default styles: https://github.com/tailwindlabs/tailwindcss-typography/blob/main/src/styles.js
-            typography: ({ theme }) => ({
+            typography: () => ({
                 DEFAULT: {
                     css: {
                         '--tw-prose-body': 'var(--color-foreground)',
@@ -17,15 +17,11 @@ export default {
                         '--tw-prose-bold': 'var(--color-foreground)',
                         '--tw-prose-links': 'var(--color-primary)',
                         maxWidth: 'none',
+                        fontSize: 'var(--text-lg)',
+                        lineHeight: 'var(--text-lg--line-height)',
                         p: {
                             marginTop: '0',
                             marginBottom: '0',
-                            fontSize: 'var(--text-base)',
-                            lineHeight: 'var(--text-base--line-height)',
-                            [`@media (width >= ${theme('screens.sm')})`]: {
-                                fontSize: 'var(--text-lg)',
-                                lineHeight: 'var(--text-lg--line-height)',
-                            },
                         },
                         a: {
                             textDecorationThickness: 'max(1px, 0.0625rem)',
