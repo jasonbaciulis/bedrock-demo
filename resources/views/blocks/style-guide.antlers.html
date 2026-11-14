@@ -55,7 +55,16 @@
                     <s:partial:partials.style-guide.swatch color="bg-muted-foreground" />
                     <s:partial:partials.style-guide.swatch color="bg-accent" />
                     <s:partial:partials.style-guide.swatch color="bg-accent-foreground" />
+                </div>
+                <div class="grid grid-cols-1 gap-x-2 gap-y-3 md:grid-cols-11">
                     <s:partial:partials.style-guide.swatch color="bg-destructive" />
+                    <s:partial:partials.style-guide.swatch color="bg-destructive-foreground" />
+                    <s:partial:partials.style-guide.swatch color="bg-success" />
+                    <s:partial:partials.style-guide.swatch color="bg-success-foreground" />
+                    <s:partial:partials.style-guide.swatch color="bg-warning" />
+                    <s:partial:partials.style-guide.swatch color="bg-warning-foreground" />
+                    <s:partial:partials.style-guide.swatch color="bg-info" />
+                    <s:partial:partials.style-guide.swatch color="bg-info-foreground" />
                 </div>
                 <div class="grid grid-cols-1 gap-x-2 gap-y-3 md:grid-cols-11">
                     <s:partial:partials.style-guide.swatch color="bg-neutral-50" />
@@ -135,6 +144,18 @@
                         </s:partial:components.ui.button>
                     </dd>
                 </div>
+            </dl>
+        </div>
+
+        <div>
+            <div class="border-border mb-10 border-b">
+                <h3 class="h3 pb-6">Alerts</h3>
+            </div>
+            <dl class="space-y-10">
+                <s:partial:partials.style-guide.alert-row variant="success" />
+                <s:partial:partials.style-guide.alert-row variant="info" />
+                <s:partial:partials.style-guide.alert-row variant="warning" />
+                <s:partial:partials.style-guide.alert-row variant="error" />
             </dl>
         </div>
 
