@@ -1,232 +1,80 @@
 # [Bedrock demo](https://bedrock.remarkable.dev)
 
-## Requirements
+This repository has two jobs:
 
-Before running Statamic, you should ensure that your local machine has PHP and [Composer](https://getcomposer.org/) installed. If you are developing on macOS, PHP and Composer can be installed via [Homebrew](https://brew.sh/). In addition, we recommend [installing Bun](https://bun.sh/) for frontend dependencies.
+1. It is the live demo of the Bedrock starter kit at [bedrock.remarkable.dev](https://bedrock.remarkable.dev).
+2. It is the source of the starter kit. The `bedrock:export-starter-kit` command exports the kit from this project to the [jasonbaciulis/bedrock](https://github.com/jasonbaciulis/bedrock) repository.
 
-
-## Installation instructions
-
-1. Install composer dependencies: `composer install`
-2. Install frontend dependencies: `bun install`
-3. Create a Statamic user: `php please make:user`
-4. Next, install the MCP server and coding guidelines: `php artisan boost:install`
-5. Start Laravel's local dev server, bun run dev, start queue: `composer run dev`
-
-Once you have started the Artisan development server, the website will be accessible in your web browser at [http://localhost:8000](http://localhost:8000). Head to [http://localhost:8000/cp](http://localhost:8000/cp) and use your email address and password to sign into the Statamic control panel.
-
-## Tools, libraries and addons used in the project
-- [Statamic](https://statamic.dev/) - Flat file Laravel CMS.
-- [TailwindCSS](https://tailwindcss.com/docs/installation) - Utility-first CSS framework.
-- [Alpine.js](https://alpinejs.dev/start-here) - Rugged, minimal tool for composing behavior directly in your markup.
-- [Embla](https://www.embla-carousel.com) - A lightweight carousel library with fluid motion and great swipe precision.
-- [Laravel Boost](https://github.com/laravel/boost) - Accelerates AI-assisted development by providing the essential context that AI needs to generate high-quality, Laravel-specific code.
-
-## Views folder structure
-```
-resources/views/
-├── blocks/                      # Page building blocks (Replicator fields)
-├── components/                  # Project specific reusable components
-│   └── ui/                      # Highly-reusable shadcn/ui style Alpine.js components
-│       └── form/                # Statamic form (create), field wrapper and shared form parts (label, error, instructions, etc.)
-│           └── fields/          # Form field types (custom Statamic form fields will require a snake_case view file here)
-├── partials/                    # Template partials and fragments (things that aren't really reusable go here)
-├── posts/                       # Posts collection templates
-├── sets/                        # Content sets for Article Block
-└── errors/                      # Error page templates
-```
-
-## Tailwind CSS config
-- `config.css` - site's config. This file would typically include custom config for the project.
-- `typography.css` - the Tailwind CSS typography config for customizing the prose class.
-
-## CLI commands
-There is a nice list of custom scripts available in the command line to make a developer's job easier and more enjoyable.
-
-### Blocks
-Blocks are like LEGO bricks that provide you the maximum flexibility when building pages. Blocks are based on [Replicator Fieldtype](https://statamic.dev/fieldtypes/replicator).
-
-#### Make
-`php please make:bedrock-block`
-
-- Adds a set to the Blocks field in `resources/fieldsets/blocks.yaml`.
-- Creates a fieldset for a block in `resources/fieldsets/{file_name}.yaml`.
-- Creates a view with default markup in `resources/views/blocks/{file-name}.antlers.html`.
-
-#### Delete
-`php please delete:bedrock-block`
-
-Removes a set from the Blocks field and all associated files.
-
-### Sets
-Sets provide a powerful content creation experience with unparalleled flexibility for building entries i.e., Blog posts. Sets live in the the Article field which is based on [Bard Fieldtype](https://statamic.dev/fieldtypes/bard).
-
-#### Make
-`php please make:bedrock-set`
-
-- Adds a set to the Article in `resources/fieldsets/article.yaml`.
-- Creates a fieldset for a set in `resources/fieldsets/{file_name}.yaml`.
-- Creates a set view with default markup in `resources/views/sets/{file-name}.antlers.html`.
-
-#### Delete
-`php please delete:bedrock-set`
-
-Removes a set from the Article and all associated files.
-
-## Production env file contents
-Dump your `.env` values here with sensitive data removed. The following is a production example that uses full static caching:
-
-```env
-APP_NAME=Bedrock
-APP_ENV=production
-APP_KEY=
-APP_DEBUG=false
-APP_URL=
-
-APP_LOCALE=en
-APP_FALLBACK_LOCALE=en
-
-LOG_CHANNEL=stack
-LOG_STACK=single
-LOG_DEPRECATIONS_CHANNEL=null
-LOG_LEVEL=error
-
-DB_CONNECTION=sqlite
-
-SESSION_DRIVER=file
-SESSION_LIFETIME=120
-SESSION_ENCRYPT=false
-SESSION_PATH=/
-SESSION_DOMAIN=null
-
-BROADCAST_CONNECTION=log
-FILESYSTEM_DISK=local
-QUEUE_CONNECTION=redis
-
-CACHE_STORE=file
-
-REDIS_CLIENT=phpredis
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=null
-REDIS_PORT=6379
-
-MAIL_MAILER=smtp
-MAIL_HOST=
-MAIL_PORT=587
-MAIL_USERNAME=
-MAIL_PASSWORD=
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS="hello@example.com"
-MAIL_FROM_NAME="${APP_NAME}"
-
-STATAMIC_LICENSE_KEY=
-STATAMIC_PRO_ENABLED=true
-STATAMIC_STACHE_WATCHER=false
-STATAMIC_STATIC_CACHING_STRATEGY=full
-STATAMIC_STATIC_WARM_INSECURE=true
-STATAMIC_TWO_FACTOR_ENABLED=true
-STATAMIC_REVISIONS_ENABLED=true
-STATAMIC_GRAPHQL_ENABLED=false
-STATAMIC_API_ENABLED=false
-STATAMIC_GIT_ENABLED=true
-STATAMIC_GIT_PUSH=true
-STATAMIC_GIT_DISPATCH_DELAY=1
-
-STATAMIC_CUSTOM_CMS_NAME="${APP_NAME}"
-STATAMIC_CUSTOM_NAV_LOGO_URL='/assets/logos/logo-brand-fixed-white.svg'
-STATAMIC_CUSTOM_OUTSIDE_LOGO_URL='/assets/logos/logo-brand-fixed.svg'
-
-BEDROCK_CP_TOOLBAR_ENABLED=true
-```
-
-## NGINX config
-When using full static caching strategy you will need to [configure server rewrite rules](https://statamic.dev/static-caching#nginx).
-
-To enable resource caching add the following to your NGINX config __inside the server block__:
-```
-expires $expires;
-```
-
-And this __outside the server block__:
-```
-map $sent_http_content_type $expires {
-    default    off;
-    text/css    max;
-    ~image/    max;
-    font/woff2    max;
-    application/javascript    max;
-    application/octet-stream    max;
-}
-```
-
-## Ploi deploy scripts (with zero-downtime enabled)
-
-Ploi does not install Bun by default. [Install Bun on your server](https://ploi.io/documentation/server/how-to-install-bun-package-manager) before the first deploy.
-
-### Pre deploy script
+To start a new project, install the starter kit, not this repository:
 
 ```bash
-# Needed for Bun to work
-export PATH="$HOME/.bun/bin:$PATH"
+statamic new project_name jasonbaciulis/bedrock
 ```
 
-### Main deploy script
+The starter kit documentation is in [`package/DOCUMENTATION.md`](package/DOCUMENTATION.md).
+
+## Local setup
+
+You need PHP 8.4 or later, Composer, [Bun](https://bun.sh/) and Redis (for Horizon). [Herd](https://herd.laravel.com) serves the site at [https://bedrock-demo.test](https://bedrock-demo.test).
+
+1. Install dependencies, create `.env` and build the assets: `composer run setup`
+2. Create a Statamic user: `php please make:user`
+3. (Optional) Install the MCP server and AI coding guidelines: `php artisan boost:install`
+4. Start Horizon, log tailing and Vite: `composer run dev`
+
+Sign in to the control panel at [https://bedrock-demo.test/cp](https://bedrock-demo.test/cp).
+
+## Checks
+
+- `composer lint` - Fix code style with Rector, Pint, Prettier and ESLint.
+- `composer test` - Run all checks: lint, type coverage, PHPStan, unit tests with 100% coverage, and browser tests.
+
+## Demo only
+
+These parts are in the demo, but not in the starter kit:
+
+| Part | Files |
+| --- | --- |
+| Blog | `posts` collection, `categories` taxonomy, `blog_excerpt` and `blog_paginated` blocks, `posts/show` template, `entry-posts`, `entry-meta`, `social-sharing` and `related-posts` views, `strings` global |
+| Search | `search_form` and `search_results` blocks, `search-form` component, Search and Results pages |
+| Hero demo | `hero_demo` block |
+| Contact form | `resources/forms/contact.yaml` and its blueprint (the kit's Contact block works with any form that you create) |
+| Load more entries | `resources/js/fetch-entries.js` (needs the Statamic REST API). |
+| Mega menu | `nav-header-item` partial and the `header` navigation blueprint (icon, description and badge fields) |
+
+The demo pages label the blog and search as "Demo only".
+
+## Starter kit export
+
+The `package/` folder holds the starter kit:
+
+- `starter-kit.yaml` - `export_paths` lists the files that the kit copies from this project.
+- `export/` - Kit versions of files that hold demo values in this project, for example `blocks.yaml`, the header navigation and the home page. The export copies these files after the `export_paths`, so they replace the demo versions.
+- `StarterKitPostInstall.php` - Installs the dev dependencies, Boost and the MCP server, and formats the new project.
+- `README.md` and `DOCUMENTATION.md` - The kit's documentation.
+
+To export the kit:
 
 ```bash
-# Early Exit Check
-if [[ {COMMIT_MESSAGE} =~ "[BOT]" ]]; then
-    echo "Auto-committed on production. Nothing to deploy."
-    {DO_NOT_NOTIFY}
-    {CLEAR_NEW_RELEASE}
-    exit 0
-fi
-
-cd {RELEASE}
-
-# Git & Dependencies
-git pull --rebase --autostash origin {BRANCH}
-
-{SITE_COMPOSER} install --no-interaction --prefer-dist --optimize-autoloader --no-dev --classmap-authoritative
-
-# Database (Safe Migration)
-if [ -f artisan ]; then
-    {SITE_PHP} artisan migrate --force
-fi
-
-# Frontend Build
-bun install --frozen-lockfile
-bun run build
-
-# Laravel Optimization
-# We group these to minimize the window where the app is "naked"
-{SITE_PHP} artisan config:cache
-{SITE_PHP} artisan route:cache
-{SITE_PHP} artisan view:cache
-{SITE_PHP} artisan event:cache
-
-echo "⏳ Release prepared. Awaiting symlink switch…"
+php artisan bedrock:export-starter-kit ../bedrock
 ```
 
-### Post deploy script
+The command replaces the previous export, writes the dev dependency versions for the post-install hook, and fails when a view or blueprint uses a partial or fieldset that the kit does not include.
 
-```bash
-# Flush the PHP FPM worker
-{RELOAD_PHP_FPM}
+When you add a file that the kit needs, add it to `export_paths`. When a file has demo values, add a kit version to `package/export/` instead.
 
-# Statamic Stache
-{SITE_PHP} artisan statamic:stache:clear
-{SITE_PHP} artisan statamic:stache:warm
-{SITE_PHP} artisan statamic:stache:doctor
+After the export, open a pull request in the kit repository. Each published release runs the "Test Live Installation" workflow, which installs the kit with `statamic new` in a fresh site and runs the browser smoke tests.
 
-# Restart Queue Workers
-{SITE_PHP} artisan queue:restart
+## Deployment
 
-# Update all search indexes
-{SITE_PHP} artisan statamic:search:update --all
+The demo is a static site on Vercel. The `.github/workflows/deploy-vercel.yml` workflow runs on each push to `main`:
 
-# Static Caching
-{SITE_PHP} artisan statamic:static:clear
-{SITE_PHP} artisan statamic:static:warm --queue
+1. It builds the assets and generates the static site with [Statamic SSG](https://github.com/statamic/ssg) (`php please ssg:generate`).
+2. It deploys `storage/app/static` to Vercel with `vercel deploy --prebuilt --prod`.
 
-echo "🚀 Website deployed!"
-```
+The workflow needs the `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` and `VERCEL_TOKEN` secrets and the `APP_URL` variable. `build.sh` stops Vercel's own Git builds, so that only the workflow deploys.
+
+Know these limits of the static demo:
+
+- Search, the contact form and the newsletter form need a PHP server. On the static demo, a search shows no results and the forms show an error.
+- The workflow sets `BEDROCK_CP_TOOLBAR_ENABLED=false`. A static site has no signed-in users. Also, the toolbar's `nocache` region makes Statamic keep the `/404` URL as the pagination path, so pages generated after `/404` link to `/404/page/N`. The workflow fails when it finds such a link.
