@@ -21,14 +21,16 @@
             <div class="p-6">
                 <div class="flex items-center justify-between">
                     <s:partial:components.logo :logo="theme:logo" class="inline-flex h-8 w-40" />
-                    <button
-                        type="button"
-                        class="btn btn--ghost btn--square -my-2 -mr-2"
-                        @click="mobileNavOpen = false"
-                        aria-label="Close menu"
+                    <s:partial:components.ui.button
+                        as="button"
+                        variant="ghost"
+                        size="icon"
+                        class="-my-2 -mr-2"
+                        aria_label="Close menu"
+                        x_click="mobileNavOpen = false"
                     >
                         <s:svg src="heroicons/outline/x-mark" class="size-5" />
-                    </button>
+                    </s:partial:components.ui.button>
                 </div>
                 <div class="mt-6 flow-root">
                     <div class="-my-6 divide-y divide-gray-500/10">

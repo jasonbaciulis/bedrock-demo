@@ -25,7 +25,7 @@ class: ''
         <s:partial:components.ui.button
             as="button"
             variant="ghost"
-            class="btn--square"
+            size="icon"
             aria_label="Share on X"
             x_click="popupWindow('https://x.com/intent/post?url={current_url | urlencode}&text={title | urlencode}', 'X')"
         >
@@ -36,7 +36,7 @@ class: ''
         <s:partial:components.ui.button
             as="button"
             variant="ghost"
-            class="btn--square"
+            size="icon"
             aria_label="Share on Facebook"
             x_click="popupWindow('https://www.facebook.com/sharer.php?u={current_url | urlencode}', 'Facebook')"
         >
@@ -47,7 +47,7 @@ class: ''
         <s:partial:components.ui.button
             as="button"
             variant="ghost"
-            class="btn--square"
+            size="icon"
             aria_label="Share on LinkedIn"
             x_click="popupWindow('https://www.linkedin.com/sharing/share-offsite/?url={current_url | urlencode}', 'LinkedIn')"
         >
@@ -58,7 +58,7 @@ class: ''
         <s:partial:components.ui.button
             as="button"
             variant="ghost"
-            class="btn--square"
+            size="icon"
             aria_label="Copy link"
             x_click="copyToClipboard(shareUrl)"
         >

@@ -21,18 +21,19 @@ class: ''
         <s:partial:components.ui.form.label :display="display" :id="id" />
     {{ /unless }}
     <div class="flex items-center gap-x-1">
-        <button
-            type="button"
-            class="btn btn--outline btn--sm btn--round shrink-0"
+        <s:partial:components.ui.button
+            as="button"
+            variant="outline"
+            size="icon-sm"
+            class="shrink-0 rounded-full"
+            aria_label="Decrement"
+            :aria_controls="id"
+            x_click="decrement"
+            x_disabled="isAtMin"
             tabindex="-1"
-            aria-label="Decrement"
-            aria-controls="{{ id }}"
-            @click="decrement"
-            :disabled="isAtMin"
-            :aria-disabled="isAtMin"
         >
             <s:svg src="heroicons/outline/minus" />
-        </button>
+        </s:partial:components.ui.button>
         {{ if view:show_input }}
             <input
                 x-ref="input"
@@ -65,18 +66,19 @@ class: ''
                 {{ slot }}
             </div>
         {{ /if }}
-        <button
-            type="button"
-            class="btn btn--outline btn--sm btn--round shrink-0"
+        <s:partial:components.ui.button
+            as="button"
+            variant="outline"
+            size="icon-sm"
+            class="shrink-0 rounded-full"
+            aria_label="Increment"
+            :aria_controls="id"
+            x_click="increment"
+            x_disabled="isAtMax"
             tabindex="-1"
-            aria-label="Increment"
-            aria-controls="{{ id }}"
-            @click="increment"
-            :disabled="isAtMax"
-            :aria-disabled="isAtMax"
         >
             <s:svg src="heroicons/outline/plus" />
-        </button>
+        </s:partial:components.ui.button>
     </div>
 </div>
 <s:partial:components.ui.form.instructions :instructions="instructions" :id="id" />

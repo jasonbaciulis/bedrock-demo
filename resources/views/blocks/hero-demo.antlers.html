@@ -207,12 +207,8 @@
                                     {{ /loop }}
                                 {{ /slot:content }}
                                 {{ slot:nav }}
-                                    <s:partial:components.ui.carousel.previous
-                                        class="btn--outline btn--round"
-                                    />
-                                    <s:partial:components.ui.carousel.next
-                                        class="btn--outline btn--round"
-                                    />
+                                    <s:partial:components.ui.carousel.previous />
+                                    <s:partial:components.ui.carousel.next />
                                 {{ /slot:nav }}
                             </s:partial:components.ui.carousel.carousel>
                         </div>
@@ -539,25 +535,53 @@
                 {{# Mock pagination #}}
                 <div class="card shadow-none">
                     <nav class="flex items-center justify-center gap-1">
-                        <button class="btn btn--ghost shrink-0">
+                        <s:partial:components.ui.button
+                            as="button"
+                            variant="ghost"
+                            class="shrink-0"
+                        >
                             <s:svg src="heroicons/outline/chevron-left" class="size-4" />
                             <span class="sr-only lg:not-sr-only">Previous</span>
-                        </button>
+                        </s:partial:components.ui.button>
 
                         <div class="flex gap-1">
-                            <button class="btn btn--ghost btn--square">1</button>
-                            <button class="btn btn--outline btn--square">2</button>
-                            <button class="btn btn--ghost btn--square">3</button>
+                            <s:partial:components.ui.button
+                                as="button"
+                                variant="ghost"
+                                size="icon"
+                                label="1"
+                            />
+                            <s:partial:components.ui.button
+                                as="button"
+                                variant="outline"
+                                size="icon"
+                                label="2"
+                            />
+                            <s:partial:components.ui.button
+                                as="button"
+                                variant="ghost"
+                                size="icon"
+                                label="3"
+                            />
                             <span class="flex size-9 items-center justify-center">
                                 <s:svg src="heroicons/outline/ellipsis-horizontal" class="size-4" />
                             </span>
-                            <button class="btn btn--ghost btn--square">12</button>
+                            <s:partial:components.ui.button
+                                as="button"
+                                variant="ghost"
+                                size="icon"
+                                label="12"
+                            />
                         </div>
 
-                        <button class="btn btn--ghost shrink-0">
+                        <s:partial:components.ui.button
+                            as="button"
+                            variant="ghost"
+                            class="shrink-0"
+                        >
                             <span class="sr-only lg:not-sr-only">Next</span>
                             <s:svg src="heroicons/outline/chevron-right" class="size-4" />
-                        </button>
+                        </s:partial:components.ui.button>
                     </nav>
                 </div>
 
@@ -567,47 +591,37 @@
                         <p class="text-muted-foreground text-sm">A toaster component.</p>
                     </div>
 
-                    <div class="flex flex-wrap gap-3">
-                        <button
-                            class="btn btn--outline"
-                            x-data
-                            type="button"
-                            @click="$dispatch('toast', &#123; message: 'Saved!', description: 'Anyone with a link can now view this file.', type: 'success', dismissible: true &#125;)"
-                        >
-                            Success
-                        </button>
-                        <button
-                            class="btn btn--outline"
-                            x-data
-                            type="button"
-                            @click="$dispatch('toast', &#123; message: 'There was an error!', type: 'error' &#125;)"
-                        >
-                            Error
-                        </button>
-                        <button
-                            class="btn btn--outline"
-                            x-data
-                            type="button"
-                            @click="$dispatch('toast', &#123; message: 'This is a warning', type: 'warning' &#125;)"
-                        >
-                            Warning
-                        </button>
-                        <button
-                            class="btn btn--outline"
-                            x-data
-                            type="button"
-                            @click="$dispatch('toast', &#123; message: 'This is an info message', type: 'info' &#125;)"
-                        >
-                            Info
-                        </button>
-                        <button
-                            class="btn btn--outline"
-                            x-data
-                            type="button"
-                            @click="$dispatch('toast', &#123; message: 'This is a default toast' &#125;)"
-                        >
-                            Default
-                        </button>
+                    <div class="flex flex-wrap gap-3" x-data>
+                        <s:partial:components.ui.button
+                            as="button"
+                            variant="outline"
+                            label="Success"
+                            x_click="$dispatch('toast', @{ message: 'Saved!', description: 'Anyone with a link can now view this file.', type: 'success', dismissible: true })"
+                        />
+                        <s:partial:components.ui.button
+                            as="button"
+                            variant="outline"
+                            label="Error"
+                            x_click="$dispatch('toast', @{ message: 'There was an error!', type: 'error' })"
+                        />
+                        <s:partial:components.ui.button
+                            as="button"
+                            variant="outline"
+                            label="Warning"
+                            x_click="$dispatch('toast', @{ message: 'This is a warning', type: 'warning' })"
+                        />
+                        <s:partial:components.ui.button
+                            as="button"
+                            variant="outline"
+                            label="Info"
+                            x_click="$dispatch('toast', @{ message: 'This is an info message', type: 'info' })"
+                        />
+                        <s:partial:components.ui.button
+                            as="button"
+                            variant="outline"
+                            label="Default"
+                            x_click="$dispatch('toast', @{ message: 'This is a default toast' })"
+                        />
                     </div>
                 </div>
             </div>

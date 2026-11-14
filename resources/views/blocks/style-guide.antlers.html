@@ -100,6 +100,41 @@
                         />
                     </dd>
                 </div>
+                <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
+                    <dt
+                        class="content-sm text-muted-foreground shrink-0 font-mono leading-6 md:w-44"
+                    >
+                        btn--icon
+                    </dt>
+                    <dd
+                        class="flex flex-col items-start justify-start gap-6 md:flex-row md:items-end"
+                    >
+                        <s:partial:components.ui.button
+                            as="button"
+                            variant="outline"
+                            size="icon-sm"
+                            aria_label="Add item"
+                        >
+                            <s:svg src="heroicons/outline/plus" />
+                        </s:partial:components.ui.button>
+                        <s:partial:components.ui.button
+                            as="button"
+                            variant="outline"
+                            size="icon"
+                            aria_label="Add item"
+                        >
+                            <s:svg src="heroicons/outline/plus" />
+                        </s:partial:components.ui.button>
+                        <s:partial:components.ui.button
+                            as="button"
+                            variant="outline"
+                            size="icon-lg"
+                            aria_label="Add item"
+                        >
+                            <s:svg src="heroicons/outline/plus" />
+                        </s:partial:components.ui.button>
+                    </dd>
+                </div>
             </dl>
         </div>
 
