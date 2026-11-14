@@ -9,6 +9,8 @@ class: ''
         {{ view:date | format('M j, Y') }}
     </time>
     {{ if view:category }}
-        <span class="badge badge--outline">{{ view:category }}</span>
+        <s:partial:components.ui.badge variant="outline">
+            {{ view:category }}
+        </s:partial:components.ui.badge>
     {{ /if }}
 </div>

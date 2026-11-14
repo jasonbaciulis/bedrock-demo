@@ -29,7 +29,6 @@ CSS folder structure is based on ITCSS:
 @import './objects/layout.css';
 
 /* Components */
-@import './components/badge.css';
 @import './components/button.css';
 @import './components/card.css';
 @import './components/misc.css';
