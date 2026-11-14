@@ -114,7 +114,7 @@ final class StarterKitPostInstall
     }
 
     /**
-     * `php please bedrock:export-starter-kit` writes `dev-dependencies.json` from the
+     * `php artisan bedrock:export-starter-kit` writes `dev-dependencies.json` from the
      * `require-dev` versions of the Bedrock demo project.
      *
      * @return list<string>
