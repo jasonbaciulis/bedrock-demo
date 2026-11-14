@@ -14,7 +14,7 @@ class: ''
     {{ /push:scripts }}
 {{ /once }}
 <div
-    class="{{ view:container_class }}"
+    {{ view:container_class | attribute:class }}
     x-data="Stepper({{ view:min }}, {{ view:max }}, {{ view:step }})"
 >
     {{ unless slot }}

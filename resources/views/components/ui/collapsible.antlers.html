@@ -26,7 +26,7 @@ content_class: ''
             @keydown.enter.prevent="toggle()"
             @keydown.space.prevent="toggle()"
             @keydown.escape="close()"
-            class="{{ view:trigger_class }}"
+            {{ view:trigger_class | attribute:class }}
         >
             {{ slot:trigger }}
         </button>
