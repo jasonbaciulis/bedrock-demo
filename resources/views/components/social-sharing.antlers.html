@@ -62,8 +62,8 @@ class: ''
             aria_label="Copy link"
             x_click="copyToClipboard(shareUrl)"
         >
-            <s:svg src="heroicons/mini/link" class="size-5" x-show="!copied" />
-            <s:svg src="heroicons/mini/check" class="size-5" x-show="copied" x-cloak="true" />
+            <s:svg src="heroicons/outline/link" class="size-5" x-show="!copied" />
+            <s:svg src="heroicons/outline/check" class="size-5" x-show="copied" x-cloak="true" />
         </s:partial:components.ui.button>
         <span class="sr-only" role="status" x-text="copied ? 'Link copied' : ''"></span>
     </li>
