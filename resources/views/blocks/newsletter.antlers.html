@@ -8,7 +8,9 @@
         <s:vite src="resources/js/components/newsletter.js" />
     {{ /push:scripts }}
 {{ /once }}
+{{ newsletter_id = {block_id} }}
 <div
+    id="{{ newsletter_id }}"
     x-cloak
     x-show="!isSubscribed"
     x-data="Newsletter({
@@ -37,17 +39,17 @@
                 <s:partial:components.ui.form.honeypot
                     model="form.honeypot"
                     handle="fax_number"
-                    :form_handle="type"
+                    :form_handle="newsletter_id"
                 />
                 <input type="hidden" name="_token" value="{{ csrf_token }}" />
 
                 <s:partial:components.ui.form.label
-                    id="{type}-email"
+                    id="{newsletter_id}-email"
                     display="Email"
                     hide_display="true"
                 />
                 <s:partial:components.ui.form.fields.text
-                    id="{type}-email"
+                    id="{newsletter_id}-email"
                     model="form.email"
                     handle="email"
                     input_type="email"
@@ -63,7 +65,7 @@
                 />
             </div>
 
-            <s:partial:components.ui.form.error handle="email" id="{type}-email" />
+            <s:partial:components.ui.form.error handle="email" id="{newsletter_id}-email" />
         </form>
 
         <template x-if="success">
