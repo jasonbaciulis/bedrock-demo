@@ -23,7 +23,7 @@ class: ''
 
 {{# Comment #}}
 
-<div {{ class | attribute:class }}>
+<div {{ view:class | attribute:class }}>
     <div class="{{ view:variant }}">
         {{ slot }}
     </div>
@@ -54,7 +54,7 @@ variants:
 class: ''
 ---
 
-<div {{ class | attribute:class }}>
+<div {{ view:class | attribute:class }}>
     ...
 </div>
 ```
