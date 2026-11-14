@@ -7,7 +7,7 @@ class: ''
 ---
 
 <div
-    class="alert {{ ['alert--success' => view:variant == 'success', 'alert--warning' => view:variant == 'warning', 'alert--error' => view:variant == 'error'] | classes }} {{ view:class }}"
+    class="{{ ['alert', 'alert--success' => view:variant == 'success', 'alert--warning' => view:variant == 'warning', 'alert--error' => view:variant == 'error', view:class] | classes | collapse_whitespace }}"
     {{ if view:dismissible }}
         x-data="{ dismissed: false }"
         x-show="!dismissed"

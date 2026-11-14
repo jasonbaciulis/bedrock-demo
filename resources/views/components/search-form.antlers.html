@@ -12,7 +12,7 @@ class: ''
 #}}
 
 <form
-    class="{{ view:class }} flex items-center gap-6"
+    class="{{ ['flex items-center gap-6', view:class] | classes | collapse_whitespace }}"
     action="{{ view:action }}"
     x-data="{ search: '{{ view:query ? view:query : get:q | sanitize }}' }"
 >

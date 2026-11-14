@@ -65,7 +65,7 @@ content_class: ''
             :aria-expanded="open"
             :aria-controls="id"
             aria-label="Open dialog"
-            class="btn {{ view:trigger_class }}"
+            class="{{ ['btn', view:trigger_class] | classes | collapse_whitespace }}"
         >
             {{ slot:trigger }}
         </button>
@@ -116,7 +116,7 @@ content_class: ''
                         x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
                         @click.outside="close($refs.button)"
                         :id="id"
-                        class="bg-background {{ ['px-4 pt-5 pb-4 sm:max-w-md sm:p-6' => view:size == 'sm', 'px-4 pt-5 pb-4 sm:max-w-xl sm:p-6' => view:size == 'md', 'px-4 pt-5 pb-4 sm:max-w-(--breakpoint-xl) sm:p-6 md:p-12 xl:px-16 xl:py-20' => view:size == 'xl'] | classes }} {{ view:content_class }} relative transform overflow-hidden rounded-[0.625rem] border text-left shadow-lg transition-all sm:my-8 sm:w-full"
+                        class="{{ ['bg-background relative transform overflow-hidden rounded-[0.625rem] border text-left shadow-lg transition-all sm:my-8 sm:w-full', 'px-4 pt-5 pb-4 sm:max-w-md sm:p-6' => view:size == 'sm', 'px-4 pt-5 pb-4 sm:max-w-xl sm:p-6' => view:size == 'md', 'px-4 pt-5 pb-4 sm:max-w-(--breakpoint-xl) sm:p-6 md:p-12 xl:px-16 xl:py-20' => view:size == 'xl', view:content_class] | classes | collapse_whitespace }}"
                     >
                         {{ slot:content }}
                         <button

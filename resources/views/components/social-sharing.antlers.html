@@ -3,7 +3,7 @@ class: ''
 ---
 
 <ul
-    class="{{ view:class }} -ml-2 flex items-center gap-1"
+    class="{{ ['-ml-2 flex items-center gap-1', view:class] | classes | collapse_whitespace }}"
     x-data="{
         copied: false,
         shareUrl: {{ current_url | to_json | sanitize }},

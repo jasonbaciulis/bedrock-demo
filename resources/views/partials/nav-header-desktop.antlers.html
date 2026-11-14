@@ -39,7 +39,7 @@
                         class="flex-auto overflow-hidden rounded-lg border bg-white text-sm/6 shadow lg:max-w-3xl"
                     >
                         <div
-                            class="{{ two_col_menu ?= 'lg:grid-cols-2' }} relative grid grid-cols-1 gap-x-5 gap-y-1 p-3"
+                            class="{{ ['relative grid grid-cols-1 gap-x-5 gap-y-1 p-3', 'lg:grid-cols-2' => two_col_menu] | classes | collapse_whitespace }}"
                         >
                             {{ children scope="child" }}
                                 <s:partial:partials.nav-header-item
