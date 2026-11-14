@@ -54,8 +54,12 @@ export_paths:
   - resources/fieldsets/style_guide.yaml
   - resources/fieldsets/table.yaml
   - resources/fieldsets/video.yaml
-  - resources/fonts
-  - resources/js
+  - resources/js/components
+  - resources/js/lib
+  - resources/js/plugins
+  - resources/js/embla.js
+  - resources/js/lite-yt-embed.js
+  - resources/js/site.js
   - resources/macros.yaml
   - resources/svg/social
   # Blocks
