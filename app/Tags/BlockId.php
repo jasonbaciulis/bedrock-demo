@@ -25,7 +25,7 @@ final class BlockId extends Tags
     {
         // Replicator augments only sets that have fields into Values, so a set without fields stays an array.
         $blocks = collect($this->context->value('blocks'));
-        $currentIndex = $blocks->search(fn (array|Values $block) => $block['id'] === $this->context->value('id'));
+        $currentIndex = $blocks->search(fn (array|Values $block): bool => $block['id'] === $this->context->value('id'));
 
         return $blocks
             ->take($currentIndex + 1)
