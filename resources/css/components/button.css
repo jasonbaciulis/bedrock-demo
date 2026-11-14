@@ -1,6 +1,6 @@
 @layer components {
     .btn {
-        @apply focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 aria-invalid:border-destructive inline-flex shrink-0 items-center justify-center gap-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:ring-3 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&:where(:has(>svg))]:px-3;
+        @apply focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-danger/20 aria-invalid:border-danger inline-flex shrink-0 items-center justify-center gap-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:ring-3 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&:where(:has(>svg))]:px-3;
     }
 
     .btn--primary {
@@ -23,12 +23,12 @@
         @apply hover:bg-accent hover:text-accent-foreground text-foreground;
     }
 
-    .btn--destructive {
-        @apply bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 text-white shadow-xs;
+    .btn--danger {
+        @apply bg-danger hover:bg-danger/90 focus-visible:ring-danger/20 text-white shadow-xs;
     }
 
     /* Default size for the boxed variants. `:where()` keeps it at one-class specificity so the size modifiers below override it by source order. */
-    .btn:where(.btn--primary, .btn--secondary, .btn--outline, .btn--ghost, .btn--destructive) {
+    .btn:where(.btn--primary, .btn--secondary, .btn--outline, .btn--ghost, .btn--danger) {
         @apply h-9 px-4 py-2 [&:where(:has(>svg))]:px-3;
     }
 

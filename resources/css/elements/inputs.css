@@ -6,7 +6,7 @@
     input,
     textarea,
     select {
-        @apply placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground focus-visible:border-ring focus-visible:ring-ring/50 border-input aria-invalid:ring-destructive/20 aria-invalid:border-destructive focus:border-ring focus:ring-ring/50 rounded-md border outline-none focus:outline-none focus-visible:ring-3;
+        @apply placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground focus-visible:border-ring focus-visible:ring-ring/50 border-input aria-invalid:ring-danger/20 aria-invalid:border-danger focus:border-ring focus:ring-ring/50 rounded-md border outline-none focus:outline-none focus-visible:ring-3;
     }
 
     textarea,

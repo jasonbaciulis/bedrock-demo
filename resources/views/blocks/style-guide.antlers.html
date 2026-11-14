@@ -57,14 +57,28 @@
                     <s:partial:partials.style-guide.swatch color="bg-accent-foreground" />
                 </div>
                 <div class="grid grid-cols-1 gap-x-2 gap-y-3 md:grid-cols-11">
-                    <s:partial:partials.style-guide.swatch color="bg-destructive" />
-                    <s:partial:partials.style-guide.swatch color="bg-destructive-foreground" />
+                    <s:partial:partials.style-guide.swatch color="bg-success-50" />
+                    <s:partial:partials.style-guide.swatch color="bg-success-200" />
                     <s:partial:partials.style-guide.swatch color="bg-success" />
-                    <s:partial:partials.style-guide.swatch color="bg-success-foreground" />
-                    <s:partial:partials.style-guide.swatch color="bg-warning" />
-                    <s:partial:partials.style-guide.swatch color="bg-warning-foreground" />
+                    <s:partial:partials.style-guide.swatch color="bg-success-900" />
+                </div>
+                <div class="grid grid-cols-1 gap-x-2 gap-y-3 md:grid-cols-11">
+                    <s:partial:partials.style-guide.swatch color="bg-info-50" />
+                    <s:partial:partials.style-guide.swatch color="bg-info-200" />
                     <s:partial:partials.style-guide.swatch color="bg-info" />
-                    <s:partial:partials.style-guide.swatch color="bg-info-foreground" />
+                    <s:partial:partials.style-guide.swatch color="bg-info-900" />
+                </div>
+                <div class="grid grid-cols-1 gap-x-2 gap-y-3 md:grid-cols-11">
+                    <s:partial:partials.style-guide.swatch color="bg-warning-50" />
+                    <s:partial:partials.style-guide.swatch color="bg-warning-200" />
+                    <s:partial:partials.style-guide.swatch color="bg-warning" />
+                    <s:partial:partials.style-guide.swatch color="bg-warning-900" />
+                </div>
+                <div class="grid grid-cols-1 gap-x-2 gap-y-3 md:grid-cols-11">
+                    <s:partial:partials.style-guide.swatch color="bg-danger-50" />
+                    <s:partial:partials.style-guide.swatch color="bg-danger-200" />
+                    <s:partial:partials.style-guide.swatch color="bg-danger" />
+                    <s:partial:partials.style-guide.swatch color="bg-danger-900" />
                 </div>
                 <div class="grid grid-cols-1 gap-x-2 gap-y-3 md:grid-cols-11">
                     <s:partial:partials.style-guide.swatch color="bg-neutral-50" />
@@ -90,7 +104,7 @@
                 <s:partial:partials.style-guide.button-row variant="primary" />
                 <s:partial:partials.style-guide.button-row variant="secondary" />
                 <s:partial:partials.style-guide.button-row variant="outline" />
-                <s:partial:partials.style-guide.button-row variant="destructive" />
+                <s:partial:partials.style-guide.button-row variant="danger" />
                 <s:partial:partials.style-guide.button-row variant="ghost" />
                 <div class="flex flex-col gap-y-6 md:flex-row md:items-end">
                     <dt
@@ -186,10 +200,10 @@
                         <s:partial:components.ui.badge variant="primary">
                             Primary
                         </s:partial:components.ui.badge>
-                        <a href="/" class="badge badge--secondary">
+                        <s:partial:components.ui.badge variant="secondary" href="/">
                             Secondary
                             <s:svg src="heroicons/outline/arrow-right" />
-                        </a>
+                        </s:partial:components.ui.badge>
                         <s:partial:components.ui.badge variant="outline">
                             Outline
                         </s:partial:components.ui.badge>
