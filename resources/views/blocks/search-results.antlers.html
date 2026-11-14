@@ -1,6 +1,6 @@
 <section id="{{ block_id }}" class="m-section">
     <div class="container">
-        <s:partial:components.section-header :title="title" :text="text" />
+        <s:partial:components.section-header :title="title" :heading_level="first ? 'h1' : 'h2'" />
 
         {{# You can set index in config/statamic/search.php Docs: https://statamic.dev/search#indexes #}}
         <s:search:results index="blog" :limit="limit" paginate="true" on_each_side="1" as="results">

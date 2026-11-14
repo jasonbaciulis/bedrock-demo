@@ -1,6 +1,10 @@
 <section id="{{ block_id }}" class="m-section">
     <div class="container max-w-4xl">
-        <s:partial:components.section-header :title="title" :text="text" />
+        <s:partial:components.section-header
+            :title="title"
+            :text="text"
+            :heading_level="first ? 'h1' : 'h2'"
+        />
 
         <s:partial:components.faqs
             :items="items"

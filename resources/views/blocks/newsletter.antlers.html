@@ -9,7 +9,7 @@
     {{ /push:scripts }}
 {{ /once }}
 {{ newsletter_id = {block_id} }}
-<div
+<section
     id="{{ newsletter_id }}"
     x-cloak
     x-show="!isSubscribed"
@@ -26,7 +26,8 @@
         <s:partial:components.section-header
             :title="newsletter:title"
             :text="newsletter:text"
-            margin="mb-10"
+            :heading_level="first ? 'h1' : 'h2'"
+            margin_class="mb-10"
         />
 
         <form
@@ -76,4 +77,4 @@
             />
         </template>
     </div>
-</div>
+</section>

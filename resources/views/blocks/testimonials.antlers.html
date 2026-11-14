@@ -1,6 +1,10 @@
 <section id="{{ block_id }}" class="m-section">
     <div class="container">
-        <s:partial:components.section-header :title="title" :text="text" />
+        <s:partial:components.section-header
+            :title="title"
+            :text="text"
+            :heading_level="first ? 'h1' : 'h2'"
+        />
         {{ if query == 'custom' }}
             {{ testimonials = entries }}
         {{ elseif query == 'latest' }}
