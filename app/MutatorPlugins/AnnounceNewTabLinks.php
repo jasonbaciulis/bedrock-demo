@@ -30,7 +30,9 @@ final class AnnounceNewTabLinks extends Plugin
 
         $textNode = $textNodeInfo->item;
 
-        Data::morph($textNode, Data::html(e($textNode->text).$this->newTabLinkHint(), $textNode->marks));
+        [$leadingText, $lastWord] = $this->splitOffLastWord(e($textNode->text));
+
+        Data::morph($textNode, Data::html($leadingText.$this->newTabLinkHint($lastWord), $textNode->marks));
     }
 
     private function isLastTextOfNewTabLink(stdClass $link, Info $textNodeInfo): bool
@@ -46,8 +48,18 @@ final class AnnounceNewTabLinks extends Plugin
         return collect($nextNodeMarks)->doesntContain($link);
     }
 
-    private function newTabLinkHint(): string
+    /**
+     * @return array{string, string}
+     */
+    private function splitOffLastWord(string $text): array
     {
-        return once(fn (): string => mb_trim(view('partials.prose-new-tab-hint')->render()));
+        preg_match('/^(.*?)(\S*)$/su', $text, $matches);
+
+        return [$matches[1], $matches[2]];
+    }
+
+    private function newTabLinkHint(string $lastWord): string
+    {
+        return mb_trim(view('partials.prose-new-tab-hint', ['last_word' => $lastWord])->render());
     }
 }
