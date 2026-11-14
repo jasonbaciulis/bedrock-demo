@@ -19,21 +19,28 @@ export_paths:
   - config/statamic/seo-pro.php
   - config/statamic/static_caching.php
   - database/factories/UserFactory.php
-  # Only the kit's own content. package/export/ adds the kit versions of the files that hold demo values in this project.
+  # Only the kit's own content. package/export/ replaces the files that hold demo values in this project with their kit versions.
+  # The installer copies only export_paths, so list those files here too.
   - content/assets/assets.yaml
   - content/collections/pages.yaml
+  - content/collections/pages/home.md
   - content/globals/banner.yaml
   - content/globals/newsletter.yaml
   - content/globals/scripts.yaml
   - content/globals/social_media.yaml
   - content/globals/theme.yaml
+  - content/globals/default/banner.yaml
   - content/globals/default/newsletter.yaml
   - content/globals/default/scripts.yaml
+  - content/globals/default/social_media.yaml
+  - content/globals/default/theme.yaml
   - content/navigation
+  - content/trees/collections/pages.yaml
   - public/assets/logos
   - public/favicon
   - resources/blueprints/assets/assets.yaml
   - resources/blueprints/collections/pages
+  - resources/blueprints/forms/contact.yaml
   - resources/blueprints/globals/banner.yaml
   - resources/blueprints/globals/newsletter.yaml
   - resources/blueprints/globals/scripts.yaml
@@ -42,6 +49,7 @@ export_paths:
   - resources/blueprints/user.yaml
   - resources/css
   - resources/fieldsets/article.yaml
+  - resources/fieldsets/blocks.yaml
   - resources/fieldsets/button.yaml
   - resources/fieldsets/buttons.yaml
   - resources/fieldsets/common.yaml
@@ -54,6 +62,7 @@ export_paths:
   - resources/fieldsets/style_guide.yaml
   - resources/fieldsets/table.yaml
   - resources/fieldsets/video.yaml
+  - resources/forms/contact.yaml
   - resources/js/components
   - resources/js/lib
   - resources/js/plugins
@@ -88,6 +97,8 @@ export_paths:
   - resources/views/partials/header.antlers.html
   - resources/views/partials/nav-bottom-footer.antlers.html
   - resources/views/partials/nav-footer.antlers.html
+  - resources/views/partials/nav-header-desktop.antlers.html
+  - resources/views/partials/nav-header-mob.antlers.html
   - resources/views/partials/nav-link.antlers.html
   - resources/views/partials/nav-social.antlers.html
   - resources/views/partials/prose-new-tab-hint.antlers.html

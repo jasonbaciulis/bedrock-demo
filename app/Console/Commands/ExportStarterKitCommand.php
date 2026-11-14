@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Actions\StarterKit\FindMissingExportPaths;
 use App\Actions\StarterKit\FindMissingFieldsets;
 use App\Actions\StarterKit\FindMissingPartials;
 use Illuminate\Console\Attributes\Description;
@@ -48,8 +49,11 @@ final class ExportStarterKitCommand extends Command
         'roave/security-advisories',
     ];
 
-    public function handle(FindMissingPartials $findMissingPartials, FindMissingFieldsets $findMissingFieldsets): int
-    {
+    public function handle(
+        FindMissingExportPaths $findMissingExportPaths,
+        FindMissingPartials $findMissingPartials,
+        FindMissingFieldsets $findMissingFieldsets,
+    ): int {
         $kitPath = $this->kitPath();
 
         /** @var array<string, string> $requireDev */
@@ -65,7 +69,7 @@ final class ExportStarterKitCommand extends Command
         $this->components->task('Remove the tests of the export command', fn () => File::deleteDirectory("{$kitPath}/export/".self::EXPORT_COMMAND_TESTS));
         $this->components->task('Write the dev dependency versions', fn () => $this->writeHookDevDependencies($kitPath, $requireDev));
 
-        return $this->exportIsComplete("{$kitPath}/export", $findMissingPartials, $findMissingFieldsets) ? self::SUCCESS : self::FAILURE;
+        return $this->exportIsComplete($kitPath, $findMissingExportPaths, $findMissingPartials, $findMissingFieldsets) ? self::SUCCESS : self::FAILURE;
     }
 
     private function kitPath(): string
@@ -121,11 +125,21 @@ final class ExportStarterKitCommand extends Command
     /**
      * export_paths lists single files, so a new view or fieldset can be left out by mistake.
      */
-    private function exportIsComplete(string $exportPath, FindMissingPartials $findMissingPartials, FindMissingFieldsets $findMissingFieldsets): bool
-    {
+    private function exportIsComplete(
+        string $kitPath,
+        FindMissingExportPaths $findMissingExportPaths,
+        FindMissingPartials $findMissingPartials,
+        FindMissingFieldsets $findMissingFieldsets,
+    ): bool {
+        $exportPath = "{$kitPath}/export";
+
         return $this->checkPasses(
-            [...$findMissingPartials->handle($exportPath), ...$findMissingFieldsets->handle($exportPath)],
-            success: 'All partials and fieldsets were exported.',
+            [
+                ...$findMissingExportPaths->handle($kitPath),
+                ...$findMissingPartials->handle($exportPath),
+                ...$findMissingFieldsets->handle($exportPath),
+            ],
+            success: 'export_paths lists all exported files, and all partials and fieldsets were exported.',
             fix: 'Add the missing files to export_paths in package/starter-kit.yaml.',
         );
     }

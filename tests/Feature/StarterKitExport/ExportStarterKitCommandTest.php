@@ -29,7 +29,7 @@ test('the kit is exported and keeps its own Git history, workflows and Claude co
     kitFile('export/resources/views/removed.antlers.html');
 
     $this->artisan('bedrock:export-starter-kit', ['path' => 'storage/framework/testing/export-starter-kit'])
-        ->expectsOutputToContain('All partials and fieldsets were exported.')
+        ->expectsOutputToContain('export_paths lists all exported files, and all partials and fieldsets were exported.')
         ->assertSuccessful()
         ->run();
 
