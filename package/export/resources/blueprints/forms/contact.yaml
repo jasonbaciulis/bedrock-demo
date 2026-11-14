@@ -1,0 +1,38 @@
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: name
+            field:
+              autocomplete: name
+              type: text
+              display: Name
+              validate:
+                - required
+                - string
+                - 'max:255'
+          -
+            handle: email
+            field:
+              input_type: email
+              autocomplete: email
+              type: text
+              display: Email
+              validate:
+                - required
+                - string
+                - 'email:dns,rfc'
+                - 'max:255'
+          -
+            handle: message
+            field:
+              character_limit: 1000
+              type: textarea
+              display: Message
+              validate:
+                - required
+                - string
+                - 'max:1000'
