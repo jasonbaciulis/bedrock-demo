@@ -112,4 +112,4 @@ dependencies:
   - laravel/horizon
   - nunomaduro/essentials
   - statamic/seo-pro
-# The dev dependencies are installed by StarterKitPostInstall.php, not from here.
+# The dev dependencies are installed by StarterKitPostInstall.php, not from here. ExportStarterKitCommand lists them.

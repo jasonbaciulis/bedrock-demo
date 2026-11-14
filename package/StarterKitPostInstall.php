@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\File;
 use Statamic\Console\NullConsole;
 use Statamic\Console\Processes\Composer;
 
@@ -12,33 +14,7 @@ use function Laravel\Prompts\info;
 
 final class StarterKitPostInstall
 {
-    public const PHP_VERSION = '^8.5';
-
-    /**
-     * Statamic installs `dependencies_dev` with a partial `composer require` that cannot
-     * pass `--with-all-dependencies`, which Pest 5 and PHPUnit 13 need, so this hook
-     * installs them instead.
-     *
-     * @var list<string>
-     */
-    public const DEV_DEPENDENCIES = [
-        'cboxdk/statamic-mcp:^2.10.1',
-        'driftingly/rector-laravel:^2.7.3',
-        'jasonbaciulis/bedrock-commands:^1.0',
-        'larastan/larastan:^3.14.0',
-        'laravel/boost:^2.10.4',
-        'laravel/pao:^1.1.5',
-        'pestphp/pest:^5.3.5',
-        'pestphp/pest-plugin-browser:^5.2.0',
-        'pestphp/pest-plugin-laravel:^5.0.1',
-        'pestphp/pest-plugin-phpstan:^5.3.1',
-        'pestphp/pest-plugin-rector:^5.0.6',
-        'pestphp/pest-plugin-type-coverage:^5.1.0',
-        'phpstan/phpstan:^2.3.5',
-        'phpunit/phpunit:^13.4.5',
-        'rector/rector:^2.8.4',
-        'roave/security-advisories:dev-latest',
-    ];
+    public const string PHP_VERSION = '^8.5';
 
     /**
      * The Statamic skeleton ships these, and `export_paths` can only overwrite files,
@@ -48,7 +24,7 @@ final class StarterKitPostInstall
      *
      * @var list<string>
      */
-    public const SKELETON_FILES = [
+    public const array SKELETON_FILES = [
         'resources/views/home.antlers.html',
         'tests/CreatesApplication.php',
         'tests/Feature/ExampleTest.php',
@@ -87,9 +63,9 @@ final class StarterKitPostInstall
     private function removeSkeletonFiles(): void
     {
         $removed = collect(self::SKELETON_FILES)
-            ->map(fn (string $path): string => getcwd().'/'.$path)
+            ->map(fn (string $path): string => base_path($path))
             ->filter(fn (string $path): bool => file_exists($path))
-            ->each(fn (string $path) => unlink($path));
+            ->each(fn (string $path): bool => File::delete($path));
 
         if ($removed->isEmpty()) {
             return;
@@ -98,17 +74,24 @@ final class StarterKitPostInstall
         info('Removed unused Statamic skeleton files.');
     }
 
+    /**
+     * Statamic installs `dependencies_dev` with a partial `composer require` that cannot
+     * pass `--with-all-dependencies`, which Pest 5 and PHPUnit 13 need, so this hook
+     * installs them instead.
+     */
     private function installDevDependencies(Command|NullConsole $console): void
     {
         info('Installing dev dependencies…');
 
+        $dependencies = $this->devDependencies();
+
         $arguments = array_merge(
             ['require', '--dev', '--with-all-dependencies', '--no-interaction'],
-            self::DEV_DEPENDENCIES,
+            $dependencies,
         );
 
         try {
-            Composer::create(getcwd())
+            Composer::create(base_path())
                 ->withoutQueue()
                 ->throwOnFailure()
                 ->runAndOperateOnOutput($arguments, function (string $output) use ($console): string {
@@ -122,12 +105,30 @@ final class StarterKitPostInstall
                 });
         } catch (Throwable) {
             error('Failed to install dev dependencies. Please run this command manually:');
-            error('composer require --dev -W '.implode(' ', array_map(escapeshellarg(...), self::DEV_DEPENDENCIES)));
+            error('composer require --dev -W '.implode(' ', array_map(escapeshellarg(...), $dependencies)));
 
             return;
         }
 
         info('Installed dev dependencies.');
+    }
+
+    /**
+     * `php please bedrock:export-starter-kit` writes `dev-dependencies.json` from the
+     * `require-dev` versions of the Bedrock demo project.
+     *
+     * @return list<string>
+     */
+    private function devDependencies(): array
+    {
+        /** @var array<string, string> $versions */
+        $versions = File::json(__DIR__.'/dev-dependencies.json', JSON_THROW_ON_ERROR);
+
+        return array_map(
+            fn (string $package, string $version): string => "{$package}:{$version}",
+            array_keys($versions),
+            $versions,
+        );
     }
 
     /**
@@ -213,7 +214,7 @@ final class StarterKitPostInstall
     private function setPhpRequirement(): void
     {
         $this->updateComposerJson(function (array $composer): array {
-            $composer['require']['php'] = self::PHP_VERSION;
+            Arr::set($composer, 'require.php', self::PHP_VERSION);
 
             return $composer;
         });
@@ -228,7 +229,7 @@ final class StarterKitPostInstall
     private function addComposerScripts(): void
     {
         $this->updateComposerJson(function (array $composer): array {
-            $composer['scripts'] = array_merge($composer['scripts'] ?? [], $this->customScripts());
+            $composer['scripts'] = array_merge(Arr::array($composer, 'scripts', []), $this->customScripts());
 
             return $composer;
         });
@@ -241,14 +242,11 @@ final class StarterKitPostInstall
      */
     private function updateComposerJson(callable $callback): void
     {
-        $path = getcwd().'/composer.json';
+        $path = base_path('composer.json');
 
-        $composer = $callback(json_decode(file_get_contents($path), true));
+        $composer = $callback(File::json($path, JSON_THROW_ON_ERROR));
 
-        file_put_contents(
-            $path,
-            json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE).PHP_EOL
-        );
+        File::put($path, json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR).PHP_EOL);
     }
 
     /**
