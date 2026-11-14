@@ -98,6 +98,7 @@ export_paths:
   - routes/console.php
   - routes/web.php
   - tests
+  - .blade.format.json
   - .env.example
   - .gitignore
   - .prettierignore
