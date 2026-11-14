@@ -8,6 +8,7 @@ export_paths:
   - app/MutatorPlugins
   - app/Providers/AppServiceProvider.php
   - app/Providers/HorizonServiceProvider.php
+  - app/Tags
   - bootstrap/providers.php
   - config/bedrock.php
   - config/horizon.php
@@ -85,7 +86,6 @@ export_paths:
   - resources/views/partials/nav-footer.antlers.html
   - resources/views/partials/nav-link.antlers.html
   - resources/views/partials/nav-social.antlers.html
-  - resources/views/partials/prose-class.antlers.html
   - resources/views/partials/prose-new-tab-hint.antlers.html
   - resources/views/partials/skip-to-content.antlers.html
   - resources/views/partials/style-guide
