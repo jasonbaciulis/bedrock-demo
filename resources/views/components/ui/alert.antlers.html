@@ -33,6 +33,7 @@ variants:
     <p class="col-start-2 font-medium">
         <span class="sr-only">{{ variant_styles:label }}:</span>
         {{ view:title }}
+        {{ slot }}
     </p>
     {{ if view:description }}
         <p class="col-start-2">{{ view:description }}</p>

@@ -1,6 +1,6 @@
 {{#
-    Configure newsletter content inside Control Panel in /cp/globals/newsletter Configure email service
-    provider logic inside app/Http/Controllers/NewsletterController.php
+    Configure newsletter content inside Control Panel in /cp/globals/newsletter. Connect an email
+    service provider inside app/Http/Controllers/SubscribeNewsletterController.php
 #}}
 
 {{ once }}
@@ -19,6 +19,7 @@
                     honeypot: '',
                 }),
                 persistKey: '{{ site:name | snake }}_newsletter_subscribed',
+                fallbackErrorMessage: {{ newsletter:error_message | macro('to_js') }},
             })"
     class="m-section"
 >
@@ -76,6 +77,16 @@
                 class="mx-auto mt-10 max-w-md"
                 :title="newsletter:success_message"
             />
+        </template>
+
+        <template x-if="error && !form.hasErrors">
+            <s:partial:components.ui.alert
+                variant="error"
+                role="alert"
+                class="mx-auto mt-6 max-w-md"
+            >
+                <span x-text="errorMessage"></span>
+            </s:partial:components.ui.alert>
         </template>
     </div>
 </section>

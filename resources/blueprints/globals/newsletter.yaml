@@ -42,3 +42,12 @@ tabs:
               type: text
               display: 'Success message'
               localizable: true
+          -
+            handle: error_message
+            field:
+              type: text
+              display: 'Error message'
+              instructions: 'Shown when the subscription fails and the server does not return a message, for example on a network error.'
+              localizable: true
+              validate:
+                - required
