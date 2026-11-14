@@ -34,34 +34,18 @@ blocks:
   -
     id: m3e8vdlz
     title: 'Project inquiry'
-    text: 'Demo contact form with sections and conditional fields.'
+    text: 'Demo contact form with sections and conditional fields. This static demo does not send submissions.'
     form: contact
     type: contact
     enabled: true
     success_message: 'Thanks! We got your inquiry and will get back to you within 24 hours.'
     submit_label: 'Submit the inquiry'
   -
-    id: m5mqwjtr
-    title: 'Our team'
-    text: 'Made up team for this demo website'
-    query: ordered
-    limit: 6
-    type: team
-    enabled: true
-  -
     id: m5nrhfol
     title: 'Search demo'
-    text: 'Search within posts collection'
+    text: 'Search within the posts collection. Demo only: search is not included in the starter kit, and this static demo cannot run searches.'
     results_page: d50dbcf7-2ed9-4a10-91c5-5b5557d694ea
     type: search_form
-    enabled: true
-  -
-    id: m5mjha3w
-    title: 'Testimonials demo'
-    text: 'Option to use a "Load more" button to load more entries. Under the hood a tiny and flexible JS script can handle loading entries from any collection.'
-    query: latest
-    limit: 6
-    type: testimonials
     enabled: true
   -
     id: m3h0yigt
@@ -70,7 +54,7 @@ blocks:
   -
     id: m4seyrjx
     title: 'Recent posts'
-    text: 'Some description for the blog'
+    text: 'Demo only: the blog is not included in the starter kit.'
     query: latest
     limit: 3
     type: blog_excerpt

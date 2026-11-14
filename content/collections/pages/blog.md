@@ -8,7 +8,7 @@ blocks:
   -
     id: m4sowj8r
     title: 'Our blog'
-    text: 'Everything about marketing, growth and running a business'
+    text: 'Everything about marketing, growth and running a business. Demo only: the blog is not included in the starter kit.'
     type: blog_paginated
     enabled: true
     limit: 9
