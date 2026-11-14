@@ -1,5 +1,5 @@
 <div class="not-prose overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-300 text-base">
+    <table class="min-w-full divide-y divide-border text-base">
         {{ table }}
             {{ if first && first_row_headers }}
                 <thead>
@@ -14,11 +14,11 @@
                         {{ /cells }}
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200">
+                <tbody class="divide-y divide-border">
             {{ /if }}
 
             {{ if (!first && first_row_headers) || !first_row_headers }}
-                {{ if first }}<tbody class="divide-y divide-gray-200">{{ /if }}
+                {{ if first }}<tbody class="divide-y divide-border">{{ /if }}
                 <tr>
                     {{ cells }}
                         {{ if first && first_column_headers }}

@@ -9,6 +9,7 @@
         x-cloak
         x-show="mobileNavOpen"
         x-trap.noscroll="mobileNavOpen"
+        @keydown.escape="mobileNavOpen = false"
         class="lg:hidden"
         role="dialog"
         aria-modal="true"
@@ -16,7 +17,7 @@
         {{# Background backdrop #}}
         <div x-cloak x-show="mobileNavOpen" class="fixed inset-0 z-10"></div>
         <div
-            class="fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+            class="sm:ring-foreground/10 fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between overflow-y-auto bg-white sm:max-w-sm sm:ring-1"
         >
             <div class="p-6">
                 <div class="flex items-center justify-between">
@@ -33,7 +34,7 @@
                     </s:partial:components.ui.button>
                 </div>
                 <div class="mt-6 flow-root">
-                    <div class="-my-6 divide-y divide-gray-500/10">
+                    <div class="divide-foreground/10 -my-6 divide-y">
                         <div class="space-y-2 py-6">
                             {{ items }}
                                 {{ if children && two_col_menu }}
