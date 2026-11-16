@@ -22,6 +22,4 @@ fields:
       display: Limit
       type: integer
       width: 50
-      if:
-        query: 'not custom'
       instructions: 'Entries per page'
