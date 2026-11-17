@@ -4,7 +4,7 @@ blueprint: page
 title: Home
 template: default
 updated_by: 6d26d0a8-ff9c-4c3e-a25e-7e036508908c
-updated_at: 1756634033
+updated_at: 1794897053
 blocks:
   -
     id: ZbruxJDq
@@ -34,27 +34,22 @@ blocks:
   -
     id: m3e8vdlz
     title: 'Project inquiry'
-    text: 'Demo contact form with sections and conditional fields. This static demo does not send submissions.'
+    text:
+      -
+        type: text
+        text: 'Demo contact form with sections and conditional fields. This static demo does not send submissions.'
     form: contact
     type: contact
     enabled: true
     success_message: 'Thanks! We got your inquiry and will get back to you within 24 hours.'
     submit_label: 'Submit the inquiry'
   -
-    id: m5nrhfol
-    title: 'Search demo'
-    text: 'Demo only: search is not included in the starter kit, and this static demo cannot run searches.'
-    results_page: d50dbcf7-2ed9-4a10-91c5-5b5557d694ea
-    type: search_form
-    enabled: true
-  -
-    id: m3h0yigt
-    type: newsletter
-    enabled: true
-  -
     id: m4seyrjx
     title: 'Recent posts'
-    text: 'Demo only: the blog is not included in the starter kit.'
+    text:
+      -
+        type: text
+        text: 'Everything about marketing, growth and running a business.'
     query: latest
     limit: 3
     type: blog_excerpt

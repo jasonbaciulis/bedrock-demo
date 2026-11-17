@@ -10,7 +10,7 @@
         {{ elseif query == 'latest' }}
             {{ blog_posts = {collection:posts :limit="limit" sort="date:desc"} }}
         {{ elseif query == 'featured' }}
-            {{ blog_posts = {collection:posts :limit="limit" featured="true" sort="order"} }}
+            {{ blog_posts = {collection:posts :limit="limit" featured="true" sort="date:desc"} }}
         {{ /if }}
         <div class="site-grid mx-auto max-w-2xl gap-y-20 lg:max-w-none">
             {{ blog_posts }}

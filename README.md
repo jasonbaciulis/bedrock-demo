@@ -35,21 +35,14 @@ These parts are in the demo, but not in the starter kit:
 
 | Part | Files |
 | --- | --- |
-| Blog | `posts` collection, `categories` taxonomy, `blog_excerpt` and `blog_paginated` blocks, `posts/show` template, `entry-posts`, `entry-meta`, `social-sharing` and `related-posts` views, `strings` global |
-| Search | `search_form` and `search_results` blocks, `search-form` component, Search and Results pages |
-| Hero demo | `hero_demo` block |
 | Contact form | `resources/forms/contact.yaml` and its blueprint (the kit's Contact block works with any form that you create) |
-| Load more entries | `resources/js/fetch-entries.js` (needs the Statamic REST API). |
-| Mega menu | `nav-header-item` partial and the `header` navigation blueprint (icon, description and badge fields) |
-
-The demo pages label the blog and search as "Demo only".
 
 ## Starter kit export
 
 The `package/` folder holds the starter kit:
 
 - `starter-kit.yaml` - `export_paths` lists the files that the kit copies from this project.
-- `export/` - Kit versions of files that hold demo values in this project, for example `blocks.yaml`, the header navigation and the home page. The export copies these files after the `export_paths`, so they replace the demo versions.
+- `export/` - Kit versions of files that hold demo values in this project, for example the global set defaults and the contact form. The export copies these files after the `export_paths`, so they replace the demo versions.
 - `StarterKitPostInstall.php` - Installs the dev dependencies, Boost and the MCP server, and formats the new project.
 - `README.md` and `DOCUMENTATION.md` - The kit's documentation.
 

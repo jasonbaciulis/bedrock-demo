@@ -123,7 +123,7 @@ final class ExportStarterKitCommand extends Command
     }
 
     /**
-     * export_paths lists single files, so a new view or fieldset can be left out by mistake.
+     * export_paths lists partials and other files one by one, so a new partial can be left out by mistake.
      */
     private function exportIsComplete(
         string $kitPath,

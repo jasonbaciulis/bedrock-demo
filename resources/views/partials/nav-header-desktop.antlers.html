@@ -5,13 +5,20 @@
         select="title|url|is_external|icon|description|badge|two_col_menu"
     >
         {{ if children }}
-            <div class="relative" x-data="{ subnavOpen: false }">
+            <div
+                class="relative"
+                x-data="{ subnavOpen: false }"
+                x-id="['header-subnav']"
+                @keydown.escape="subnavOpen = false; $refs.trigger.focus()"
+            >
                 <button
                     type="button"
                     class="btn gap-x-1 text-neutral-900"
+                    x-ref="trigger"
                     :class="{ 'opacity-75': subnavOpen }"
+                    :aria-controls="$id('header-subnav')"
                     :aria-expanded="subnavOpen"
-                    @click.prevent="subnavOpen = !subnavOpen"
+                    @click="subnavOpen = !subnavOpen"
                 >
                     <span>{{ title }}</span>
                     <span
@@ -22,7 +29,6 @@
                     </span>
                 </button>
 
-                {{# Menu. #}}
                 <div
                     x-cloak
                     x-show="subnavOpen"
@@ -33,6 +39,7 @@
                     x-transition:leave-start="translate-y-0 opacity-100"
                     x-transition:leave-end="translate-y-1 opacity-0"
                     @click.outside="subnavOpen = false"
+                    :id="$id('header-subnav')"
                     class="{{ ['left-1/2 flex max-w-max -translate-x-1/2 px-4' => two_col_menu, 'left-1/2 max-w-xs -translate-x-1/2 px-2' => !two_col_menu] | classes }} absolute z-10 mt-5 w-screen transform"
                 >
                     <div
@@ -56,12 +63,12 @@
                 </div>
             </div>
         {{ else }}
-            <a href="{{ url }}" class="btn" {{ is_external ?= 'target="_blank"' }}>
-                {{ title }}
-                {{ if is_external }}
-                    <s:partial:components.ui.new-tab-hint />
-                {{ /if }}
-            </a>
+            <s:partial:partials.nav-link
+                :url="url"
+                :title="title"
+                :is_external="is_external"
+                class="btn"
+            />
         {{ /if }}
     </s:nav>
 </nav>
