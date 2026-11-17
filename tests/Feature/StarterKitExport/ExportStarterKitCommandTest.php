@@ -47,6 +47,16 @@ test('the kit is exported and keeps its own Git history, workflows and Claude co
         ])->each->not->toBeFile();
 });
 
+test('a kit version in package/export replaces the project file, also in a dot-directory', function (): void {
+    kitFile('.git/HEAD');
+
+    $this->artisan('bedrock:export-starter-kit', ['path' => kitPath()])->assertSuccessful()->run();
+
+    expect(File::get(kitPath().'/export/.github/workflows/dependabot-auto-merge.yml'))
+        ->toBe(File::get(base_path('package/export/.github/workflows/dependabot-auto-merge.yml')))
+        ->not->toBe(File::get(base_path('.github/workflows/dependabot-auto-merge.yml')));
+});
+
 test('the post-install hook gets the composer.json versions of its dev dependencies only', function (): void {
     kitFile('.git/HEAD');
 

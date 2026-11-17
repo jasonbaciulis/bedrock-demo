@@ -66,6 +66,8 @@ final class ExportStarterKitCommand extends Command
 
         $this->components->task('Remove the previous export', fn () => $this->cleanKitDirectory($kitPath));
         $this->components->task('Export the starter kit', fn () => new Exporter($kitPath)->export());
+        // Exporter copies package/ with File::allFiles(), which skips dot-directories, so package/export/.github/ never reaches the kit.
+        $this->components->task('Copy the kit versions in dot-directories', fn () => File::copyDirectory(base_path('package/export'), "{$kitPath}/export"));
         $this->components->task('Remove the tests of the export command', fn () => File::deleteDirectory("{$kitPath}/export/".self::EXPORT_COMMAND_TESTS));
         $this->components->task('Write the dev dependency versions', fn () => $this->writeHookDevDependencies($kitPath, $requireDev));
 
