@@ -50,12 +50,6 @@ fields:
               fields:
                 -
                   import: blog_excerpt
-            blog_paginated:
-              display: 'Blog Paginated'
-              icon: layout-grid
-              fields:
-                -
-                  import: blog_paginated
             faqs:
               display: FAQs
               icon: support

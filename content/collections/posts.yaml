@@ -1,6 +1,8 @@
 title: Posts
+icon: collections
 template: posts/show
 layout: layout
+mount: 506c8e50-bc23-4c16-b691-c8aca71c1258
 taxonomies:
   - categories
 revisions: false
