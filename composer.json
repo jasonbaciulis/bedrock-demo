@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.4.5",
-        "cboxdk/statamic-mcp": "^2.10.1",
+        "cboxdk/statamic-mcp": "^3.6.1",
         "driftingly/rector-laravel": "^2.7.3",
         "fakerphp/faker": "^1.24.1",
         "jasonbaciulis/bedrock-commands": "^1.0",

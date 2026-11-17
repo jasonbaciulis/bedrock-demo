@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22277a11519af5492d31b8578e4d48e4",
+    "content-hash": "b696d144a815605fa92cf577b5d9ca33",
     "packages": [
         {
             "name": "ajthinking/archetype",
@@ -11738,20 +11738,20 @@
         },
         {
             "name": "cboxdk/statamic-mcp",
-            "version": "v2.10.1",
+            "version": "v3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cboxdk/statamic-mcp.git",
-                "reference": "2b14cca218599ac9c40465efab0bf37ca315e610"
+                "reference": "8fb26a01adcd61be2076b9a825d29a91e02e1b9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cboxdk/statamic-mcp/zipball/2b14cca218599ac9c40465efab0bf37ca315e610",
-                "reference": "2b14cca218599ac9c40465efab0bf37ca315e610",
+                "url": "https://api.github.com/repos/cboxdk/statamic-mcp/zipball/8fb26a01adcd61be2076b9a825d29a91e02e1b9c",
+                "reference": "8fb26a01adcd61be2076b9a825d29a91e02e1b9c",
                 "shasum": ""
             },
             "require": {
-                "laravel/mcp": "^0.6 || ^0.7 || ^0.8 || ^0.9",
+                "laravel/mcp": "^1.0",
                 "php": "^8.3",
                 "statamic/cms": "^6.6",
                 "symfony/yaml": "^7.0 || ^8.0"
@@ -11801,10 +11801,10 @@
             ],
             "support": {
                 "issues": "https://github.com/cboxdk/statamic-mcp/issues",
-                "source": "https://github.com/cboxdk/statamic-mcp/tree/v2.10.1"
+                "source": "https://github.com/cboxdk/statamic-mcp/tree/v3.6.1"
             },
-            "time": "2026-09-12T09:32:35+00:00",
-            "published-time": "2026-09-12T09:50:24+00:00"
+            "time": "2026-11-10T14:50:15+00:00",
+            "published-time": "2026-11-10T14:50:33+00:00"
         },
         {
             "name": "daverandom/libdns",
@@ -12687,35 +12687,36 @@
         },
         {
             "name": "laravel/mcp",
-            "version": "v0.9.7",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/mcp.git",
-                "reference": "db4a846c1c4bf6713fa73624c8ed8371cc043ce8"
+                "reference": "4df5077a6002e629bb587560b9b48e1ccaea6478"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/mcp/zipball/db4a846c1c4bf6713fa73624c8ed8371cc043ce8",
-                "reference": "db4a846c1c4bf6713fa73624c8ed8371cc043ce8",
+                "url": "https://api.github.com/repos/laravel/mcp/zipball/4df5077a6002e629bb587560b9b48e1ccaea6478",
+                "reference": "4df5077a6002e629bb587560b9b48e1ccaea6478",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "illuminate/console": "^11.45.3|^12.41.1|^13.0",
-                "illuminate/container": "^11.45.3|^12.41.1|^13.0",
-                "illuminate/contracts": "^11.45.3|^12.41.1|^13.0",
-                "illuminate/http": "^11.45.3|^12.41.1|^13.0",
+                "illuminate/console": "^12.41.1|^13.0",
+                "illuminate/container": "^12.41.1|^13.0",
+                "illuminate/contracts": "^12.41.1|^13.0",
+                "illuminate/http": "^12.41.1|^13.0",
                 "illuminate/json-schema": "^12.41.1|^13.0",
-                "illuminate/routing": "^11.45.3|^12.41.1|^13.0",
-                "illuminate/support": "^11.45.3|^12.41.1|^13.0",
-                "illuminate/validation": "^11.45.3|^12.41.1|^13.0",
+                "illuminate/routing": "^12.41.1|^13.0",
+                "illuminate/support": "^12.41.1|^13.0",
+                "illuminate/validation": "^12.41.1|^13.0",
                 "php": "^8.2",
                 "symfony/process": "^7.4.5|^8.0.5"
             },
             "require-dev": {
+                "jasonmccreary/double": "^1.0",
                 "laravel/pint": "^1.20",
-                "orchestra/testbench": "^9.15|^10.8|^11.0",
+                "orchestra/testbench": "^10.8|^11.0",
                 "pestphp/pest": "^3.8.5|^4.3.2",
                 "phpstan/phpstan": "^2.1.27",
                 "rector/rector": "^2.2.4"
@@ -12757,8 +12758,8 @@
                 "issues": "https://github.com/laravel/mcp/issues",
                 "source": "https://github.com/laravel/mcp"
             },
-            "time": "2026-10-21T12:30:08+00:00",
-            "published-time": "2026-10-21T12:48:01+00:00"
+            "time": "2026-11-10T19:22:22+00:00",
+            "published-time": "2026-11-10T19:23:28+00:00"
         },
         {
             "name": "laravel/pail",
