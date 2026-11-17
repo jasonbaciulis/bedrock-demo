@@ -8,7 +8,7 @@ blocks:
   -
     id: m5ns90sh
     title: Search
-    text: 'Demo only: search is not included in the starter kit, and this static demo cannot run searches.'
+    text: 'Search all blog posts.'
     results_page: d50dbcf7-2ed9-4a10-91c5-5b5557d694ea
     type: search_form
     enabled: true
