@@ -359,7 +359,7 @@
                     </div>
 
                     {{ demo_faqs = [['title' => 'How long does a project take?', 'text' => 'Project timelines vary based on complexity, but most websites take 4-8 weeks from start to finish.'], ['title' => 'Do you offer maintenance?', 'text' => 'Yes, we provide ongoing maintenance and support packages to keep your website running smoothly.'], ['title' => 'How do I get started?', 'text' => 'Contact us to discuss your project and we’ll provide a free consultation to help you get started.']] }}
-                    <s:partial:components.ui.accordion.create class="card__content gap-2">
+                    <s:partial:components.ui.accordion.accordion class="card__content gap-2">
                         {{ demo_faqs }}
                             <s:partial:components.ui.accordion.item>
                                 <s:partial:components.ui.accordion.header
@@ -379,7 +379,7 @@
                                 </s:partial:components.ui.accordion.panel>
                             </s:partial:components.ui.accordion.item>
                         {{ /demo_faqs }}
-                    </s:partial:components.ui.accordion.create>
+                    </s:partial:components.ui.accordion.accordion>
                 </div>
 
                 {{# Dialog and Dropdown #}}
