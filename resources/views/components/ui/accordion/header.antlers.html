@@ -1,0 +1,17 @@
+---
+heading_level: 'h3'
+class: ''
+---
+
+<ui-accordion-header>
+    <{{ view:heading_level }}>
+        <ui-accordion-trigger>
+            <button
+                type="button"
+                class="{{ ['flex w-full items-center justify-between', view:class] | classes | collapse_whitespace }}"
+            >
+                {{ slot }}
+            </button>
+        </ui-accordion-trigger>
+    </{{ view:heading_level }}>
+</ui-accordion-header>

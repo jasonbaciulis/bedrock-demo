@@ -1,30 +1,30 @@
 ---
 title: ''
 text: ''
+heading_level: 'h3'
 class: ''
 ---
 
-<s:partial:components.ui.collapsible
-    class="group {view:class}"
-    trigger_class="flex w-full items-center justify-between gap-x-6 py-6 text-left underline-offset-4 hover:underline"
-    content_class="-top-2 pr-12"
->
-    {{ slot:trigger }}
+<s:partial:components.ui.accordion.item :class="view:class">
+    <s:partial:components.ui.accordion.header
+        :heading_level="view:heading_level"
+        class="gap-x-6 py-6 underline-offset-4 hover:underline"
+    >
         <s:partial:components.ui.text as="span" size="lg" class="text-foreground font-medium">
             {{ view:title }}
         </s:partial:components.ui.text>
-        <span class="text-muted-foreground size-6 flex-none" aria-hidden="true">
-            <s:svg src="heroicons/outline/plus" x-show="!open" />
-            <s:svg src="heroicons/outline/minus" x-show="open" />
+        <span class="text-muted-foreground size-6 flex-none">
+            <s:svg src="heroicons/outline/plus" class="group-data-open:hidden" />
+            <s:svg src="heroicons/outline/minus" class="hidden group-data-open:block" />
         </span>
-    {{ /slot:trigger }}
-    {{ slot:content }}
+    </s:partial:components.ui.accordion.header>
+    <s:partial:components.ui.accordion.panel>
         <s:partial:components.ui.text
             as="div"
             size="sm"
-            class="prose text-muted-foreground pb-4 text-pretty"
+            class="prose text-muted-foreground pr-12 pb-6 text-pretty"
         >
             {{ view:text }}
         </s:partial:components.ui.text>
-    {{ /slot:content }}
-</s:partial:components.ui.collapsible>
+    </s:partial:components.ui.accordion.panel>
+</s:partial:components.ui.accordion.item>

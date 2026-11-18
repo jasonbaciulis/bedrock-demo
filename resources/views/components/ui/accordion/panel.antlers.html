@@ -1,0 +1,10 @@
+---
+class: ''
+---
+
+<ui-accordion-panel
+    hidden="until-found"
+    class="{{ ['transition-collapsible block h-(--accordion-panel-height)', view:class] | classes | collapse_whitespace }}"
+>
+    {{ slot }}
+</ui-accordion-panel>

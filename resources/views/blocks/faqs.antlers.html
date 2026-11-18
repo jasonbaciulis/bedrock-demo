@@ -6,12 +6,17 @@
             :heading_level="first ? 'h1' : 'h2'"
         />
 
+        {{ question_heading_level = first ? 'h2' : 'h3' }}
         <s:partial:components.faqs
             :items="items"
             class="divide-border border-border divide-y border-b"
         >
             {{ items }}
-                <s:partial:components.faqs-item :title="title" :text="text" />
+                <s:partial:components.faqs-item
+                    :title="title"
+                    :text="text"
+                    :heading_level="question_heading_level"
+                />
             {{ /items }}
         </s:partial:components.faqs>
     </div>

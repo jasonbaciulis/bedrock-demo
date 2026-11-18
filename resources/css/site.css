@@ -13,6 +13,8 @@ CSS folder structure is based on ITCSS:
 */
 
 /* Configs */
+/* ui-sdk injects default styles into this layer at runtime. Declaring it first makes every later layer win. */
+@layer ui-sdk;
 @import 'tailwindcss';
 @import './config.css';
 

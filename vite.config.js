@@ -13,6 +13,7 @@ export default defineConfig(({ mode }) => {
                     'resources/js/embla.js',
                     'resources/js/lite-yt-embed.js',
                     'resources/css/lite-yt-embed.css',
+                    'resources/js/components/accordion.js',
                     'resources/js/components/newsletter.js',
                     'resources/js/components/combobox.js',
                     'resources/js/components/stepper.js',

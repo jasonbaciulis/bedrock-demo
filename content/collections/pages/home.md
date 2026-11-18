@@ -11,7 +11,7 @@ blocks:
     type: hero_demo
     enabled: true
     title: 'The Foundation for your Statamic projects'
-    text: 'shadcn/ui style Alpine.js components that you can customize, extend, and build on. Plus page builder and CLI tools.'
+    text: 'Years of Statamic best practices, page-builder patterns, and pre-built Alpine.js components rolled into one starter kit. Your project starts on a solid foundation, so you skip the plumbing and ship faster.'
     buttons:
       -
         id: KdAsb0Ad

@@ -14,6 +14,8 @@
         "@tailwindcss/forms": "^0.5.11",
         "@tailwindcss/typography": "^0.5.20",
         "@tailwindcss/vite": "^4.3.5",
+        "@ui-sdk/core": "^0.1.0-beta.6",
+        "@ui-sdk/web": "^0.1.0-beta.6",
         "alpinejs": "^3.17.5",
         "chokidar": "^6.0.0",
         "concurrently": "^10.0.7",
@@ -191,6 +193,10 @@
     "@types/estree": ["@types/estree@1.0.9", "", {}, "sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg=="],
 
     "@types/json-schema": ["@types/json-schema@7.0.15", "", {}, "sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA=="],
+
+    "@ui-sdk/core": ["@ui-sdk/core@0.1.0-beta.6", "", {}, "sha512-4JDArOSaTDRArUs+XXojXVNS1kf1D/aOMan6GIp8J9+cwAdijCypbClApS2jBc4SxgZbJCIDHsMlFOIPyEv8+g=="],
+
+    "@ui-sdk/web": ["@ui-sdk/web@0.1.0-beta.6", "", { "peerDependencies": { "@ui-sdk/core": "^0.1.0-beta.6" } }, "sha512-GTtFQFdokQfiputXo3LdHAYPvdhqsOK/Ep9XFdDRcbQC6qgEthDuDkzKxPAa31JgC2hlg5dlIcZvpV6MPVhQAQ=="],
 
     "@vue/reactivity": ["@vue/reactivity@3.5.43", "", { "dependencies": { "@vue/shared": "3.5.43" } }, "sha512-G/c9GyOZNI2jVaaS6OX1EF1SSFSv7H0ERqNTl4+DTFMlZmB5eVAB53aLQNam/7NL2NPtaDD7RdVrzf8uJzMuOA=="],
 

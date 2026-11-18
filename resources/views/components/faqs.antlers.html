@@ -3,9 +3,9 @@ items: ''
 class: ''
 ---
 
-<dl {{ view:class | attribute:class }}>
+<s:partial:components.ui.accordion.create :class="view:class">
     {{ slot }}
-</dl>
+</s:partial:components.ui.accordion.create>
 {{ if view:items }}
     {{ section:json_ld }}
         <script type="application/ld+json" id="schema-faq">

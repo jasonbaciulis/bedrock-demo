@@ -1,0 +1,17 @@
+---
+multiple: false
+class: ''
+---
+
+{{ once }}
+    {{ push:scripts }}
+        <s:vite src="resources/js/components/accordion.js" />
+    {{ /push:scripts }}
+{{ /once }}
+<ui-accordion
+    hidden-until-found
+    {{ view:multiple ?= 'multiple' }}
+    class="{{ ['block', view:class] | classes | collapse_whitespace }}"
+>
+    {{ slot }}
+</ui-accordion>

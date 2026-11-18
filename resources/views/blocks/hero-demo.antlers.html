@@ -357,27 +357,27 @@
                     </div>
 
                     {{ demo_faqs = [['title' => 'How long does a project take?', 'text' => 'Project timelines vary based on complexity, but most websites take 4-8 weeks from start to finish.'], ['title' => 'Do you offer maintenance?', 'text' => 'Yes, we provide ongoing maintenance and support packages to keep your website running smoothly.'], ['title' => 'How do I get started?', 'text' => 'Contact us to discuss your project and we’ll provide a free consultation to help you get started.']] }}
-                    <dl class="card__content gap-2">
+                    <s:partial:components.ui.accordion.create class="card__content gap-2">
                         {{ demo_faqs }}
-                            <s:partial:components.ui.collapsible
-                                trigger_class="flex w-full items-center justify-between py-2 text-left text-sm font-medium"
-                                content_class="text-muted-foreground text-sm"
-                            >
-                                {{ slot:trigger }}
+                            <s:partial:components.ui.accordion.item>
+                                <s:partial:components.ui.accordion.header
+                                    heading_level="h2"
+                                    class="py-2 text-sm font-medium"
+                                >
                                     {{ title }}
-                                    <span :class="open && 'rotate-180'">
-                                        <s:svg
-                                            src="heroicons/outline/chevron-down"
-                                            class="size-4 transition-transform"
-                                        />
-                                    </span>
-                                {{ /slot:trigger }}
-                                {{ slot:content }}
+                                    <s:svg
+                                        src="heroicons/outline/chevron-down"
+                                        class="size-4 transition-transform group-data-open:rotate-180 motion-reduce:transition-none"
+                                    />
+                                </s:partial:components.ui.accordion.header>
+                                <s:partial:components.ui.accordion.panel
+                                    class="text-muted-foreground text-sm"
+                                >
                                     <p>{{ text }}</p>
-                                {{ /slot:content }}
-                            </s:partial:components.ui.collapsible>
+                                </s:partial:components.ui.accordion.panel>
+                            </s:partial:components.ui.accordion.item>
                         {{ /demo_faqs }}
-                    </dl>
+                    </s:partial:components.ui.accordion.create>
                 </div>
 
                 {{# Dialog and Dropdown #}}

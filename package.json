@@ -20,6 +20,8 @@
         "@tailwindcss/forms": "^0.5.11",
         "@tailwindcss/typography": "^0.5.20",
         "@tailwindcss/vite": "^4.3.5",
+        "@ui-sdk/core": "^0.1.0-beta.6",
+        "@ui-sdk/web": "^0.1.0-beta.6",
         "alpinejs": "^3.17.5",
         "chokidar": "^6.0.0",
         "concurrently": "^10.0.7",

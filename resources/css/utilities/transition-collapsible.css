@@ -1,8 +1,4 @@
-/* Put padding on an inner wrapper, because the transition animates only the height. */
+/* For ui-sdk panels: pair it with the panel's height variable, e.g. h-(--accordion-panel-height). Put padding on an inner wrapper, because the transition animates only the height. */
 @utility transition-collapsible {
-    @apply overflow-clip transition-[height,content-visibility] transition-discrete duration-250 motion-reduce:transition-none [[hidden]]:h-0;
-
-    /* Focus outlines inside the panel reach up to 0.5rem past its edge. */
-    overflow-clip-margin: 0.5rem;
-    interpolate-size: allow-keywords;
+    @apply overflow-hidden transition-[height] duration-250 data-ending-style:h-0 data-starting-style:h-0 motion-reduce:transition-none;
 }
