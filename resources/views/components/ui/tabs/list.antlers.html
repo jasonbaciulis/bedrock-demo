@@ -1,8 +1,12 @@
 ---
 label: ''
+labelledby: ''
 class: ''
 ---
 
-<ui-tabs-list {{ view:label | attribute:aria-label }} {{ view:class | attribute:class }}>
+<ui-tabs-list
+    {{ view:labelledby ? (view:labelledby | attribute:aria-labelledby) : (view:label | required('tabs.list needs a label or labelledby prop.') | attribute:aria-label) }}
+    {{ view:class | attribute:class }}
+>
     {{ slot }}
 </ui-tabs-list>
