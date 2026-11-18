@@ -1,17 +1,13 @@
 ---
-name: ''
-alpine_property: 'activeTab'
+value: ''
+selected: false
 class: ''
 ---
 
-<div
-    x-cloak
-    x-show="{{ view:alpine_property }} == '{{ view:name }}'"
-    id="tabpanel-{{ view:name }}"
-    aria-labelledby="tab-{{ view:name }}"
-    role="tabpanel"
-    :tabindex="{{ view:alpine_property }} == '{{ view:name }}' ? 0 : -1"
+<ui-tabs-panel
+    value="{{ view:value }}"
+    {{ !view:selected ?= 'hidden' }}
     {{ view:class | attribute:class }}
 >
     {{ slot }}
-</div>
+</ui-tabs-panel>

@@ -1,0 +1,11 @@
+---
+value: ''
+disabled: false
+class: ''
+---
+
+<ui-tabs-tab value="{{ view:value }}" {{ view:disabled ?= 'disabled' }}>
+    <button type="button" {{ view:class | attribute:class }}>
+        {{ slot }}
+    </button>
+</ui-tabs-tab>

@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => {
                     'resources/js/components/newsletter.js',
                     'resources/js/components/combobox.js',
                     'resources/js/components/stepper.js',
+                    'resources/js/components/tabs.js',
                     'resources/js/components/toaster.js',
                     'resources/js/components/statamic-form.js',
                     'resources/js/components/youtube-poster.js',

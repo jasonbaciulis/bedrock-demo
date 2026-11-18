@@ -261,44 +261,46 @@
             {{# Tabs #}}
             <div class="grid gap-4 xl:col-span-full xl:grid-cols-2">
                 {{ services_tabs = [['title' => 'AI agents', 'description' => 'AI agents can help you with a wide range of tasks, from customer service to data analysis.', 'features' => ['Automated workflows', 'Data analysis', 'Customer service']], ['title' => 'Web apps', 'description' => 'Build apps for your business.', 'features' => ['Filament dashboards', 'SPA apps with Inertia and Vue/React', 'Laravel apps']], ['title' => 'Websites', 'description' => 'Build high-converting websites.', 'features' => ['Beautiful design', 'Lightning-fast loading', 'SEO-friendly']]] }}
-                <s:partial:components.ui.tabs.tabs
-                    list_class="bg-muted text-muted-foreground flex min-h-9 w-full items-center justify-center rounded-lg p-[3px] outline-none"
-                >
-                    {{ slot:list }}
+                <s:partial:components.ui.tabs.tabs>
+                    <s:partial:components.ui.tabs.list
+                        label="Services"
+                        class="bg-muted text-muted-foreground flex min-h-9 w-full items-center justify-center rounded-lg p-[3px] outline-none"
+                    >
                         {{ services_tabs }}
-                            <s:partial:components.ui.tabs.trigger
-                                :name="count"
-                                class="btn text-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 border border-transparent px-2 py-1"
-                                x_class="activeTab == '{{ count }}' ? 'bg-background shadow-sm' : ''"
+                            <s:partial:components.ui.tabs.tab
+                                :value="count"
+                                class="btn text-foreground data-selected:bg-background inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 border border-transparent px-2 py-1 data-selected:shadow-sm"
                             >
                                 {{ title }}
-                            </s:partial:components.ui.tabs.trigger>
+                            </s:partial:components.ui.tabs.tab>
                         {{ /services_tabs }}
-                    {{ /slot:list }}
-                    {{ slot:panels }}
-                        {{ services_tabs }}
-                            <s:partial:components.ui.tabs.panel :name="count" class="card h-full">
-                                <div class="card__content">
-                                    <p class="text-sm">{{ description }}</p>
-                                    <ul class="list-inside list-disc space-y-1 text-sm">
-                                        {{ features }}
-                                            <li>{{ value }}</li>
-                                        {{ /features }}
-                                    </ul>
-                                </div>
-                                <div class="card__footer">
-                                    <s:partial:components.ui.button
-                                        variant="outline"
-                                        size="sm"
-                                        type="button"
-                                        as="button"
-                                    >
-                                        Learn more
-                                    </s:partial:components.ui.button>
-                                </div>
-                            </s:partial:components.ui.tabs.panel>
-                        {{ /services_tabs }}
-                    {{ /slot:panels }}
+                    </s:partial:components.ui.tabs.list>
+                    {{ services_tabs }}
+                        <s:partial:components.ui.tabs.panel
+                            :value="count"
+                            :selected="first"
+                            class="card h-full"
+                        >
+                            <div class="card__content">
+                                <p class="text-sm">{{ description }}</p>
+                                <ul class="list-inside list-disc space-y-1 text-sm">
+                                    {{ features }}
+                                        <li>{{ value }}</li>
+                                    {{ /features }}
+                                </ul>
+                            </div>
+                            <div class="card__footer">
+                                <s:partial:components.ui.button
+                                    variant="outline"
+                                    size="sm"
+                                    type="button"
+                                    as="button"
+                                >
+                                    Learn more
+                                </s:partial:components.ui.button>
+                            </div>
+                        </s:partial:components.ui.tabs.panel>
+                    {{ /services_tabs }}
                 </s:partial:components.ui.tabs.tabs>
                 <div x-data="heroDemoSteps()" class="card">
                     <div class="card__header">

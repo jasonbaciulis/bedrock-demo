@@ -1,15 +1,16 @@
 ---
+default_value: ''
 class: ''
-list_class: ''
 ---
 
-<div
-    x-data="{ activeTab: 1 }"
+{{ once }}
+    {{ push:scripts }}
+        <s:vite src="resources/js/components/tabs.js" />
+    {{ /push:scripts }}
+{{ /once }}
+<ui-tabs
+    {{ view:default_value | attribute:default-value }}
     class="{{ ['flex flex-col gap-2', view:class] | classes | collapse_whitespace }}"
 >
-    <div role="tablist" aria-orientation="horizontal" {{ view:list_class | attribute:class }}>
-        {{ slot:list }}
-    </div>
-
-    {{ slot:panels }}
-</div>
+    {{ slot }}
+</ui-tabs>
