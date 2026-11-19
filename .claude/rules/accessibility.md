@@ -24,7 +24,7 @@ Check each item before you finish:
 - **State.** Expose dynamic state with `aria-expanded`, `aria-current="page"`, `aria-controls`.
 - **Links.** Link text makes sense out of context. Add visually hidden context to generic text such as "Read more". Tell users when a link opens a new tab.
 - **Forms.** Every input has a visible `<label>`. Error text is connected to its input with `aria-describedby`. A placeholder is never the only label.
-- **Motion.** Respect `prefers-reduced-motion` (`motion-safe:` / `motion-reduce:`).
+- **Motion.** Respect `prefers-reduced-motion`.
 - **Reflow and zoom.** Content works at 320 CSS px width and at 400% zoom with no horizontal scroll (1.4.10).
 - **Editor content.** CMS fields can be empty. Never output an empty heading, empty link or empty list.
 
