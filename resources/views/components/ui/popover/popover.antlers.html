@@ -1,0 +1,12 @@
+---
+class: ''
+---
+
+{{ once }}
+    {{ push:scripts }}
+        <s:vite src="resources/js/components/popover.js" />
+    {{ /push:scripts }}
+{{ /once }}
+<ui-popover {{ view:class | attribute:class }}>
+    {{ slot }}
+</ui-popover>

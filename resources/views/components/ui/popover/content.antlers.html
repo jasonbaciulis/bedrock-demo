@@ -1,0 +1,25 @@
+---
+side: 'bottom'
+align: 'center'
+side_offset: 4
+initial_focus: ''
+final_focus: ''
+width: 'w-72'
+class: ''
+---
+
+<ui-popover-content
+    hidden
+    side="{{ view:side }}"
+    align="{{ view:align }}"
+    side-offset="{{ view:side_offset }}"
+    {{ view:initial_focus | attribute:initial-focus }}
+    {{ view:final_focus | attribute:final-focus }}
+    class="{{ [
+        'bg-popover text-popover-foreground ring-foreground/10 flex max-h-(--available-height) origin-(--transform-origin) flex-col gap-2.5 overflow-y-auto rounded-lg p-2.5 text-sm shadow-md ring-1 outline-hidden transition-popover',
+        view:width,
+        view:class,
+    ] | classes | collapse_whitespace }}"
+>
+    {{ slot }}
+</ui-popover-content>

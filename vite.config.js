@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => {
                     'resources/js/components/accordion.js',
                     'resources/js/components/newsletter.js',
                     'resources/js/components/menu.js',
+                    'resources/js/components/popover.js',
                     'resources/js/components/combobox.js',
                     'resources/js/components/dialog.js',
                     'resources/js/components/stepper.js',

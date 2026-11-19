@@ -354,7 +354,7 @@
                     <div class="card__header">
                         <p class="card__title text-xl">FAQs</p>
                         <p class="card__description">
-                            Here are some of the most frequently asked questions.
+                            Here are some of the most frequently asked questions in the accordion.
                         </p>
                     </div>
 
@@ -382,59 +382,54 @@
                     </s:partial:components.ui.accordion.accordion>
                 </div>
 
-                {{# Dialog and Menu #}}
+                {{# Popover, Dialog, Menu #}}
                 <div class="card">
                     <div class="card__header">
                         <p class="card__title">Interactive elements</p>
                         <p class="card__description">Explore our components.</p>
                     </div>
 
-                    {{# Dialog #}}
+                    {{# Popover #}}
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium">Share bedrock</p>
+                            <p class="text-sm font-medium">Share popover</p>
                             <p class="text-muted-foreground text-sm">
                                 Share this starter-kit with your followers
                             </p>
                         </div>
-                        <s:partial:components.ui.dialog.dialog>
-                            <s:partial:components.ui.dialog.trigger variant="outline" size="sm">
+                        <s:partial:components.ui.popover.popover>
+                            <s:partial:components.ui.popover.trigger size="sm">
                                 Share
-                            </s:partial:components.ui.dialog.trigger>
-                            <s:partial:components.ui.dialog.backdrop />
-                            <s:partial:components.ui.dialog.content size="md">
-                                <s:partial:components.ui.dialog.header>
-                                    <s:partial:components.ui.dialog.title>
+                            </s:partial:components.ui.popover.trigger>
+                            <s:partial:components.ui.popover.content align="end" width="w-80">
+                                <div class="flex flex-col gap-1">
+                                    <s:partial:components.ui.popover.title>
                                         Share link
-                                    </s:partial:components.ui.dialog.title>
-                                    <s:partial:components.ui.dialog.description>
-                                        Anyone who has this link will be able to view this.
-                                    </s:partial:components.ui.dialog.description>
-                                </s:partial:components.ui.dialog.header>
-                                <div class="flex items-center gap-2">
-                                    <div class="grid flex-1 gap-2">
-                                        <label for="link" class="sr-only">Link</label>
-                                        <input
-                                            type="text"
-                                            id="link"
-                                            readonly
-                                            value="https://bedrock.remarkable.dev"
-                                        />
-                                    </div>
+                                    </s:partial:components.ui.popover.title>
+                                    <s:partial:components.ui.popover.description>
+                                        Anyone with the link can view it.
+                                    </s:partial:components.ui.popover.description>
                                 </div>
-                                <s:partial:components.ui.dialog.footer align="start">
-                                    <s:partial:components.ui.dialog.close>
-                                        Close
-                                    </s:partial:components.ui.dialog.close>
-                                </s:partial:components.ui.dialog.footer>
-                            </s:partial:components.ui.dialog.content>
-                        </s:partial:components.ui.dialog.dialog>
+                                <div class="grid gap-2">
+                                    <s:partial:components.ui.form.label
+                                        id="share-link"
+                                        display="Link"
+                                    />
+                                    <input
+                                        type="text"
+                                        id="share-link"
+                                        readonly
+                                        value="https://bedrock.remarkable.dev"
+                                    />
+                                </div>
+                            </s:partial:components.ui.popover.content>
+                        </s:partial:components.ui.popover.popover>
                     </div>
 
                     {{# Scrollable dialog #}}
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium">Terms of service</p>
+                            <p class="text-sm font-medium">Terms of service dialog</p>
                             <p class="text-muted-foreground text-sm">Long content that scrolls</p>
                         </div>
                         <s:partial:components.ui.dialog.dialog>
@@ -497,7 +492,7 @@
                     {{# Menu #}}
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium">Quick actions</p>
+                            <p class="text-sm font-medium">Quick actions menu</p>
                             <p class="text-muted-foreground text-sm">Common website actions</p>
                         </div>
                         <s:partial:components.ui.menu.menu>

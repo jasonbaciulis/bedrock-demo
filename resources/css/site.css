@@ -41,6 +41,7 @@ CSS folder structure is based on ITCSS:
 @import './utilities/transition-dialog.css';
 @import './utilities/transition-fade.css';
 @import './utilities/transition-menu.css';
+@import './utilities/transition-popover.css';
 @import './utilities/container.css';
 @import './utilities/headings.css';
 @import './utilities/site-grid.css';

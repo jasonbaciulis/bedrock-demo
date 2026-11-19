@@ -1,0 +1,11 @@
+@utility transition-popover {
+    @apply transition duration-100 ease-out motion-reduce:duration-0;
+
+    &:is([data-starting-style], [data-ending-style]) {
+        @apply scale-95 opacity-0;
+    }
+
+    &[data-starting-style] {
+        @apply data-[side=bottom]:-translate-y-2 data-[side=left]:translate-x-2 data-[side=right]:-translate-x-2 data-[side=top]:translate-y-2;
+    }
+}
