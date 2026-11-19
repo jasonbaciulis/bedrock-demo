@@ -1,0 +1,16 @@
+---
+modal: true
+class: ''
+---
+
+{{ once }}
+    {{ push:scripts }}
+        <s:vite src="resources/js/components/dialog.js" />
+    {{ /push:scripts }}
+{{ /once }}
+<ui-dialog
+    modal="{{ view:modal === 'trap-focus' ? 'trap-focus' : (view:modal | bool_string) }}"
+    {{ view:class | attribute:class }}
+>
+    {{ slot }}
+</ui-dialog>

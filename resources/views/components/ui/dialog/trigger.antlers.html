@@ -1,0 +1,19 @@
+---
+variant: 'primary'
+size: ''
+aria_label: ''
+class: ''
+---
+
+<ui-dialog-trigger>
+    {{# Pass aria_label only for an icon-only trigger, because aria-label replaces visible text for screen readers. #}}
+    <s:partial:components.ui.button
+        as="button"
+        :variant="view:variant"
+        :size="view:size"
+        :aria_label="view:aria_label"
+        :class="view:class"
+    >
+        {{ slot }}
+    </s:partial:components.ui.button>
+</ui-dialog-trigger>

@@ -1,0 +1,10 @@
+---
+class: ''
+---
+
+{{# The icon close button sits beside the title, so the padding keeps a long title clear of it. #}}
+<ui-dialog-title
+    class="{{ ['text-foreground block px-8 text-center text-lg leading-none font-semibold sm:pl-0 sm:text-left', view:class] | classes | collapse_whitespace }}"
+>
+    {{ slot }}
+</ui-dialog-title>

@@ -397,25 +397,19 @@
                                 Share this starter-kit with your followers
                             </p>
                         </div>
-                        <s:partial:components.ui.dialog
-                            size="sm"
-                            trigger_class="btn--outline btn--sm"
-                        >
-                            {{ slot:trigger }}
+                        <s:partial:components.ui.dialog.dialog>
+                            <s:partial:components.ui.dialog.trigger variant="outline" size="sm">
                                 Share
-                            {{ /slot:trigger }}
-                            {{ slot:content }}
-                                <div class="flex flex-col gap-4">
-                                    <div class="flex flex-col gap-2 text-center sm:text-left">
-                                        <p
-                                            class="text-foreground text-lg leading-none font-semibold"
-                                        >
-                                            Share link
-                                        </p>
-                                        <p class="text-muted-foreground text-sm">
-                                            Anyone who has this link will be able to view this.
-                                        </p>
-                                    </div>
+                            </s:partial:components.ui.dialog.trigger>
+                            <s:partial:components.ui.dialog.backdrop />
+                            <s:partial:components.ui.dialog.content size="sm">
+                                <s:partial:components.ui.dialog.title>
+                                    Share link
+                                </s:partial:components.ui.dialog.title>
+                                <s:partial:components.ui.dialog.description>
+                                    Anyone who has this link will be able to view this.
+                                </s:partial:components.ui.dialog.description>
+                                <div class="mt-4 flex flex-col gap-4">
                                     <div class="flex items-center gap-2">
                                         <label for="link" class="sr-only">Link</label>
                                         <input
@@ -428,25 +422,20 @@
                                         <s:partial:components.ui.button
                                             variant="outline"
                                             as="button"
-                                            type="button"
-                                            @click="navigator.clipboard.writeText('https://bedrock.remarkable.dev')"
+                                            link_type="code"
+                                            code="navigator.clipboard.writeText('https://bedrock.remarkable.dev')"
                                         >
                                             Copy link
                                         </s:partial:components.ui.button>
                                     </div>
                                     <div>
-                                        <s:partial:components.ui.button
-                                            variant="secondary"
-                                            as="button"
-                                            type="button"
-                                            @click="close()"
-                                        >
+                                        <s:partial:components.ui.dialog.close variant="secondary">
                                             Close
-                                        </s:partial:components.ui.button>
+                                        </s:partial:components.ui.dialog.close>
                                     </div>
                                 </div>
-                            {{ /slot:content }}
-                        </s:partial:components.ui.dialog>
+                            </s:partial:components.ui.dialog.content>
+                        </s:partial:components.ui.dialog.dialog>
                     </div>
 
                     {{# Dropdown #}}

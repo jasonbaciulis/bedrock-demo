@@ -1,0 +1,20 @@
+---
+variant: 'primary'
+size: ''
+aria_label: ''
+value: ''
+class: ''
+---
+
+<ui-dialog-close {{ view:value | attribute:value }}>
+    {{# Pass aria_label only for an icon-only button, because aria-label replaces visible text for screen readers. #}}
+    <s:partial:components.ui.button
+        as="button"
+        :variant="view:variant"
+        :size="view:size"
+        :aria_label="view:aria_label"
+        :class="view:class"
+    >
+        {{ slot }}
+    </s:partial:components.ui.button>
+</ui-dialog-close>
