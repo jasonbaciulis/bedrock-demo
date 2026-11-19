@@ -37,7 +37,7 @@ CSS folder structure is based on ITCSS:
 @import './components/typography.css';
 
 /* Utilities */
-@import './utilities/transition-collapsible.css';
+@import './utilities/transition-collapse.css';
 @import './utilities/container.css';
 @import './utilities/headings.css';
 @import './utilities/site-grid.css';
