@@ -1,0 +1,15 @@
+---
+class: ''
+---
+
+{{# Safari doesn't make scroll areas keyboard-focusable on its own, so tabindex lets keyboard users scroll it there. #}}
+<div
+    data-slot="dialog-body"
+    tabindex="0"
+    class="{{ [
+        'text-muted-foreground focus-visible:outline-ring -mx-4 flex max-h-60 min-h-0 flex-col gap-3 overflow-y-auto px-4 py-3 text-sm not-first:mt-4 not-first:border-t focus-visible:outline-2 focus-visible:-outline-offset-2',
+        view:class,
+    ] | classes | collapse_whitespace }}"
+>
+    {{ slot }}
+</div>

@@ -382,7 +382,7 @@
                     </s:partial:components.ui.accordion.accordion>
                 </div>
 
-                {{# Dialog and Dropdown #}}
+                {{# Dialog and Menu #}}
                 <div class="card">
                     <div class="card__header">
                         <p class="card__title">Interactive elements</p>
@@ -402,91 +402,137 @@
                                 Share
                             </s:partial:components.ui.dialog.trigger>
                             <s:partial:components.ui.dialog.backdrop />
-                            <s:partial:components.ui.dialog.content size="sm">
-                                <s:partial:components.ui.dialog.title>
-                                    Share link
-                                </s:partial:components.ui.dialog.title>
-                                <s:partial:components.ui.dialog.description>
-                                    Anyone who has this link will be able to view this.
-                                </s:partial:components.ui.dialog.description>
-                                <div class="mt-4 flex flex-col gap-4">
-                                    <div class="flex items-center gap-2">
+                            <s:partial:components.ui.dialog.content size="md">
+                                <s:partial:components.ui.dialog.header>
+                                    <s:partial:components.ui.dialog.title>
+                                        Share link
+                                    </s:partial:components.ui.dialog.title>
+                                    <s:partial:components.ui.dialog.description>
+                                        Anyone who has this link will be able to view this.
+                                    </s:partial:components.ui.dialog.description>
+                                </s:partial:components.ui.dialog.header>
+                                <div class="flex items-center gap-2">
+                                    <div class="grid flex-1 gap-2">
                                         <label for="link" class="sr-only">Link</label>
                                         <input
                                             type="text"
                                             id="link"
-                                            class="input"
                                             readonly
                                             value="https://bedrock.remarkable.dev"
                                         />
-                                        <s:partial:components.ui.button
-                                            variant="outline"
-                                            as="button"
-                                            link_type="code"
-                                            code="navigator.clipboard.writeText('https://bedrock.remarkable.dev')"
-                                        >
-                                            Copy link
-                                        </s:partial:components.ui.button>
-                                    </div>
-                                    <div>
-                                        <s:partial:components.ui.dialog.close variant="secondary">
-                                            Close
-                                        </s:partial:components.ui.dialog.close>
                                     </div>
                                 </div>
+                                <s:partial:components.ui.dialog.footer align="start">
+                                    <s:partial:components.ui.dialog.close>
+                                        Close
+                                    </s:partial:components.ui.dialog.close>
+                                </s:partial:components.ui.dialog.footer>
                             </s:partial:components.ui.dialog.content>
                         </s:partial:components.ui.dialog.dialog>
                     </div>
 
-                    {{# Dropdown #}}
+                    {{# Scrollable dialog #}}
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium">Terms of service</p>
+                            <p class="text-muted-foreground text-sm">Long content that scrolls</p>
+                        </div>
+                        <s:partial:components.ui.dialog.dialog>
+                            <s:partial:components.ui.dialog.trigger variant="outline" size="sm">
+                                Read terms
+                            </s:partial:components.ui.dialog.trigger>
+                            <s:partial:components.ui.dialog.backdrop />
+                            <s:partial:components.ui.dialog.content initial_focus="content">
+                                <s:partial:components.ui.dialog.header>
+                                    <s:partial:components.ui.dialog.title>
+                                        Terms of service
+                                    </s:partial:components.ui.dialog.title>
+                                    <s:partial:components.ui.dialog.description>
+                                        Please read before you continue.
+                                    </s:partial:components.ui.dialog.description>
+                                </s:partial:components.ui.dialog.header>
+                                <s:partial:components.ui.dialog.body>
+                                    <p>
+                                        These terms govern your use of the service. By creating an
+                                        account, you agree to them and to the privacy policy that
+                                        explains how we handle your data.
+                                    </p>
+                                    <p>
+                                        You're responsible for the content you upload and for
+                                        keeping your password safe. Tell us right away if you think
+                                        someone else has used your account.
+                                    </p>
+                                    <p>
+                                        We may change the service, and these terms, as the product
+                                        grows. When a change affects you, we'll let you know by
+                                        email at least 30 days before it takes effect.
+                                    </p>
+                                    <p>
+                                        You can stop using the service at any time. We'll keep your
+                                        data for 30 days after you close your account, so you can
+                                        export it, and then delete it.
+                                    </p>
+                                    <p>
+                                        The service is provided as is. To the extent the law allows,
+                                        we aren't liable for indirect damages, lost profits or lost
+                                        data.
+                                    </p>
+                                    <p>
+                                        If you have questions about these terms, write to us. We
+                                        read every message and reply within two working days.
+                                    </p>
+                                </s:partial:components.ui.dialog.body>
+                                <s:partial:components.ui.dialog.footer>
+                                    <s:partial:components.ui.dialog.close variant="outline">
+                                        Decline
+                                    </s:partial:components.ui.dialog.close>
+                                    <s:partial:components.ui.dialog.close value="accept">
+                                        Accept
+                                    </s:partial:components.ui.dialog.close>
+                                </s:partial:components.ui.dialog.footer>
+                            </s:partial:components.ui.dialog.content>
+                        </s:partial:components.ui.dialog.dialog>
+                    </div>
+
+                    {{# Menu #}}
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium">Quick actions</p>
                             <p class="text-muted-foreground text-sm">Common website actions</p>
                         </div>
-                        <s:partial:components.ui.dropdown.dropdown
-                            alignment="right"
-                            width="w-48"
-                            toggle_class="btn--outline btn--sm"
-                        >
-                            {{ slot:toggle }}
+                        <s:partial:components.ui.menu.menu>
+                            <s:partial:components.ui.menu.trigger size="sm">
                                 Actions
-                                <s:svg
-                                    src="heroicons/outline/chevron-down"
-                                    class="mt-px -mr-1 size-4 opacity-50"
-                                />
-                            {{ /slot:toggle }}
-                            {{ slot:content }}
-                                <s:partial:components.ui.dropdown.item
-                                    href="/"
-                                    @click.prevent="close()"
+                            </s:partial:components.ui.menu.trigger>
+                            <s:partial:components.ui.menu.content align="end">
+                                <s:partial:components.ui.menu.item
+                                    value="edit"
+                                    icon="heroicons/outline/pencil"
                                 >
-                                    <s:svg src="heroicons/outline/pencil-square" />
-                                    Edit Content
-                                </s:partial:components.ui.dropdown.item>
-                                <s:partial:components.ui.dropdown.item
-                                    href="/"
-                                    @click.prevent="close()"
+                                    Edit
+                                </s:partial:components.ui.menu.item>
+                                <s:partial:components.ui.menu.item
+                                    value="share"
+                                    icon="heroicons/outline/share"
                                 >
-                                    <s:svg src="heroicons/outline/share" />
-                                    Share Page
-                                </s:partial:components.ui.dropdown.item>
-                                <s:partial:components.ui.dropdown.item
-                                    href="/"
-                                    @click.prevent="close()"
+                                    Share
+                                </s:partial:components.ui.menu.item>
+                                <s:partial:components.ui.menu.separator />
+                                <s:partial:components.ui.menu.item
+                                    value="archive"
+                                    icon="heroicons/outline/archive-box"
                                 >
-                                    <s:svg src="heroicons/outline/arrow-down-tray" />
-                                    Export Data
-                                </s:partial:components.ui.dropdown.item>
-                                <s:partial:components.ui.dropdown.item
-                                    href="/"
-                                    @click.prevent="close()"
+                                    Archive
+                                </s:partial:components.ui.menu.item>
+                                <s:partial:components.ui.menu.item
+                                    value="delete"
+                                    icon="heroicons/outline/trash"
+                                    destructive="true"
                                 >
-                                    <s:svg src="heroicons/outline/cog-6-tooth" />
-                                    Settings
-                                </s:partial:components.ui.dropdown.item>
-                            {{ /slot:content }}
-                        </s:partial:components.ui.dropdown.dropdown>
+                                    Delete
+                                </s:partial:components.ui.menu.item>
+                            </s:partial:components.ui.menu.content>
+                        </s:partial:components.ui.menu.menu>
                     </div>
                 </div>
 

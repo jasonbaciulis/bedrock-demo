@@ -1,0 +1,19 @@
+---
+align: 'end'
+class: ''
+alignments:
+  start: 'sm:justify-start'
+  end: 'sm:justify-end'
+---
+
+{{# The negative margins cancel the content padding, so the footer reaches the dialog edges. #}}
+<div
+    data-slot="dialog-footer"
+    class="{{ [
+        'bg-muted/50 -mx-4 -mb-4 flex flex-col-reverse gap-2 rounded-b-xl border-t p-4 sm:flex-row',
+        view:alignments[view:align],
+        view:class,
+    ] | classes | collapse_whitespace }}"
+>
+    {{ slot }}
+</div>

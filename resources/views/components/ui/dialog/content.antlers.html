@@ -1,12 +1,13 @@
 ---
-size: 'md'
+size: 'sm'
 initial_focus: ''
 final_focus: ''
-class: ''
 sizes:
-  sm: 'sm:max-w-md sm:p-6'
-  md: 'sm:max-w-xl sm:p-6'
-  xl: 'sm:max-w-7xl sm:p-6 md:p-12 xl:px-16 xl:py-20'
+  sm: 'sm:max-w-sm'
+  md: 'sm:max-w-md'
+  lg: 'sm:max-w-lg'
+  xl: 'sm:max-w-xl'
+class: ''
 ---
 
 <ui-dialog-content
@@ -14,7 +15,7 @@ sizes:
     {{ view:initial_focus | attribute:initial-focus }}
     {{ view:final_focus | attribute:final-focus }}
     class="{{ [
-        'bg-background text-foreground fixed inset-4 m-auto h-fit w-auto max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-lg border px-4 pt-5 pb-4 text-left shadow-lg transition-dialog sm:inset-8 sm:max-h-[calc(100dvh-4rem)]',
+        'bg-popover text-popover-foreground ring-foreground/10 fixed inset-4 m-auto flex h-fit max-h-[calc(100dvh-2rem)] w-auto flex-col gap-4 overflow-y-auto rounded-xl has-data-[slot=dialog-body]:gap-0 p-4 text-sm ring-1 outline-hidden transition-dialog',
         view:sizes[view:size],
         view:class,
     ] | classes | collapse_whitespace }}"
@@ -24,7 +25,7 @@ sizes:
         variant="ghost"
         size="icon-sm"
         aria_label="Close"
-        class="absolute top-3 right-3"
+        class="absolute top-2 right-2"
     >
         <s:svg src="heroicons/outline/x-mark" />
     </s:partial:components.ui.dialog.close>

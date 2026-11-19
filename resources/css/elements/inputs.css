@@ -6,7 +6,7 @@
     input,
     textarea,
     select {
-        @apply placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground focus-visible:border-ring focus-visible:ring-ring/50 border-input aria-invalid:ring-danger/20 aria-invalid:border-danger focus:border-ring focus:ring-ring/50 rounded-md border outline-none focus:outline-none focus-visible:ring-3;
+        @apply placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground focus-visible:border-ring focus-visible:ring-ring/50 border-input aria-invalid:ring-danger/20 aria-invalid:border-danger focus:border-ring focus:ring-ring/50 rounded-lg border outline-none focus:outline-none focus-visible:ring-3 aria-invalid:ring-3;
     }
 
     textarea,
@@ -18,7 +18,7 @@
     [type='tel'],
     [type='date'],
     [type='file'] {
-        @apply flex h-9 w-full min-w-0 bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
+        @apply disabled:bg-input/50 flex h-8 w-full min-w-0 bg-transparent px-2.5 py-1 text-base transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
     }
 
     /* In a flex date input, Chrome puts the calendar icon next to the date instead of at the right edge. */
@@ -34,7 +34,7 @@
     }
 
     [type='file'] {
-        @apply file:text-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium;
+        @apply file:text-foreground file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium;
     }
 
     textarea {
@@ -42,7 +42,7 @@
     }
 
     select {
-        @apply hover:bg-accent hover:text-accent-foreground h-9 w-full bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow,background-color] select-none hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50;
+        @apply hover:bg-accent hover:text-accent-foreground h-8 w-full bg-transparent px-2.5 py-1 text-sm whitespace-nowrap transition-colors select-none hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50;
 
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23262626' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.5' aria-hidden='true'%3E%3Cpath d='m19.5 8.25-7.5 7.5-7.5-7.5'%3E%3C/path%3E%3C/svg%3E");
         background-size: 1rem 1rem;

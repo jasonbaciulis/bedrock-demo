@@ -1,43 +1,43 @@
 @layer components {
     .btn {
-        @apply focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-danger/20 aria-invalid:border-danger inline-flex shrink-0 items-center justify-center gap-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:ring-3 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&:where(:has(>svg))]:px-3;
+        @apply focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-danger aria-invalid:ring-danger/20 inline-flex shrink-0 items-center justify-center rounded-lg border-transparent text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:ring-3 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4;
     }
 
     .btn--primary {
-        @apply bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/90 shadow-xs;
+        @apply bg-primary text-primary-foreground hover:bg-primary/80;
     }
 
     .btn--secondary {
-        @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-xs;
+        @apply bg-secondary text-secondary-foreground aria-expanded:bg-secondary aria-expanded:text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--color-secondary),var(--color-foreground)_5%)];
     }
 
     .btn--outline {
-        @apply bg-background hover:bg-accent hover:text-accent-foreground border shadow-xs;
+        @apply border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground;
     }
 
     .btn--link {
-        @apply text-foreground min-h-6 underline-offset-4 hover:underline active:underline;
+        @apply text-primary min-h-6 underline-offset-4 hover:underline;
     }
 
     .btn--ghost {
-        @apply hover:bg-accent hover:text-accent-foreground text-foreground;
+        @apply hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground;
     }
 
     .btn--danger {
-        @apply bg-danger hover:bg-danger/90 focus-visible:ring-danger/20 text-white shadow-xs;
+        @apply bg-danger/10 text-danger hover:bg-danger/20 focus-visible:border-danger/40 focus-visible:ring-danger/20;
     }
 
-    /* Default size for the boxed variants. `:where()` keeps it at one-class specificity so the size modifiers below override it by source order. */
+    /* Default size and border for the boxed variants, so a plain `.btn` link keeps its size. `:where()` keeps it at one-class specificity so the size modifiers below override it by source order. */
     .btn:where(.btn--primary, .btn--secondary, .btn--outline, .btn--ghost, .btn--danger) {
-        @apply h-9 px-4 py-2 [&:where(:has(>svg))]:px-3;
+        @apply h-8 gap-1.5 border bg-clip-padding px-2.5;
     }
 
     .btn--sm {
-        @apply h-8 gap-1.5 px-3 has-[>svg]:px-2.5;
+        @apply h-7 gap-1 rounded-md px-2.5 [&_svg:not([class*='size-'])]:size-3.5;
     }
 
     .btn--lg {
-        @apply h-10 px-6 has-[>svg]:px-4;
+        @apply h-9 gap-1.5 px-2.5;
     }
 
     .btn--xl {
@@ -45,14 +45,14 @@
     }
 
     .btn--icon {
-        @apply size-9 p-0;
-    }
-
-    .btn--icon-sm {
         @apply size-8 p-0;
     }
 
+    .btn--icon-sm {
+        @apply size-7 rounded-md p-0;
+    }
+
     .btn--icon-lg {
-        @apply size-10 p-0;
+        @apply size-9 p-0;
     }
 }

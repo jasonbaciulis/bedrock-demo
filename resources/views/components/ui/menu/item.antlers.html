@@ -1,0 +1,39 @@
+---
+value: ''
+href: ''
+icon: ''
+destructive: false
+disabled: false
+class: ''
+---
+
+{{ item_classes = [
+    "data-highlighted:bg-accent data-highlighted:text-accent-foreground data-destructive:text-danger data-destructive:data-highlighted:bg-danger/10 data-destructive:data-highlighted:text-danger flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+    view:class,
+] | classes | collapse_whitespace }}
+{{# With as-child the item binds to the link, so the link takes the classes and Enter follows it. #}}
+<ui-menu-item
+    {{ view:href ?= 'as-child' }}
+    {{ !view:href ?= 'class="{item_classes}"' }}
+    {{ view:value | attribute:value }}
+    {{ view:destructive ?= 'destructive' }}
+    {{ view:disabled ?= 'disabled' }}
+>
+    {{ if view:href }}
+        <a href="{{ view:href }}" class="{{ item_classes }}">
+            {{ if view:icon }}
+                <ui-menu-item-icon>
+                    <s:svg :src="view:icon" />
+                </ui-menu-item-icon>
+            {{ /if }}
+            {{ slot }}
+        </a>
+    {{ else }}
+        {{ if view:icon }}
+            <ui-menu-item-icon>
+                <s:svg :src="view:icon" />
+            </ui-menu-item-icon>
+        {{ /if }}
+        {{ slot }}
+    {{ /if }}
+</ui-menu-item>
