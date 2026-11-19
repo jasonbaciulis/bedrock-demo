@@ -52,7 +52,7 @@ resources/views/
 - **FAQs** - Accordion with FAQ structured data.
 - **Contact** - Renders any Statamic form, with sections and conditional fields.
 - **Newsletter** - Email opt-in form. Connect an email service provider before you use it (see [Newsletter](#newsletter)).
-- **Hero Demo** - A hero that shows the UI components: form fields, tabs, dialog, dropdown, carousel and collapsible.
+- **Hero Demo** - A hero that shows the UI components: form fields, tabs, dialog, dropdown, carousel and accordion.
 - **Search Form** - A search field that sends the query to the page that you select in "Results page".
 - **Search Results** - Results from the `blog` search index (`config/statamic/search.php`) in a grid, with pagination.
 - **Style Guide** - Shows the site grid, colors, buttons, alerts, headings and typography in one place.
