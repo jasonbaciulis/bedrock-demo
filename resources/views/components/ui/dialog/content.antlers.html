@@ -14,10 +14,7 @@ sizes:
     {{ view:initial_focus | attribute:initial-focus }}
     {{ view:final_focus | attribute:final-focus }}
     class="{{ [
-        'bg-background text-foreground fixed inset-4 m-auto h-fit w-auto max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-lg border px-4 pt-5 pb-4 text-left shadow-lg sm:inset-8 sm:max-h-[calc(100dvh-4rem)]',
-        'transition duration-200 ease-out data-ending-style:duration-150 motion-reduce:transition-none',
-        'data-starting-style:translate-y-4 data-starting-style:opacity-0 sm:data-starting-style:translate-y-0 sm:data-starting-style:scale-95',
-        'data-ending-style:translate-y-4 data-ending-style:opacity-0 sm:data-ending-style:translate-y-0 sm:data-ending-style:scale-95',
+        'bg-background text-foreground fixed inset-4 m-auto h-fit w-auto max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-lg border px-4 pt-5 pb-4 text-left shadow-lg transition-dialog sm:inset-8 sm:max-h-[calc(100dvh-4rem)]',
         view:sizes[view:size],
         view:class,
     ] | classes | collapse_whitespace }}"

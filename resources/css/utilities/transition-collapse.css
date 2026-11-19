@@ -1,4 +1,4 @@
 /* For ui-sdk panels: pair it with the panel's height variable, e.g. h-(--accordion-panel-height). Put padding on an inner wrapper, because the transition animates only the height. */
 @utility transition-collapse {
-    @apply overflow-hidden transition-[height] duration-250 data-ending-style:h-0 data-starting-style:h-0 motion-reduce:duration-0;
+    @apply overflow-hidden transition-[height] duration-200 ease-out data-ending-style:h-0 data-starting-style:h-0 motion-reduce:duration-0;
 }

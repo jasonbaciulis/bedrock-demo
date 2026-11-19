@@ -1,0 +1,7 @@
+@utility transition-dialog {
+    @apply transition duration-100 ease-out motion-reduce:duration-0;
+
+    &:is([data-starting-style], [data-ending-style]) {
+        @apply scale-95 opacity-0;
+    }
+}
