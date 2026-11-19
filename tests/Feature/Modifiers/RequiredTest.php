@@ -33,7 +33,7 @@ test('an empty value is logged and rendered when debug mode is off', function ()
     config(['app.debug' => false]);
     Log::spy();
 
-    expect(renderRequired(''))->toBe('');
+    expect(renderRequired(''))->toBeEmpty();
 
     Log::shouldHaveReceived('notice')->once()->with('Error in [required] modifier: The value is missing.');
 });
